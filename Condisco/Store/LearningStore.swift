@@ -44,6 +44,40 @@ extension PackProgress {
     }
 }
 
+extension CoursePack {
+    /// The first lesson the learner hasn't completed yet, walked in
+    /// unit/lesson order — the single source of truth for "what comes
+    /// next on the path". Shared by the Home tab's continue card,
+    /// `condisco://continue`, and the widget snapshot, so every surface
+    /// points at the same next lesson.
+    ///
+    /// Lessons whose `unitId` has no matching `CourseUnit` in `units` are
+    /// skipped: the authored pack can carry orphaned lesson ids, and they
+    /// are not part of the learner's path.
+    ///
+    /// - Parameter completed: lesson ids already finished along the chosen
+    ///   path — pass `PackProgress.participationCompleted`. Each caller
+    ///   projects its own set so it controls freshness (cached projection
+    ///   on Home, fresh projection for a deep link).
+    /// - Returns: the next lesson together with its unit, or nil when every
+    ///   lesson is complete.
+    func firstUncompletedLesson(
+        completed: Set<String>
+    ) -> (lesson: Lesson, unit: CourseUnit)? {
+        var unitIds: [String] = []
+        for lesson in lessons where !unitIds.contains(lesson.unitId) {
+            unitIds.append(lesson.unitId)
+        }
+        for unitId in unitIds {
+            guard let unit = units.first(where: { $0.id == unitId }) else { continue }
+            for lesson in lessons where lesson.unitId == unitId {
+                if !completed.contains(lesson.id) { return (lesson, unit) }
+            }
+        }
+        return nil
+    }
+}
+
 // MARK: - Activity helpers (projection-only views over CoursePack models)
 
 private func activityRevision(_ activity: Activity) -> Int {

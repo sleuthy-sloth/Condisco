@@ -145,19 +145,13 @@ final class HomeModel: ObservableObject {
     }
 
     /// First incomplete lesson in unit/lesson order — the learner's path.
+    /// Delegates to the shared `CoursePack.firstUncompletedLesson(completed:)`
+    /// so the Home card and `condisco://continue` always agree on the next
+    /// lesson. Runs on the cached projection; call `refresh()` after deep
+    /// links change progress.
     func nextLesson(in pack: CoursePack) -> (lesson: Lesson, unit: CourseUnit)? {
-        let done = progress[pack.id]?.participationCompleted ?? []
-        var unitIds: [String] = []
-        for lesson in pack.lessons where !unitIds.contains(lesson.unitId) {
-            unitIds.append(lesson.unitId)
-        }
-        for unitId in unitIds {
-            guard let unit = pack.units.first(where: { $0.id == unitId }) else { continue }
-            for lesson in pack.lessons where lesson.unitId == unitId {
-                if !done.contains(lesson.id) { return (lesson, unit) }
-            }
-        }
-        return nil
+        pack.firstUncompletedLesson(
+            completed: progress[pack.id]?.participationCompleted ?? [])
     }
 
     /// The most recently written checkpoint across every pack, resolved

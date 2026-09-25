@@ -110,8 +110,15 @@ final class DeepLinkRouter: ObservableObject {
             let packs = try PackLoader.loadPacks()
             switch link {
             case .continue:
-                guard let pack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first,
-                      let lesson = Self.nextLesson(in: pack, store: store) else { return }
+                guard let pack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first else { return }
+                let completed: Set<String>
+                do {
+                    completed = try store.project(pack: pack).participationCompleted
+                } catch {
+                    return
+                }
+                guard let (lesson, _) = pack.firstUncompletedLesson(
+                    completed: completed) else { return }
                 playerRequest = DeepLinkPlayerRequest(
                     id: "\(pack.id)/\(lesson.id)",
                     pack: pack,
@@ -135,27 +142,5 @@ final class DeepLinkRouter: ObservableObject {
         } catch {
             // Best-effort: a deep link never surfaces an error.
         }
-    }
-
-    /// Mirrors HomeModel.nextLesson: the first lesson in unit/lesson order with
-    /// no participation yet. Kept here so HomeView.swift stays untouched.
-    private static func nextLesson(in pack: CoursePack, store: LearningStore) -> Lesson? {
-        let done: Set<String>
-        do {
-            done = try store.project(pack: pack).participationCompleted
-        } catch {
-            return nil
-        }
-        var unitIds: [String] = []
-        for lesson in pack.lessons where !unitIds.contains(lesson.unitId) {
-            unitIds.append(lesson.unitId)
-        }
-        for unitId in unitIds {
-            guard pack.units.contains(where: { $0.id == unitId }) else { continue }
-            for lesson in pack.lessons where lesson.unitId == unitId {
-                if !done.contains(lesson.id) { return lesson }
-            }
-        }
-        return nil
     }
 }

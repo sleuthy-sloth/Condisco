@@ -10,9 +10,31 @@ import WidgetKit
 
 @MainActor
 enum WidgetSnapshotWriter {
-    static func refresh(packs: [CoursePack], focusSlug: String) {
-        guard let store = try? LearningStore.inDocuments() else { return }
-        let dueCount = (try? ReviewCatalog.loadDue(packs: packs, store: store))?.due.count ?? 0
+    /// Pure snapshot assembly — everything except store I/O and the
+    /// WidgetKit reload.
+    ///
+    /// `progress` carries each pack's projected `PackProgress`; only the
+    /// focus pack's entry is consulted (the focus pack is the first pack
+    /// whose `language.slug` matches `focusSlug`, falling back to the
+    /// first pack — the same selection `refresh` and Home make). The next
+    /// lesson is picked by the shared `firstUncompletedLesson(completed:)`
+    /// helper, fed the same `participationCompleted` set Home and
+    /// `condisco://continue` use, so the widget always points at the same
+    /// next lesson as the other surfaces. When every lesson is complete
+    /// the next-lesson fields are nil and the widget renders
+    /// "Path complete".
+    ///
+    /// Extracted (rather than inlined in `refresh`) so unit tests can pin
+    /// the snapshot's next-lesson contract without a store or WidgetKit.
+    static func makeSnapshot(
+        packs: [CoursePack],
+        focusSlug: String,
+        progress: [String: PackProgress],
+        dueCount: Int,
+        weekFlags: [Bool],
+        practiceDays: Int,
+        updatedAt: Date = Date()
+    ) -> WidgetSnapshot {
         let focusPack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first
         var title: String?
         var unit: String?
@@ -20,19 +42,16 @@ enum WidgetSnapshotWriter {
         var packId: String?
         var lessonId: String?
         if let pack = focusPack,
-           let projected = try? store.project(pack: pack),
-           let next = firstIncompleteLesson(pack: pack, progress: projected) {
+           let projected = progress[pack.id],
+           let next = pack.firstUncompletedLesson(
+               completed: projected.participationCompleted) {
             title = next.lesson.title
             unit = next.unit.title
             minutes = next.lesson.estimatedMinutes
             packId = pack.id
             lessonId = next.lesson.id
         }
-        let weekDays = currentWeekDays()
-        let flags = (try? store.practiceDayFlags(for: weekDays))
-            ?? Array(repeating: false, count: 7)
-        let days = (try? store.practiceDays()) ?? 0
-        WidgetShared.writeSnapshot(WidgetSnapshot(
+        return WidgetSnapshot(
             focusSlug: focusSlug,
             focusLanguageName: focusPack?.language.displayName ?? "",
             dueCount: dueCount,
@@ -41,27 +60,33 @@ enum WidgetSnapshotWriter {
             nextLessonMinutes: minutes,
             nextPackId: packId,
             nextLessonId: lessonId,
-            weekFlags: flags,
-            practiceDays: days,
-            updatedAt: Date()))
-        WidgetCenter.shared.reloadTimelines(ofKind: WidgetShared.widgetKind)
+            weekFlags: weekFlags,
+            practiceDays: practiceDays,
+            updatedAt: updatedAt)
     }
 
-    /// Unit/lesson-order scan mirroring HomeModel.nextLesson.
-    private static func firstIncompleteLesson(
-        pack: CoursePack, progress: PackProgress
-    ) -> (lesson: Lesson, unit: CourseUnit)? {
-        let done = progress.participationCompleted
-        var unitIds: [String] = []
-        for lesson in pack.lessons where !unitIds.contains(lesson.unitId) {
-            unitIds.append(lesson.unitId)
+    static func refresh(packs: [CoursePack], focusSlug: String) {
+        guard let store = try? LearningStore.inDocuments() else { return }
+        let dueCount = (try? ReviewCatalog.loadDue(packs: packs, store: store))?.due.count ?? 0
+        let focusPack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first
+        // Only the focus pack is projected — the snapshot never consults
+        // the other languages' progress.
+        var progress: [String: PackProgress] = [:]
+        if let focusPack, let projected = try? store.project(pack: focusPack) {
+            progress[focusPack.id] = projected
         }
-        for unitId in unitIds {
-            guard let unit = pack.units.first(where: { $0.id == unitId }) else { continue }
-            for lesson in pack.lessons where lesson.unitId == unitId {
-                if !done.contains(lesson.id) { return (lesson, unit) }
-            }
-        }
-        return nil
+        let weekDays = currentWeekDays()
+        let flags = (try? store.practiceDayFlags(for: weekDays))
+            ?? Array(repeating: false, count: 7)
+        let days = (try? store.practiceDays()) ?? 0
+        let snapshot = makeSnapshot(
+            packs: packs,
+            focusSlug: focusSlug,
+            progress: progress,
+            dueCount: dueCount,
+            weekFlags: flags,
+            practiceDays: days)
+        WidgetShared.writeSnapshot(snapshot)
+        WidgetCenter.shared.reloadTimelines(ofKind: WidgetShared.widgetKind)
     }
 }

@@ -1,0 +1,30 @@
+# Xcode
+*.xcworkspace/xcuserdata/
+Condisco.xcodeproj/xcuserdata/
+CondiscoWidget.appex/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+
+# Local overrides / secrets — never commit
+*.xcconfig
+.env
+*.pem
+*.p12
+*.mobileprovision
+
+# Condisco runtime data (created on device/simulator, not source)
+verbalibera.sqlite*

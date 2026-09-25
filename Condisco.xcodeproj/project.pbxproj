@@ -1,0 +1,1008 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		009FD3FF014744F1948D03C9 /* ListenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975DB52EC8D991AEC0EE27A0 /* ListenView.swift */; };
+		020BDA02E042FFB26379FE53 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D0ABFF61BDADD4FBAF2AE9 /* HomeView.swift */; };
+		02281A308F5D59565C0FCA07 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CE1DFDD5D9B1A2FD12C874 /* MonthView.swift */; };
+		04D71F96AA2644B68B21B001 /* PlacementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D71F96AA2644B68B21B002 /* PlacementTests.swift */; };
+		04D71F96AA2644B68B21C001 /* FirstRunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */; };
+		0AA0BD4F2E709F3CC064DF9E /* ListenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EF1F9F89E359168478CE4C /* ListenModels.swift */; };
+		0EC7D04E5BB5C953B7F852F4 /* YouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942F12D85DE53046007FEB06 /* YouView.swift */; };
+		191772D6C24C646A16C7758F /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70821206263E6D0C6A379956 /* DesignTokens.swift */; };
+		1B4224F27853BC212107352D /* Content in Resources */ = {isa = PBXBuildFile; fileRef = 2A866DD8F0FF0A8041F00F18 /* Content */; };
+		202AFE5EB05FB460E3F66908 /* LessonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843AC5D09572075DBD7FB8A9 /* LessonPlayerView.swift */; };
+		301B804C57A56E1853332157 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 30AC3C5C6C418C791E362178 /* libsqlite3.tbd */; };
+		3272F14DCE8D50C7421177EF /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5CC7B7F72D3913A6C3138B /* ReviewView.swift */; };
+		36883F0924AB298A7EC384C9 /* A11ySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D203E8A8147B0E5876AB10EB /* A11ySettings.swift */; };
+		39CC8F565977447AB294AAC4 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477E62A38C849EBBFF4BC59 /* DeepLink.swift */; };
+		3BAFB84444D11EB7B1E2791B /* ShadowMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CD65E302FD40C37BD29F7E /* ShadowMode.swift */; };
+		3F95B9A0F5D86B70E4BE0B72 /* ProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758CF4DC7038BA9CB3289644 /* ProgressCard.swift */; };
+		3FF71A2495CDF5AD9CBE197F /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83733DCB89432CFE912CC7F3 /* Support.swift */; };
+		42D1DA050BDD3CECD2FC32A1 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6AB89D028BACCF2E3BDBE /* WidgetSnapshot.swift */; };
+		437973154639AD1FE9A9BF85 /* Fsrs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954FBC6C3AAE1CC8AD3AFD06 /* Fsrs.swift */; };
+		4AD8AA468C5963D751DB0FCF /* LessonSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FDF5A7BCEE66CAB06AA79 /* LessonSession.swift */; };
+		58A2E8CD7C0DE5EB45E6C6BE /* AnswerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A4EE3E69C30D247A2F185C /* AnswerEngine.swift */; };
+		5EE2948C6A768497DB1E681D /* CondiscoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A160D2136FF659F559D671 /* CondiscoWidget.swift */; };
+		663ED28C327AF36BA7546A8C /* PhraseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28026503864E5A173343687C /* PhraseCard.swift */; };
+		664D7FEC072B7432F38DF4A3 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6AB89D028BACCF2E3BDBE /* WidgetSnapshot.swift */; };
+		6A4B9EFFD9904728B474BCD8 /* LessonCatalog.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398662E550B49108CBE0E5C /* LessonCatalog.generated.swift */; };
+		6C7B3EDFE921414B741D07F0 /* CondiscoWidget.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = DB83AD3BD1C95C29E58BB7EA /* CondiscoWidget.appex */; };
+		72E5977A253182A48E891F46 /* InteractiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A175CD909D9F6F023A9126AC /* InteractiveViews.swift */; };
+		74BB56E1D5C6266162267646 /* PlacementTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B8BF9466E62287CF275117 /* PlacementTest.swift */; };
+		76E338C94CB593888DB94639 /* FamilyLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A004C3C13201CF2CAC943A /* FamilyLayouts.swift */; };
+		7719282C2FE198DA88ED813D /* StimulusViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D549F75204DDE30F5A9471 /* StimulusViews.swift */; };
+		7ADC9CD0DB6494608FA6EE2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320300B7849BDBF796B78B5E /* Assets.xcassets */; };
+		7D3E9A1B4C5F60718293A4B5 /* LessonMoments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7E6F5A4B3C2D1E0F18293A /* LessonMoments.swift */; };
+		7EC1C6C2687A46CCB608E45A /* CondiscoIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DC3F7246FC4A85BBDF6AEF /* CondiscoIntents.swift */; };
+		7F185757103592448F5AA575 /* VoiceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319146C9584097F4C1B1251 /* VoiceSettings.swift */; };
+		7F3E5A1B9C2D4E6F8091A2B3 /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F6B2C1D3E5F708192A3B4 /* Glossary.swift */; };
+		84E2FBDD62E975CE207B46A6 /* WidgetSnapshotWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D861EDEC15E210E10BB496E /* WidgetSnapshotWriter.swift */; };
+		9221A913E9F4CF35AF97FFC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1005C3CE15BE804ACC5925F /* ContentView.swift */; };
+		94A13D46BAA640FD901A24DA /* AppleSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B56B523FD48E5562089ECC /* AppleSignIn.swift */; };
+		96CAE95C793CB6E7DA0ECCCD /* PackLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1944F9614BD211436597350C /* PackLoader.swift */; };
+		9B206AEFA858F17FB711EB3B /* ReviewReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAD77B9DCE42B9FF681BB8A /* ReviewReminders.swift */; };
+		A0741B6441D0F9795FD1060B /* VoiceRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18974FC21D01C44E2C2317F /* VoiceRecorder.swift */; };
+		A31AFD92DB08A984371A1FA1 /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B755A7DD77ABAED5FB2A2EC3 /* FlashcardsView.swift */; };
+		A9B8C7D6E5F40392817A6B5C /* EmptyStateArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A69788796A5B4C /* EmptyStateArt.swift */; };
+		B0D46B41AB1AEB5E1C4CCED2 /* AnkiExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38920EECF51C06218ED9B5A3 /* AnkiExport.swift */; };
+		B7255A61BAA04477B2410454 /* SpotlightIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEF53095B6F4A7E9001B47C /* SpotlightIndex.swift */; };
+		B7B41E67B0997E9654724995 /* LessonCoachMarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC3AE88C3875ED9A8D7ECD3 /* LessonCoachMarks.swift */; };
+		BE48B735C2FAABE1F6918772 /* CoursePack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B558AF48720CB2D702D65 /* CoursePack.swift */; };
+		C0B5D994749AF612EB2ECDA6 /* ActivityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60A4BD7FEA860DA75357B80 /* ActivityViews.swift */; };
+		C44B9F77FB3FA37C304F33FD /* ReviewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D285CE77A46597D3C42D3E4 /* ReviewModels.swift */; };
+		C7C588038FD8EB9E47853C1D /* ActivityEvaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2A125196B9DE9582EC180 /* ActivityEvaluation.swift */; };
+		CD16010857B044BDC5BECCB1 /* CloudKitSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA37E38802FFFA70EC10837 /* CloudKitSync.swift */; };
+		D669BAA4678FE005A24EF984 /* LearningStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664E9BE28F7E95EA4853787E /* LearningStore.swift */; };
+		DDE3756B00EF3D2F71C2F46C /* YouModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9F522BD4AD44CCC96E91D /* YouModel.swift */; };
+		DDEF4B7BC8EBD47F311E948F /* TextInputViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533B266D749B0F0F08C0348 /* TextInputViews.swift */; };
+		DF9AF62E128A3DCE616C27E4 /* LearningEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9F43B457AD8C7883C296FE /* LearningEvents.swift */; };
+		E75B0455E544929602D48F0C /* VocabularyBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED595E24BE34F302FD744629 /* VocabularyBrowser.swift */; };
+		E9E440C9160D00078D9D21CD /* Phrasebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20691D824D7C2FB92C3CE74E /* Phrasebook.swift */; };
+		EA13D08A1E1B32DA1517CA54 /* CondiscoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2244C5AE88C0AA570368CE /* CondiscoApp.swift */; };
+		EC5B1D073B61D48B32A8E072 /* CoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D821950985464B5B585F35 /* CoursesView.swift */; };
+		F5311AAE72D4D51782AED610 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BCFEEBDEEFB8A0ECEEB5FC /* Database.swift */; };
+		F8A7341506FDC3F454E083F1 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D583D7028243CF415AD16BC /* Welcome.swift */; };
+		FAC15CBDD70E4F73A6121F68 /* HandsFreeReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04D71F96AA2644B68B21B003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C6D3129E797A3188ABA184BE;
+			remoteInfo = Condisco;
+		};
+		04D71F96AA2644B68B21C003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C6D3129E797A3188ABA184BE;
+			remoteInfo = Condisco;
+		};
+		739A6A3F4C1C3074278D4186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6B0B781B861B30E801621521;
+			remoteInfo = CondiscoWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0894E2626683DBE9DB5F3530 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6C7B3EDFE921414B741D07F0 /* CondiscoWidget.appex in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04D71F96AA2644B68B21B002 /* PlacementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementTests.swift; sourceTree = "<group>"; };
+		04D71F96AA2644B68B21B004 /* CondiscoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CondiscoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRunUITests.swift; sourceTree = "<group>"; };
+		04D71F96AA2644B68B21C004 /* CondiscoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CondiscoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EC3AE88C3875ED9A8D7ECD3 /* LessonCoachMarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCoachMarks.swift; sourceTree = "<group>"; };
+		11A4EE3E69C30D247A2F185C /* AnswerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerEngine.swift; sourceTree = "<group>"; };
+		13CE1DFDD5D9B1A2FD12C874 /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
+		1944F9614BD211436597350C /* PackLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackLoader.swift; sourceTree = "<group>"; };
+		20691D824D7C2FB92C3CE74E /* Phrasebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phrasebook.swift; sourceTree = "<group>"; };
+		28026503864E5A173343687C /* PhraseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseCard.swift; sourceTree = "<group>"; };
+		2A866DD8F0FF0A8041F00F18 /* Content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Content; sourceTree = "<group>"; };
+		30AC3C5C6C418C791E362178 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		312B5612ECBD83916DE1FF70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		320300B7849BDBF796B78B5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		369780FF0B2BBFE92992D78E /* Condisco.storekit */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Condisco.storekit; sourceTree = "<group>"; };
+		38920EECF51C06218ED9B5A3 /* AnkiExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiExport.swift; sourceTree = "<group>"; };
+		45D6AB89D028BACCF2E3BDBE /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
+		51BCFEEBDEEFB8A0ECEEB5FC /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		51D0ABFF61BDADD4FBAF2AE9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		5CAD77B9DCE42B9FF681BB8A /* ReviewReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewReminders.swift; sourceTree = "<group>"; };
+		5D285CE77A46597D3C42D3E4 /* ReviewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewModels.swift; sourceTree = "<group>"; };
+		5D583D7028243CF415AD16BC /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
+		5D861EDEC15E210E10BB496E /* WidgetSnapshotWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotWriter.swift; sourceTree = "<group>"; };
+		5FE9F522BD4AD44CCC96E91D /* YouModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouModel.swift; sourceTree = "<group>"; };
+		64EF1F9F89E359168478CE4C /* ListenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenModels.swift; sourceTree = "<group>"; };
+		664E9BE28F7E95EA4853787E /* LearningStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningStore.swift; sourceTree = "<group>"; };
+		68D821950985464B5B585F35 /* CoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesView.swift; sourceTree = "<group>"; };
+		6A5CC7B7F72D3913A6C3138B /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
+		6E9F43B457AD8C7883C296FE /* LearningEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningEvents.swift; sourceTree = "<group>"; };
+		70821206263E6D0C6A379956 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
+		7533B266D749B0F0F08C0348 /* TextInputViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViews.swift; sourceTree = "<group>"; };
+		758CF4DC7038BA9CB3289644 /* ProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCard.swift; sourceTree = "<group>"; };
+		7D3B558AF48720CB2D702D65 /* CoursePack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePack.swift; sourceTree = "<group>"; };
+		83733DCB89432CFE912CC7F3 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		843AC5D09572075DBD7FB8A9 /* LessonPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonPlayerView.swift; sourceTree = "<group>"; };
+		8A4F6B2C1D3E5F708192A3B4 /* Glossary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glossary.swift; sourceTree = "<group>"; };
+		8BE7DA0AB18237B856638E2B /* CondiscoWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CondiscoWidget.entitlements; sourceTree = "<group>"; };
+		8D7E6F5A4B3C2D1E0F18293A /* LessonMoments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonMoments.swift; sourceTree = "<group>"; };
+		8FEF53095B6F4A7E9001B47C /* SpotlightIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightIndex.swift; sourceTree = "<group>"; };
+		91A2A125196B9DE9582EC180 /* ActivityEvaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityEvaluation.swift; sourceTree = "<group>"; };
+		9319146C9584097F4C1B1251 /* VoiceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSettings.swift; sourceTree = "<group>"; };
+		942F12D85DE53046007FEB06 /* YouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouView.swift; sourceTree = "<group>"; };
+		954FBC6C3AAE1CC8AD3AFD06 /* Fsrs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fsrs.swift; sourceTree = "<group>"; };
+		975DB52EC8D991AEC0EE27A0 /* ListenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenView.swift; sourceTree = "<group>"; };
+		A1005C3CE15BE804ACC5925F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A175CD909D9F6F023A9126AC /* InteractiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveViews.swift; sourceTree = "<group>"; };
+		A40FDF5A7BCEE66CAB06AA79 /* LessonSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonSession.swift; sourceTree = "<group>"; };
+		B60A4BD7FEA860DA75357B80 /* ActivityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViews.swift; sourceTree = "<group>"; };
+		B6DC3F7246FC4A85BBDF6AEF /* CondiscoIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CondiscoIntents.swift; sourceTree = "<group>"; };
+		B755A7DD77ABAED5FB2A2EC3 /* FlashcardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsView.swift; sourceTree = "<group>"; };
+		C0B8BF9466E62287CF275117 /* PlacementTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementTest.swift; sourceTree = "<group>"; };
+		C1A160D2136FF659F559D671 /* CondiscoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CondiscoWidget.swift; sourceTree = "<group>"; };
+		C2CD65E302FD40C37BD29F7E /* ShadowMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowMode.swift; sourceTree = "<group>"; };
+		CBA37E38802FFFA70EC10837 /* CloudKitSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSync.swift; sourceTree = "<group>"; };
+		D203E8A8147B0E5876AB10EB /* A11ySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A11ySettings.swift; sourceTree = "<group>"; };
+		D2A004C3C13201CF2CAC943A /* FamilyLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyLayouts.swift; sourceTree = "<group>"; };
+		D398662E550B49108CBE0E5C /* LessonCatalog.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCatalog.generated.swift; sourceTree = "<group>"; };
+		D8B56B523FD48E5562089ECC /* AppleSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignIn.swift; sourceTree = "<group>"; };
+		D99A229F0240423684E71D7A /* Condisco.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Condisco.entitlements; sourceTree = "<group>"; };
+		DB83AD3BD1C95C29E58BB7EA /* CondiscoWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CondiscoWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC2244C5AE88C0AA570368CE /* CondiscoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CondiscoApp.swift; sourceTree = "<group>"; };
+		DF5C312FDD6748258449C5C5 /* Condisco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Condisco.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E18974FC21D01C44E2C2317F /* VoiceRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorder.swift; sourceTree = "<group>"; };
+		E477E62A38C849EBBFF4BC59 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		E7D549F75204DDE30F5A9471 /* StimulusViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StimulusViews.swift; sourceTree = "<group>"; };
+		ED595E24BE34F302FD744629 /* VocabularyBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyBrowser.swift; sourceTree = "<group>"; };
+		F1E2D3C4B5A69788796A5B4C /* EmptyStateArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateArt.swift; sourceTree = "<group>"; };
+		F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsFreeReview.swift; sourceTree = "<group>"; };
+		FAEDADE850C640ECA5602F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04D71F96AA2644B68B21B008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04D71F96AA2644B68B21C008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11EF39465FB5B37CF41E367D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		424153ED3CD079DB4DB459AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				301B804C57A56E1853332157 /* libsqlite3.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04D71F96AA2644B68B21B005 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04D71F96AA2644B68B21B002 /* PlacementTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		04D71F96AA2644B68B21C005 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		1B17F435FEAD0180CCBE7DB4 /* CondiscoWidget */ = {
+			isa = PBXGroup;
+			children = (
+				C1A160D2136FF659F559D671 /* CondiscoWidget.swift */,
+				312B5612ECBD83916DE1FF70 /* Info.plist */,
+				8BE7DA0AB18237B856638E2B /* CondiscoWidget.entitlements */,
+			);
+			path = CondiscoWidget;
+			sourceTree = "<group>";
+		};
+		2F3A6B1E78F896718625FF06 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DF5C312FDD6748258449C5C5 /* Condisco.app */,
+				DB83AD3BD1C95C29E58BB7EA /* CondiscoWidget.appex */,
+				04D71F96AA2644B68B21B004 /* CondiscoTests.xctest */,
+				04D71F96AA2644B68B21C004 /* CondiscoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3B55776F088D46FDBA4AEC25 /* DeepLink */ = {
+			isa = PBXGroup;
+			children = (
+				E477E62A38C849EBBFF4BC59 /* DeepLink.swift */,
+				B6DC3F7246FC4A85BBDF6AEF /* CondiscoIntents.swift */,
+				8FEF53095B6F4A7E9001B47C /* SpotlightIndex.swift */,
+				D398662E550B49108CBE0E5C /* LessonCatalog.generated.swift */,
+			);
+			path = DeepLink;
+			sourceTree = "<group>";
+		};
+		3B744E1F2E24EE189DDC893F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7D3B558AF48720CB2D702D65 /* CoursePack.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4CF24578C6868AC0DF88364A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5D583D7028243CF415AD16BC /* Welcome.swift */,
+				C0B8BF9466E62287CF275117 /* PlacementTest.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		505C58E53064502900CE159D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				30AC3C5C6C418C791E362178 /* libsqlite3.tbd */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		518DA81DB9B99529C0C0AEBE = {
+			isa = PBXGroup;
+			children = (
+				7998DA9FC6CA6F5EFFB3815C /* Condisco */,
+				369780FF0B2BBFE92992D78E /* Condisco.storekit */,
+				2F3A6B1E78F896718625FF06 /* Products */,
+				1B17F435FEAD0180CCBE7DB4 /* CondiscoWidget */,
+				505C58E53064502900CE159D /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		645836DB7E8C205CAE390378 /* Lesson */ = {
+			isa = PBXGroup;
+			children = (
+				68D821950985464B5B585F35 /* CoursesView.swift */,
+				D2A004C3C13201CF2CAC943A /* FamilyLayouts.swift */,
+				B60A4BD7FEA860DA75357B80 /* ActivityViews.swift */,
+				7533B266D749B0F0F08C0348 /* TextInputViews.swift */,
+				A175CD909D9F6F023A9126AC /* InteractiveViews.swift */,
+				E7D549F75204DDE30F5A9471 /* StimulusViews.swift */,
+				28026503864E5A173343687C /* PhraseCard.swift */,
+				20691D824D7C2FB92C3CE74E /* Phrasebook.swift */,
+				8A4F6B2C1D3E5F708192A3B4 /* Glossary.swift */,
+				8D7E6F5A4B3C2D1E0F18293A /* LessonMoments.swift */,
+				843AC5D09572075DBD7FB8A9 /* LessonPlayerView.swift */,
+				0EC3AE88C3875ED9A8D7ECD3 /* LessonCoachMarks.swift */,
+				ED595E24BE34F302FD744629 /* VocabularyBrowser.swift */,
+				E18974FC21D01C44E2C2317F /* VoiceRecorder.swift */,
+				9319146C9584097F4C1B1251 /* VoiceSettings.swift */,
+			);
+			path = Lesson;
+			sourceTree = "<group>";
+		};
+		724507FEFA953A2F98C1A396 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				70821206263E6D0C6A379956 /* DesignTokens.swift */,
+				D203E8A8147B0E5876AB10EB /* A11ySettings.swift */,
+				F1E2D3C4B5A69788796A5B4C /* EmptyStateArt.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		76E29E07DD02DF56121EE5E4 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				D8B56B523FD48E5562089ECC /* AppleSignIn.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		7998DA9FC6CA6F5EFFB3815C /* Condisco */ = {
+			isa = PBXGroup;
+			children = (
+				DC2244C5AE88C0AA570368CE /* CondiscoApp.swift */,
+				A1005C3CE15BE804ACC5925F /* ContentView.swift */,
+				320300B7849BDBF796B78B5E /* Assets.xcassets */,
+				2A866DD8F0FF0A8041F00F18 /* Content */,
+				D99A229F0240423684E71D7A /* Condisco.entitlements */,
+				BAFC12F3DB418A20F1371B78 /* Home */,
+				724507FEFA953A2F98C1A396 /* Theme */,
+				3B744E1F2E24EE189DDC893F /* Models */,
+				AF9355AF6BD1E5646134E824 /* Store */,
+				F70F83DBAD2C929CAC30EF04 /* Engine */,
+				645836DB7E8C205CAE390378 /* Lesson */,
+				A8B8E6B66FDECE6CAE09A067 /* Listen */,
+				93758A901F7AC09838E0CB73 /* Review */,
+				76E29E07DD02DF56121EE5E4 /* Auth */,
+				FA2B7E1EC65470B559C5E150 /* Sync */,
+				C495EE58E9C19D39A54AF829 /* You */,
+				3B55776F088D46FDBA4AEC25 /* DeepLink */,
+				FAEDADE850C640ECA5602F36 /* Info.plist */,
+				4CF24578C6868AC0DF88364A /* Onboarding */,
+				04D71F96AA2644B68B21B005 /* Tests */,
+				04D71F96AA2644B68B21C005 /* UITests */,
+			);
+			path = Condisco;
+			sourceTree = "<group>";
+		};
+		93758A901F7AC09838E0CB73 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				5D285CE77A46597D3C42D3E4 /* ReviewModels.swift */,
+				6A5CC7B7F72D3913A6C3138B /* ReviewView.swift */,
+				5CAD77B9DCE42B9FF681BB8A /* ReviewReminders.swift */,
+				B755A7DD77ABAED5FB2A2EC3 /* FlashcardsView.swift */,
+				38920EECF51C06218ED9B5A3 /* AnkiExport.swift */,
+				F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		A8B8E6B66FDECE6CAE09A067 /* Listen */ = {
+			isa = PBXGroup;
+			children = (
+				64EF1F9F89E359168478CE4C /* ListenModels.swift */,
+				975DB52EC8D991AEC0EE27A0 /* ListenView.swift */,
+				C2CD65E302FD40C37BD29F7E /* ShadowMode.swift */,
+			);
+			path = Listen;
+			sourceTree = "<group>";
+		};
+		AF9355AF6BD1E5646134E824 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				51BCFEEBDEEFB8A0ECEEB5FC /* Database.swift */,
+				954FBC6C3AAE1CC8AD3AFD06 /* Fsrs.swift */,
+				6E9F43B457AD8C7883C296FE /* LearningEvents.swift */,
+				664E9BE28F7E95EA4853787E /* LearningStore.swift */,
+				1944F9614BD211436597350C /* PackLoader.swift */,
+				45D6AB89D028BACCF2E3BDBE /* WidgetSnapshot.swift */,
+				5D861EDEC15E210E10BB496E /* WidgetSnapshotWriter.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		BAFC12F3DB418A20F1371B78 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				51D0ABFF61BDADD4FBAF2AE9 /* HomeView.swift */,
+				13CE1DFDD5D9B1A2FD12C874 /* MonthView.swift */,
+				758CF4DC7038BA9CB3289644 /* ProgressCard.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		C495EE58E9C19D39A54AF829 /* You */ = {
+			isa = PBXGroup;
+			children = (
+				5FE9F522BD4AD44CCC96E91D /* YouModel.swift */,
+				942F12D85DE53046007FEB06 /* YouView.swift */,
+				83733DCB89432CFE912CC7F3 /* Support.swift */,
+			);
+			path = You;
+			sourceTree = "<group>";
+		};
+		F70F83DBAD2C929CAC30EF04 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				11A4EE3E69C30D247A2F185C /* AnswerEngine.swift */,
+				91A2A125196B9DE9582EC180 /* ActivityEvaluation.swift */,
+				A40FDF5A7BCEE66CAB06AA79 /* LessonSession.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		FA2B7E1EC65470B559C5E150 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				CBA37E38802FFFA70EC10837 /* CloudKitSync.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04D71F96AA2644B68B21B006 /* CondiscoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04D71F96AA2644B68B21B009 /* Build configuration list for PBXNativeTarget "CondiscoTests" */;
+			buildPhases = (
+				04D71F96AA2644B68B21B007 /* Sources */,
+				04D71F96AA2644B68B21B008 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04D71F96AA2644B68B21B00A /* PBXTargetDependency */,
+			);
+			name = CondiscoTests;
+			productName = CondiscoTests;
+			productReference = 04D71F96AA2644B68B21B004 /* CondiscoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		04D71F96AA2644B68B21C006 /* CondiscoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04D71F96AA2644B68B21C009 /* Build configuration list for PBXNativeTarget "CondiscoUITests" */;
+			buildPhases = (
+				04D71F96AA2644B68B21C007 /* Sources */,
+				04D71F96AA2644B68B21C008 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04D71F96AA2644B68B21C00A /* PBXTargetDependency */,
+			);
+			name = CondiscoUITests;
+			productName = CondiscoUITests;
+			productReference = 04D71F96AA2644B68B21C004 /* CondiscoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		6B0B781B861B30E801621521 /* CondiscoWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EB251B5FEF9F9B925BE1907 /* Build configuration list for PBXNativeTarget "CondiscoWidget" */;
+			buildPhases = (
+				37A859133C5B7A49CE597D35 /* Sources */,
+				11EF39465FB5B37CF41E367D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CondiscoWidget;
+			productName = CondiscoWidget;
+			productReference = DB83AD3BD1C95C29E58BB7EA /* CondiscoWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C6D3129E797A3188ABA184BE /* Condisco */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2F62AAE534BA46EC59716F3 /* Build configuration list for PBXNativeTarget "Condisco" */;
+			buildPhases = (
+				424153ED3CD079DB4DB459AF /* Frameworks */,
+				285BB1C1430063331E9F5DD0 /* Resources */,
+				7A70D71C385290AF96BF1031 /* Sources */,
+				0894E2626683DBE9DB5F3530 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6034B2ACFC9BB6762D443577 /* PBXTargetDependency */,
+			);
+			name = Condisco;
+			productName = Condisco;
+			productReference = DF5C312FDD6748258449C5C5 /* Condisco.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 2700;
+			};
+			buildConfigurationList = 7EF2517A8FE63F4681EC5EEA /* Build configuration list for PBXProject "Condisco" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 518DA81DB9B99529C0C0AEBE;
+			productRefGroup = 2F3A6B1E78F896718625FF06 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C6D3129E797A3188ABA184BE /* Condisco */,
+				6B0B781B861B30E801621521 /* CondiscoWidget */,
+				04D71F96AA2644B68B21B006 /* CondiscoTests */,
+				04D71F96AA2644B68B21C006 /* CondiscoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		285BB1C1430063331E9F5DD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7ADC9CD0DB6494608FA6EE2D /* Assets.xcassets in Resources */,
+				1B4224F27853BC212107352D /* Content in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04D71F96AA2644B68B21B007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04D71F96AA2644B68B21B001 /* PlacementTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04D71F96AA2644B68B21C007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04D71F96AA2644B68B21C001 /* FirstRunUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		37A859133C5B7A49CE597D35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5EE2948C6A768497DB1E681D /* CondiscoWidget.swift in Sources */,
+				664D7FEC072B7432F38DF4A3 /* WidgetSnapshot.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A70D71C385290AF96BF1031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA13D08A1E1B32DA1517CA54 /* CondiscoApp.swift in Sources */,
+				9221A913E9F4CF35AF97FFC5 /* ContentView.swift in Sources */,
+				020BDA02E042FFB26379FE53 /* HomeView.swift in Sources */,
+				02281A308F5D59565C0FCA07 /* MonthView.swift in Sources */,
+				3F95B9A0F5D86B70E4BE0B72 /* ProgressCard.swift in Sources */,
+				191772D6C24C646A16C7758F /* DesignTokens.swift in Sources */,
+				BE48B735C2FAABE1F6918772 /* CoursePack.swift in Sources */,
+				F5311AAE72D4D51782AED610 /* Database.swift in Sources */,
+				437973154639AD1FE9A9BF85 /* Fsrs.swift in Sources */,
+				DF9AF62E128A3DCE616C27E4 /* LearningEvents.swift in Sources */,
+				D669BAA4678FE005A24EF984 /* LearningStore.swift in Sources */,
+				96CAE95C793CB6E7DA0ECCCD /* PackLoader.swift in Sources */,
+				58A2E8CD7C0DE5EB45E6C6BE /* AnswerEngine.swift in Sources */,
+				C7C588038FD8EB9E47853C1D /* ActivityEvaluation.swift in Sources */,
+				4AD8AA468C5963D751DB0FCF /* LessonSession.swift in Sources */,
+				EC5B1D073B61D48B32A8E072 /* CoursesView.swift in Sources */,
+				76E338C94CB593888DB94639 /* FamilyLayouts.swift in Sources */,
+				C0B5D994749AF612EB2ECDA6 /* ActivityViews.swift in Sources */,
+				DDEF4B7BC8EBD47F311E948F /* TextInputViews.swift in Sources */,
+				72E5977A253182A48E891F46 /* InteractiveViews.swift in Sources */,
+				7719282C2FE198DA88ED813D /* StimulusViews.swift in Sources */,
+				202AFE5EB05FB460E3F66908 /* LessonPlayerView.swift in Sources */,
+				F8A7341506FDC3F454E083F1 /* Welcome.swift in Sources */,
+				74BB56E1D5C6266162267646 /* PlacementTest.swift in Sources */,
+				B7B41E67B0997E9654724995 /* LessonCoachMarks.swift in Sources */,
+				E75B0455E544929602D48F0C /* VocabularyBrowser.swift in Sources */,
+				A0741B6441D0F9795FD1060B /* VoiceRecorder.swift in Sources */,
+				7F185757103592448F5AA575 /* VoiceSettings.swift in Sources */,
+				0AA0BD4F2E709F3CC064DF9E /* ListenModels.swift in Sources */,
+				009FD3FF014744F1948D03C9 /* ListenView.swift in Sources */,
+				C44B9F77FB3FA37C304F33FD /* ReviewModels.swift in Sources */,
+				3272F14DCE8D50C7421177EF /* ReviewView.swift in Sources */,
+				9B206AEFA858F17FB711EB3B /* ReviewReminders.swift in Sources */,
+				A31AFD92DB08A984371A1FA1 /* FlashcardsView.swift in Sources */,
+				B0D46B41AB1AEB5E1C4CCED2 /* AnkiExport.swift in Sources */,
+				FAC15CBDD70E4F73A6121F68 /* HandsFreeReview.swift in Sources */,
+				36883F0924AB298A7EC384C9 /* A11ySettings.swift in Sources */,
+				A9B8C7D6E5F40392817A6B5C /* EmptyStateArt.swift in Sources */,
+				94A13D46BAA640FD901A24DA /* AppleSignIn.swift in Sources */,
+				CD16010857B044BDC5BECCB1 /* CloudKitSync.swift in Sources */,
+				DDE3756B00EF3D2F71C2F46C /* YouModel.swift in Sources */,
+				0EC7D04E5BB5C953B7F852F4 /* YouView.swift in Sources */,
+				3FF71A2495CDF5AD9CBE197F /* Support.swift in Sources */,
+				663ED28C327AF36BA7546A8C /* PhraseCard.swift in Sources */,
+				3BAFB84444D11EB7B1E2791B /* ShadowMode.swift in Sources */,
+				E9E440C9160D00078D9D21CD /* Phrasebook.swift in Sources */,
+				7F3E5A1B9C2D4E6F8091A2B3 /* Glossary.swift in Sources */,
+				7D3E9A1B4C5F60718293A4B5 /* LessonMoments.swift in Sources */,
+				39CC8F565977447AB294AAC4 /* DeepLink.swift in Sources */,
+				7EC1C6C2687A46CCB608E45A /* CondiscoIntents.swift in Sources */,
+				B7255A61BAA04477B2410454 /* SpotlightIndex.swift in Sources */,
+				6A4B9EFFD9904728B474BCD8 /* LessonCatalog.generated.swift in Sources */,
+				42D1DA050BDD3CECD2FC32A1 /* WidgetSnapshot.swift in Sources */,
+				84E2FBDD62E975CE207B46A6 /* WidgetSnapshotWriter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		04D71F96AA2644B68B21B00A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C6D3129E797A3188ABA184BE /* Condisco */;
+			targetProxy = 04D71F96AA2644B68B21B003 /* PBXContainerItemProxy */;
+		};
+		04D71F96AA2644B68B21C00A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C6D3129E797A3188ABA184BE /* Condisco */;
+			targetProxy = 04D71F96AA2644B68B21C003 /* PBXContainerItemProxy */;
+		};
+		6034B2ACFC9BB6762D443577 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6B0B781B861B30E801621521 /* CondiscoWidget */;
+			targetProxy = 739A6A3F4C1C3074278D4186 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		04D71F96AA2644B68B21B00B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Condisco.app/Condisco";
+			};
+			name = Debug;
+		};
+		04D71F96AA2644B68B21B00C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Condisco.app/Condisco";
+			};
+			name = Release;
+		};
+		04D71F96AA2644B68B21C00B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Condisco;
+			};
+			name = Debug;
+		};
+		04D71F96AA2644B68B21C00C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Condisco;
+			};
+			name = Release;
+		};
+		2400F71B974292CB576F1869 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = CondiscoWidget/CondiscoWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PN9T9MT37J;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CondiscoWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.CondiscoWidget;
+				PRODUCT_NAME = CondiscoWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3DDF142C91E4BE3A6BA5A69E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Condisco/Condisco.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PN9T9MT37J;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Condisco/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco;
+				PRODUCT_NAME = Condisco;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4A43692AD8BCEEB8B727C85B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4D8F6610AF6606489ED8DFBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Condisco/Condisco.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = PN9T9MT37J;
+				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Condisco/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco;
+				PRODUCT_NAME = Condisco;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C28449456A5A705A7479770B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F6BAC4A516C70E3DCDCADAFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = CondiscoWidget/CondiscoWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = PN9T9MT37J;
+				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CondiscoWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sleuthysloth.condisco.CondiscoWidget;
+				PRODUCT_NAME = CondiscoWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04D71F96AA2644B68B21B009 /* Build configuration list for PBXNativeTarget "CondiscoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D71F96AA2644B68B21B00B /* Debug */,
+				04D71F96AA2644B68B21B00C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		04D71F96AA2644B68B21C009 /* Build configuration list for PBXNativeTarget "CondiscoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D71F96AA2644B68B21C00B /* Debug */,
+				04D71F96AA2644B68B21C00C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7EF2517A8FE63F4681EC5EEA /* Build configuration list for PBXProject "Condisco" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A43692AD8BCEEB8B727C85B /* Debug */,
+				C28449456A5A705A7479770B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EB251B5FEF9F9B925BE1907 /* Build configuration list for PBXNativeTarget "CondiscoWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6BAC4A516C70E3DCDCADAFC /* Debug */,
+				2400F71B974292CB576F1869 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F2F62AAE534BA46EC59716F3 /* Build configuration list for PBXNativeTarget "Condisco" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D8F6610AF6606489ED8DFBC /* Debug */,
+				3DDF142C91E4BE3A6BA5A69E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}

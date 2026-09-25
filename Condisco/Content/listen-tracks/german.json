@@ -1,0 +1,333 @@
+{
+  "lessonId": "de-introductions-foundation",
+  "courseSlug": "german",
+  "lessonTitle": "Introductions and a first café visit",
+  "sections": [
+    {
+      "heading": "Start with a greeting",
+      "teacher": "Build a short introduction and make a first drink request. Listen to each new expression before trying it. During thinking pauses, speak aloud or answer silently. The following voice gives a model. Begin with hello.",
+      "target": {
+        "text": "Hallo.",
+        "meaning": "Hello."
+      },
+      "startS": 0.0
+    },
+    {
+      "heading": "Retrieve the greeting",
+      "teacher": "Picture someone looking up as you arrive. During the pause, say hello from memory. If nothing comes, listen to the model and try again. You only need a greeting, with no name or extra sentence.",
+      "target": {
+        "text": "Hallo.",
+        "meaning": "Hello."
+      },
+      "thinkSeconds": 8,
+      "startS": 18.14
+    },
+    {
+      "heading": "Introduce your name",
+      "teacher": "The next expression tells someone what you are called, followed by the name. Treat its opening as one useful block and put your own name after it. Our first example speaker is Anna; listen to the full introduction.",
+      "target": {
+        "text": "Ich heiße Anna.",
+        "meaning": "My name is Anna."
+      },
+      "startS": 41.33
+    },
+    {
+      "heading": "Recall the introduction",
+      "teacher": "Imagine that you are Anna. Tell a new acquaintance your name using the expression you just heard. Keep the opening together and finish with the name. Take your time; matching the recording speed is not the goal.",
+      "target": {
+        "text": "Ich heiße Anna.",
+        "meaning": "My name is Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 59.03
+    },
+    {
+      "heading": "Meet a second speaker",
+      "teacher": "The same opening can introduce another person when that person is speaking. Listen to a second example name. The name changes while the introduction before it stays the same. You are learning a reusable pattern.",
+      "target": {
+        "text": "Ich heiße Lukas.",
+        "meaning": "My name is Lukas."
+      },
+      "startS": 83.23
+    },
+    {
+      "heading": "Change the speaker",
+      "teacher": "Take the role of the second speaker. Introduce yourself with that name, keeping the same opening from the first introduction. Separate the fixed block from the replaceable name in your mind, then combine them.",
+      "target": {
+        "text": "Ich heiße Lukas.",
+        "meaning": "My name is Lukas."
+      },
+      "thinkSeconds": 8,
+      "startS": 101.32
+    },
+    {
+      "heading": "Return to the first name",
+      "teacher": "Switch back to Anna and use the name introduction again. This change of speaker helps you choose the name deliberately. If you used the previous name automatically, rebuild the introduction with the first name.",
+      "target": {
+        "text": "Ich heiße Anna.",
+        "meaning": "My name is Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 125.3
+    },
+    {
+      "heading": "Another way to identify yourself",
+      "teacher": "The next expression means I am, followed by the name. It includes an explicit word for I. Keep those opening words together for now; you are learning a second useful introduction rather than a whole table of verb forms.",
+      "target": {
+        "text": "Ich bin Anna.",
+        "meaning": "I am Anna."
+      },
+      "startS": 149.65
+    },
+    {
+      "heading": "Choose the shorter meaning",
+      "teacher": "Express I am Anna, using the newer block rather than the expression that tells someone your name. Keep your answer short. After the pause, compare your opening with the model to check which pattern you chose.",
+      "target": {
+        "text": "Ich bin Anna.",
+        "meaning": "I am Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 168.24
+    },
+    {
+      "heading": "Transfer the new block",
+      "teacher": "Use the I am pattern with the second name you heard. You know both pieces, but this combination is new. Keep the opening and replace only the name. Listen afterward to check the combination.",
+      "target": {
+        "text": "Ich bin Lukas.",
+        "meaning": "I am Lukas."
+      },
+      "thinkSeconds": 8,
+      "startS": 191.81
+    },
+    {
+      "heading": "Put a greeting before your name",
+      "teacher": "A greeting and introduction can sit together as two short sentences. Listen to hello followed by the first name introduction. No special joining word is needed; leave a small natural break between the two pieces.",
+      "target": {
+        "text": "Hallo. Ich heiße Anna.",
+        "meaning": "Hello. My name is Anna."
+      },
+      "startS": 215.27
+    },
+    {
+      "heading": "Introduce yourself on arrival",
+      "teacher": "Imagine arriving at a small group. Greet them, then introduce yourself as Anna using the name expression. Retrieve the greeting first, then the introduction. You can pause between them and still communicate clearly.",
+      "target": {
+        "text": "Hallo. Ich heiße Anna.",
+        "meaning": "Hello. My name is Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 233.81
+    },
+    {
+      "heading": "Ask for coffee",
+      "teacher": "For this request, the model uses the object form of the small word meaning a. Learn the entire request as a block. Later lessons can explain the case system; here you need a reliable expression for ordering.",
+      "target": {
+        "text": "Einen Kaffee.",
+        "meaning": "A coffee."
+      },
+      "startS": 259.16
+    },
+    {
+      "heading": "Retrieve the drink request",
+      "teacher": "Imagine standing at a drinks counter. Ask for a coffee using the block you just heard. We will add please shortly; first remember the drink together with its small word, rather than the drink alone.",
+      "target": {
+        "text": "Einen Kaffee.",
+        "meaning": "A coffee."
+      },
+      "thinkSeconds": 8,
+      "startS": 277.05
+    },
+    {
+      "heading": "Add politeness",
+      "teacher": "Listen to the expression meaning please. Here it will come after the drink. First hear it alone so you can recognize it independently; the next example will attach it to the coffee request.",
+      "target": {
+        "text": "Bitte.",
+        "meaning": "Please."
+      },
+      "startS": 300.42
+    },
+    {
+      "heading": "Hear the complete request",
+      "teacher": "Now hear a fuller polite request: I would like a coffee, please. The new opening means I would like. Learn it as one block before the coffee request you know. Listen first; you will try it next.",
+      "target": {
+        "text": "Ich möchte einen Kaffee, bitte.",
+        "meaning": "I would like a coffee, please."
+      },
+      "startS": 315.81
+    },
+    {
+      "heading": "Order politely",
+      "teacher": "Ask for a coffee using the fuller request: I would like a coffee, please. Retrieve the new opening, then the coffee block, then please. Say the complete request during the pause and compare it with the model.",
+      "target": {
+        "text": "Ich möchte einen Kaffee, bitte.",
+        "meaning": "I would like a coffee, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 332.9
+    },
+    {
+      "heading": "Choose a different drink",
+      "teacher": "Your second drink is tea. Listen to a tea as a complete block, including its small word. It fills the same place as the coffee block in your request. First hear it separately before combining it with anything else.",
+      "target": {
+        "text": "Einen Tee.",
+        "meaning": "A tea."
+      },
+      "startS": 357.67
+    },
+    {
+      "heading": "Transfer politeness to tea",
+      "teacher": "Say I would like a tea, please. Keep the opening and politeness expression from the full coffee request, but insert the tea block you just heard. You know all the pieces; use the pause to combine them.",
+      "target": {
+        "text": "Ich möchte einen Tee, bitte.",
+        "meaning": "I would like a tea, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 375.63
+    },
+    {
+      "heading": "Switch back to coffee",
+      "teacher": "Change your choice to coffee. Say I would like a coffee, please. Keep the opening and ending of the full request, changing only the drink block. Check that you included the small word with the drink when you switched.",
+      "target": {
+        "text": "Ich möchte einen Kaffee, bitte.",
+        "meaning": "I would like a coffee, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 399.76
+    },
+    {
+      "heading": "Thank the person",
+      "teacher": "The next model means thank you. Use this same expression regardless of who is speaking. It is a separate response you can add after receiving an item, help, or an answer.",
+      "target": {
+        "text": "Danke.",
+        "meaning": "Thank you."
+      },
+      "startS": 424.73
+    },
+    {
+      "heading": "Retrieve a thank you",
+      "teacher": "Someone hands you your drink. Thank the person with the expression you just heard. No drink name is needed in this response. Think about its purpose in the exchange: the request came before receiving the drink, and this response acknowledges the help afterward.",
+      "target": {
+        "text": "Danke.",
+        "meaning": "Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 439.54
+    },
+    {
+      "heading": "Hear a complete counter exchange",
+      "teacher": "Listen to hello, a polite coffee request, and thank you. In conversation, the other person may speak or serve the drink between these parts. Here you are rehearsing only your own contributions.",
+      "target": {
+        "text": "Hallo. Ich möchte einen Kaffee, bitte. Danke.",
+        "meaning": "Hello. I would like a coffee, please. Thank you."
+      },
+      "startS": 466.43
+    },
+    {
+      "heading": "Make your first visit",
+      "teacher": "Rehearse your side of a counter visit. Start with hello, request a coffee politely, then say thank you. Leave breaks between the three parts. Retrieve the expressions in a useful order without rushing.",
+      "target": {
+        "text": "Hallo. Ich möchte einen Kaffee, bitte. Danke.",
+        "meaning": "Hello. I would like a coffee, please. Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 485.06
+    },
+    {
+      "heading": "Change the order to tea",
+      "teacher": "Keep the greeting and thank you, but make the full polite request for tea. Use I would like, the tea block, and please. Build your three contributions, then listen for what changed in the model.",
+      "target": {
+        "text": "Hallo. Ich möchte einen Tee, bitte. Danke.",
+        "meaning": "Hello. I would like a tea, please. Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 511.0
+    },
+    {
+      "heading": "Return to introductions",
+      "teacher": "Imagine meeting someone away from the counter. Say hello and introduce yourself as Anna with the name expression. Returning to an earlier pattern after another topic lets you retrieve it without copying the previous model.",
+      "target": {
+        "text": "Hallo. Ich heiße Anna.",
+        "meaning": "Hello. My name is Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 535.73
+    },
+    {
+      "heading": "Choose your identity pattern",
+      "teacher": "Say I am Anna with the second identity expression. Compare it with the name expression from the previous turn. They share a purpose, but have different openings. Choose the requested opening during the pause.",
+      "target": {
+        "text": "Ich bin Anna.",
+        "meaning": "I am Anna."
+      },
+      "thinkSeconds": 8,
+      "startS": 561.6
+    },
+    {
+      "heading": "A final independent request",
+      "teacher": "Finally, say I would like a tea, please. After the model, try the same full request with coffee independently. Replay sections that need practice; a slow successful retrieval is useful progress toward speaking without an immediate example.",
+      "target": {
+        "text": "Ich möchte einen Tee, bitte.",
+        "meaning": "I would like a tea, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 585.77
+    },
+    {
+      "heading": "Numbers: one through five",
+      "teacher": "Let's add numbers. One is eins. Two is zwei. Three is drei. Four is vier. Five is fünf. Listen: eins, zwei, drei, vier, fünf. Zwei sounds like the English word two. Drei sounds like the English word three. Vier sounds like four. German kept the Latin echoes, just like English did.",
+      "target": {
+        "text": "Eins, zwei, drei, vier, fünf.",
+        "meaning": "One, two, three, four, five."
+      },
+      "startS": 613.35
+    },
+    {
+      "heading": "Think: Counting items",
+      "teacher": "Think. You want to say two coffees. Coffee is der Kaffee. Two is zwei. Build it: zwei Kaffees. Three teas: drei Tees. The number doesn't change, only the noun. Same logic as every other language in this lesson.",
+      "target": {
+        "text": "Zwei Kaffees. / Drei Tees.",
+        "meaning": "Two coffees. / Three teas."
+      },
+      "startS": 646.91
+    },
+    {
+      "heading": "Telling time",
+      "teacher": "Now time. Wie spät ist es? means what time is it — literally how late is it. The answer uses Uhr, which means o'clock. Es ist drei Uhr means it is three o'clock. One o'clock: Es ist ein Uhr. Two: Es ist zwei Uhr. The number stays the same, Uhr follows.",
+      "target": {
+        "text": "Wie spät ist es? Es ist drei Uhr.",
+        "meaning": "What time is it? It is three o'clock."
+      },
+      "startS": 669.71
+    },
+    {
+      "heading": "Think: Your schedule",
+      "teacher": "Think. You have a meeting at four. Es ist vier Uhr. Your friend asks when. Es ist vier Uhr, you say. Simple and regular — no singular trick like Spanish or Portuguese. German time is straightforward.",
+      "target": {
+        "text": "Es ist ein Uhr. / Es ist vier Uhr.",
+        "meaning": "It is one o'clock. / It is four o'clock."
+      },
+      "startS": 696.12
+    },
+    {
+      "heading": "Transfer: Restaurant arrival",
+      "teacher": "Let's stack everything. You walk into a restaurant at three o'clock. Hallo. Ich hätte gern einen Kaffee, bitte. — I would like a coffee, please. Es ist drei Uhr. You sit down. Ich hätte gern einen Kaffee und ein Stück Kuchen. — I would like a coffee and a piece of cake. Vier Euro. Danke. You used greetings, politeness, numbers, and time in one real transaction.",
+      "target": {
+        "text": "Hallo. Ich hätte gern einen Kaffee, bitte.",
+        "meaning": "Hello. I would like a coffee, please."
+      },
+      "startS": 715.18
+    },
+    {
+      "heading": "Full dialogue: The restaurant",
+      "teacher": "Let's do the full exchange. Hallo, guten Tag. Ich hätte gern einen Kaffee, bitte. Sonst noch etwas? Nein, danke. Vier Euro. Tschüss. Guten Tag means good day. Sonst noch etwas means anything else. Tschüss means bye. You just had a complete restaurant conversation using blocks from the entire lesson.",
+      "target": {
+        "text": "Hallo, guten Tag. Ich hätte gern einen Kaffee, bitte.",
+        "meaning": "Hello, good day. I would like a coffee, please."
+      },
+      "startS": 745.11
+    }
+  ],
+  "audioUrl": "/audio/german-foundations/de-introductions-foundation-listen.mp3",
+  "durationS": 772.92,
+  "reviewPending": true
+}

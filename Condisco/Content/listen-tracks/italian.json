@@ -1,0 +1,272 @@
+{
+  "lessonId": "it-market-foundation",
+  "courseSlug": "italian",
+  "lessonTitle": "Italian Market Foundations",
+  "sections": [
+    {
+      "heading": "Part 1: Welcome",
+      "teacher": "Welcome to today's walk through an Italian market. You already met numbers up to twenty in the foundations course, and today they go to work. In the next ten minutes you will buy fruit by the kilo, ask prices, and order politely, all by recombining a handful of blocks.",
+      "startS": 0.0
+    },
+    {
+      "heading": "Part 2: Numbers framing",
+      "teacher": "First, a quick recap. One to ten in Italian. You know these cold, and everything today is priced and weighed with them. Listen once to lock them in.",
+      "target": {
+        "text": "Uno, due, tre, quattro, cinque, sei, sette, otto, nove, dieci.",
+        "meaning": "One, two, three, four, five, six, seven, eight, nine, ten."
+      },
+      "startS": 19.48
+    },
+    {
+      "heading": "Part 3: Numbers teens",
+      "teacher": "Now eleven to twenty. They stack onto ten the way English stacks teens. Notice seventeen and nineteen keep their full shape. Listen, because in two minutes these become prices.",
+      "target": {
+        "text": "Undici, dodici, tredici, quattordici, quindici, sedici, diciassette, diciotto, diciannove, venti.",
+        "meaning": "Eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty."
+      },
+      "startS": 36.25
+    },
+    {
+      "heading": "Part 4: Think number",
+      "teacher": "Quick check before we move on. Seventeen. You heard it buried in the list. Say it in your head right now. Ten seconds, then listen to confirm.",
+      "target": {
+        "text": "Diciassette.",
+        "meaning": "Seventeen."
+      },
+      "startS": 57.78
+    },
+    {
+      "heading": "Part 5: Un una",
+      "teacher": "At an Italian market you buy quantities, not pieces. Two tiny words do the heavy lifting: a feminine word pairs with one of them, a masculine word with the other. Listen to how a kilo of apples is ordered.",
+      "target": {
+        "text": "Un chilo di mele.",
+        "meaning": "A kilo of apples."
+      },
+      "startS": 71.9
+    },
+    {
+      "heading": "Part 6: Etto",
+      "teacher": "Next block: short for one hundred grams. Cold cuts and cheese sell by it. A hundred grams of ham. Listen to the pattern with apples, then ham.",
+      "target": {
+        "text": "Un etto di prosciutto. Una fetta di formaggio.",
+        "meaning": "A hundred grams of ham. A slice of cheese."
+      },
+      "startS": 90.95
+    },
+    {
+      "heading": "Part 7: Costa think",
+      "teacher": "Now prices. How much does it cost, for one thing. Think. You are at the stall with one melon in your hand. Build the question yourself, then take ten seconds and say it in your head. Then listen to the reveal.",
+      "target": {
+        "text": "Quanto costa un melone?",
+        "meaning": "How much is a melon?"
+      },
+      "startS": 107.08
+    },
+    {
+      "heading": "Part 8: Costano think",
+      "teacher": "Many things change exactly one word: it gains an n, meaning they cost. Think. A pile of peaches catches your eye. Ask the vendor their price, then listen.",
+      "target": {
+        "text": "Quanto costano le pesche?",
+        "meaning": "How much are the peaches?"
+      },
+      "startS": 125.7
+    },
+    {
+      "heading": "Part 9: Prices",
+      "teacher": "Answers come back as numbers you already own. Listen and count with the vendor: three euros, that is four euros, five euros and fifty cents.",
+      "target": {
+        "text": "Tre euro. Sono quattro euro. Cinque euro e cinquanta.",
+        "meaning": "Three euros. That is four euros. Five euros and fifty cents."
+      },
+      "startS": 141.75
+    },
+    {
+      "heading": "Part 10: Vorrei",
+      "teacher": "Now the politest verb in the market: I would like, softer than I want. Please opens every request, and thanks closes it. Listen to a full request.",
+      "target": {
+        "text": "Due etti di prosciutto, per favore.",
+        "meaning": "Two hundred grams of ham, please."
+      },
+      "startS": 158.25
+    },
+    {
+      "heading": "Part 11: Courtesy",
+      "teacher": "Markets run on greetings: good morning, many thanks, goodbye, until tomorrow. Listen to each.",
+      "target": {
+        "text": "Buongiorno, grazie mille! Arrivederci, a domani!",
+        "meaning": "Good morning, thanks a lot! Goodbye, see you tomorrow!"
+      },
+      "startS": 174.03
+    },
+    {
+      "heading": "Part 12: Dialogue setup",
+      "teacher": "Time to put it together. A customer, Elena, at a fruit stall. She greets, the vendor answers, she orders a kilo of apples, and asks the price of the grapes. Listen to the whole exchange.",
+      "target": {
+        "text": "Buongiorno! Vorrei un chilo di mele, per favore. Buongiorno! Mi dica pure. Quanto costano le pesche? Grazie mille, arrivederci!",
+        "meaning": "Good morning! I would like a kilo of apples, please. Good morning! Go ahead, tell me. How much are the peaches? Thanks a lot, goodbye!"
+      },
+      "startS": 186.8
+    },
+    {
+      "heading": "Part 13: Transfer — market to restaurant",
+      "teacher": "Here is the transfer. You do not need a new grammar for the restaurant. The same polite would-like form that ordered ham now orders from a menu. The same how-much-does-it-cost question now asks the price of a dish. The same please and thank you frame every line. Only the nouns change, from kilos and slices to plates and glasses. Listen to how one market sentence becomes a restaurant sentence without learning a new verb.",
+      "target": {
+        "text": "Vorrei un chilo di mele, per favore. Vorrei la pasta, per favore.",
+        "meaning": "I would like a kilo of apples, please. I would like the pasta, please."
+      },
+      "startS": 209.77
+    },
+    {
+      "heading": "Part 14: At the table — ordering",
+      "teacher": "At an Italian restaurant you signal intent first, then name the dish. The frame is the polite would-like verb followed by the verb for to order, then please. After that, the menu nouns behave exactly like apples and ham, feminine and masculine picking their own little word for the. Listen to the ordering frame on its own.",
+      "target": {
+        "text": "Vorrei ordinare, per favore.",
+        "meaning": "I would like to order, please."
+      },
+      "startS": 243.35
+    },
+    {
+      "heading": "Part 15: Menu blocks",
+      "teacher": "Three menu anchors to carry through the rest of the track. One is a feminine staple in a bowl, one is a masculine pour in a glass, one is feminine and comes in a bottle or a glass with no color. You already know how the article before each one signals its gender. Listen and picture the table.",
+      "target": {
+        "text": "La pasta. Il vino. L'acqua.",
+        "meaning": "The pasta. The wine. The water."
+      },
+      "startS": 270.1
+    },
+    {
+      "heading": "Part 16: Think — order the pasta",
+      "teacher": "Your turn. The server is at the table. You want the pasta, and you want to be polite. You already have the would-like verb, the article that matches a feminine noun, and the please closer. Build the full request in your head. Ten seconds, then listen to confirm.",
+      "target": {
+        "text": "Vorrei la pasta, per favore.",
+        "meaning": "I would like the pasta, please."
+      },
+      "startS": 294.55
+    },
+    {
+      "heading": "Part 17: Think — order wine and water",
+      "teacher": "Stay at the same table. Now add two drinks, one masculine, one that starts with a vowel and takes the vowel article. Think how the little word before each noun shifts while the polite verb and please stay identical. Ten seconds, then listen.",
+      "target": {
+        "text": "Vorrei il vino e l'acqua, per favore.",
+        "meaning": "I would like the wine and the water, please."
+      },
+      "startS": 316.43
+    },
+    {
+      "heading": "Part 18: Asking for the bill",
+      "teacher": "The meal ends with one masculine noun that means the account. You ask for it with the same please you used at the market. You can also precede it with the would-like verb for extra politeness. Listen to the two natural variants, short and full.",
+      "target": {
+        "text": "Il conto, per favore. Vorrei il conto, per favore.",
+        "meaning": "The bill, please. I would like the bill, please."
+      },
+      "startS": 338.33
+    },
+    {
+      "heading": "Part 19: Think — the bill",
+      "teacher": "Think moment. Dinner is done. You want to catch the server's eye and ask for the account, politely but directly. No new verb, just the masculine bill noun and please. Or add the would-like frame if you want it softer. Build one version in your head, ten seconds, then listen.",
+      "target": {
+        "text": "Il conto, per favore.",
+        "meaning": "The bill, please."
+      },
+      "startS": 360.65
+    },
+    {
+      "heading": "Part 20: Family — my father, my mother",
+      "teacher": "New setting: you are not dining alone. Family words in Italian use my, but the form of my changes with the gender of the family member, not yours. One form pairs with a masculine family noun, the other with a feminine one. Listen to the two anchors that unlock the whole family.",
+      "target": {
+        "text": "Mio padre. Mia madre.",
+        "meaning": "My father. My mother."
+      },
+      "startS": 383.4
+    },
+    {
+      "heading": "Part 21: Family — brother, sister, parents",
+      "teacher": "Same pattern, three more. The masculine my before brother, the feminine my before sister, and then a plural form for parents where my itself turns plural because the noun is plural. Notice the same vowel shift you saw with a and the. Listen.",
+      "target": {
+        "text": "Mio fratello. Mia sorella. I miei genitori.",
+        "meaning": "My brother. My sister. My parents."
+      },
+      "startS": 407.7
+    },
+    {
+      "heading": "Part 22: Transfer — family meets the table",
+      "teacher": "Second transfer. You now have family possession plus restaurant ordering plus numbers. That means you can order for the table without a new construction: the would-like verb, then a number, then the menu noun, then for my family. You are just stacking blocks you already own. Listen how ordering for two becomes ordering with family.",
+      "target": {
+        "text": "Vorrei due paste, per mia madre e mio padre.",
+        "meaning": "I would like two pastas, for my mother and my father."
+      },
+      "startS": 430.25
+    },
+    {
+      "heading": "Part 23: Think — introducing family",
+      "teacher": "Think. The server asks who you are waiting for. You want to say: my mother and my father are here. You have both possession forms and the are-here ending you already heard in prices. Build that introduction in your head. Twelve seconds, then listen.",
+      "target": {
+        "text": "Mia madre e mio padre sono qui.",
+        "meaning": "My mother and my father are here."
+      },
+      "startS": 457.5
+    },
+    {
+      "heading": "Part 24: Telling time — the question",
+      "teacher": "Italian time starts with a question built from what plus hours plus are. You heard are in the price answers, that same are returns here as the verb for telling time. The question literally asks what hours are they. Listen to the time question on its own.",
+      "target": {
+        "text": "Che ore sono?",
+        "meaning": "What time is it?"
+      },
+      "startS": 478.55
+    },
+    {
+      "heading": "Part 25: One o'clock",
+      "teacher": "The answer for one is the exception. Every other hour uses they are, but one o'clock is singular, it is, with a feminine singular article because hour itself is feminine. You do not need to memorize a new number, you already know one. Listen to the singular answer.",
+      "target": {
+        "text": "È l'una.",
+        "meaning": "It is one o'clock."
+      },
+      "startS": 499.58
+    },
+    {
+      "heading": "Part 26: Two, three, eight o'clock",
+      "teacher": "All other hours swing plural, they are the hours, followed by the number you have known since part two. Two, three, even eight for a dinner reservation, all slot in after the same frame. Listen to three common reservation times.",
+      "target": {
+        "text": "Sono le due. Sono le tre. Sono le otto.",
+        "meaning": "It is two o'clock. It is three o'clock. It is eight o'clock."
+      },
+      "startS": 522.18
+    },
+    {
+      "heading": "Part 27: Think — building a time",
+      "teacher": "Think moment. Someone asks the time. In your head, answer that it is three o'clock. Remember it is not is, it is they are, plus the feminine plural hours plus the number three you knew on day one. Ten seconds, build it, then listen.",
+      "target": {
+        "text": "Sono le tre.",
+        "meaning": "It is three o'clock."
+      },
+      "startS": 543.58
+    },
+    {
+      "heading": "Part 28: Transfer — time plus reservation",
+      "teacher": "Final transfer before the dialogue. Time plus restaurant is a reservation. The same they-are-the-hours frame plus a number gives the server your booking time, and the same family and ordering blocks let you name the party. You are not learning a reservation phrase, you are assembling reservation meaning from time, numbers, and family. Listen.",
+      "target": {
+        "text": "Una prenotazione per le otto, per i miei genitori e me. Vorrei la pasta e il vino, per favore.",
+        "meaning": "A reservation for eight o'clock, for my parents and me. I would like the pasta and the wine, please."
+      },
+      "startS": 563.68
+    },
+    {
+      "heading": "Part 29: Full restaurant dialogue",
+      "teacher": "Full scene. It is eight o'clock. You arrive with your mother and father, greet the host, state the reservation time, order pasta for the table, ask the price of the wine, and close by asking for the bill with a polite thank you. Every block you met in the market and the last ten minutes appears here exactly once more. Listen to the whole meal from hello to goodbye.",
+      "target": {
+        "text": "Buongiorno! Sono le otto. Ho una prenotazione per i miei genitori e me. Vorrei la pasta e l'acqua, per favore. Quanto costa il vino? Sono dodici euro. Vorrei anche il vino, per favore. Il conto, per favore. Grazie mille, arrivederci!",
+        "meaning": "Good morning! It is eight o'clock. I have a reservation for my parents and me. I would like the pasta and the water, please. How much is the wine? It is twelve euros. I would like the wine as well, please. The bill, please. Thanks a lot, goodbye!"
+      },
+      "startS": 595.38
+    },
+    {
+      "heading": "Part 30: Closing",
+      "teacher": "And that is ten minutes. You weighed produce by the kilo and the hundred grams, asked singular and plural prices, ordered with the politest verb and closed with please and thank you. Then you transferred those same verbs to the restaurant, named the bill, introduced father, mother, brother, sister, and parents with the matching my, and told time from one through twelve using numbers you knew before today. A handful of blocks, recombined. Next time, you will add past tense to say what you ate.",
+      "startS": 634.15
+    }
+  ],
+  "audioUrl": "/audio/italian-foundations/it-market-foundation-listen.mp3",
+  "durationS": 663.92,
+  "reviewPending": true
+}

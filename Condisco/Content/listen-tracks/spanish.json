@@ -1,0 +1,333 @@
+{
+  "lessonId": "es-introductions-foundation",
+  "courseSlug": "spanish",
+  "lessonTitle": "Introductions and a first café visit",
+  "sections": [
+    {
+      "heading": "Start with a greeting",
+      "teacher": "Build a short introduction and make a first drink request. Listen to each new expression before trying it. During thinking pauses, speak aloud or answer silently. The following voice gives a model. Begin with hello.",
+      "target": {
+        "text": "Hola.",
+        "meaning": "Hello."
+      },
+      "startS": 0.0
+    },
+    {
+      "heading": "Retrieve the greeting",
+      "teacher": "Picture someone looking up as you arrive. During the pause, say hello from memory. If nothing comes, listen to the model and try again. You only need a greeting, with no name or extra sentence.",
+      "target": {
+        "text": "Hola.",
+        "meaning": "Hello."
+      },
+      "thinkSeconds": 8,
+      "startS": 18.27
+    },
+    {
+      "heading": "Introduce your name",
+      "teacher": "The name expression literally describes what you call yourself. Learn its opening as one useful block, then put your own name after it. The example uses the name Anna; the written name in your lesson uses a single letter n.",
+      "target": {
+        "text": "Me llamo Ana.",
+        "meaning": "My name is Ana."
+      },
+      "startS": 41.6
+    },
+    {
+      "heading": "Recall the introduction",
+      "teacher": "Imagine that you are Anna. Tell a new acquaintance your name using the expression you just heard. Keep the opening together and finish with the name. Take your time; matching the recording speed is not the goal.",
+      "target": {
+        "text": "Me llamo Ana.",
+        "meaning": "My name is Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 60.77
+    },
+    {
+      "heading": "Meet a second speaker",
+      "teacher": "The same opening can introduce another person when that person is speaking. Listen to a second example name. The name changes while the introduction before it stays the same. You are learning a reusable pattern.",
+      "target": {
+        "text": "Me llamo Luis.",
+        "meaning": "My name is Luis."
+      },
+      "startS": 85.33
+    },
+    {
+      "heading": "Change the speaker",
+      "teacher": "Take the role of the second speaker. Introduce yourself with that name, keeping the same opening from the first introduction. Separate the fixed block from the replaceable name in your mind, then combine them.",
+      "target": {
+        "text": "Me llamo Luis.",
+        "meaning": "My name is Luis."
+      },
+      "thinkSeconds": 8,
+      "startS": 103.9
+    },
+    {
+      "heading": "Return to the first name",
+      "teacher": "Switch back to Anna and use the name introduction again. This change of speaker helps you choose the name deliberately. If you used the previous name automatically, rebuild the introduction with the first name.",
+      "target": {
+        "text": "Me llamo Ana.",
+        "meaning": "My name is Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 128.38
+    },
+    {
+      "heading": "Another way to identify yourself",
+      "teacher": "The next expression means I am, followed by the name. It is another way to identify yourself. You do not need a separate word for I in this particular example; the verb already carries that information.",
+      "target": {
+        "text": "Soy Ana.",
+        "meaning": "I am Ana."
+      },
+      "startS": 153.07
+    },
+    {
+      "heading": "Choose the shorter meaning",
+      "teacher": "Express I am Anna, using the newer block rather than the expression that tells someone your name. Keep your answer short. After the pause, compare your opening with the model to check which pattern you chose.",
+      "target": {
+        "text": "Soy Ana.",
+        "meaning": "I am Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 170.02
+    },
+    {
+      "heading": "Transfer the new block",
+      "teacher": "Use the I am pattern with the second name you heard. You know both pieces, but this combination is new. Keep the opening and replace only the name. Listen afterward to check the combination.",
+      "target": {
+        "text": "Soy Luis.",
+        "meaning": "I am Luis."
+      },
+      "thinkSeconds": 8,
+      "startS": 193.62
+    },
+    {
+      "heading": "Put a greeting before your name",
+      "teacher": "A greeting and introduction can sit together as two short sentences. Listen to hello followed by the first name introduction. No special joining word is needed; leave a small natural break between the two pieces.",
+      "target": {
+        "text": "Hola. Me llamo Ana.",
+        "meaning": "Hello. My name is Ana."
+      },
+      "startS": 217.2
+    },
+    {
+      "heading": "Introduce yourself on arrival",
+      "teacher": "Imagine arriving at a small group. Greet them, then introduce yourself as Anna using the name expression. Retrieve the greeting first, then the introduction. You can pause between them and still communicate clearly.",
+      "target": {
+        "text": "Hola. Me llamo Ana.",
+        "meaning": "Hello. My name is Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 235.75
+    },
+    {
+      "heading": "Ask for coffee",
+      "teacher": "The model includes the small word meaning a before coffee. Keep those two words together as a request block. A short request like this is useful at a counter when the situation makes your intention clear.",
+      "target": {
+        "text": "Un café.",
+        "meaning": "A coffee."
+      },
+      "startS": 261.1
+    },
+    {
+      "heading": "Retrieve the drink request",
+      "teacher": "Imagine standing at a drinks counter. Ask for a coffee using the block you just heard. We will add please shortly; first remember the drink together with its small word, rather than the drink alone.",
+      "target": {
+        "text": "Un café.",
+        "meaning": "A coffee."
+      },
+      "thinkSeconds": 8,
+      "startS": 278.27
+    },
+    {
+      "heading": "Add politeness",
+      "teacher": "Listen to the expression meaning please. Here it will come after the drink. First hear it alone so you can recognize it independently; the next example will attach it to the coffee request.",
+      "target": {
+        "text": "Por favor.",
+        "meaning": "Please."
+      },
+      "startS": 301.82
+    },
+    {
+      "heading": "Hear the complete request",
+      "teacher": "Now hear a fuller polite request: I would like a coffee, please. The new opening means I would like. Learn it as one block before the coffee request you know. Listen first; you will try it next.",
+      "target": {
+        "text": "Quisiera un café, por favor.",
+        "meaning": "I would like a coffee, please."
+      },
+      "startS": 317.72
+    },
+    {
+      "heading": "Order politely",
+      "teacher": "Ask for a coffee using the fuller request: I would like a coffee, please. Retrieve the new opening, then the coffee block, then please. Say the complete request during the pause and compare it with the model.",
+      "target": {
+        "text": "Quisiera un café, por favor.",
+        "meaning": "I would like a coffee, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 335.25
+    },
+    {
+      "heading": "Choose a different drink",
+      "teacher": "Your second drink is tea. Listen to a tea as a complete block, including its small word. It fills the same place as the coffee block in your request. First hear it separately before combining it with anything else.",
+      "target": {
+        "text": "Un té.",
+        "meaning": "A tea."
+      },
+      "startS": 360.45
+    },
+    {
+      "heading": "Transfer politeness to tea",
+      "teacher": "Say I would like a tea, please. Keep the opening and politeness expression from the full coffee request, but insert the tea block you just heard. You know all the pieces; use the pause to combine them.",
+      "target": {
+        "text": "Quisiera un té, por favor.",
+        "meaning": "I would like a tea, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 378.4
+    },
+    {
+      "heading": "Switch back to coffee",
+      "teacher": "Change your choice to coffee. Say I would like a coffee, please. Keep the opening and ending of the full request, changing only the drink block. Check that you included the small word with the drink when you switched.",
+      "target": {
+        "text": "Quisiera un café, por favor.",
+        "meaning": "I would like a coffee, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 403.17
+    },
+    {
+      "heading": "Thank the person",
+      "teacher": "The next model means thank you. Use this same expression regardless of who is speaking. It is a separate response you can add after receiving an item, help, or an answer.",
+      "target": {
+        "text": "Gracias.",
+        "meaning": "Thank you."
+      },
+      "startS": 428.57
+    },
+    {
+      "heading": "Retrieve a thank you",
+      "teacher": "Someone hands you your drink. Thank the person with the expression you just heard. No drink name is needed in this response. Think about its purpose in the exchange: the request came before receiving the drink, and this response acknowledges the help afterward.",
+      "target": {
+        "text": "Gracias.",
+        "meaning": "Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 443.87
+    },
+    {
+      "heading": "Hear a complete counter exchange",
+      "teacher": "Listen to hello, a polite coffee request, and thank you. In conversation, the other person may speak or serve the drink between these parts. Here you are rehearsing only your own contributions.",
+      "target": {
+        "text": "Hola. Quisiera un café, por favor. Gracias.",
+        "meaning": "Hello. I would like a coffee, please. Thank you."
+      },
+      "startS": 471.25
+    },
+    {
+      "heading": "Make your first visit",
+      "teacher": "Rehearse your side of a counter visit. Start with hello, request a coffee politely, then say thank you. Leave breaks between the three parts. Retrieve the expressions in a useful order without rushing.",
+      "target": {
+        "text": "Hola. Quisiera un café, por favor. Gracias.",
+        "meaning": "Hello. I would like a coffee, please. Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 489.75
+    },
+    {
+      "heading": "Change the order to tea",
+      "teacher": "Keep the greeting and thank you, but make the full polite request for tea. Use I would like, the tea block, and please. Build your three contributions, then listen for what changed in the model.",
+      "target": {
+        "text": "Hola. Quisiera un té, por favor. Gracias.",
+        "meaning": "Hello. I would like a tea, please. Thank you."
+      },
+      "thinkSeconds": 8,
+      "startS": 515.55
+    },
+    {
+      "heading": "Return to introductions",
+      "teacher": "Imagine meeting someone away from the counter. Say hello and introduce yourself as Anna with the name expression. Returning to an earlier pattern after another topic lets you retrieve it without copying the previous model.",
+      "target": {
+        "text": "Hola. Me llamo Ana.",
+        "meaning": "Hello. My name is Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 540.05
+    },
+    {
+      "heading": "Choose your identity pattern",
+      "teacher": "Say I am Anna with the second identity expression. Compare it with the name expression from the previous turn. They share a purpose, but have different openings. Choose the requested opening during the pause.",
+      "target": {
+        "text": "Soy Ana.",
+        "meaning": "I am Ana."
+      },
+      "thinkSeconds": 8,
+      "startS": 565.92
+    },
+    {
+      "heading": "A final independent request",
+      "teacher": "Finally, say I would like a tea, please. After the model, try the same full request with coffee independently. Replay sections that need practice; a slow successful retrieval is useful progress toward speaking without an immediate example.",
+      "target": {
+        "text": "Quisiera un té, por favor.",
+        "meaning": "I would like a tea, please."
+      },
+      "thinkSeconds": 8,
+      "startS": 590.12
+    },
+    {
+      "heading": "Numbers: one through five",
+      "teacher": "Let's add numbers. One is uno. Two is dos. Three is tres. Four is cuatro. Five is cinco. Listen to the rhythm: uno, dos, tres, cuatro, cinco. Notice that dos sounds like the English word two, and tres sounds like the English word three. Spanish kept close echoes of the Latin numbers, just like English did.",
+      "target": {
+        "text": "Uno, dos, tres, cuatro, cinco.",
+        "meaning": "One, two, three, four, five."
+      },
+      "startS": 618.35
+    },
+    {
+      "heading": "Think: How many?",
+      "teacher": "Think. Someone asks cuántos? — how many? You want to say three coffees. You know coffee is café. You know three is tres. Build it: tres cafés. The s on café makes it plural. One café, two cafés, three cafés. The number stays the same, only the noun changes.",
+      "target": {
+        "text": "Tres cafés.",
+        "meaning": "Three coffees."
+      },
+      "startS": 653.48
+    },
+    {
+      "heading": "Telling time",
+      "teacher": "Now time. ¿Qué hora es? means what time is it. The answer starts with son las for most hours. Son las dos means it is two o'clock. For one o'clock, it's singular: es la una. Two onward uses las: son las dos, son las tres. Same number system, just applied to the clock.",
+      "target": {
+        "text": "¿Qué hora es? Son las tres.",
+        "meaning": "What time is it? It is three o'clock."
+      },
+      "startS": 684.4
+    },
+    {
+      "heading": "Think: Your schedule",
+      "teacher": "Think. You have a meeting at four. Son las cuatro. Your friend asks when. Son las cuatro, you say. Simple. Now it's one o'clock — the singular trick. Es la una. That's the only irregular one. After that it's regular.",
+      "target": {
+        "text": "Es la una. / Son las cuatro.",
+        "meaning": "It is one o'clock. / It is four o'clock."
+      },
+      "startS": 713.98
+    },
+    {
+      "heading": "Transfer: Restaurant arrival",
+      "teacher": "Let's stack everything. You walk into a restaurant at three o'clock. Hola. Quisiera una mesa, por favor. — I would like a table, please. Son las tres. You sit down. Quisiera un café y un pastel. — I would like a coffee and a cake. Cuatro euros. Gracias. You just used greetings, politeness, numbers, and time in one real transaction.",
+      "target": {
+        "text": "Hola. Quisiera una mesa, por favor.",
+        "meaning": "Hello. I would like a table, please."
+      },
+      "startS": 735.73
+    },
+    {
+      "heading": "Full dialogue: The restaurant",
+      "teacher": "Let's do the full exchange. Hola, buenas tardes. Quisiera un café, por favor. ¿Cuántos? Uno, por favor. Cuatro euros. Aquí tiene. Gracias. Hasta luego. Buenas tardes means good afternoon. Aquí tiene means here you go. Hasta luego means see you later. You just had a complete restaurant conversation using blocks from the entire lesson.",
+      "target": {
+        "text": "Hola, buenas tardes. Quisiera un café, por favor.",
+        "meaning": "Hello, good afternoon. I would like a coffee, please."
+      },
+      "startS": 765.63
+    }
+  ],
+  "audioUrl": "/audio/spanish-foundations/es-introductions-foundation-listen.mp3",
+  "durationS": 795.6,
+  "reviewPending": true
+}

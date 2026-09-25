@@ -1,0 +1,245 @@
+{
+  "lessonId": "fr-identity-foundation",
+  "courseSlug": "french",
+  "lessonTitle": "French Identity Foundations",
+  "sections": [
+    {
+      "heading": "Welcome",
+      "teacher": "Welcome to French, lesson one: names and introductions. You need nothing memorized. Everything in this lesson is built from two small words, and you already know a name: Anna.",
+      "startS": 0.0
+    },
+    {
+      "heading": "Two words",
+      "teacher": "Je suis Anna means I am Anna. Two words do the work. Je means I. Suis means am. Say them in your head: Je... suis.",
+      "target": {
+        "text": "Je suis Anna.",
+        "meaning": "I am Anna."
+      },
+      "startS": 13.78
+    },
+    {
+      "heading": "Think: Marc",
+      "teacher": "Now think. Marc is introducing himself. How does he say, I am Marc? Pause the track if you need more time. Then listen. Je suis Marc. Same two blocks, a new name in the same slot. Names slide into the pattern without changing anything.",
+      "target": {
+        "text": "Je suis Marc.",
+        "meaning": "I am Marc."
+      },
+      "startS": 31.53
+    },
+    {
+      "heading": "Marie and Paul",
+      "teacher": "Next. Marie is a woman, and Paul is a man. Listen to how each one says, I am French.",
+      "target": {
+        "text": "Je suis française. / Je suis français.",
+        "meaning": "I am French (a woman / a man)."
+      },
+      "startS": 52.68
+    },
+    {
+      "heading": "One letter",
+      "teacher": "One letter carries the difference. The woman's word ends in e: française. The man's does not: français.",
+      "startS": 64.6
+    },
+    {
+      "heading": "Think: Marie",
+      "teacher": "Think. Marie is telling someone she is French. Build her sentence, then listen. Je suis française. You combined two things you worked out minutes ago: the Je suis pattern, and the feminine e.",
+      "target": {
+        "text": "Je suis française.",
+        "meaning": "I am French (a woman)."
+      },
+      "startS": 75.48
+    },
+    {
+      "heading": "Transfer: Sophie",
+      "teacher": "Last one, and nobody taught you this sentence. Sophie is introducing herself. What does she say? Think. Je suis Sophie. You never practiced that sentence. You derived it. New situations, same few blocks.",
+      "target": {
+        "text": "Je suis Sophie.",
+        "meaning": "I am Sophie."
+      },
+      "startS": 95.15
+    },
+    {
+      "heading": "Bonjour and Salut",
+      "teacher": "Good. Now let's give you more blocks. When you walk into a shop in France, you say one word: Bonjour. It means both hello and good day. It works everywhere. But among friends, there's a shortcut: Salut. It means both hi and bye. Think of bonjour as the button you press with strangers, and salut as the one you press with people you already know.",
+      "target": {
+        "text": "Bonjour. / Salut.",
+        "meaning": "Hello, good day. / Hi, bye."
+      },
+      "startS": 114.78
+    },
+    {
+      "heading": "Think: New friend",
+      "teacher": "Think. You meet someone at a language exchange. Do you say Bonjour or Salut? You just met them. Bonjour. You've been talking for twenty minutes and you're leaving. Now Salut works. The word changes with the relationship, not the clock.",
+      "target": {
+        "text": "Bonjour. → Salut.",
+        "meaning": "Hello. → Bye."
+      },
+      "startS": 145.58
+    },
+    {
+      "heading": "Tu and Vous",
+      "teacher": "Here's where French gets interesting. There are two ways to say you. Tu is the one you use with friends, children, people your age. Vous is the one you use with strangers, elders, and anyone you're being polite with. Think of tu as the casual you, and vous as the respectful you. There's no shortcut to know which one — you learn it the way you learned who to call sir and who to call by first name.",
+      "target": {
+        "text": "Tu es française. / Vous êtes française.",
+        "meaning": "You are French. (casual / formal)"
+      },
+      "startS": 169.88
+    },
+    {
+      "heading": "Think: Addressing a shopkeeper",
+      "teacher": "Think. You're in a bakery. The person behind the counter is about your age. Do you use tu or vous? Vous. You don't know them. Now your friend who works there — tu. Same person, different word, different relationship. Bonjour, vous êtes français? Salut, tu es français?",
+      "target": {
+        "text": "Bonjour, vous êtes français?",
+        "meaning": "Hello, are you French? (to a stranger)"
+      },
+      "startS": 203.75
+    },
+    {
+      "heading": "Numbers: one through five",
+      "teacher": "Let's give you numbers. One is un. Two is deux. Three is trois. Four is quatre. Five is cinq. Listen to the rhythm: un, deux, trois, quatre, cinq. Don't memorize the list. Just notice that trois sounds like the English word three, and quatre sounds like quarter. French kept echoes of the Latin, and so did English.",
+      "target": {
+        "text": "Un, deux, trois, quatre, cinq.",
+        "meaning": "One, two, three, four, five."
+      },
+      "startS": 231.4
+    },
+    {
+      "heading": "Think: six through ten",
+      "teacher": "Think. Six is six. That's almost the same word. Sept sounds close to seven. Huit sounds like the English word wheat — but it means eight. Neuf means nine, and dix sounds like the English word deer without the r. You already know more French numbers than you think.",
+      "target": {
+        "text": "Six, sept, huit, neuf, dix.",
+        "meaning": "Six, seven, eight, nine, ten."
+      },
+      "startS": 267.55
+    },
+    {
+      "heading": "J'ai",
+      "teacher": "Now a new verb. J'ai means I have. The same J from Je, plus ai, which means have. J'ai un ami means I have a friend. Notice what happened: you already knew Je, you already knew un. You just added one new piece — ai — and you built a whole new sentence.",
+      "target": {
+        "text": "J'ai un ami.",
+        "meaning": "I have a friend."
+      },
+      "startS": 295.07
+    },
+    {
+      "heading": "Think: Building with J'ai",
+      "teacher": "Think. You want to say I have two friends. You know two is deux. You know friends would be amis. Build it: J'ai deux amis. You used Je from the beginning, deux from five minutes ago, and ami with the s for plural. Three pieces you already had, one new rule — plural s.",
+      "target": {
+        "text": "J'ai deux amis.",
+        "meaning": "I have two friends."
+      },
+      "startS": 326.0
+    },
+    {
+      "heading": "Transfer: The greeting stack",
+      "teacher": "Here's your first real stack. Walk into a bakery. What do you say? Bonjour. What if the baker asks if you want something? Vous êtes français? How do you answer? Oui, je suis français. How many new things did you use? None. Bonjour, je suis, français — all from the first five minutes. You just stacked them in a real conversation.",
+      "target": {
+        "text": "Bonjour. Je suis français. J'ai un ami français aussi.",
+        "meaning": "Hello. I am French. I have a French friend too."
+      },
+      "startS": 355.22
+    },
+    {
+      "heading": "Colors: rouge, bleu, vert",
+      "teacher": "Three colors. Rouge is red. Bleu is blue. Vert is green. When the color describes a feminine noun, it changes: rouge stays rouge, but bleu becomes bleue, and vert becomes verte. Remember française from the start? Same e trick.",
+      "target": {
+        "text": "Une voiture rouge. / Un livre bleue. / Une fleur verte.",
+        "meaning": "A red car. / A blue book. / A green flower."
+      },
+      "startS": 390.17
+    },
+    {
+      "heading": "Think: Color agreement",
+      "teacher": "Think. You have a feminine noun — voiture, car. You want to say red car. Is it une voiture rouge or une voiture rouge? Rouge doesn't change — it already ends in e. Now blue car: une voiture bleue. Green car: une voiture verte. The color agrees with the noun, the way français agreed with Marie.",
+      "target": {
+        "text": "La voiture est rouge. La voiture est bleue.",
+        "meaning": "The car is red. The car is blue."
+      },
+      "startS": 425.87
+    },
+    {
+      "heading": "Il est",
+      "teacher": "Now let's tell time. Il est means it is. Il est trois heures means it is three o'clock. Heures means hours or o'clock. One o'clock is the exception — it's l'heure, not heure, because the h drops: il est une heure. But from two onward it's regular: deux heures, trois heures, quatre heures.",
+      "target": {
+        "text": "Il est une heure. / Il est trois heures.",
+        "meaning": "It is one o'clock. / It is three o'clock."
+      },
+      "startS": 461.45
+    },
+    {
+      "heading": "Think: What time is it?",
+      "teacher": "Think. Someone asks you — quelle heure est-il? What time is it? You look at your watch. It's ten o'clock. Il est dix heures. You just used the time phrase with a number you learned eight minutes ago. If it's one o'clock, the trick — il est une heure, not il est un heure.",
+      "target": {
+        "text": "Quelle heure est-il? Il est dix heures.",
+        "meaning": "What time is it? It is ten o'clock."
+      },
+      "startS": 496.37
+    },
+    {
+      "heading": "Colors and time together",
+      "teacher": "Here's a transfer. The clock is blue. L'horloge is feminine. So l'horloge est bleue. It is two o'clock. Il est deux heures. The blue clock says two. L'horloge bleue dit deux. Three blocks you already knew — feminine agreement from the start, colors from three minutes ago, time from one minute ago.",
+      "target": {
+        "text": "L'horloge bleue dit deux heures.",
+        "meaning": "The blue clock says two o'clock."
+      },
+      "startS": 523.77
+    },
+    {
+      "heading": "Je vais",
+      "teacher": "One more verb. Je vais means I go or I'm going. It's irregular — you can't build it from Je and a pattern. You just learn it. But here's the payoff: je vais au marché means I'm going to the market. Au is a contraction of à le, meaning to the. One new verb, one new contraction, and you're navigating a city.",
+      "target": {
+        "text": "Je vais au marché.",
+        "meaning": "I'm going to the market."
+      },
+      "startS": 553.82
+    },
+    {
+      "heading": "Think: Where are you going?",
+      "teacher": "Think. Someone asks — tu vas où? Where are you going? You're going to the restaurant. Tu vas au restaurant. To the bakery: tu vas à la boulangerie. Notice — à la for feminine, au for masculine. You saw this with à le becoming au. La boulangerie keeps its à la because it's feminine.",
+      "target": {
+        "text": "Tu vas au restaurant. / Tu vas à la boulangerie.",
+        "meaning": "You're going to the restaurant. / You're going to the bakery."
+      },
+      "startS": 584.37
+    },
+    {
+      "heading": "Full dialogue: The bakery",
+      "teacher": "Let's put everything together. You walk into a bakery. You say bonjour. The baker says bonjour, vous désirez? — hello, you want something? You say je voudrais un café, s'il vous plaît. That means I would like a coffee, please. The baker says trois euros. You pay and say merci, au revoir. Let's break that down.",
+      "target": {
+        "text": "Bonjour. Je voudrais un café, s'il vous plaît.",
+        "meaning": "Hello. I would like a coffee, please."
+      },
+      "startS": 621.13
+    },
+    {
+      "heading": "Dialogue: Polite requests",
+      "teacher": "Je voudrais means I would like. It's the polite way to ask for something. Voudrais comes from the verb vouloir, to want, but softened. S'il vous plaît means please — literally if it pleases you. You don't need to understand the grammar. You need to know that je voudrais plus what you want plus s'il vous plaît is your universal key to every shop, restaurant, and café in France.",
+      "target": {
+        "text": "Je voudrais un croissant. S'il vous plaît.",
+        "meaning": "I would like a croissant. Please."
+      },
+      "startS": 654.4
+    },
+    {
+      "heading": "Dialogue: Numbers and payment",
+      "teacher": "The baker says cinq euros, please. You hand over a ten — dix euros. She gives you five back — cinq euros de monnaie. Monnaie means change. You already know all the numbers. You just heard them in a real transaction. Bonjour, je voudrais un croissant. Cinq euros, s'il vous plaît. Voilà, dix euros. Merci.",
+      "target": {
+        "text": "Cinq euros. Voilà, dix euros. Merci.",
+        "meaning": "Five euros. Here, ten euros. Thank you."
+      },
+      "startS": 689.0
+    },
+    {
+      "heading": "Closing: What you built",
+      "teacher": "Let's see what you did today. You started with two words — je suis — and built introductions, gender agreement, greetings, politeness, numbers, colors, time, movement, and a full bakery transaction. None of it was memorized. You derived every sentence from blocks you already had. That's the thinking method. Bonjour means good day. Salut means see you later. À bientôt — that means see you soon.",
+      "target": {
+        "text": "À bientôt.",
+        "meaning": "See you soon."
+      },
+      "startS": 720.1
+    }
+  ],
+  "audioUrl": "/audio/french-foundations/fr-identity-listen.mp3",
+  "durationS": 755.58,
+  "reviewPending": true
+}

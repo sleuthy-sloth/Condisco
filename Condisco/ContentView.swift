@@ -2,6 +2,12 @@ import CoreSpotlight
 import SwiftUI
 import UIKit
 
+/// Tabs of the main `TabView`. Typed instead of raw `Int` indices so
+/// deep links and onboarding can select by name, not by position.
+enum AppTab: Hashable {
+    case home, courses, listen, review, you
+}
+
 enum ReviewSection: String, CaseIterable {
     case review = "Review"
     case saved = "Saved"
@@ -37,7 +43,7 @@ struct ContentView: View {
     @StateObject private var sync = CloudKitSync()
     @StateObject private var deepLink = DeepLinkRouter()
     @ObservedObject private var a11y = A11ySettings.shared
-    @State private var selection = 0
+    @State private var selection: AppTab = .home
     @State private var reviewSection: ReviewSection = .review
     @AppStorage("condisco.hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var pendingLesson: PendingLesson?
@@ -77,7 +83,7 @@ struct ContentView: View {
         .onChange(of: deepLink.reviewToken) { _, token in
             if token != nil {
                 reviewSection = .review
-                selection = 3
+                selection = .review
                 deepLink.reviewToken = nil
             }
         }
@@ -86,7 +92,7 @@ struct ContentView: View {
         .onChange(of: deepLink.phrasebookToken) { _, token in
             if token != nil {
                 reviewSection = .saved
-                selection = 3
+                selection = .review
                 deepLink.phrasebookToken = nil
             }
         }
@@ -118,16 +124,16 @@ struct ContentView: View {
         TabView(selection: $selection) {
             HomeView(onOpenReview: {
                 reviewSection = .review
-                selection = 3
+                selection = .review
             })
                 .tabItem { Label("Home", systemImage: "house") }
-                .tag(0)
+                .tag(AppTab.home)
             CoursesView()
                 .tabItem { Label("Courses", systemImage: "book.closed") }
-                .tag(1)
+                .tag(AppTab.courses)
             ListenView()
                 .tabItem { Label("Listen", systemImage: "headphones") }
-                .tag(2)
+                .tag(AppTab.listen)
             Group {
                 switch reviewSection {
                 case .review:
@@ -137,10 +143,10 @@ struct ContentView: View {
                 }
             }
                 .tabItem { Label("Review", systemImage: "arrow.triangle.2.circlepath") }
-                .tag(3)
+                .tag(AppTab.review)
             YouView()
                 .tabItem { Label("You", systemImage: "person") }
-                .tag(4)
+                .tag(AppTab.you)
         }
         // SavedView's phrase rows open their source lesson through the
         // same router Siri/Spotlight links use.

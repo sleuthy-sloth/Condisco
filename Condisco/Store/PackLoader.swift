@@ -35,10 +35,35 @@ enum PackLoader {
         Bundle.main.url(forResource: "Content", withExtension: nil)
     }
 
+    // MARK: Caching
+    //
+    // `cached` holds the result of the *first* pack load and is reused on
+    // every subsequent call. Decoding + validating the five bundled packs is
+    // ~4 MB of JSON I/O per call, and the loader is invoked from 15 sites
+    // (Home, Review, Listen, Courses, You, DeepLink, Spotlight, Intents,
+    // Onboarding, Phrasebook, WidgetSnapshotWriter…), usually on the main
+    // actor. The bundle content is immutable at runtime, so caching the
+    // outcome — success or failure — is safe: a failed pack would
+    // deterministically fail again on retry.
+    //
+    // Thread safety: a static stored property's lazy initializer runs exactly
+    // once per process under the runtime's `swift_once`, so concurrent first
+    // access from the main actor and `Task.detached` (ListenView) performs
+    // exactly one decode with no locking.
+    private static let cached: Result<[CoursePack], Error> = Result {
+        try loadPacksUncached()
+    }
+
     /// Decode and validate every bundled pack. Packs that fail validation
     /// are skipped (with the reason collected); the load only throws when
-    /// nothing usable remains.
+    /// nothing usable remains. The heavy work happens once per process; the
+    /// result (including a `PackLoadError` describing per-file failures) is
+    /// cached and returned on all subsequent calls.
     static func loadPacks() throws -> [CoursePack] {
+        try cached.get()
+    }
+
+    private static func loadPacksUncached() throws -> [CoursePack] {
         guard let content = contentDirectory() else {
             throw PackLoadError.missingContentFolder
         }

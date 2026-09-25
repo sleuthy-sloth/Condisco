@@ -37,8 +37,9 @@ struct ListenTrack: Codable, Identifiable {
 }
 
 enum ListenCourse {
-    /// Pack filenames and JSON basenames, in Courses-tab order.
-    static let courseSlugs = ["french", "italian", "german", "portuguese", "spanish"]
+    /// Pack filenames and JSON basenames, in Courses-tab order. Derived from
+    /// PackLoader so the course list has a single source of truth.
+    static let courseSlugs = PackLoader.packFilenames
 
     static func displayName(for slug: String) -> String {
         switch slug {

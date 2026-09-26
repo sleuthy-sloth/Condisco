@@ -67,4 +67,4 @@ Fill one row per lesson in the review tracker `docs/reviews/review-log.jsonl`. `
 
 ## Scope note
 
-The rubric applies identically to all five languages. Counts to plan against (verified by unit counts in the packs): 40 missions and 36 stories; per the plan inventory, 255 lessons across the five packs. If a unit-1–2 lesson does not satisfy one of M1–M5, S1–S4, H1–H4, the lesson is `needs-work` — the P1 exit gate requires the first two units of each language to pass editorial and native review.
+The rubric applies identically to all five languages. Counts to plan against (verified by unit counts in the packs): 40 missions and 36 stories; per the plan inventory, 255 lessons across the five packs. If a unit-1–2 lesson does not satisfy one of M1–M5, S1–S4, H1–H4, the lesson is `needs-work` — the P1 exit gate requires every one of the 255 lessons to have a review-log disposition and every lesson marked `pass` to have complete rubric checks, under the AI-assisted solo-editorial gate (native-speaker review remains a disclosed limitation, not a dependency).

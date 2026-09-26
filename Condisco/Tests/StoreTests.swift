@@ -1958,3 +1958,765 @@ final class PairPracticeCardTests: XCTestCase {
             "no UUID (device id) may leak into the caption")
     }
 }
+
+// MARK: - Upgrade drills (P4.1): old state upgrades cleanly
+//
+// The roadmap's migration constraint is "preserve verbalibera.sqlite,
+// existing event IDs, pack/lesson/step IDs, and legacy UserDefaults keys;
+// any migration requires an explicit upgrade test." These drills simulate
+// the previous build's on-disk state — a database written before the
+// saved-phrase schema columns existed, v1 practice events, v2 events
+// carrying an old pack version, and the legacy UserDefaults keys — and
+// assert the store/app migrates in place with zero data loss.
+
+extension LearningStoreTests {
+
+    // MARK: Legacy database shape + rows
+
+    /// Inserts one event row into an open `Database` with the modern column
+    /// list. Used to seed rows the way the production `record` path writes
+    /// them, without going through `record`.
+    private func insertEventRow(
+        db: Database, id: String, packId: String, version: Int, type: String,
+        lessonId: String?, activityId: String?, evidenceKey: String?,
+        atMs: Int64, payload: String
+    ) throws {
+        try db.execute(
+            """
+            INSERT INTO events(id, pack_id, event_version, type, lesson_id,
+                               activity_id, evidence_key, at_ms, payload)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, id)
+                try $0.bindText(2, packId)
+                try $0.bindInt64(3, Int64(version))
+                try $0.bindText(4, type)
+                try $0.bindText(5, lessonId)
+                try $0.bindText(6, activityId)
+                try $0.bindText(7, evidenceKey)
+                try $0.bindInt64(8, atMs)
+                try $0.bindText(9, payload)
+            })
+    }
+
+    /// The exercise ids a legacy-success lesson requires, from the live
+    /// pack — the same ids the projection's legacy-credit check reads.
+    private func legacyExerciseIds(
+        _ lessonId: String, in pack: CoursePack
+    ) throws -> [String] {
+        let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+        guard case .legacySuccess(let ids) = lesson.completionPolicy,
+              !ids.isEmpty
+        else {
+            throw XCTSkip("\(lessonId) must be a legacy-success lesson")
+        }
+        return ids
+    }
+
+    /// Creates a `verbalibera.sqlite`-shaped file exactly as a build from
+    /// before the saved-phrase schema drift wrote it: every table the store
+    /// knows, but `saved_phrases` WITHOUT `source_pack_id` /
+    /// `source_lesson_id` (the only columns `LearningStore.init` migrates
+    /// today), seeded with that era's rows — a full set of v1 practice
+    /// events granting fr-identity-foundation, a revealed v1 event that must
+    /// NOT grant credit, one v2 attempt under an old pack version, a
+    /// checkpoint, an old-shape saved phrase, and the kv device id.
+    private func seedLegacyBuildDatabase(at url: URL) throws {
+        let db = try Database(path: url.path)
+        try db.exec(
+            """
+            CREATE TABLE events(
+              id TEXT PRIMARY KEY,
+              pack_id TEXT NOT NULL,
+              event_version INTEGER NOT NULL,
+              type TEXT NOT NULL,
+              lesson_id TEXT,
+              activity_id TEXT,
+              evidence_key TEXT,
+              at_ms INTEGER NOT NULL,
+              payload TEXT NOT NULL
+            );
+            CREATE INDEX IF NOT EXISTS idx_events_pack_time ON events(pack_id, at_ms, id);
+            CREATE TABLE checkpoints(
+              pack_id TEXT NOT NULL,
+              lesson_id TEXT NOT NULL,
+              payload TEXT NOT NULL,
+              updated_at_ms INTEGER NOT NULL,
+              PRIMARY KEY (pack_id, lesson_id)
+            );
+            CREATE TABLE checkpoint_tombstones(
+              pack_id TEXT NOT NULL,
+              lesson_id TEXT NOT NULL,
+              deleted_at_ms INTEGER NOT NULL,
+              PRIMARY KEY (pack_id, lesson_id)
+            );
+            CREATE TABLE listen_state(
+              track_id TEXT PRIMARY KEY,
+              position_seconds REAL NOT NULL DEFAULT 0,
+              listened_at_ms INTEGER,
+              updated_at_ms INTEGER NOT NULL
+            );
+            CREATE TABLE kv(
+              key TEXT PRIMARY KEY,
+              value TEXT NOT NULL
+            );
+            CREATE TABLE sync_uploads(
+              event_id TEXT PRIMARY KEY,
+              uploaded_at_ms INTEGER NOT NULL
+            );
+            CREATE TABLE saved_phrases(
+              id TEXT PRIMARY KEY,
+              language_slug TEXT NOT NULL,
+              language_name TEXT NOT NULL,
+              target TEXT NOT NULL,
+              meaning TEXT NOT NULL,
+              source TEXT NOT NULL DEFAULT '',
+              saved_at_ms INTEGER NOT NULL
+            );
+            CREATE INDEX IF NOT EXISTS idx_saved_phrases_lang
+              ON saved_phrases(language_slug, saved_at_ms);
+            CREATE TABLE saved_phrase_tombstones(
+              id TEXT PRIMARY KEY,
+              deleted_at_ms INTEGER NOT NULL
+            );
+            """)
+
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+
+        // v1 practice events (event_version 1, type "practice") — the exact
+        // rows a previous build's writer produced. All correct + unrevealed
+        // so they hand the lesson its legacy completion credit.
+        let legacyIds = try legacyExerciseIds("fr-identity-foundation", in: pack)
+        for (i, exerciseId) in legacyIds.enumerated() {
+            let payload = try String(
+                data: JSONEncoder().encode(LearningEvent.practiceV1(
+                    PracticeEventV1(
+                        id: "legacy-v1-\(i)",
+                        packId: pack.id,
+                        version: "0.9.0",
+                        exerciseId: exerciseId,
+                        at: at.addingTimeInterval(Double(i)),
+                        correct: true,
+                        revealed: false))),
+                encoding: .utf8)!
+            try insertEventRow(
+                db: db, id: "legacy-v1-\(i)", packId: pack.id,
+                version: 1, type: "practice",
+                lessonId: nil, activityId: nil, evidenceKey: nil,
+                atMs: millis(at.addingTimeInterval(Double(i))),
+                payload: payload)
+        }
+        // A correct-but-revealed v1 event must never earn credit — pinned so
+        // the tolerance of the upgrade path never widens into data forgery.
+        let revealedPayload = try String(
+            data: JSONEncoder().encode(LearningEvent.practiceV1(
+                PracticeEventV1(
+                    id: "legacy-v1-revealed",
+                    packId: pack.id,
+                    version: "0.9.0",
+                    exerciseId: "fr-people-foundation-meet",
+                    at: at.addingTimeInterval(600),
+                    correct: true,
+                    revealed: true))),
+            encoding: .utf8)!
+        try insertEventRow(
+            db: db, id: "legacy-v1-revealed", packId: pack.id,
+            version: 1, type: "practice",
+            lessonId: nil, activityId: nil, evidenceKey: nil,
+            atMs: millis(at.addingTimeInterval(600)),
+            payload: revealedPayload)
+
+        // A v2 attempt carrying the previous release's pack version.
+        let attempt = try makeAttempt(id: "legacy-v2-1", pack: pack, at: at)
+        var oldVersionAttempt = attempt
+        oldVersionAttempt.packVersion = "0.9.0"
+        try insertEventRow(
+            db: db, id: oldVersionAttempt.id, packId: pack.id,
+            version: 2, type: "attempt",
+            lessonId: oldVersionAttempt.lessonId,
+            activityId: oldVersionAttempt.activityId,
+            evidenceKey: oldVersionAttempt.evidenceKey,
+            atMs: millis(at),
+            payload: try String(
+                data: JSONEncoder().encode(LearningEvent.attempt(oldVersionAttempt)),
+                encoding: .utf8)!)
+
+        // Checkpoint, old-shape saved phrase, and the kv device id.
+        let checkpoint = LessonCheckpoint(
+            packId: pack.id, lessonId: lesson.id, revision: lesson.revision,
+            stepId: "fr-home-foundation-step-rb4",
+            selectedBranches: ["fr-home-foundation-step-rb1": "a"],
+            assistance: [.translation], draft: .text("Le chat"), at: at)
+        let checkpointMs = millis(checkpoint.at)
+        try db.execute(
+            """
+            INSERT INTO checkpoints(pack_id, lesson_id, payload, updated_at_ms)
+            VALUES (?, ?, ?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, checkpoint.packId)
+                try $0.bindText(2, checkpoint.lessonId)
+                try $0.bindText(
+                    3, String(data: JSONEncoder().encode(checkpoint), encoding: .utf8)!)
+                try $0.bindInt64(4, checkpointMs)
+            })
+        let phrase = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: "french", target: "Le chat", meaning: "The cat"),
+            languageSlug: "french", languageName: "French",
+            target: "Le chat", meaning: "The cat",
+            source: "previous build", savedAt: at)
+        let phraseMs = millis(phrase.savedAt)
+        try db.execute(
+            """
+            INSERT INTO saved_phrases(
+              id, language_slug, language_name, target, meaning, source, saved_at_ms)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, phrase.id)
+                try $0.bindText(2, phrase.languageSlug)
+                try $0.bindText(3, phrase.languageName)
+                try $0.bindText(4, phrase.target)
+                try $0.bindText(5, phrase.meaning)
+                try $0.bindText(6, phrase.source)
+                try $0.bindInt64(7, phraseMs)
+            })
+        try db.execute(
+            "INSERT INTO kv(key, value) VALUES (?, ?);",
+            bind: {
+                try $0.bindText(1, "device_id")
+                try $0.bindText(2, "legacy-device-id")
+            })
+    }
+
+    // MARK: Drills
+
+    /// The previous build's database opens in place with zero data loss:
+    /// the schema migration adds the missing saved-phrase columns, every
+    /// seeded row (v1 practice events, an old-pack-version attempt, the
+    /// checkpoint, the old-shape phrase, the device id) is still readable,
+    /// the v1 events still grant their lesson's legacy credit, and
+    /// post-upgrade writes round-trip. Would catch a regression where the
+    /// migration drops or mangles pre-existing rows.
+    func testLegacyBuildDatabaseUpgradesInPlaceWithoutDataLoss() throws {
+        let url = tempDir.appendingPathComponent("legacy.sqlite")
+        try seedLegacyBuildDatabase(at: url)
+
+        // Reopen runs the store's migration (ALTER TABLE saved_phrases).
+        let store = try LearningStore(path: url.path)
+        let pack = try frenchPack()
+
+        // Old-shape saved phrase survives; the migrated columns exist and
+        // read back empty (never NULL-crashed, never dropped).
+        let phrases = try store.savedPhrases()
+        XCTAssertEqual(phrases.count, 1)
+        XCTAssertEqual(phrases[0].target, "Le chat")
+        XCTAssertEqual(phrases[0].source, "previous build")
+        XCTAssertEqual(phrases[0].sourcePackId, "")
+        XCTAssertEqual(phrases[0].sourceLessonId, "")
+
+        // The checkpoint round-trips unchanged.
+        let checkpoint = try XCTUnwrap(
+            store.loadCheckpoint(packId: pack.id, lessonId: "fr-home-foundation"))
+        XCTAssertEqual(checkpoint.draft, .text("Le chat"))
+
+        // The kv device id survives the upgrade — identity is preserved.
+        XCTAssertEqual(try store.deviceId(), "legacy-device-id")
+
+        // v1 practice events still decode and hand out legacy credit; the
+        // revealed event does not; the old-pack-version attempt still
+        // lands in evidence; nothing is quarantined.
+        let progress = try store.project(pack: pack)
+        XCTAssertTrue(
+            progress.legacyCredits.contains("fr-identity-foundation"),
+            "v1 success history must carry its lesson's legacy credit")
+        XCTAssertFalse(
+            progress.legacyCredits.contains("fr-people-foundation"),
+            "a revealed v1 success must not earn credit")
+        XCTAssertEqual(progress.evidence.count, 1)
+        XCTAssertTrue(progress.quarantined.isEmpty)
+
+        // The event ids from the old build are preserved exactly.
+        let events = try store.learningEvents(packId: pack.id)
+        let legacyIds = try legacyExerciseIds("fr-identity-foundation", in: pack)
+        XCTAssertEqual(events.count, legacyIds.count + 2)
+
+        // Post-upgrade writes work: a fresh phrase with source ids lands.
+        let fresh = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: "french", target: "Un chien", meaning: "A dog"),
+            languageSlug: "french", languageName: "French",
+            target: "Un chien", meaning: "A dog",
+            source: "fr-home-foundation-act-rb9",
+            sourcePackId: pack.id, sourceLessonId: "fr-home-foundation",
+            savedAt: Date())
+        try store.savePhrase(fresh)
+        let all = try store.savedPhrases()
+        XCTAssertEqual(all.count, 2)
+        XCTAssertEqual(
+            all.first { $0.target == "Un chien" }?.sourcePackId, pack.id)
+        XCTAssertEqual(
+            all.first { $0.target == "Un chien" }?.sourceLessonId,
+            "fr-home-foundation")
+    }
+
+    /// Old pack-version data flowing through the *current* write path too:
+    /// v1 practice events recorded via `record` migrate into legacy credit
+    /// without quarantine, and v2 attempts carrying a previous release's
+    /// pack version still project — the projection decides validity from
+    /// lesson/activity revisions, never from `packVersion`, so history made
+    /// against an older build keeps working.
+    func testOldPackVersionEventsProjectWithoutLossOrQuarantine() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let base = Date(timeIntervalSince1970: 1_700_000_000)
+
+        let legacyIds = try legacyExerciseIds("fr-identity-foundation", in: pack)
+        for (i, exerciseId) in legacyIds.enumerated() {
+            try store.record(.practiceV1(PracticeEventV1(
+                id: "upgrade-v1-\(i)", packId: pack.id, version: "0.9.0",
+                exerciseId: exerciseId,
+                at: base.addingTimeInterval(Double(i)),
+                correct: true, revealed: false)))
+        }
+        try store.record(.practiceV1(PracticeEventV1(
+            id: "upgrade-v1-revealed", packId: pack.id, version: "0.9.0",
+            exerciseId: "fr-people-foundation-meet",
+            at: base.addingTimeInterval(600), correct: true, revealed: true)))
+
+        var old = try makeAttempt(id: "upgrade-v2-1", pack: pack, at: base)
+        old.packVersion = "0.9.0"
+        try store.record(.attempt(old))
+
+        let progress = try store.project(pack: pack)
+        XCTAssertTrue(progress.legacyCredits.contains("fr-identity-foundation"))
+        XCTAssertFalse(progress.legacyCredits.contains("fr-people-foundation"))
+        XCTAssertEqual(progress.evidence.count, 1,
+                       "the old-pack-version attempt must still project")
+        XCTAssertTrue(progress.quarantined.isEmpty,
+                      "old pack versions must not quarantine")
+
+        // The v1 rows read back with their original ids and version tag.
+        let events = try store.learningEvents(packId: pack.id)
+        XCTAssertEqual(events.count, legacyIds.count + 2)
+        guard let firstEvent = events.first,
+              case .practiceV1(let storedV1) = firstEvent else {
+            return XCTFail("expected a practiceV1 first event")
+        }
+        XCTAssertEqual(storedV1.version, "0.9.0")
+    }
+
+    /// Reopening the same database file — the app's own relaunch path —
+    /// preserves every event, checkpoint, saved phrase, listen position,
+    /// and the device id: nothing is dropped, reordered, or recreated on a
+    /// second open.
+    func testReopenPreservesAllRowsAndDeviceIdentity() throws {
+        let url = tempDir.appendingPathComponent("reopen.sqlite")
+        let store = try LearningStore(path: url.path)
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+
+        let attempt = try makeAttempt(id: "reopen-1", pack: pack, at: at)
+        try store.record(.attempt(attempt))
+        let deviceId = try store.deviceId()
+
+        let checkpoint = LessonCheckpoint(
+            packId: pack.id, lessonId: "fr-home-foundation",
+            revision: pack.lesson(id: "fr-home-foundation")?.revision ?? 1,
+            stepId: "fr-home-foundation-step-rb4",
+            selectedBranches: [:], assistance: [.translation],
+            draft: .text("Le chat"), at: at)
+        try store.saveCheckpoint(checkpoint)
+        let phrase = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: "french", target: "Le chat", meaning: "The cat"),
+            languageSlug: "french", languageName: "French",
+            target: "Le chat", meaning: "The cat",
+            source: "reopen", savedAt: at)
+        try store.savePhrase(phrase)
+        try store.saveListenPosition(trackId: "reopen-track", seconds: 42, at: at)
+
+        // Relaunch: a brand-new store over the same file.
+        let reopened = try LearningStore(path: url.path)
+        XCTAssertEqual(try reopened.deviceId(), deviceId)
+        XCTAssertEqual(try reopened.learningEvents(packId: pack.id).count, 1)
+        XCTAssertEqual(try reopened.loadCheckpoint(
+            packId: pack.id, lessonId: "fr-home-foundation"), checkpoint)
+        XCTAssertEqual(try reopened.savedPhrases().count, 1)
+        XCTAssertEqual(try reopened.listenPosition(trackId: "reopen-track"), 42)
+        XCTAssertEqual(
+            try reopened.project(pack: pack).evidence.count, 1)
+    }
+}
+
+// MARK: - Upgrade drill: legacy UserDefaults keys (P4.1)
+//
+// Settings lived in UserDefaults before this build and still do: Home's
+// focus language, the per-language TTS voice, the placement badge, review
+// reminders, and the sign-in display name all read stable legacy keys. The
+// roadmap says to preserve legacy UserDefaults keys; these tests pin the
+// exact key strings and the round trip through the production stores, so a
+// future migration that renames or drops a key becomes a visible,
+// deliberate change instead of a silent data loss.
+
+@MainActor
+final class LegacyUserDefaultsMigrationTests: XCTestCase {
+
+    /// Every legacy key the app reads today, in production key format.
+    private static let legacyKeys = [
+        "condisco.focusLanguage",
+        "condisco.voice.fr-FR",
+        "condisco.placement.fr-foundations",
+        "condisco.reminders.enabled",
+        "condisco.reminders.minutes",
+        "verbalibera.appleDisplayName",
+    ]
+
+    private var hadKey: [String: Bool] = [:]
+    private var oldValues: [String: Any] = [:]
+
+    override func setUp() {
+        super.setUp()
+        for key in Self.legacyKeys {
+            if let value = UserDefaults.standard.object(forKey: key) {
+                hadKey[key] = true
+                oldValues[key] = value
+            } else {
+                hadKey[key] = false
+            }
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+    }
+
+    override func tearDown() {
+        for key in Self.legacyKeys {
+            if hadKey[key] == true, let value = oldValues[key] {
+                UserDefaults.standard.set(value, forKey: key)
+            } else {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
+        }
+        hadKey = [:]
+        oldValues = [:]
+        super.tearDown()
+    }
+
+    /// HomeView and ReviewView read the focus language exactly this way:
+    /// `UserDefaults.standard.string(forKey: "condisco.focusLanguage")`.
+    /// A stored choice from the previous build must read back unchanged.
+    func testFocusLanguageKeyReadExactlyAsHomeReadsIt() {
+        UserDefaults.standard.set("italian", forKey: "condisco.focusLanguage")
+        XCTAssertEqual(
+            UserDefaults.standard.string(forKey: "condisco.focusLanguage"),
+            "italian")
+    }
+
+    /// The per-language TTS voice key (`condisco.voice.<bcp47>`) round-trips
+    /// through the production store: a previous build's stored voice id
+    /// survives, and write/clear keep the same key.
+    func testLegacyVoiceKeyRoundTripsThroughVoiceStore() {
+        UserDefaults.standard.set(
+            "com.apple.voice.compact.fr-FR.premium",
+            forKey: "condisco.voice.fr-FR")
+        XCTAssertEqual(
+            VoiceStore.voiceIdentifier(for: "fr-FR"),
+            "com.apple.voice.compact.fr-FR.premium")
+
+        VoiceStore.setVoice(
+            identifier: "com.apple.voice.compact.fr-FR.premium-2",
+            for: "fr-FR")
+        XCTAssertEqual(
+            VoiceStore.voiceIdentifier(for: "fr-FR"),
+            "com.apple.voice.compact.fr-FR.premium-2")
+        VoiceStore.setVoice(identifier: nil, for: "fr-FR")
+        XCTAssertNil(VoiceStore.voiceIdentifier(for: "fr-FR"))
+    }
+
+    /// The placement badge key (`condisco.placement.<packId>`) round-trips
+    /// through `PlacementStore`: a previous build's recommendation survives
+    /// and a new save stays on the same key.
+    func testLegacyPlacementKeyRoundTripsThroughPlacementStore() {
+        UserDefaults.standard.set(
+            "fr-home-foundation", forKey: "condisco.placement.fr-foundations")
+        XCTAssertEqual(
+            PlacementStore.recommendedLessonId(packId: "fr-foundations"),
+            "fr-home-foundation")
+
+        PlacementStore.save(
+            packId: "fr-foundations", lessonId: "fr-identity-foundation")
+        XCTAssertEqual(
+            PlacementStore.recommendedLessonId(packId: "fr-foundations"),
+            "fr-identity-foundation")
+    }
+
+    /// Review reminders read their enabled flag and time at init from the
+    /// legacy keys: a previous build's schedule setting survives untouched.
+    func testLegacyReminderKeysReadAtInit() {
+        UserDefaults.standard.set(true, forKey: "condisco.reminders.enabled")
+        UserDefaults.standard.set(585, forKey: "condisco.reminders.minutes")
+
+        let reminders = ReviewReminders()
+        XCTAssertTrue(reminders.isEnabled)
+        XCTAssertEqual(reminders.minutes, 585)
+    }
+
+    /// `AuthState` reads the sign-in display name from the legacy key at
+    /// init; with no keychain user it must not touch the network. The
+    /// keychain service itself (`com.sleuthysloth.verbalibera`) is
+    /// unchanged by inspection — only the UserDefaults half is drivable
+    /// without a real Apple credential.
+    func testLegacySignInDisplayNameKeySurvives() {
+        UserDefaults.standard.set(
+            "Legacy Learner", forKey: "verbalibera.appleDisplayName")
+
+        let auth = AuthState()
+        XCTAssertEqual(auth.displayName, "Legacy Learner")
+        XCTAssertFalse(auth.isSignedIn)
+    }
+}
+
+// MARK: - Malformed-pack recovery: PackLoader level (P4.1)
+//
+// The decode-layer guards in `MalformedContentTests` prove a truncated or
+// mis-typed pack is rejected safely. These drive the loader itself against
+// a synthetic content tree with corrupted files, pinning the recovery
+// contract from the roadmap: "recover from one malformed bundled pack
+// without hiding the other four. Return a visible, nonfatal content error
+// for that course, keep local progress untouched."
+
+final class PackLoaderRecoveryTests: XCTestCase {
+
+    private var tempRoot: URL!
+
+    override func setUpWithError() throws {
+        tempRoot = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-loader-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempRoot, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempRoot {
+            try? FileManager.default.removeItem(at: tempRoot)
+        }
+        tempRoot = nil
+    }
+
+    /// Copies the five real bundled packs into a synthetic content root,
+    /// replacing the named ones with a mid-document truncated payload —
+    /// the exact shape a cut-off bundle file takes on disk.
+    private func makeContentRoot(corrupting corrupt: Set<String>) throws -> URL {
+        guard let content = PackLoader.contentDirectory() else {
+            throw XCTSkip("bundled Content tree unavailable in this test host")
+        }
+        let sourcePacks = content.appendingPathComponent("packs", isDirectory: true)
+        let packsDir = tempRoot.appendingPathComponent("packs", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: packsDir, withIntermediateDirectories: true)
+        let broken = Data(#"{"schemaVersion":2,"id":"fre"#.utf8)
+        for name in PackLoader.packFilenames {
+            let dest = packsDir
+                .appendingPathComponent(name).appendingPathExtension("json")
+            if corrupt.contains(name) {
+                try broken.write(to: dest)
+            } else {
+                let source = sourcePacks
+                    .appendingPathComponent(name).appendingPathExtension("json")
+                try Data(contentsOf: source).write(to: dest)
+            }
+        }
+        return tempRoot
+    }
+
+    /// One malformed bundle file (the first in pack order) is skipped with
+    /// no crash, and the other four real packs still load and validate —
+    /// the "one malformed bundled pack cannot disable every course" gate.
+    func testCorruptedFirstPackSkippedOthersStillLoad() throws {
+        let root = try makeContentRoot(corrupting: ["french"])
+
+        let packs = try PackLoader.loadPacks(from: root)
+        XCTAssertEqual(packs.count, 4)
+        XCTAssertFalse(
+            packs.contains { $0.language == .french },
+            "the corrupted pack must be skipped, not loaded")
+        for pack in packs {
+            XCTAssertNoThrow(try PackValidator.validate(pack), pack.id)
+        }
+    }
+
+    /// Same recovery when the corrupted file sits mid-list: the loader
+    /// continues past the bad pack and the packs before and after it both
+    /// load.
+    func testCorruptedMiddlePackSkippedOthersStillLoad() throws {
+        let root = try makeContentRoot(corrupting: ["italian"])
+
+        let packs = try PackLoader.loadPacks(from: root)
+        XCTAssertEqual(packs.count, 4)
+        XCTAssertFalse(packs.contains { $0.language == .italian })
+        XCTAssertTrue(packs.contains { $0.language == .french })
+        XCTAssertTrue(packs.contains { $0.language == .spanish })
+    }
+
+    /// A bundle where every pack is corrupted throws ONE typed, actionable
+    /// error naming the failing files — never a crash and never a silent
+    /// empty course list.
+    func testFullyCorruptedBundleThrowsActionableErrorNamingFiles() throws {
+        let root = try makeContentRoot(corrupting: Set(PackLoader.packFilenames))
+
+        XCTAssertThrowsError(try PackLoader.loadPacks(from: root)) { error in
+            guard let loadError = error as? PackLoadError else {
+                return XCTFail("expected PackLoadError, got \(error)")
+            }
+            let message = loadError.errorDescription ?? ""
+            XCTAssertTrue(
+                message.contains("No course packs could be loaded"),
+                "error must be actionable: \(message)")
+            for name in ["french", "italian", "spanish"] {
+                XCTAssertTrue(
+                    message.contains("\(name).json"),
+                    "error must name the failed file \(name).json: \(message)")
+            }
+        }
+    }
+}
+
+// MARK: - Simulator-only performance probes (P4.3)
+//
+// Wall-clock probes for the roadmap's measurement points that the pure
+// core can drive without views or audio: one lesson step transition and
+// one review card flip (the pure-core approximation of a card verdict).
+// Each probe uses `XCTClockMetric` with no baseline, so it never fails a
+// run — it only records numbers, which go into
+// `docs/performance-budget.md` §7 as SIMULATOR-ONLY evidence. These are
+// not budgets and not device behavior; see the doc for the boundary.
+
+@MainActor
+final class SimulatorPerformanceProbeTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-perf-probes-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    /// A valid attempt on a real step of fr-home-foundation (selection or
+    /// cloze), used to seed the review probe.
+    private func seedAttempt(
+        id: String, pack: CoursePack, stepId: String, at: Date
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let step = try XCTUnwrap(lesson.steps.first { $0.id == stepId })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        let response: AttemptResponse
+        switch activity {
+        case .selection(let spec):
+            response = .selection(ids: spec.acceptedIds)
+        case .cloze(let spec):
+            response = .cloze(values: Dictionary(
+                uniqueKeysWithValues: spec.blanks.map {
+                    ($0.key, $0.value.answers.first ?? "")
+                }))
+        default:
+            throw XCTSkip("expected a selection or cloze step")
+        }
+        return ActivityAttempt(
+            id: id, packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            stepId: step.id, activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: .correct, independent: true, feedback: "correct"),
+            at: at)
+    }
+
+    /// One lesson step transition = submit + evaluate + advance, the pure
+    /// engine work behind every step change. Walks the whole linear
+    /// fr-home-foundation lesson per iteration; divide the reported total by
+    /// the step count for a per-transition figure.
+    func testProbeLessonStepTransitionWallClock() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+
+        func correctResponse(for activity: Activity) -> AttemptResponse {
+            switch activity {
+            case .information:
+                return .continue
+            case .selection(let spec):
+                return .selection(ids: spec.acceptedIds)
+            case .cloze(let spec):
+                return .cloze(values: Dictionary(
+                    uniqueKeysWithValues: spec.blanks.map {
+                        ($0.key, $0.value.answers.first ?? "")
+                    }))
+            case .text(let spec):
+                return .text(spec.answer.answers.first ?? "")
+            default:
+                return .continue
+            }
+        }
+
+        measure(metrics: [XCTClockMetric()]) {
+            var session = try! startLesson(pack: pack, lessonId: lesson.id)
+            while session.status == .active {
+                let step = lesson.steps.first { $0.id == session.activeStepId }!
+                let activity = pack.activity(id: step.activityId)!
+                session = try! submitResponse(
+                    pack: pack, session: session,
+                    response: correctResponse(for: activity), assistance: [])
+                session = try! advanceLesson(pack: pack, session: session)
+            }
+        }
+    }
+
+    /// One review card flip = resolve the due set + persist one verdict +
+    /// re-project, the pure work behind a Review-tab card (audio and UI
+    /// excluded). The store is seeded with two due evidence keys so
+    /// `loadDue` always has work each iteration.
+    func testProbeReviewCardFlipWallClock() throws {
+        let store = try LearningStore(
+            path: tempDir.appendingPathComponent("probe.sqlite").path)
+        let pack = try frenchPack()
+        let past = Date(timeIntervalSince1970: 1_700_000_000)
+        for (i, stepId) in
+            ["fr-home-foundation-step-rb2", "fr-home-foundation-step-rb7"]
+            .enumerated() {
+            let attempt = try seedAttempt(
+                id: "probe-seed-\(i)", pack: pack, stepId: stepId,
+                at: past.addingTimeInterval(Double(i)))
+            try store.record(.attempt(attempt))
+        }
+        XCTAssertEqual(try store.dueEvidence(pack: pack).count, 2)
+        let now = Date()
+
+        measure(metrics: [XCTClockMetric()]) {
+            let due = try! ReviewCatalog.loadDue(
+                packs: [pack], store: store, now: now)
+            if let item = due.due.first {
+                try! store.record(.attempt(item.makeAttempt(verdict: .exact, at: now)))
+            }
+            _ = try! store.project(pack: pack)
+        }
+    }
+}

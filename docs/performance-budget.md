@@ -4,11 +4,13 @@ Measurement procedure and budget record for launch, pack load, and interaction
 latency (P4.3). Companion to the quality and growth roadmap
 (`docs/roadmaps/2026-09-25-condisco-quality-and-growth.md`).
 
-> **Status: no measurements exist yet.** This document defines *what* to measure,
-> *how* to measure it, and the budget bookkeeping. Every value in the table below
-> is `TODO`. Taking the measurements requires a human with a device; it is
-> intentionally **device- and human-blocked** — nothing here was measured, and no
-> budget number has been set from data.
+> **Status: no device measurements exist yet.** This document defines *what* to
+> measure, *how* to measure it, and the budget bookkeeping. Every value in the
+> budget table (§3) is `TODO`. Taking those measurements requires a human with a
+> device; the table is intentionally **device- and human-blocked**. Simulator
+> wall-clock probes for lesson step transition and review card flip were added
+> in Phase 5 and are recorded in §7, explicitly labeled **simulator-only** — they
+> are troubleshooting aids, not budgets.
 
 ## 1. What to measure
 
@@ -16,11 +18,12 @@ latency (P4.3). Companion to the quality and growth roadmap
 |---|--------|------------------|---------------------|
 | 1 | Cold launch → first content | `CondiscoApp.init()` → root `ContentView` first `onAppear` | ✅ `LaunchToFirstContent` signpost |
 | 2 | First pack load (I/O + JSON decode + validation, five packs, ~4 MB) | `PackLoader.loadPacksUncached()` — runs once per process under the lazy `cached` static | ✅ `PackLoad` signpost |
-| 3 | Home projection | `LearningStore.project(pack:)` | ❌ deferred (Store lane) |
-| 4 | Review projection | `ReviewCatalog.loadDue` | ❌ deferred (Review/Store lane) |
+| 3 | Home projection | `LearningStore.project(pack:)` | ⚠️ simulator probe only (`SimulatorPerformanceProbeTests` measures a seeded project through the review probe) |
+| 4 | Review projection / one card flip | `ReviewCatalog.loadDue` + verdict record + re-project | ⚠️ simulator probe only (`testProbeReviewCardFlipWallClock`) |
 | 5 | Listen background playback, battery | `ListenView` tab load + background audio while screen is off | ❌ deferred (Listen lane) |
 | 6 | Widget refresh | `WidgetSnapshotWriter.refresh` | ❌ deferred (Store lane) |
-| 7 | Repeated lesson navigation (back/forth between lessons) | `LessonPlayerView` / `LessonMoments` | ❌ deferred (Lesson lane) |
+| 7 | Lesson step transition | submit → evaluate → advance in `LessonSession` | ⚠️ simulator probe only (`testProbeLessonStepTransitionWallClock`) |
+| 8 | Audio start latency (play tapped → audible) | Listen player / lesson TTS start | ❌ hook proposed in §5 (`AudioStart`); needs Listen/lesson lanes |
 
 ## 2. How to measure
 
@@ -78,19 +81,56 @@ notes (widget seems stale / updates promptly).
 lesson B → exit, repeated 5×. Watch for growing retained memory (Allocations)
 and frame drops. A signpost per lesson-open is proposed in §5.
 
+## 2.5 Simulator-only measurement checklist (Phase 5)
+
+Simulator numbers are **never budgets and never battery evidence** — they only
+guide debugging (§7 records them separately). Every number below must be
+labeled `simulator-only` when it lands in any report. Checklist for the four
+Phase-5 measurement points:
+
+1. **App launch (cold).** Already instrumented: the `LaunchToFirstContent`
+   signpost (§1 row 1) and its DEBUG console line
+   (`LaunchToFirstContent finished in N ms`). On a simulator: quit the app,
+   `xcrun simctl launch booted <bundle-id>`, read the console line in Xcode
+   (Debug build). Repeat 5×, record the median in §7 as simulator-only. Do
+   NOT read device/battery meaning into it.
+2. **Lesson step transition.** Pinned by the XCTest probe
+   `SimulatorPerformanceProbeTests.testProbeLessonStepTransitionWallClock`
+   (submit + evaluate + advance across the whole linear fr-home-foundation
+   lesson; divide by step count for one transition). Run it with
+   `-only-testing:CondiscoTests/SimulatorPerformanceProbeTests` and copy the
+   `measured [Time, seconds] average:` line into §7. The probe covers the pure
+   engine only — view layout, audio, and animations are not included.
+3. **Audio start latency (play tapped → audible).** No pure-core probe exists
+   (AVPlayer + UI live in the Listen/lesson lanes). Concrete hook, ready to
+   drop into those lanes when they open: wrap the playback start call in
+   `ListenPlayerModel` (`play()` / where `AVAudioPlayer.play()` is invoked)
+   and the lesson TTS kickoff (`ShadowSpeaker` speak path) with
+   `PerfSignpost` — `AudioStart` begin when the tap handler runs, end where
+   `play()` returns after `prepareToPlay`. Simulator manual step meanwhile:
+   tap play, time to first audible sample (or the console `AudioStart …`
+   line once the hook lands), label simulator-only. **Not measured yet** (§7).
+4. **Review card flip.** Pinned by
+   `SimulatorPerformanceProbeTests.testProbeReviewCardFlipWallClock`
+   (resolve due set + persist one verdict + re-project — audio and card
+   animation excluded). Record the `measured` line in §7.
+
+See §7 for the Phase 5 process used on 2026-09-26 and its recorded values.
+
 ## 3. Budget record
 
 Columns: **metric · device · build · value · budget · status.**
 
 | Metric | Device | Build | Value | Budget | Status |
 |--------|--------|-------|-------|--------|--------|
-| Cold launch → first content (`LaunchToFirstContent`) | TODO | TODO | TODO | set from measurement | not measured — needs device |
-| First pack load (`PackLoad`) | TODO | TODO | TODO | set from measurement | not measured — needs device |
-| Home projection (`LearningStore.project`) | TODO | TODO | TODO | set from measurement | not measured — needs device + signpost |
-| Review projection (`ReviewCatalog.loadDue`) | TODO | TODO | TODO | set from measurement | not measured — needs device + signpost |
+| Cold launch → first content (`LaunchToFirstContent`) | TODO | TODO | TODO | set from measurement | not measured — needs device (simulator-only in §7) |
+| First pack load (`PackLoad`) | TODO | TODO | TODO | set from measurement | not measured — needs device (simulator-only in §7) |
+| Home projection (`LearningStore.project`) | TODO | TODO | TODO | set from measurement | not measured — needs device + signpost (simulator probe in §7) |
+| Review projection / one card flip (`ReviewCatalog.loadDue` + verdict) | TODO | TODO | TODO | set from measurement | not measured — needs device (simulator probe in §7) |
+| Lesson step transition (p50) | TODO | TODO | TODO | set from measurement | not measured — needs device (simulator probe in §7) |
+| Audio start latency (play tapped → audible) | TODO | TODO | TODO | set from measurement | not measured — needs device + `AudioStart` hook (§5) |
 | Listen background playback (battery, 15 min) | TODO | TODO | TODO | set from measurement | not measured — needs device |
 | Widget refresh (`WidgetSnapshotWriter.refresh`) | TODO | TODO | TODO | set from measurement | not measured — needs device + signpost |
-| Repeated lesson navigation (p50 per transition) | TODO | TODO | TODO | set from measurement | not measured — needs device + signpost |
 
 **Budget policy.** No budget number is written until the corresponding
 measurement exists. Once a value is on the table, a budget is set at a round
@@ -130,6 +170,9 @@ helper is directly available):
 | `ListenTrackLoad` | `Condisco/Listen/ListenView.swift` · `refresh()` (wrap body) | Listen lane |
 | `WidgetSnapshot` | `Condisco/Store/WidgetSnapshotWriter.swift` · `refresh(packs:focusSlug:)` (wrap body) | Store lane |
 | `LessonOpen` | `Condisco/Lesson/LessonPlayerView.swift` (wrap view load / transition) | Lesson lane |
+| `LessonStepTransition` | `Condisco/Engine/LessonSession.swift` · wrap `submitResponse` + `advanceLesson` callers in `LessonPlayerView` (submit → next step shown). Until that lane opens, the XCTest probe `SimulatorPerformanceProbeTests.testProbeLessonStepTransitionWallClock` covers the same work (§2.5, §7) | Lesson lane |
+| `AudioStart` | begin on the play tap in `Condisco/Listen/ListenPlayerModel.swift` (and the lesson TTS kickoff in `ShadowSpeaker`); end where `AVAudioPlayer.play()` returns after `prepareToPlay` — covers "tapped → audible" | Listen/lesson lanes |
+| `ReviewCardFlip` | `Condisco/Review/ReviewView.swift` · wrap card advance (verdict chosen → next card shown); the pure-core equivalent is probed by `SimulatorPerformanceProbeTests.testProbeReviewCardFlipWallClock` (§2.5, §7) | Review lane |
 
 Pattern for each (identical to the pack-load one):
 
@@ -153,3 +196,32 @@ add a small DEBUG-only `PerfSignpost` twin in that target; measurement of widget
 - **Pack load:** one interval per process. If it appears twice, `swift_once`
   caching is broken — investigate.
 - All numbers go in §3 with device + build recorded, or they don't count.
+
+## 7. Simulator-only probe record (not budgets)
+
+Simulator measurements guide debugging only. Per the §3 budget policy, **no
+budget is set from these numbers**, they never stand in for device results,
+and they are not battery evidence. Everything below is labeled simulator-only.
+
+Process used (2026-09-26, Phase 5 verification-code lane):
+
+- Probes: `Condisco/Tests/StoreTests.swift` → `SimulatorPerformanceProbeTests`,
+  `XCTClockMetric` with no baseline (never fails a run). Run under the unit
+  suite on the iOS Simulator (`xcodebuild test -only-testing:CondiscoTests`,
+  destination `iPhone 18 Pro`, latest OS, Debug build).
+- App launch and pack load: signpost-based (`LaunchToFirstContent`, `PackLoad`);
+  simulator console values are only meaningful relatively, so they are
+  reported as recorded but flagged not-measured-for-device below.
+
+| Date (2026-09-26) | Metric | Simulator value | Meaning |
+|---|---|---|---|
+| simulator-only | Lesson step transition (pure engine: submit + evaluate + advance), whole 9-step fr-home-foundation walk | p50 ≈ 3 ms per lesson walk, ≈ 0.3 ms per step (`measured … average: 0.003 s`) | Pure engine only — no views, audio, or animations. Debug build, warmed caches. |
+| simulator-only | Review card flip (pure core: `loadDue` + persist one `.exact` verdict + re-project, 2 seeded due keys) | p50 ≈ 2 ms per card (`measured … average: 0.002 s`) | Excludes card animation, audio, view layout. Debug build. |
+| simulator-only | Cold launch → first content (`LaunchToFirstContent`) | not recorded (needs an app run in the simulator; follow §2.5 step 1 and add the value here) | Signpost exists; simulator launch timing is host-dependent and not budget evidence. |
+| simulator-only | First pack load (`PackLoad`, five packs ≈ 4 MB) | not recorded here (see §2.5 / §2 procedure, Instruments Points of Interest) | One interval per process; debug-build console shows `PackLoad finished in N ms`. |
+| simulator-only | Audio start latency | **not measured** — hook `AudioStart` proposed in §5; no pure-core probe exists (AVPlayer/UI live in Listen/lesson lanes) | Mark unmeasured rather than inventing a number. |
+
+Boundary: these numbers compare *within this machine's simulator* over time;
+they say nothing about an older iPhone, real audio, or battery. Any future
+edits to this section must keep the simulator-only label and the dated table
+format; never merge these rows into §3.

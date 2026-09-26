@@ -63,21 +63,16 @@ enum PackLoader {
         try cached.get()
     }
 
-    private static func loadPacksUncached() throws -> [CoursePack] {
-        // DEBUG-only timing: Instruments reads the "PackLoad" signpost
-        // (I/O + JSON decode + validation across all five packs). In Release
-        // PerfSignpost compiles to inline no-ops, so this is zero-cost.
-#if DEBUG
-        // Guarded so the standalone content validator (`tools/check_packs.sh`),
-        // which compiles this file with swiftc outside the app target, never
-        // needs `PerfSignpost` (defined in CondiscoApp.swift).
-        let measurement = PerfSignpost.begin("PackLoad")
-        defer { PerfSignpost.end("PackLoad", measurement) }
-#endif
-        guard let content = contentDirectory() else {
-            throw PackLoadError.missingContentFolder
-        }
-        let packsDir = content.appendingPathComponent("packs", isDirectory: true)
+    /// Decode and validate every bundled pack inside `directory` (a content
+    /// root with a `packs/` subfolder holding the five `packFilenames`).
+    /// Behavior is identical to the bundled load: a pack that fails to
+    /// decode or validate is skipped with its reason collected, and the load
+    /// throws `PackLoadError.noPacksLoaded` only when nothing usable remains —
+    /// one malformed pack never disables the others. Exposed so tests can
+    /// drive the loader against a synthetic content tree with a corrupted
+    /// pack; the app always loads from the bundle via `loadPacks()`.
+    static func loadPacks(from directory: URL) throws -> [CoursePack] {
+        let packsDir = directory.appendingPathComponent("packs", isDirectory: true)
         let decoder = JSONDecoder()
         var packs: [CoursePack] = []
         var failures: [String] = []
@@ -96,5 +91,22 @@ enum PackLoader {
             throw PackLoadError.noPacksLoaded(failures)
         }
         return packs
+    }
+
+    private static func loadPacksUncached() throws -> [CoursePack] {
+        // DEBUG-only timing: Instruments reads the "PackLoad" signpost
+        // (I/O + JSON decode + validation across all five packs). In Release
+        // PerfSignpost compiles to inline no-ops, so this is zero-cost.
+#if DEBUG
+        // Guarded so the standalone content validator (`tools/check_packs.sh`),
+        // which compiles this file with swiftc outside the app target, never
+        // needs `PerfSignpost` (defined in CondiscoApp.swift).
+        let measurement = PerfSignpost.begin("PackLoad")
+        defer { PerfSignpost.end("PackLoad", measurement) }
+#endif
+        guard let content = contentDirectory() else {
+            throw PackLoadError.missingContentFolder
+        }
+        return try loadPacks(from: content)
     }
 }

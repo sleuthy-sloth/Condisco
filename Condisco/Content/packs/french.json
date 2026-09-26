@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
   "id": "fr-foundations",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "language": "fr",
   "status": "active",
   "title": "French foundations",
   "sourceLanguage": "en",
-  "description": "Twenty-four original A1 foundation lessons. A growing course, not a complete A1 certification syllabus. Now expanded with 18 CEFR A2 lessons in 5 new units — Le passé raconté, L’avenir et les projets, Politesse et hypothèses, Précision et liens, Il faut que… — covering the passé composé, the imparfait, the futur simple, the conditional, first steps into the subjunctive, the pronouns y and en, relative pronouns, and comparatives and superlatives.",
+  "description": "Thirty-two original A1 foundation lessons across the first eight units. A growing course, not a complete A1 certification syllabus. Now expanded with 18 CEFR A2 lessons in 5 new units — Le passé raconté, L’avenir et les projets, Politesse et hypothèses, Précision et liens, Il faut que… — covering the passé composé, the imparfait, the futur simple, the conditional, first steps into the subjunctive, the pronouns y and en, relative pronouns, and comparatives and superlatives.",
   "attribution": "Original VerbaLibera authoring, 2026. MIT. Machine-authored and consistency-checked; native-speaker editorial review remains open. The 18 new A2 lessons (version 0.7.0) are machine-authored and pending native-speaker review.",
   "units": [
     {
@@ -3367,7 +3367,9 @@
         "vocabulary"
       ],
       "prompt": "The server looks up from the counter. How do you greet them?",
-      "hints": [],
+      "hints": [
+        "A polite café exchange opens with a greeting — the option that means 'Hello', not the thanks or the order."
+      ],
       "feedback": "Bonjour starts the exchange politely.",
       "evidenceKey": "fr-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -3415,7 +3417,9 @@
         "grammar"
       ],
       "prompt": "Build the order: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "The request has three blocks: the article 'a' (Un), the drink (café), and the polite word for 'please' (s'il vous plaît) at the end."
+      ],
       "feedback": "Un café, s’il vous plaît. Say the whole request aloud.",
       "evidenceKey": "fr-cafe-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -3462,7 +3466,9 @@
         "vocabulary"
       ],
       "prompt": "The cup reaches the counter. What do you say?",
-      "hints": [],
+      "hints": [
+        "The cup has arrived and the order is done — say the word that means 'Thank you'."
+      ],
       "feedback": "Merci closes the exchange.",
       "evidenceKey": "fr-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -3510,7 +3516,9 @@
         "vocabulary"
       ],
       "prompt": "Picture the counter and say your order in your head. Then write in French: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "Write the request you built with the tiles: Un + café, then the polite 'please' phrase: Un café, s'il vous plaît."
+      ],
       "feedback": "You can now produce the order without arranging tiles.",
       "evidenceKey": "fr-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -3522,7 +3530,18 @@
           "Un café, s’il vous plaît."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Un café.",
+            "category": "missing word",
+            "explanation": "Add the polite phrase: Un café, s'il vous plaît."
+          },
+          {
+            "answer": "Un café, s'il te plaît.",
+            "category": "incorrect answer",
+            "explanation": "A server you don't know gets the polite form s'il vous plaît; s'il te plaît is only for people you call tu."
+          }
+        ]
       }
     },
     {
@@ -3543,7 +3562,9 @@
         "vocabulary"
       ],
       "prompt": "Match the three lines you used to their meanings.",
-      "hints": [],
+      "hints": [
+        "Two lines are easy to place (Bonjour = Hello, Merci = Thank you); the remaining long line must be the order."
+      ],
       "feedback": "You can recognize the whole exchange.",
       "evidenceKey": "fr-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -3611,7 +3632,9 @@
         "speaking"
       ],
       "prompt": "Write the café exchange in order: Hello. / A coffee, please. / Thank you.",
-      "hints": [],
+      "hints": [
+        "Write the three lines in the order you used them — greeting, then order, then thanks — as three sentences with periods."
+      ],
       "feedback": "You greeted, ordered, and thanked the server.",
       "evidenceKey": "fr-cafe-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -3623,7 +3646,18 @@
           "Bonjour. Un café, s’il vous plaît. Merci."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Bonjour. Un café, s'il te plaît. Merci.",
+            "category": "incorrect answer",
+            "explanation": "Keep the polite form s'il vous plaît for the server — s'il te plaît would be too familiar."
+          },
+          {
+            "answer": "Bonjour. Merci. Un café, s'il vous plaît.",
+            "category": "word-order problem",
+            "explanation": "The exchange goes greeting → order → thanks. Merci belongs last, after the order."
+          }
+        ]
       }
     },
     {
@@ -3647,7 +3681,9 @@
         "vocabulary"
       ],
       "prompt": "You already know the name Anna. «Je suis Anna» means “I am Anna”. Which word do you think means “am”?",
-      "hints": [],
+      "hints": [
+        "Split 'Je suis Anna' into three pieces: Je = I, suis = am, Anna = the name. The question asks for the middle piece."
+      ],
       "feedback": "Two words do the work: Je means I, suis means am. You did not memorize that — you split a sentence you already half-understood.",
       "evidenceKey": "fr-identity-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -3693,7 +3729,9 @@
         "grammar"
       ],
       "prompt": "Think: Je means I, suis means am. Marc is introducing himself. How does he say “I am Marc”? Build it from the two words — then write it.",
-      "hints": [],
+      "hints": [
+        "Put the two blocks you derived together — the word for 'I', then the word for 'am' — and end with the name Marc."
+      ],
       "feedback": "Je suis Marc. Same two building blocks, new name in the same slot. Names slide into the pattern without changing anything.",
       "evidenceKey": "fr-identity-foundation-think-marc",
       "assistanceAffectsEvidence": [
@@ -3707,7 +3745,18 @@
           "Je suis Marc."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis Marie.",
+            "category": "incorrect answer",
+            "explanation": "Marc is introducing himself, not Marie — keep the name from the prompt."
+          },
+          {
+            "answer": "Je Marc.",
+            "category": "missing word",
+            "explanation": "Between je and the name you need the verb: Je suis Marc."
+          }
+        ]
       }
     },
     {
@@ -3723,7 +3772,9 @@
         "vocabulary"
       ],
       "prompt": "Marie (a woman) says «Je suis française». Paul (a man) says «Je suis français». Look closely — what is the difference?",
-      "hints": [],
+      "hints": [
+        "Compare française and français letter by letter: one extra final letter on the woman's form is the whole difference."
+      ],
       "feedback": "French marks feminine with a final -e: française for a woman, français for a man. One letter carries the whole distinction.",
       "evidenceKey": "fr-identity-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -3770,7 +3821,9 @@
         "grammar"
       ],
       "prompt": "Think: Marie is telling someone she is French. Build her sentence — I-am plus the woman's word for French — then write it.",
-      "hints": [],
+      "hints": [
+        "Marie is a woman, so she needs the feminine form — the adjective that ends in -e: française."
+      ],
       "feedback": "Je suis française. You combined two things you derived minutes ago: the Je suis pattern and the feminine -e.",
       "evidenceKey": "fr-identity-foundation-think-marie",
       "assistanceAffectsEvidence": [
@@ -3784,7 +3837,13 @@
           "Je suis française."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis français.",
+            "category": "wrong gender",
+            "explanation": "Marie is a woman, so the adjective keeps its feminine -e: française."
+          }
+        ]
       }
     },
     {
@@ -3802,7 +3861,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: I am French (a woman).",
-      "hints": [],
+      "hints": [
+        "The sentence starts with the subject Je, then the verb suis, then the feminine adjective with its final -e."
+      ],
       "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
       "evidenceKey": "fr-identity-foundation-order",
       "assistanceAffectsEvidence": [
@@ -3847,7 +3908,9 @@
         "grammar"
       ],
       "prompt": "Nobody taught you this sentence. Sophie is introducing herself. Think: how does she say “I am Sophie”? Build it from the blocks you know — then write it.",
-      "hints": [],
+      "hints": [
+        "Sophie introduces herself with the same two blocks as Anna and Marc: Je + suis, then her own name."
+      ],
       "feedback": "Je suis Sophie. You never practiced this sentence; you derived it. That is the whole method: new situations, same few blocks.",
       "evidenceKey": "fr-identity-foundation-transfer",
       "assistanceAffectsEvidence": [
@@ -3861,7 +3924,13 @@
           "Je suis Sophie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis Anna.",
+            "category": "incorrect answer",
+            "explanation": "That sentence introduces Anna — Sophie introduces herself, so the name at the end is Sophie."
+          }
+        ]
       }
     },
     {
@@ -3879,7 +3948,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Je suis française.",
-      "hints": [],
+      "hints": [
+        "The sentence is 'Je suis' + the adjective for a French woman."
+      ],
       "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
       "evidenceKey": "fr-identity-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -3895,7 +3966,13 @@
           "I'm French."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I am France.",
+            "category": "incorrect answer",
+            "explanation": "française is the adjective 'French'; France is the country (la France)."
+          }
+        ]
       }
     },
     {
@@ -3912,7 +3989,9 @@
         "grammar"
       ],
       "prompt": "Complete: Je ___ Anna.",
-      "hints": [],
+      "hints": [
+        "The blank holds the verb — the je-form of être, the word you derived that means 'am'."
+      ],
       "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
       "evidenceKey": "fr-identity-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -3942,7 +4021,18 @@
             "suis"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "es",
+              "category": "wrong conjugation",
+              "explanation": "es is the tu-form; with je, être is suis."
+            },
+            {
+              "answer": "est",
+              "category": "wrong conjugation",
+              "explanation": "est goes with il/elle; with je, être is suis."
+            }
+          ]
         }
       }
     },
@@ -3962,7 +4052,9 @@
         "vocabulary"
       ],
       "prompt": "What is her name? (Reading 1)",
-      "hints": [],
+      "hints": [
+        "The passage opens 'Bonjour ! Je suis Anna' — the name right after suis is the answer."
+      ],
       "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
       "evidenceKey": "fr-identity-foundation-read",
       "assistanceAffectsEvidence": [
@@ -3974,10 +4066,17 @@
       "stimulusId": "fr-identity-foundation-read-passage",
       "answer": {
         "answers": [
-          "Anna"
+          "Anna",
+          "Her name is Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Marie",
+            "category": "incorrect answer",
+            "explanation": "The passage says 'Je suis Anna' — the name after suis is Anna, not Marie."
+          }
+        ]
       }
     },
     {
@@ -3993,7 +4092,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: names and introductions.",
-      "hints": [],
+      "hints": [
+        "Replay the audio: the model is the very first sentence of the lesson — the one with je, suis and Anna."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "fr-identity-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4008,7 +4109,13 @@
           "Je suis Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis Anne.",
+            "category": "incorrect answer",
+            "explanation": "The model says 'Je suis Anna' — keep the name exactly as it is in the audio."
+          }
+        ]
       }
     },
     {
@@ -4034,7 +4141,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “are (with tu)”?",
-      "hints": [],
+      "hints": [
+        "The forms of être: je suis, tu es, il/elle est. Pick the one that follows tu."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4082,7 +4191,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Elle est française.",
-      "hints": [],
+      "hints": [
+        "elle = she, est = is, française = French (feminine). Put the three pieces together in English."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4093,10 +4204,17 @@
       "id": "fr-people-foundation-meaning",
       "answer": {
         "answers": [
-          "She is French."
+          "She is French.",
+          "She's French."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "He is French.",
+            "category": "incorrect answer",
+            "explanation": "elle means she, not he — the sentence is about a woman."
+          }
+        ]
       }
     },
     {
@@ -4115,7 +4233,9 @@
         "grammar"
       ],
       "prompt": "Complete: Tu ___ Marc.",
-      "hints": [],
+      "hints": [
+        "Tu takes its own form of être — the one in the middle of je suis, tu ___, il est."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4145,7 +4265,18 @@
             "es"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "est",
+              "category": "wrong conjugation",
+              "explanation": "est belongs with il/elle; tu takes es."
+            },
+            {
+              "answer": "suis",
+              "category": "wrong conjugation",
+              "explanation": "suis is the je-form; tu takes es."
+            }
+          ]
         }
       }
     },
@@ -4165,7 +4296,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: She is French.",
-      "hints": [],
+      "hints": [
+        "Start with the subject Elle, then the he/she form of être, then the feminine adjective."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4212,7 +4345,9 @@
         "grammar"
       ],
       "prompt": "Change it so you are speaking to Marie instead of speaking about her: Elle est française.",
-      "hints": [],
+      "hints": [
+        "Speaking TO Marie changes the subject from elle to tu — and the verb changes with it: elle est → tu es."
+      ],
       "feedback": "Elle est becomes tu es: the verb changes with the subject. Française still agrees with Marie, the person it describes.",
       "evidenceKey": "fr-people-foundation-transform",
       "assistanceAffectsEvidence": [
@@ -4226,7 +4361,13 @@
           "Tu es française."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu est française.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, use es: Tu es française."
+          }
+        ]
       }
     },
     {
@@ -4245,7 +4386,9 @@
         "grammar"
       ],
       "prompt": "You recognize Marc at a café. Address him in French: You are Marc.",
-      "hints": [],
+      "hints": [
+        "Address Marc directly: with the informal you (tu), être becomes es before his name."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4284,7 +4427,9 @@
         "vocabulary"
       ],
       "prompt": "Who is French? (Reading 2)",
-      "hints": [],
+      "hints": [
+        "The passage: 'Anna est française. Tu es Marc.' — who is the one described as française?"
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-people-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4296,10 +4441,17 @@
       "stimulusId": "fr-people-foundation-read-passage",
       "answer": {
         "answers": [
-          "Anna"
+          "Anna",
+          "Anna is French."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Marc",
+            "category": "incorrect answer",
+            "explanation": "The passage says 'Anna est française' — Anna is the French one; Marc is only addressed as tu."
+          }
+        ]
       }
     },
     {
@@ -4318,7 +4470,9 @@
         "grammar"
       ],
       "prompt": "Recall from Names and introductions: I am Anna.",
-      "hints": [],
+      "hints": [
+        "This recalls the first lesson's pattern: Je + suis + the name Anna."
+      ],
       "feedback": "Je means I. Je suis is the I-form of être (to be). French normally keeps the subject pronoun. Bonjour is a polite greeting; salut is informal. Française describes a French woman; français describes a French man.",
       "evidenceKey": "fr-people-foundation-review",
       "assistanceAffectsEvidence": [
@@ -4332,7 +4486,13 @@
           "Je suis Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu es Anna.",
+            "category": "incorrect answer",
+            "explanation": "The prompt says 'I am Anna' — that's je suis Anna. Tu es would mean 'you are'."
+          }
+        ]
       }
     },
     {
@@ -4350,7 +4510,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: people and être.",
-      "hints": [],
+      "hints": [
+        "The model is the sentence you produced for the café: informal you + the tu-form of être + Marc."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "fr-people-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4365,7 +4527,13 @@
           "Tu es Marc."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu est Marc.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, use es, not est: Tu es Marc."
+          }
+        ]
       }
     },
     {
@@ -4391,7 +4559,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I have”?",
-      "hints": [],
+      "hints": [
+        "The forms of avoir: j'ai, tu as, il/elle a. The question asks for the je-form — the one with the apostrophe."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4439,7 +4609,9 @@
         "grammar"
       ],
       "prompt": "A new friend asks about your family. Tell them in French: I have a brother.",
-      "hints": [],
+      "hints": [
+        "'I have' is the contracted je-form j'ai, and frère is masculine, so the article is un."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4478,7 +4650,9 @@
         "grammar"
       ],
       "prompt": "Change it so you are talking about yourself instead of about your friend: Tu as une sœur.",
-      "hints": [],
+      "hints": [
+        "The subject changes from tu to je — so avoir changes with it: Tu as → J'ai."
+      ],
       "feedback": "Tu as becomes j’ai: the form of avoir changes with the subject. Sœur stays sœur either way.",
       "evidenceKey": "fr-family-foundation-transform",
       "assistanceAffectsEvidence": [
@@ -4492,7 +4666,18 @@
           "J’ai une sœur."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J'ai un sœur.",
+            "category": "wrong article",
+            "explanation": "sœur is feminine, so the article is une: J'ai une sœur."
+          },
+          {
+            "answer": "Je ai une sœur.",
+            "category": "incorrect answer",
+            "explanation": "ai contracts with je to j'ai — one word with an apostrophe."
+          }
+        ]
       }
     },
     {
@@ -4511,7 +4696,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: You have a sister.",
-      "hints": [],
+      "hints": [
+        "Start with the subject Tu, then the tu-form of avoir, then the article une, then the feminine noun sœur."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4563,7 +4750,9 @@
         "grammar"
       ],
       "prompt": "Complete: J’___ un frère.",
-      "hints": [],
+      "hints": [
+        "After the apostrophe in j', the je-form of avoir follows: j'ai."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4593,7 +4782,18 @@
             "ai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "as",
+              "category": "wrong conjugation",
+              "explanation": "as is the tu-form of avoir; the je-form after j' is ai."
+            },
+            {
+              "answer": "a",
+              "category": "wrong conjugation",
+              "explanation": "a belongs with il/elle; the je-form after j' is ai."
+            }
+          ]
         }
       }
     },
@@ -4613,7 +4813,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Tu as une sœur.",
-      "hints": [],
+      "hints": [
+        "tu as = you have; une sœur = a sister. Say the whole sentence in natural English."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4625,10 +4827,22 @@
       "answer": {
         "answers": [
           "You have a sister.",
-          "You've a sister."
+          "You've a sister.",
+          "You've got a sister."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You have a brother.",
+            "category": "incorrect answer",
+            "explanation": "sœur is a sister; frère is a brother. Tu as une sœur = you have a sister."
+          },
+          {
+            "answer": "You are a sister.",
+            "category": "incorrect answer",
+            "explanation": "Tu as means 'you have', not 'you are' — avoir is the 'have' verb."
+          }
+        ]
       }
     },
     {
@@ -4647,7 +4861,9 @@
         "vocabulary"
       ],
       "prompt": "Does Anna have a brother? Answer in English. (Reading 3)",
-      "hints": [],
+      "hints": [
+        "Anna says 'J'ai un frère' — that's 'I have a brother'. Answer the question in English."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-family-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4659,10 +4875,18 @@
       "stimulusId": "fr-family-foundation-read-passage",
       "answer": {
         "answers": [
-          "yes"
+          "yes",
+          "Yes, she does.",
+          "She has a brother."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "no",
+            "category": "incorrect answer",
+            "explanation": "Anna says 'J'ai un frère' — she does have a brother, so the answer is yes."
+          }
+        ]
       }
     },
     {
@@ -4681,7 +4905,9 @@
         "grammar"
       ],
       "prompt": "Recall from People and être: You are Marc.",
-      "hints": [],
+      "hints": [
+        "From People and être: addressing Marc directly — tu + the tu-form of être + his name."
+      ],
       "feedback": "Tu is informal singular you; elle is she; il is he. Être changes: je suis, tu es, il/elle est. Unlike Italian, French normally needs the subject before the verb. Est and et (and) are different words.",
       "evidenceKey": "fr-family-foundation-review",
       "assistanceAffectsEvidence": [
@@ -4695,7 +4921,13 @@
           "Tu es Marc."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu est Marc.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, use es, not est: Tu es Marc."
+          }
+        ]
       }
     },
     {
@@ -4713,7 +4945,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: family and avoir.",
-      "hints": [],
+      "hints": [
+        "The model is the family sentence: j'ai + un + frère."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "fr-family-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4728,7 +4962,18 @@
           "J’ai un frère."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je ai un frère.",
+            "category": "incorrect answer",
+            "explanation": "ai contracts with je to j'ai."
+          },
+          {
+            "answer": "J'ai une frère.",
+            "category": "wrong article",
+            "explanation": "frère is masculine, so the article is un: J'ai un frère."
+          }
+        ]
       }
     },
     {
@@ -4754,7 +4999,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “twenty”?",
-      "hints": [],
+      "hints": [
+        "The lesson's two numbers are vingt (twenty) and trente (thirty) — the question asks for twenty."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4802,7 +5049,9 @@
         "vocabulary"
       ],
       "prompt": "How old is the sister? Answer with the French number. (Reading 4)",
-      "hints": [],
+      "hints": [
+        "J'ai vingt ans is the narrator's own age; the SISTER is the one with trente ans."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4814,10 +5063,17 @@
       "stimulusId": "fr-numbers-foundation-read-passage",
       "answer": {
         "answers": [
-          "trente"
+          "trente",
+          "trente ans"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "vingt",
+            "category": "incorrect answer",
+            "explanation": "vingt is the narrator's own age ('J'ai vingt ans'). The sister is the one with trente ans."
+          }
+        ]
       }
     },
     {
@@ -4836,7 +5092,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Tu as trente ans.",
-      "hints": [],
+      "hints": [
+        "French says 'you have thirty years'; in natural English, ages use 'old': you are thirty years old."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4848,10 +5106,17 @@
       "answer": {
         "answers": [
           "You are thirty years old.",
-          "You're thirty years old."
+          "You're thirty years old.",
+          "You are thirty."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You are twenty years old.",
+            "category": "incorrect answer",
+            "explanation": "The sentence says trente (thirty), not vingt (twenty): Tu as trente ans."
+          }
+        ]
       }
     },
     {
@@ -4870,7 +5135,9 @@
         "grammar"
       ],
       "prompt": "Change it so you are telling your friend’s age instead of your own: J’ai vingt ans.",
-      "hints": [],
+      "hints": [
+        "The age stays the same; only the subject changes from je to tu, so j'ai becomes tu as."
+      ],
       "feedback": "J’ai becomes tu as: the same age, a different subject, so avoir changes from ai to as.",
       "evidenceKey": "fr-numbers-foundation-transform",
       "assistanceAffectsEvidence": [
@@ -4884,7 +5151,18 @@
           "Tu as vingt ans."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu ai vingt ans.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, avoir is as, not ai: Tu as vingt ans."
+          },
+          {
+            "answer": "Tu es vingt ans.",
+            "category": "incorrect answer",
+            "explanation": "Ages use avoir, not être: Tu as vingt ans."
+          }
+        ]
       }
     },
     {
@@ -4903,7 +5181,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: You are thirty years old.",
-      "hints": [],
+      "hints": [
+        "Start with Tu, then the tu-form of avoir, then the number trente, then the word ans."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4955,7 +5235,9 @@
         "grammar"
       ],
       "prompt": "Complete: J’___ vingt ans.",
-      "hints": [],
+      "hints": [
+        "After the apostrophe in j', put the je-form of avoir: j'ai."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4985,7 +5267,18 @@
             "ai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "as",
+              "category": "wrong conjugation",
+              "explanation": "as is the tu-form of avoir; after j' use ai."
+            },
+            {
+              "answer": "a",
+              "category": "wrong conjugation",
+              "explanation": "a belongs with il/elle; after j' use ai."
+            }
+          ]
         }
       }
     },
@@ -5005,7 +5298,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I am twenty years old.",
-      "hints": [],
+      "hints": [
+        "Ages use avoir, not être: j'ai + the number + ans."
+      ],
       "feedback": "French uses avoir for age: j’ai vingt ans literally means I have twenty years. Vingt means twenty and trente means thirty. Ans is years when counting age. Do not use être for a person’s age.",
       "evidenceKey": "fr-numbers-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -5044,7 +5339,9 @@
         "grammar"
       ],
       "prompt": "Recall from Family and avoir: I have a brother.",
-      "hints": [],
+      "hints": [
+        "This recalls Family and avoir: the sentence for 'I have a brother'."
+      ],
       "feedback": "Avoir means to have: j’ai, tu as, il/elle a. Je becomes j’ before ai; keep the apostrophe. Un frère uses a masculine article; une sœur is feminine. Learn the article with each noun.",
       "evidenceKey": "fr-numbers-foundation-review",
       "assistanceAffectsEvidence": [
@@ -5058,7 +5355,18 @@
           "J’ai un frère."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je ai un frère.",
+            "category": "incorrect answer",
+            "explanation": "ai contracts with je to j'ai."
+          },
+          {
+            "answer": "J'ai une frère.",
+            "category": "wrong article",
+            "explanation": "frère is masculine: un frère."
+          }
+        ]
       }
     },
     {
@@ -5076,7 +5384,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: numbers and age.",
-      "hints": [],
+      "hints": [
+        "The model gives the age: j'ai + trente + ans — writing 30 for trente is accepted too."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "fr-numbers-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -5092,7 +5402,13 @@
           "J’ai 30 ans."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis trente ans.",
+            "category": "incorrect answer",
+            "explanation": "Ages use avoir, not être: J'ai trente ans."
+          }
+        ]
       }
     },
     {
@@ -5111,7 +5427,9 @@
         "vocabulary"
       ],
       "prompt": "Marie has moved into what?",
-      "hints": [],
+      "hints": [
+        "Marie 'entre dans sa nouvelle maison' — she moved into a new house: une maison."
+      ],
       "feedback": "Une maison means a house. Petite and blanche both agree with the feminine noun maison.",
       "evidenceKey": "fr-home-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5158,8 +5476,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete Marie’s discovery: ___ livre est sur la table.",
-      "hints": [],
+      "prompt": "Complete with the word for 'the': ___ livre est sur la table.",
+      "hints": [
+        "livre is masculine, so the word for 'the' is the masculine article: le, not la."
+      ],
       "feedback": "Le livre: livre is masculine, so it takes le. Maison is feminine: la maison.",
       "evidenceKey": "fr-home-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5185,7 +5505,18 @@
             "Le"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "La",
+              "category": "wrong article",
+              "explanation": "livre is masculine, so 'the' is le. La would need a feminine noun."
+            },
+            {
+              "answer": "Son",
+              "category": "incorrect answer",
+              "explanation": "The prompt asks for the article 'the' (le), not the possessive 'her' (son)."
+            }
+          ]
         }
       }
     },
@@ -5205,7 +5536,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “white (masculine)”?",
-      "hints": [],
+      "hints": [
+        "The question asks for the masculine form of white — the short form without the extra -e."
+      ],
       "feedback": "Many feminine adjectives add -e, but some change more: blanc → blanche. A white house is une maison blanche; a white book is un livre blanc. Grand becomes grande with a feminine noun.",
       "evidenceKey": "fr-descriptions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5253,7 +5586,9 @@
         "grammar"
       ],
       "prompt": "Write in French: The house is white.",
-      "hints": [],
+      "hints": [
+        "maison is feminine, so the white adjective takes the feminine form: blanc becomes blanche."
+      ],
       "feedback": "Many feminine adjectives add -e, but some change more: blanc → blanche. A white house is une maison blanche; a white book is un livre blanc. Grand becomes grande with a feminine noun.",
       "evidenceKey": "fr-descriptions-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -5292,7 +5627,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The book is white.",
-      "hints": [],
+      "hints": [
+        "Start with the article Le, then the noun livre, then est, and finish with the masculine form of white: blanc."
+      ],
       "feedback": "Many feminine adjectives add -e, but some change more: blanc → blanche. A white house is une maison blanche; a white book is un livre blanc. Grand becomes grande with a feminine noun.",
       "evidenceKey": "fr-descriptions-foundation-order",
       "assistanceAffectsEvidence": [
@@ -5343,8 +5680,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: La maison est ___.",
-      "hints": [],
+      "prompt": "Complete: La maison est ___ (white).",
+      "hints": [
+        "maison is feminine, so the adjective takes the feminine form — 'white' with a feminine noun is blanche (blanc becomes blanche)."
+      ],
       "feedback": "Many feminine adjectives add -e, but some change more: blanc → blanche. A white house is une maison blanche; a white book is un livre blanc. Grand becomes grande with a feminine noun.",
       "evidenceKey": "fr-descriptions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5374,7 +5713,18 @@
             "blanche"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "blanc",
+              "category": "wrong gender",
+              "explanation": "maison is feminine, so the adjective adds the -e: blanche, not blanc."
+            },
+            {
+              "answer": "grande",
+              "category": "incorrect answer",
+              "explanation": "The prompt asks for white — blanche. (Grande belongs to the 'big house' sentence.)"
+            }
+          ]
         }
       }
     },
@@ -5394,7 +5744,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “the books”?",
-      "hints": [],
+      "hints": [
+        "The plural definite article is les for both genders: 'the books' is les livres."
+      ],
       "feedback": "Most French nouns and adjectives add -s in the plural. The definite article becomes les for both genders. The verb être becomes sont with plural third-person subjects. Many final s letters are silent, but matter in writing.",
       "evidenceKey": "fr-plural-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5442,7 +5794,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The houses are big.",
-      "hints": [],
+      "hints": [
+        "A plural subject (les maisons) needs the plural verb sont, and the feminine adjective also adds -s: grandes."
+      ],
       "feedback": "Most French nouns and adjectives add -s in the plural. The definite article becomes les for both genders. The verb être becomes sont with plural third-person subjects. Many final s letters are silent, but matter in writing.",
       "evidenceKey": "fr-plural-foundation-order",
       "assistanceAffectsEvidence": [
@@ -5494,7 +5848,9 @@
         "grammar"
       ],
       "prompt": "Complete: Les livres ___ blancs.",
-      "hints": [],
+      "hints": [
+        "The blank is the verb: with a plural subject (les livres), être becomes sont."
+      ],
       "feedback": "Most French nouns and adjectives add -s in the plural. The definite article becomes les for both genders. The verb être becomes sont with plural third-person subjects. Many final s letters are silent, but matter in writing.",
       "evidenceKey": "fr-plural-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5524,7 +5880,13 @@
             "sont"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "est",
+              "category": "wrong number",
+              "explanation": "les livres is plural, so the verb must be plural too: sont, not est."
+            }
+          ]
         }
       }
     },
@@ -5544,7 +5906,9 @@
         "grammar"
       ],
       "prompt": "Write in French: The books are white.",
-      "hints": [],
+      "hints": [
+        "Make everything plural: les + livres, the verb sont, and the adjective blancs — don't drop the -s on the adjective."
+      ],
       "feedback": "Most French nouns and adjectives add -s in the plural. The definite article becomes les for both genders. The verb être becomes sont with plural third-person subjects. Many final s letters are silent, but matter in writing.",
       "evidenceKey": "fr-plural-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -5583,7 +5947,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I study”?",
-      "hints": [],
+      "hints": [
+        "'I study' contracts before the vowel: j' + étudie."
+      ],
       "feedback": "J’étudie means “I study”; Anna uses it for her own routine.",
       "evidenceKey": "fr-routine-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5630,9 +5996,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Tu ___ à la maison.",
-      "hints": [],
-      "feedback": "Tu étudies: the -es ending belongs with tu.",
+      "prompt": "Complete Anna’s words to Marc: Tu ___ à la maison.",
+      "hints": [
+        "Anna says it about Marc, who works from home: the tu-form of travailler ends in -es — tu travailles."
+      ],
+      "feedback": "Tu travailles : the -es ending belongs with tu — Anna says it to Marc, who works from home.",
       "evidenceKey": "fr-routine-foundation-cloze",
       "assistanceAffectsEvidence": [
         "hint",
@@ -5661,7 +6029,18 @@
             "travailles"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "es",
+              "category": "incorrect answer",
+              "explanation": "Anna is telling Marc about his working from home: tu travailles. (Tu es would mean 'you are'.)"
+            },
+            {
+              "answer": "étudies",
+              "category": "incorrect answer",
+              "explanation": "Anna studies at home; Marc works from home. Here she speaks about his working: tu travailles."
+            }
+          ]
         }
       }
     },
@@ -17502,7 +17881,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The house is big.",
-      "hints": [],
+      "hints": [
+        "Start with La, then the noun maison, then est, and finish with the feminine form of big: grande."
+      ],
       "feedback": "La maison est grande. — feminine noun, feminine adjective.",
       "evidenceKey": "fr-descriptions-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -17554,7 +17935,9 @@
         "vocabulary"
       ],
       "prompt": "Which adjective completes it? « Le livre est ___. »",
-      "hints": [],
+      "hints": [
+        "The subject is 'le livre' — masculine singular — so the adjective must be the masculine singular form: blanc, not blanche or blancs."
+      ],
       "feedback": "Le livre est blanc — masculine singular noun, masculine singular adjective.",
       "evidenceKey": "fr-descriptions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17618,7 +18001,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The books are white.",
-      "hints": [],
+      "hints": [
+        "Les + the noun livre with its -s, then the plural verb sont, then the plural masculine form of white: blancs."
+      ],
       "feedback": "Les livres sont blancs. — plural noun, plural verb, plural adjective.",
       "evidenceKey": "fr-plural-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -17670,7 +18055,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb completes it? « Les maisons ___ grandes. »",
-      "hints": [],
+      "hints": [
+        "A plural subject like les maisons takes the plural form of être — the one that means 'are'."
+      ],
       "feedback": "Les maisons sont grandes — a plural subject takes sont.",
       "evidenceKey": "fr-plural-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18507,7 +18894,9 @@
         "vocabulary"
       ],
       "prompt": "How is Marie's house?",
-      "hints": [],
+      "hints": [
+        "The story says the house is 'petite et blanche' — find the option that keeps both adjectives."
+      ],
       "feedback": "Petite, mais blanche — did you catch both adjectives?",
       "evidenceKey": "fr-home-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18571,7 +18960,9 @@
         "vocabulary"
       ],
       "prompt": "Where does Marie look for her cat?",
-      "hints": [],
+      "hints": [
+        "She checks 'sous la table' and 'derrière la porte' — the option with both places."
+      ],
       "feedback": "She checks under the table and behind the door. A tiny meow gives the cat away.",
       "evidenceKey": "fr-home-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18634,8 +19025,10 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "The cat found a place to sleep. Tell Marie in French where it is.",
-      "hints": [],
+      "prompt": "Write in French: The cat is on the book.",
+      "hints": [
+        "The story's two blocks: le chat (the cat) + est sur le livre (is on the book)."
+      ],
       "feedback": "Le chat est sur le livre. He made her book his cushion.",
       "evidenceKey": "fr-home-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -18645,10 +19038,22 @@
       "answer": {
         "answers": [
           "Le chat est sur le livre.",
-          "Le chat est sur le livre !"
+          "Le chat est sur le livre !",
+          "Le chat dort sur le livre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le chat est sur le table.",
+            "category": "wrong article",
+            "explanation": "The cat is on the BOOK — livre is masculine: le livre. (Table is feminine: la table.)"
+          },
+          {
+            "answer": "Le chat sur le livre.",
+            "category": "missing word",
+            "explanation": "Add the verb est: Le chat est sur le livre."
+          }
+        ]
       }
     },
     {
@@ -18669,7 +19074,9 @@
         "vocabulary"
       ],
       "prompt": "Write in French: Marie’s house is small and white.",
-      "hints": [],
+      "hints": [
+        "Say 'the house of Marie' (la maison de Marie), add est, then both adjectives in their feminine forms: petite et blanche."
+      ],
       "feedback": "Maison is feminine, so both adjectives are feminine: petite et blanche.",
       "evidenceKey": "fr-home-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -18683,7 +19090,18 @@
           "La maison est petite et blanche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La maison de Marie est petit et blanc.",
+            "category": "wrong gender",
+            "explanation": "maison is feminine, so both adjectives take the feminine forms: petite et blanche."
+          },
+          {
+            "answer": "Le maison de Marie est petite et blanche.",
+            "category": "wrong article",
+            "explanation": "maison is feminine: la maison."
+          }
+        ]
       }
     },
     {
@@ -18720,7 +19138,9 @@
         "vocabulary"
       ],
       "prompt": "What does Anna study in the morning?",
-      "hints": [],
+      "hints": [
+        "The story: 'le matin, le français; l'après-midi, les maths' — in the morning it's French."
+      ],
       "feedback": "Le français le matin, les maths l'après-midi — chaque jour.",
       "evidenceKey": "fr-routine-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18784,7 +19204,9 @@
         "vocabulary"
       ],
       "prompt": "Where does Marc work today?",
-      "hints": [],
+      "hints": [
+        "Marc 'travaille à la maison, sur son ordinateur' — he works from home."
+      ],
       "feedback": "À la maison, sur son ordinateur — comme Anna.",
       "evidenceKey": "fr-routine-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18848,7 +19270,9 @@
         "vocabulary"
       ],
       "prompt": "Write in French: Tomorrow, she is going to study.",
-      "hints": [],
+      "hints": [
+        "demain = tomorrow; 'she is going to' = elle va; then the verb stays in the infinitive: étudier."
+      ],
       "feedback": "Demain, elle va étudier. — chaque jour, comme toujours.",
       "evidenceKey": "fr-routine-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -18861,7 +19285,13 @@
           "Elle va étudier demain."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Demain, elle va étudie.",
+            "category": "wrong conjugation",
+            "explanation": "After va, the verb stays in the infinitive: elle va étudier, not étudie."
+          }
+        ]
       }
     },
     {
@@ -18882,7 +19312,9 @@
         "vocabulary"
       ],
       "prompt": "Write in French: I study French every day.",
-      "hints": [],
+      "hints": [
+        "'I study' = j'étudie; 'French' takes the article: le français; 'every day' = chaque jour — put it at the start or the end."
+      ],
       "feedback": "Ta journée, tes mots.",
       "evidenceKey": "fr-routine-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -18892,10 +19324,17 @@
       "answer": {
         "answers": [
           "J'étudie le français chaque jour.",
-          "Chaque jour, j'étudie le français."
+          "Chaque jour, j'étudie le français.",
+          "J'étudie chaque jour le français."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J'étudie français chaque jour.",
+            "category": "missing word",
+            "explanation": "The language takes the article in French: le français."
+          }
+        ]
       }
     },
     {

@@ -6,7 +6,7 @@
   "status": "active",
   "title": "Italian foundations",
   "sourceLanguage": "en",
-  "description": "Twenty-four original A1 foundation lessons. A growing course, not a complete A1 certification syllabus. Adds 17 new CEFR A2 lessons (units 9–13): past tenses, the future, the conditional and courtesy, linking words, and work & technology — including a hotel mission.",
+  "description": "Thirty-two original A1 foundation lessons (units 1–8). A growing course, not a complete A1 certification syllabus. Adds 17 new CEFR A2 lessons (units 9–13): past tenses, the future, the conditional and courtesy, linking words, and work & technology — including a hotel mission.",
   "attribution": "Original VerbaLibera authoring, 2026. MIT. Machine-authored and consistency-checked; native-speaker editorial review remains open. The A2 lessons (units 9–13) are machine-authored and pending native-speaker review.",
   "units": [
     {
@@ -3513,7 +3513,9 @@
         "vocabulary"
       ],
       "prompt": "At the bar counter, the barista looks up. What is a polite morning greeting?",
-      "hints": [],
+      "hints": [
+        "It's morning and the barista doesn't know you, so the polite daytime greeting is buongiorno. Ciao is for friends, arrivederci is for leaving, and grazie is for thanking."
+      ],
       "feedback": "Buongiorno suits a morning greeting to someone you do not know.",
       "evidenceKey": "it-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -3562,7 +3564,9 @@
         "grammar"
       ],
       "prompt": "Build the order: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "Put the polite request in order: the article un, then the drink caffè, then per favore at the end."
+      ],
       "feedback": "Un caffè, per favore. This asks for one coffee politely.",
       "evidenceKey": "it-cafe-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -3610,7 +3614,9 @@
         "vocabulary"
       ],
       "prompt": "The barista hands you the cup. What do you say?",
-      "hints": [],
+      "hints": [
+        "The barista just handed you the coffee — the word for thanking is grazie. Ciao is a greeting, per favore asks for something, sì means yes."
+      ],
       "feedback": "Grazie closes the exchange.",
       "evidenceKey": "it-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -3659,7 +3665,9 @@
         "vocabulary"
       ],
       "prompt": "Say the order once in your head. Then write in Italian: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "Write the order you built with the tiles: un + caffè (with the accent on the è) + per favore."
+      ],
       "feedback": "You wrote the order without the tiles.",
       "evidenceKey": "it-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -3668,10 +3676,27 @@
       ],
       "answer": {
         "answers": [
-          "Un caffè, per favore."
+          "Un caffè, per favore.",
+          "Per favore, un caffè."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Un cafe, per favore.",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè is written with a grave accent on the è — caffe would be read differently in Italian."
+          },
+          {
+            "answer": "Una caffè, per favore.",
+            "category": "wrong gender",
+            "explanation": "Caffè is a masculine noun, so it takes un: un caffè, not una."
+          },
+          {
+            "answer": "Vorrei un caffè.",
+            "category": "incorrect answer",
+            "explanation": "Vorrei (I would like) is the more polite order you'll meet in a later lesson. This mission teaches the simple order: Un caffè, per favore."
+          }
+        ]
       }
     },
     {
@@ -3693,7 +3718,9 @@
         "vocabulary"
       ],
       "prompt": "Match the three lines you used to their meanings.",
-      "hints": [],
+      "hints": [
+        "Match each line you used to its English meaning: buongiorno is the hello, the coffee line is the request, grazie is the thanks."
+      ],
       "feedback": "You can recognize the whole exchange.",
       "evidenceKey": "it-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -3762,7 +3789,9 @@
         "speaking"
       ],
       "prompt": "Write the three lines in order: Good morning. / A coffee, please. / Thank you.",
-      "hints": [],
+      "hints": [
+        "Three lines in exchange order: the morning greeting, then the coffee request, then the thanks — each line ends with a period."
+      ],
       "feedback": "You greeted the barista, ordered, and thanked them.",
       "evidenceKey": "it-cafe-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -3774,7 +3803,18 @@
           "Buongiorno. Un caffè, per favore. Grazie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ciao. Un caffè, per favore. Grazie.",
+            "category": "incorrect answer",
+            "explanation": "At the bar you don't know the barista, so use the polite Buongiorno, not the informal ciao."
+          },
+          {
+            "answer": "Buongiorno. Grazie. Un caffè, per favore.",
+            "category": "word-order problem",
+            "explanation": "The English dictates the exchange order: greet first (Buongiorno), then the order, then the thanks."
+          }
+        ]
       }
     },
     {
@@ -3800,7 +3840,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “am”?",
-      "hints": [],
+      "hints": [
+        "Sono is the I-form of essere (to be): io sono = I am. Io alone means I, italiana is a nationality, ciao is a greeting."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -3848,7 +3890,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Sono italiana.",
-      "hints": [],
+      "hints": [
+        "Sono = I am; italiana = Italian (for a woman). Give the meaning in English: I … Italian."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -3864,7 +3908,18 @@
           "I'm Italian."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I am an Italian.",
+            "category": "wrong article",
+            "explanation": "Nationality takes no article in English: I am Italian, not I am an Italian."
+          },
+          {
+            "answer": "I am Italiana.",
+            "category": "incorrect answer",
+            "explanation": "Give the meaning in English: Italiana is the Italian word (feminine) for Italian."
+          }
+        ]
       }
     },
     {
@@ -3883,7 +3938,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: I am Italian (a woman).",
-      "hints": [],
+      "hints": [
+        "Two tiles: the I-form of essere (Sono) comes first, then the feminine adjective italiana with the period."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-order",
       "assistanceAffectsEvidence": [
@@ -3925,7 +3982,9 @@
         "grammar"
       ],
       "prompt": "Complete: Io ___ Anna.",
-      "hints": [],
+      "hints": [
+        "The missing verb is the I-form of essere used with io in introductions: io ___ Anna."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -3955,7 +4014,18 @@
             "sono"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "è",
+              "category": "wrong conjugation",
+              "explanation": "È is the lui/lei form; with io, essere is sono."
+            },
+            {
+              "answer": "sei",
+              "category": "wrong conjugation",
+              "explanation": "Sei is the tu form; with io, use sono."
+            }
+          ]
         }
       }
     },
@@ -3975,7 +4045,9 @@
         "grammar"
       ],
       "prompt": "You are Anna, meeting someone for the first time. Introduce yourself in Italian: I am Anna.",
-      "hints": [],
+      "hints": [
+        "Sono = I am. Say who you are: (io) + sono + Anna. Italian can drop the io because the verb says who the speaker is."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4015,7 +4087,9 @@
         "vocabulary"
       ],
       "prompt": "What is her name? (Reading 1)",
-      "hints": [],
+      "hints": [
+        "The passage starts Ciao! Io sono Anna. — the name comes right after sono."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-identity-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4030,7 +4104,18 @@
           "Anna"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "italiana",
+            "category": "incorrect answer",
+            "explanation": "Italiana is her nationality, not her name — look at the word right after sono in the first line."
+          },
+          {
+            "answer": "She is Italian.",
+            "category": "incorrect answer",
+            "explanation": "The question asks for her name, not her nationality. Answer with the name alone: Anna."
+          }
+        ]
       }
     },
     {
@@ -4048,7 +4133,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: names and introductions.",
-      "hints": [],
+      "hints": [
+        "The model is the introduction from this lesson: io + sono + the name Anna."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-identity-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4063,7 +4150,23 @@
           "Io sono Anna."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sono Anna.",
+            "category": "missing word",
+            "explanation": "The audio says the full model Io sono Anna. — include the io you heard."
+          },
+          {
+            "answer": "Io sonno Anna.",
+            "category": "incorrect answer",
+            "explanation": "Sonno means sleep! The verb is sono (I am) with one n."
+          },
+          {
+            "answer": "Io è Anna.",
+            "category": "wrong conjugation",
+            "explanation": "With io, essere is sono, not è."
+          }
+        ]
       }
     },
     {
@@ -4089,7 +4192,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “are (with tu)”?",
-      "hints": [],
+      "hints": [
+        "Essere with tu is irregular: tu sei (you are). È belongs with lui/lei; lei can also mean she."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4137,7 +4242,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Lei è italiana.",
-      "hints": [],
+      "hints": [
+        "Lei = she, è = is, italiana = Italian. Say it as an English sentence: She … Italian."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4148,10 +4255,17 @@
       "id": "it-people-foundation-meaning",
       "answer": {
         "answers": [
-          "She is Italian."
+          "She is Italian.",
+          "You are Italian."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "He is Italian.",
+            "category": "wrong gender",
+            "explanation": "Lei is she; lui is he. The sentence is about a woman: She is Italian."
+          }
+        ]
       }
     },
     {
@@ -4170,7 +4284,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: She is Italian.",
-      "hints": [],
+      "hints": [
+        "Subject first (Lei), then the verb è, then the feminine adjective italiana."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4217,7 +4333,9 @@
         "grammar"
       ],
       "prompt": "Complete: Tu ___ Marco.",
-      "hints": [],
+      "hints": [
+        "Tu takes the tu-form of essere: tu ___ Marco."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4247,7 +4365,18 @@
             "sei"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "è",
+              "category": "wrong conjugation",
+              "explanation": "È is for lui/lei; with tu, essere is sei."
+            },
+            {
+              "answer": "sono",
+              "category": "wrong conjugation",
+              "explanation": "Sono goes with io; tu takes sei."
+            }
+          ]
         }
       }
     },
@@ -4267,7 +4396,9 @@
         "grammar"
       ],
       "prompt": "You recognize Marco at a café. Address him in Italian: You are Marco.",
-      "hints": [],
+      "hints": [
+        "Address Marco directly: tu + the tu-form of essere (sei) + Marco."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4306,7 +4437,9 @@
         "vocabulary"
       ],
       "prompt": "Who is Italian? (Reading 2)",
-      "hints": [],
+      "hints": [
+        "The passage says Anna è italiana. Tu sei Marco. — which person is Italian?"
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-people-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4321,7 +4454,18 @@
           "Anna"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Marco",
+            "category": "incorrect answer",
+            "explanation": "Marco is the person addressed (tu sei Marco); the one who is Italian is Anna."
+          },
+          {
+            "answer": "italiana",
+            "category": "incorrect answer",
+            "explanation": "Italiana is the adjective; the question asks which person — answer Anna."
+          }
+        ]
       }
     },
     {
@@ -4340,7 +4484,9 @@
         "grammar"
       ],
       "prompt": "Recall from Names and introductions: I am Anna.",
-      "hints": [],
+      "hints": [
+        "This is the very first introduction you learned: io + sono + name."
+      ],
       "feedback": "Io means I. Sono is the I-form of essere (to be). Italian often omits io because the verb identifies the speaker. Use sono with your name or nationality. Ciao is informal; buongiorno is a polite greeting.",
       "evidenceKey": "it-people-foundation-review",
       "assistanceAffectsEvidence": [
@@ -4355,7 +4501,13 @@
           "sono Anna."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io è Anna.",
+            "category": "wrong conjugation",
+            "explanation": "With io, essere is sono: Io sono Anna."
+          }
+        ]
       }
     },
     {
@@ -4373,7 +4525,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: people and essere.",
-      "hints": [],
+      "hints": [
+        "The model is the phrase with Marco: tu + sei + the name."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-people-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4388,7 +4542,18 @@
           "Tu sei Marco."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu è Marco.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, essere is sei, not è: Tu sei Marco."
+          },
+          {
+            "answer": "Sei Marco.",
+            "category": "missing word",
+            "explanation": "The audio says the full model Tu sei Marco. — keep the tu you heard."
+          }
+        ]
       }
     },
     {
@@ -4414,7 +4579,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “a brother”?",
-      "hints": [],
+      "hints": [
+        "Un + a masculine noun means a/an. Fratello is brother and sorella is sister — pick the brother."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4462,7 +4629,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Hai una sorella.",
-      "hints": [],
+      "hints": [
+        "Hai = you have; una sorella = a sister. Give the meaning in English."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4477,7 +4646,13 @@
           "You've a sister."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You have a brother.",
+            "category": "incorrect answer",
+            "explanation": "Sorella is sister; fratello would be brother."
+          }
+        ]
       }
     },
     {
@@ -4496,7 +4671,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: You have a sister.",
-      "hints": [],
+      "hints": [
+        "Start with the tu-form of avere (Hai), then una (a/an before a feminine noun), then sorella."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4543,7 +4720,9 @@
         "grammar"
       ],
       "prompt": "Complete: Io ___ un fratello.",
-      "hints": [],
+      "hints": [
+        "The io-form of avere with the silent h: io ___ un fratello."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4573,7 +4752,18 @@
             "ho"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ha",
+              "category": "wrong conjugation",
+              "explanation": "Ha is the lui/lei form; with io, avere is ho."
+            },
+            {
+              "answer": "hai",
+              "category": "wrong conjugation",
+              "explanation": "Hai is the tu form; with io, use ho."
+            }
+          ]
         }
       }
     },
@@ -4593,7 +4783,9 @@
         "grammar"
       ],
       "prompt": "A new friend asks about your family. Tell them in Italian: I have a brother.",
-      "hints": [],
+      "hints": [
+        "Say what you have: the io-form of avere (ho) + un + fratello. The h in ho is silent but written."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4633,7 +4825,9 @@
         "vocabulary"
       ],
       "prompt": "What is the brother’s name? (Reading 3)",
-      "hints": [],
+      "hints": [
+        "The passage: Sono Anna. Ho un fratello. Lui è Marco. — the brother's name follows lui è."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-family-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4648,7 +4842,13 @@
           "Marco"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Anna",
+            "category": "incorrect answer",
+            "explanation": "Anna is the speaker, not the brother — the name you want follows lui è."
+          }
+        ]
       }
     },
     {
@@ -4667,7 +4867,9 @@
         "grammar"
       ],
       "prompt": "Recall from People and essere: You are Marco.",
-      "hints": [],
+      "hints": [
+        "From the people lesson: tu + the tu-form of essere (sei) + Marco."
+      ],
       "feedback": "Tu means you (one familiar person); lui and lei mean he and she. Essere changes: io sono, tu sei, lui/lei è. Use the accent on è (is): e without the accent means and.",
       "evidenceKey": "it-family-foundation-review",
       "assistanceAffectsEvidence": [
@@ -4681,7 +4883,13 @@
           "Tu sei Marco."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu è Marco.",
+            "category": "wrong conjugation",
+            "explanation": "With tu, essere is sei, not è."
+          }
+        ]
       }
     },
     {
@@ -4699,7 +4907,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: family and avere.",
-      "hints": [],
+      "hints": [
+        "The model is what you say about having a brother: ho + un + fratello."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-family-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -4714,7 +4924,18 @@
           "Ho un fratello."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io ha un fratello.",
+            "category": "wrong conjugation",
+            "explanation": "With io, avere is ho, not ha."
+          },
+          {
+            "answer": "Ho una fratello.",
+            "category": "wrong gender",
+            "explanation": "Fratello is a masculine noun and takes un: un fratello, not una."
+          }
+        ]
       }
     },
     {
@@ -4740,7 +4961,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “twenty”?",
-      "hints": [],
+      "hints": [
+        "Venti is twenty and trenta is thirty. Anni means years — pick the one that means twenty."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4788,7 +5011,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Hai trenta anni?",
-      "hints": [],
+      "hints": [
+        "Hai = you have; trenta anni = thirty years. Italian says 'have years' for age — English asks it differently."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4799,10 +5024,22 @@
       "id": "it-numbers-foundation-meaning",
       "answer": {
         "answers": [
-          "Are you thirty years old?"
+          "Are you thirty years old?",
+          "Are you 30 years old?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You have thirty years.",
+            "category": "incorrect answer",
+            "explanation": "English doesn't express age with 'have': say Are you thirty years old?"
+          },
+          {
+            "answer": "You are thirty years old.",
+            "category": "incorrect answer",
+            "explanation": "The Italian ends with a question mark — ask it as a question in English: Are you thirty years old?"
+          }
+        ]
       }
     },
     {
@@ -4821,7 +5058,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Are you thirty years old?",
-      "hints": [],
+      "hints": [
+        "Question order: the tu-form of avere (Hai) + trenta + anni, with the question mark at the end."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4868,7 +5107,9 @@
         "grammar"
       ],
       "prompt": "Complete: ___ venti anni.",
-      "hints": [],
+      "hints": [
+        "Age takes avere — the sentence starts with the io-form of avere, capitalized: ___ venti anni."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4894,7 +5135,18 @@
             "Ho"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Sono",
+              "category": "incorrect answer",
+              "explanation": "A person's age takes avere, not essere: Ho venti anni."
+            },
+            {
+              "answer": "Io",
+              "category": "missing word",
+              "explanation": "Io is the subject pronoun, not the verb — write the io-form of avere: Ho venti anni."
+            }
+          ]
         }
       }
     },
@@ -4914,7 +5166,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: I am twenty years old.",
-      "hints": [],
+      "hints": [
+        "Age in Italian uses avere, not essere: ho + venti + anni."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -4926,7 +5180,9 @@
       "answer": {
         "answers": [
           "Ho venti anni.",
-          "Io ho venti anni."
+          "Io ho venti anni.",
+          "Ho 20 anni.",
+          "Io ho 20 anni."
         ],
         "allowTypo": false,
         "errors": [
@@ -4954,7 +5210,9 @@
         "vocabulary"
       ],
       "prompt": "How old is the sister? Answer with the Italian number. (Reading 4)",
-      "hints": [],
+      "hints": [
+        "The passage: Ho venti anni. Ho una sorella. Lei ha trenta anni. — the sister's age is in the last line."
+      ],
       "feedback": "Italian expresses age with avere: ho venti anni literally means I have twenty years. Learn venti (twenty) and trenta (thirty). Hai asks about your age when the voice rises; writing adds a question mark.",
       "evidenceKey": "it-numbers-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4969,7 +5227,18 @@
           "trenta"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "venti",
+            "category": "incorrect answer",
+            "explanation": "Venti is the speaker's age; the sister (lei) has trenta anni."
+          },
+          {
+            "answer": "Lei ha trenta anni.",
+            "category": "incorrect answer",
+            "explanation": "The question asks for the number only — answer just trenta."
+          }
+        ]
       }
     },
     {
@@ -4988,7 +5257,9 @@
         "grammar"
       ],
       "prompt": "Recall from Family and avere: I have a brother.",
-      "hints": [],
+      "hints": [
+        "From the family lesson: what you have (ho) + un + fratello."
+      ],
       "feedback": "Avere means to have: io ho, tu hai, lui/lei ha. The h is silent but required. Un is an indefinite article with a masculine noun; una is feminine. Learn un fratello and una sorella as phrases.",
       "evidenceKey": "it-numbers-foundation-review",
       "assistanceAffectsEvidence": [
@@ -5003,7 +5274,13 @@
           "Io ho un fratello."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io ha un fratello.",
+            "category": "wrong conjugation",
+            "explanation": "With io, avere is ho, not ha."
+          }
+        ]
       }
     },
     {
@@ -5021,7 +5298,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: numbers and age.",
-      "hints": [],
+      "hints": [
+        "The model tells your age with avere: ho + venti + anni."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-numbers-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -5037,7 +5316,13 @@
           "Ho 20 anni."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sono venti anni.",
+            "category": "incorrect answer",
+            "explanation": "A person's age takes avere, not essere: Ho venti anni."
+          }
+        ]
       }
     },
     {
@@ -5056,7 +5341,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “a house”?",
-      "hints": [],
+      "hints": [
+        "Una + a feminine noun means a/an; casa is the feminine word for house."
+      ],
       "feedback": "Una casa is a house; casa is feminine.",
       "evidenceKey": "it-home-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5104,7 +5391,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Il libro è in casa.",
-      "hints": [],
+      "hints": [
+        "Il libro = the book; è in casa = is at home (in the house)."
+      ],
       "feedback": "Il libro è in casa means the book is in the house.",
       "evidenceKey": "it-home-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5115,10 +5404,22 @@
       "id": "it-home-foundation-meaning",
       "answer": {
         "answers": [
-          "The book is at home."
+          "The book is at home.",
+          "The book is in the house."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The book is in house.",
+            "category": "missing word",
+            "explanation": "In English you need the article: The book is at home / in the house."
+          },
+          {
+            "answer": "Book is at home.",
+            "category": "missing word",
+            "explanation": "The Italian says il libro (the book) — keep the article in English too."
+          }
+        ]
       }
     },
     {
@@ -5137,7 +5438,9 @@
         "grammar"
       ],
       "prompt": "Complete: ___ libro è in casa.",
-      "hints": [],
+      "hints": [
+        "Libro is a masculine singular noun, so it takes the masculine singular article: ___ libro."
+      ],
       "feedback": "Il libro: libro is masculine, so it takes il.",
       "evidenceKey": "it-home-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5163,7 +5466,23 @@
             "Il"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "La",
+              "category": "wrong article",
+              "explanation": "Libro is masculine: il libro, not la."
+            },
+            {
+              "answer": "I",
+              "category": "wrong number",
+              "explanation": "I is the plural article (i libri); this is one book: il."
+            },
+            {
+              "answer": "Le",
+              "category": "wrong article",
+              "explanation": "Le is the feminine plural article; before masculine singular libro use il."
+            }
+          ]
         }
       }
     },
@@ -5190,7 +5509,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “white (feminine)”?",
-      "hints": [],
+      "hints": [
+        "Feminine adjectives end in -a: bianco (masculine) becomes bianca (feminine). Pick the feminine white."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5238,7 +5559,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Il libro è bianco.",
-      "hints": [],
+      "hints": [
+        "Il libro = the book; è bianco = is white (masculine form)."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5252,7 +5575,18 @@
           "The book is white."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A book is white.",
+            "category": "wrong article",
+            "explanation": "Il means the (definite); a would be un libro. Here: The book is white."
+          },
+          {
+            "answer": "The book white.",
+            "category": "missing word",
+            "explanation": "The sentence needs the verb is: The book is white."
+          }
+        ]
       }
     },
     {
@@ -5271,7 +5605,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The book is white.",
-      "hints": [],
+      "hints": [
+        "Il libro (the book) + è + bianco — the masculine adjective goes last."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-order",
       "assistanceAffectsEvidence": [
@@ -5323,7 +5659,9 @@
         "grammar"
       ],
       "prompt": "Complete: La casa è ___.",
-      "hints": [],
+      "hints": [
+        "Match the adjective to casa (feminine singular): it ends in -a → bianca, not bianco."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5349,7 +5687,18 @@
             "bianca"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bianco",
+              "category": "wrong gender",
+              "explanation": "Casa is feminine, so the adjective is bianca (bianco is the masculine form)."
+            },
+            {
+              "answer": "grande",
+              "category": "incorrect answer",
+              "explanation": "Grande means big; the sentence is about the house being white (bianca)."
+            }
+          ]
         }
       }
     },
@@ -5369,7 +5718,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: The house is white.",
-      "hints": [],
+      "hints": [
+        "Casa is feminine, so the adjective takes -a: La casa è bianca."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -5408,7 +5759,9 @@
         "vocabulary"
       ],
       "prompt": "Which thing is big? Answer in Italian. (Reading 6)",
-      "hints": [],
+      "hints": [
+        "The passage: La casa è bianca. Il libro è bianco. La casa è grande. — which one is grande?"
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-descriptions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5423,7 +5776,18 @@
           "la casa"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "grande",
+            "category": "incorrect answer",
+            "explanation": "Grande is the adjective (big); the thing that is big is la casa."
+          },
+          {
+            "answer": "il libro",
+            "category": "incorrect answer",
+            "explanation": "The book is bianco, not grande — re-read the passage to check which thing is big."
+          }
+        ]
       }
     },
     {
@@ -5442,7 +5806,9 @@
         "grammar"
       ],
       "prompt": "Recall from Home and definite articles: I have a house.",
-      "hints": [],
+      "hints": [
+        "From the home lesson: what you have (ho) + una + casa."
+      ],
       "feedback": "Il means the with many masculine singular nouns; la with feminine singular nouns. Before a vowel both may become l’. Here casa is feminine and libro is masculine. In una casa means in a house.",
       "evidenceKey": "it-descriptions-foundation-review",
       "assistanceAffectsEvidence": [
@@ -5457,7 +5823,18 @@
           "Io ho una casa."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io ha una casa.",
+            "category": "wrong conjugation",
+            "explanation": "With io, avere is ho, not ha."
+          },
+          {
+            "answer": "Ho un casa.",
+            "category": "wrong article",
+            "explanation": "Casa is feminine and takes una: una casa, not un."
+          }
+        ]
       }
     },
     {
@@ -5475,7 +5852,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: colors and agreement.",
-      "hints": [],
+      "hints": [
+        "The model: La casa (the house) è bianca (is white)."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-descriptions-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -5490,7 +5869,18 @@
           "La casa è bianca."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La casa è bianco.",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine, so the adjective is bianca."
+          },
+          {
+            "answer": "La casa e bianca.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) needs the grave accent; e without it means and."
+          }
+        ]
       }
     },
     {
@@ -5516,7 +5906,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “the books”?",
-      "hints": [],
+      "hints": [
+        "The plural of libro is libri, and the article il becomes i: i libri."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5564,7 +5956,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Le case sono grandi.",
-      "hints": [],
+      "hints": [
+        "Le case = the houses; sono grandi = are big."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5578,7 +5972,18 @@
           "The houses are big."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The houses is big.",
+            "category": "wrong number",
+            "explanation": "Houses is plural, so the English verb is are: The houses are big."
+          },
+          {
+            "answer": "Houses are big.",
+            "category": "missing word",
+            "explanation": "The Italian says le case (the houses) — keep the article: The houses are big."
+          }
+        ]
       }
     },
     {
@@ -5597,7 +6002,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: The houses are big.",
-      "hints": [],
+      "hints": [
+        "Le case (the houses) + sono (are) + grandi (big, feminine plural)."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-order",
       "assistanceAffectsEvidence": [
@@ -5649,7 +6056,9 @@
         "grammar"
       ],
       "prompt": "Complete: I libri sono ___.",
-      "hints": [],
+      "hints": [
+        "Make the adjective agree with the plural masculine noun libri: it ends in -i → bianchi."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5679,7 +6088,23 @@
             "bianchi"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bianco",
+              "category": "wrong number",
+              "explanation": "Libri is plural, so the adjective is bianchi, not bianco."
+            },
+            {
+              "answer": "bianca",
+              "category": "wrong gender",
+              "explanation": "Libri is masculine plural: bianchi (bianca is feminine singular)."
+            },
+            {
+              "answer": "bianche",
+              "category": "wrong gender",
+              "explanation": "Bianche is feminine plural (for case); libri is masculine: bianchi."
+            }
+          ]
         }
       }
     },
@@ -5699,7 +6124,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: The books are white.",
-      "hints": [],
+      "hints": [
+        "Libri is plural, so the color is plural too: bianchi (masculine plural), not bianco."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -5738,7 +6165,9 @@
         "vocabulary"
       ],
       "prompt": "What color are the books? Answer in Italian. (Reading 7)",
-      "hints": [],
+      "hints": [
+        "The passage: Le case sono grandi. I libri sono bianchi. — the books' color is in the last line."
+      ],
       "feedback": "Common masculine nouns change -o to -i: libro → libri. Many feminine nouns change -a to -e: casa → case. The articles also change: il → i; la → le. Sono means are with plural subjects as well as am with io.",
       "evidenceKey": "it-plural-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5753,7 +6182,18 @@
           "bianchi"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "bianco",
+            "category": "wrong number",
+            "explanation": "Libri is plural, so the color is plural too: bianchi."
+          },
+          {
+            "answer": "bianca",
+            "category": "wrong gender",
+            "explanation": "Libri is masculine plural: bianchi (bianca is feminine singular)."
+          }
+        ]
       }
     },
     {
@@ -5772,7 +6212,9 @@
         "grammar"
       ],
       "prompt": "Recall from Colors and agreement: The house is white.",
-      "hints": [],
+      "hints": [
+        "From the colors lesson: La casa + è + the feminine adjective bianca."
+      ],
       "feedback": "Many adjectives change -o to -a with feminine nouns. A white book is un libro bianco; a white house is una casa bianca. Grande works with either gender. These adjectives normally follow the noun.",
       "evidenceKey": "it-plural-foundation-review",
       "assistanceAffectsEvidence": [
@@ -5786,7 +6228,13 @@
           "La casa è bianca."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La casa è bianco.",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine: bianca, not bianco."
+          }
+        ]
       }
     },
     {
@@ -5804,7 +6252,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: more than one.",
-      "hints": [],
+      "hints": [
+        "The model: I libri (the books) sono bianchi (are white) — noun and adjective are both plural."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-plural-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -5819,7 +6269,18 @@
           "I libri sono bianchi."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I libri sono bianco.",
+            "category": "wrong number",
+            "explanation": "Plural libri takes the plural adjective bianchi."
+          },
+          {
+            "answer": "I libri sono bianca.",
+            "category": "wrong gender",
+            "explanation": "Libri is masculine plural: bianchi, not bianca."
+          }
+        ]
       }
     },
     {
@@ -5838,7 +6299,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “I study”?",
-      "hints": [],
+      "hints": [
+        "Studio means I study — the -o ending marks the io form. Studiare is the infinitive (to study)."
+      ],
       "feedback": "Studio means I study; Marco says it about his daily habit.",
       "evidenceKey": "it-routine-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5886,7 +6349,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Lavori in casa.",
-      "hints": [],
+      "hints": [
+        "Lavori = you work (tu form); in casa = at home."
+      ],
       "feedback": "Lavori in casa? asks “Do you work at home?”",
       "evidenceKey": "it-routine-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5897,10 +6362,17 @@
       "id": "it-routine-foundation-meaning",
       "answer": {
         "answers": [
-          "You work at home."
+          "You work at home.",
+          "You work in the house."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Do you work at home?",
+            "category": "incorrect answer",
+            "explanation": "The Italian sentence has no question mark — translate it as a statement: You work at home."
+          }
+        ]
       }
     },
     {
@@ -5919,7 +6391,9 @@
         "grammar"
       ],
       "prompt": "Complete: Io ___ ogni giorno.",
-      "hints": [],
+      "hints": [
+        "Io takes the -o form of studiare: io ___ ogni giorno."
+      ],
       "feedback": "Io studio ogni giorno: studio is the io form.",
       "evidenceKey": "it-routine-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5949,7 +6423,23 @@
             "studio"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "studi",
+              "category": "wrong conjugation",
+              "explanation": "Studi is the tu form; with io, the verb is studio."
+            },
+            {
+              "answer": "studia",
+              "category": "wrong conjugation",
+              "explanation": "Studia is the lui/lei form; right after io, the verb is studio."
+            },
+            {
+              "answer": "studiare",
+              "category": "wrong conjugation",
+              "explanation": "Studiare is the infinitive (to study); the io form is studio."
+            }
+          ]
         }
       }
     },
@@ -19223,7 +19713,9 @@
         "vocabulary"
       ],
       "prompt": "Where did Anna expect to find her favorite book?",
-      "hints": [],
+      "hints": [
+        "The first paragraph says Il suo libro preferito non è sul tavolo — Anna expected the book on the table."
+      ],
       "feedback": "On the table at home. It is missing now, so Anna keeps looking.",
       "evidenceKey": "it-home-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19286,7 +19778,9 @@
         "vocabulary"
       ],
       "prompt": "Anna opens the box and smiles. Write in Italian: “The book is in the house.”",
-      "hints": [],
+      "hints": [
+        "The model from the story: Il libro è in casa. — the + book + is + in + house. Watch the accent on è."
+      ],
       "feedback": "Il libro è in casa.",
       "evidenceKey": "it-home-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19299,7 +19793,18 @@
           "Il libro è nella casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il libro e in casa.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) carries the grave accent; e without the accent means and."
+          },
+          {
+            "answer": "La libro è in casa.",
+            "category": "wrong gender",
+            "explanation": "Libro is masculine, so the article is il: il libro, not la."
+          }
+        ]
       }
     },
     {
@@ -19335,7 +19840,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: Anna reads the book at home.",
-      "hints": [],
+      "hints": [
+        "Anna reads (legge) the book (il libro) at home (a casa)."
+      ],
       "feedback": "Anna legge il libro in casa.",
       "evidenceKey": "it-home-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -19348,7 +19855,18 @@
           "Anna legge il libro a casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Legge Anna il libro in casa.",
+            "category": "word-order problem",
+            "explanation": "Natural order is subject first: Anna legge il libro in casa."
+          },
+          {
+            "answer": "Anna leggere il libro in casa.",
+            "category": "wrong conjugation",
+            "explanation": "With Anna (lui/lei), leggere is legge — leggere is the infinitive (to read)."
+          }
+        ]
       }
     },
     {
@@ -19399,7 +19917,9 @@
         "vocabulary"
       ],
       "prompt": "Where does Marco study in the morning?",
-      "hints": [],
+      "hints": [
+        "The first beat says Studia ogni mattina a casa — where does Marco study?"
+      ],
       "feedback": "A casa — at home, every morning.",
       "evidenceKey": "it-routine-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19447,7 +19967,9 @@
         "vocabulary"
       ],
       "prompt": "Write what Marco does every evening, in Italian: “He studies every evening.”",
-      "hints": [],
+      "hints": [
+        "Marco studies (studia) every evening (ogni sera). With Marco (lui) the verb ends in -a."
+      ],
       "feedback": "Studia ogni sera. — routine is routine.",
       "evidenceKey": "it-routine-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19457,11 +19979,21 @@
       "answer": {
         "answers": [
           "Studia ogni sera.",
-          "Ogni sera studia.",
-          "La sera studia."
+          "Ogni sera studia."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Studiare ogni sera.",
+            "category": "wrong conjugation",
+            "explanation": "Studiare is the infinitive (to study); with Marco (lui) the form is studia."
+          },
+          {
+            "answer": "Lui studi ogni sera.",
+            "category": "wrong conjugation",
+            "explanation": "Studi is the tu form; with lui (Marco) the verb is studia."
+          }
+        ]
       }
     },
     {
@@ -19497,7 +20029,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: Marco studies and works every day.",
-      "hints": [],
+      "hints": [
+        "Marco studies (studia) and (e) works (lavora) every day (ogni giorno)."
+      ],
       "feedback": "Marco studia e lavora ogni giorno.",
       "evidenceKey": "it-routine-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -19510,7 +20044,18 @@
           "Ogni giorno Marco studia e lavora."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Marco studio e lavoro ogni giorno.",
+            "category": "wrong conjugation",
+            "explanation": "With Marco (lui), the verbs are studia e lavora; studio and lavoro are the io forms."
+          },
+          {
+            "answer": "Marco studiare e lavorare ogni giorno.",
+            "category": "wrong conjugation",
+            "explanation": "These are infinitives (to study, to work); with Marco, conjugate them: studia e lavora."
+          }
+        ]
       }
     },
     {

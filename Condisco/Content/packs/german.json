@@ -6,8 +6,8 @@
   "status": "active",
   "title": "German foundations",
   "sourceLanguage": "en",
-  "description": "35 A1 German lessons: first words, introductions, polite café requests, numbers and quantities, directions, prices, days and times, family, the weather, free time, plus 19 new discovery lessons on home and articles, describing things, plurals, daily routine, negation, asking questions, food and drink, possession, transport, polite requests, the past, making plans, months and dates, telling the time, the market, health and the body, the pharmacy, emergencies, and invitations. Lessons 1-8 have been through native-speaker review; the 19 new discovery lessons are machine-authored and pending review. 17 new A2 discovery/mission lessons (v0.7.0): talking about the past (Perfekt with haben and sein, Präteritum of modals, weekend stories), the future (Futur I for plans and guesses, resolutions), wishes and politeness (würde, polite requests, unreal wishes), connecting sentences (relative clauses, comparatives, superlatives, wo vs wohin), and work life (passive with werden, job vocabulary, a job-interview mission).",
-  "attribution": "Original VerbaLibera authoring, 2026. MIT. Machine-authored and consistency-checked. Native-speaker editorial review: lessons 1-8 reviewed 2026-09-11; lessons 9-10 pending; 19 discovery lessons added 2026-09-23 are machine-authored and pending native-speaker review. The 17 new A2 lessons added in v0.7.0 are machine-authored and pending native-speaker review.",
+  "description": "52 German lessons in 17 units. Units 1-12 (35 lessons, CEFR A1) cover first words, introductions, polite café requests, numbers and quantities, directions, prices, days and times, family, the weather, free time, home and articles, describing things, plurals, daily routine, negation, asking questions, food and drink, possession, transport, polite requests, the past, making plans, months and dates, telling the time, the market, health and the body, the pharmacy, emergencies, and invitations. Units 13-17 (17 lessons, CEFR A2) add talking about the past (Perfekt with haben and sein, Präteritum of modals, weekend stories), the future (Futur I for plans and guesses, resolutions), wishes and politeness (würde, polite requests, unreal wishes), connecting sentences (relative clauses, comparatives, superlatives, wo vs wohin), and work life (passive with werden, job vocabulary, a job-interview mission). Lesson types mix discovery, conversation, story, mission, construction, and recall practice. Editorial review is AI-assisted and developer-led against the project rubric; native-speaker review is pending for the whole pack.",
+  "attribution": "Original VerbaLibera authoring, 2026. MIT. Machine-authored and consistency-checked. Editorial review is AI-assisted and developer-led against the project rubric; native-speaker review is pending for the whole pack.",
   "units": [
     {
       "id": "de-unit-1",
@@ -3759,7 +3759,9 @@
         "vocabulary"
       ],
       "prompt": "The server pauses at the counter. Which greeting starts your order?",
-      "hints": [],
+      "hints": [
+        "The exchange starts with a greeting — the word you say when you arrive, not when you order or leave."
+      ],
       "feedback": "Hallo opens this short exchange. Now you can ask for the coffee.",
       "evidenceKey": "de-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -3808,7 +3810,9 @@
         "grammar"
       ],
       "prompt": "Build the order: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "Open with the object form of 'a' (Einen), then the drink Kaffee, and close with bitte."
+      ],
       "feedback": "Einen Kaffee, bitte. The -n belongs to the thing you are ordering.",
       "evidenceKey": "de-cafe-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -3856,7 +3860,9 @@
         "vocabulary"
       ],
       "prompt": "The coffee is ready. How do you thank the server?",
-      "hints": [],
+      "hints": [
+        "The coffee has arrived — thank the server. The word starts like English 'thanks'."
+      ],
       "feedback": "Danke is the last line of your exchange.",
       "evidenceKey": "de-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -3905,7 +3911,9 @@
         "vocabulary"
       ],
       "prompt": "Say the order once in your head. Then write in German: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "You built this with the word tiles a moment ago: Einen (object form of 'a') + Kaffee + bitte."
+      ],
       "feedback": "You wrote the order without the tiles.",
       "evidenceKey": "de-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -3917,7 +3925,18 @@
           "Einen Kaffee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ein Kaffee, bitte.",
+            "category": "wrong article",
+            "explanation": "The coffee is the thing you are ordering, so the masculine article takes the object form: einen Kaffee, not ein Kaffee."
+          },
+          {
+            "answer": "Einen Kaffee.",
+            "category": "missing word",
+            "explanation": "Add bitte — the polite 'please' — to complete the request: Einen Kaffee, bitte."
+          }
+        ]
       }
     },
     {
@@ -3939,7 +3958,9 @@
         "vocabulary"
       ],
       "prompt": "Match the three lines you used to their meanings.",
-      "hints": [],
+      "hints": [
+        "Match each line to what it says in English, and let the order of your exchange guide you: greeting first, then the order, then the thanks."
+      ],
       "feedback": "You can recognize the whole exchange.",
       "evidenceKey": "de-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -4008,7 +4029,9 @@
         "speaking"
       ],
       "prompt": "Write the three lines in order: Hello. / A coffee, please. / Thank you.",
-      "hints": [],
+      "hints": [
+        "Write the three lines in the order you used them — greeting, order, thanks — exactly the forms you matched just before."
+      ],
       "feedback": "You opened the exchange, ordered, and thanked the server.",
       "evidenceKey": "de-cafe-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -4020,14 +4043,25 @@
           "Hallo. Einen Kaffee, bitte. Danke."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hallo. Ein Kaffee, bitte. Danke.",
+            "category": "wrong article",
+            "explanation": "The order line needs the object form: einen Kaffee, not ein Kaffee."
+          },
+          {
+            "answer": "Hallo. Danke. Einen Kaffee, bitte.",
+            "category": "word-order problem",
+            "explanation": "The exchange runs greeting → order → thanks: Hallo. Einen Kaffee, bitte. Danke."
+          }
+        ]
       }
     },
     {
       "kind": "information",
       "id": "de-introductions-foundation-intro",
       "revision": 1,
-      "body": "German does not say 'my name is'. It uses heißen, which means 'to be called', so Ich heiße Anna is literally 'I am called Anna'. The verb changes shape with the person: ich heiße, but du heißt, and the ß stays in both. A statement puts the verb second (Ich heiße Anna); to ask, German moves the verb in front of the person behind a question word — Wie heißt du? Ich bin Anna is the other introduction, and there you use plain 'to be'.",
+      "body": "The everyday way to give your name is heißen, which means 'to be called', so Ich heiße Anna is literally 'I am called Anna'. The verb changes shape with the person: ich heiße, but du heißt, and the ß stays in both. A statement puts the verb second (Ich heiße Anna); to ask, German moves the verb in front of the person behind a question word — Wie heißt du? Ich bin Anna is the other introduction, and there you use plain 'to be'.",
       "stimulusId": "de-introductions-foundation-examples"
     },
     {
@@ -4046,7 +4080,9 @@
         "vocabulary"
       ],
       "prompt": "German has a verb that means 'to be called'. Which of these introduces you with that verb?",
-      "hints": [],
+      "hints": [
+        "The verb that means 'to be called' is heißen. Pick the sentence that introduces a name with it — not the one built on 'to be' (bin) and not the question."
+      ],
       "feedback": "Ich heiße Anna is literally 'I am called Anna'. Ich bin Anna also gives a name, but it uses plain 'to be', and Wie heißt du? is the question, not an introduction.",
       "evidenceKey": "de-introductions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -4089,8 +4125,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "You meet a neighbour and give your name with the verb that means 'to be called'.",
-      "hints": [],
+      "prompt": "You meet a neighbour. Introduce yourself as Anna with the verb that means 'to be called'.",
+      "hints": [
+        "Use the verb heißen: with ich it becomes heiße, and the lesson's name to introduce is Anna."
+      ],
       "feedback": "Ich heiße, not Ich bin, when the verb 'to be called' carries the name.",
       "evidenceKey": "de-introductions-foundation-recall",
       "assistanceAffectsEvidence": [
@@ -4104,7 +4142,23 @@
           "Ich heiße Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich bin Anna.",
+            "category": "incorrect answer",
+            "explanation": "Ich bin Anna says 'I am Anna', built on sein ('to be'). The step asks for the verb that means 'to be called': Ich heiße Anna."
+          },
+          {
+            "answer": "Ich heißt Anna.",
+            "category": "wrong conjugation",
+            "explanation": "Ich takes heiße; heißt is the du-form. Pair ich with heiße: Ich heiße Anna."
+          },
+          {
+            "answer": "Ich heiße.",
+            "category": "missing word",
+            "explanation": "The introduction names you — end with the name: Ich heiße Anna."
+          }
+        ]
       }
     },
     {
@@ -4123,7 +4177,9 @@
         "grammar"
       ],
       "prompt": "The three words are out of order. Build the sentence in which Anna is called by name using heißen.",
-      "hints": [],
+      "hints": [
+        "Open with Ich (capital I), then the verb heiße in second position, then the name Anna."
+      ],
       "feedback": "Use heiße with ich and heißt with du. The verb sits second, and Ich keeps its capital as it opens the sentence.",
       "evidenceKey": "de-introductions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4170,7 +4226,9 @@
         "grammar"
       ],
       "prompt": "Your new colleague has introduced himself. Answer with the short German phrase for 'Nice to meet you'.",
-      "hints": [],
+      "hints": [
+        "The short reply starts with F and ends with mich — freut ('pleases') + mich ('me'): Freut mich."
+      ],
       "feedback": "Freut mich is the short reply German uses straight after an introduction.",
       "evidenceKey": "de-introductions-foundation-reply",
       "assistanceAffectsEvidence": [
@@ -4184,7 +4242,18 @@
           "Freut mich."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Schön, dich zu treffen.",
+            "category": "incorrect answer",
+            "explanation": "That is a word-for-word translation. German answers an introduction with the short fixed phrase Freut mich."
+          },
+          {
+            "answer": "Ich freue mich.",
+            "category": "incorrect answer",
+            "explanation": "Ich freue mich means 'I am pleased', but it is not the reply to an introduction. The fixed short phrase is Freut mich."
+          }
+        ]
       }
     },
     {
@@ -4203,7 +4272,9 @@
         "grammar"
       ],
       "prompt": "Learn a classmate's name by asking the question in which the verb comes before the person.",
-      "hints": [],
+      "hints": [
+        "Start with the question word Wie, then the du-form of heißen (heißt), then du. No extra helping word is needed."
+      ],
       "feedback": "German forms this question by putting heißt before du, with Wie in front — no extra helping word is needed.",
       "evidenceKey": "de-introductions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -4217,7 +4288,23 @@
           "Wie heißt du?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Wie heiße du?",
+            "category": "wrong conjugation",
+            "explanation": "With du the verb is heißt; heiße goes with ich. Ask: Wie heißt du?"
+          },
+          {
+            "answer": "Heißt du?",
+            "category": "missing word",
+            "explanation": "You are asking for a name, so open with Wie: Wie heißt du? ('What are you called?')."
+          },
+          {
+            "answer": "Wie heißt dich?",
+            "category": "incorrect answer",
+            "explanation": "du is the person being asked (the subject); dich is the object form. Wie heißt du?"
+          }
+        ]
       }
     },
     {
@@ -4236,7 +4323,9 @@
         "vocabulary"
       ],
       "prompt": "Read the exchange. The first line puts the verb before the person to ask something. Whose name is being asked for?",
-      "hints": [],
+      "hints": [
+        "The opening question uses du, so it addresses the second speaker. Their answer starts with Ich heiße … and gives the name."
+      ],
       "feedback": "The opening Wie heißt du? asks the second speaker, Leo, for his name, and he answers with the same verb.",
       "evidenceKey": "de-introductions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4252,7 +4341,18 @@
           "Leo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Anna",
+            "category": "incorrect answer",
+            "explanation": "Anna gives her own name in the final line. The opening question asks the second speaker, who answers Ich heiße Leo."
+          },
+          {
+            "answer": "Du",
+            "category": "incorrect answer",
+            "explanation": "du is the person being asked, not their name. The reply names him: Leo."
+          }
+        ]
       }
     },
     {
@@ -4278,7 +4378,9 @@
         "vocabulary"
       ],
       "prompt": "Which request uses the article German gives a masculine drink when it is the thing being ordered?",
-      "hints": [],
+      "hints": [
+        "Look for the article ending in -en in front of the drink — the object form ein takes with a masculine noun."
+      ],
       "feedback": "Einen is the form a masculine noun takes as the object being ordered. Ein would leave the coffee standing as a bare subject.",
       "evidenceKey": "de-cafe-requests-foundation-choose",
       "assistanceAffectsEvidence": [
@@ -4322,7 +4424,9 @@
         "grammar"
       ],
       "prompt": "You are at the counter and coffee is what you want. Make the short request, keeping the article in its object form.",
-      "hints": [],
+      "hints": [
+        "Two words and a polite marker: the object form of 'a' (starts with E) + the drink Kaffee, then bitte."
+      ],
       "feedback": "Einen Kaffee, bitte — the object form einen survives even in the short request.",
       "evidenceKey": "de-cafe-requests-foundation-recall",
       "assistanceAffectsEvidence": [
@@ -4336,7 +4440,23 @@
           "Einen Kaffee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ein Kaffee, bitte.",
+            "category": "wrong article",
+            "explanation": "The coffee is the thing being requested, so the masculine article takes the object form: einen Kaffee."
+          },
+          {
+            "answer": "Einen Kaffee.",
+            "category": "missing word",
+            "explanation": "Add bitte to soften the request: Einen Kaffee, bitte."
+          },
+          {
+            "answer": "Ich möchte einen Kaffee, bitte.",
+            "category": "extra word",
+            "explanation": "That full request is correct German — and it comes later in this lesson. This step asks for the short form: Einen Kaffee, bitte."
+          }
+        ]
       }
     },
     {
@@ -4355,7 +4475,9 @@
         "grammar"
       ],
       "prompt": "The words are shuffled. Build the full polite request for one coffee.",
-      "hints": [],
+      "hints": [
+        "Start with Ich, then the verb möchte in second position, then the object einen Kaffee, and close with bitte."
+      ],
       "feedback": "The verb möchte comes second and the object einen Kaffee follows it; bitte closes the request.",
       "evidenceKey": "de-cafe-requests-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4412,7 +4534,9 @@
         "grammar"
       ],
       "prompt": "Order a tea the same polite way, changing only the drink and keeping the object article.",
-      "hints": [],
+      "hints": [
+        "Copy the coffee request word for word, but swap the drink: Kaffee → Tee. Tee is masculine too, so the article stays einen."
+      ],
       "feedback": "Same frame, different drink: einen Tee. The article stays einen because Tee is masculine too.",
       "evidenceKey": "de-cafe-requests-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -4426,7 +4550,18 @@
           "Ich möchte einen Tee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich möchte ein Tee, bitte.",
+            "category": "wrong article",
+            "explanation": "Tee is masculine, and it is the drink you want, so the article is the object form: einen Tee."
+          },
+          {
+            "answer": "Ich möchte einen Kaffee, bitte.",
+            "category": "incorrect answer",
+            "explanation": "That is the model sentence with the coffee. Change only the drink: Ich möchte einen Tee, bitte."
+          }
+        ]
       }
     },
     {
@@ -4445,7 +4580,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Ich möchte einen Kaffee, bitte.",
-      "hints": [],
+      "hints": [
+        "möchte is the polite 'would like' — a request, not a statement about liking something in general. bitte is 'please'."
+      ],
       "feedback": "A request, not a statement about possession: möchte is 'would like'.",
       "evidenceKey": "de-cafe-requests-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4461,7 +4598,18 @@
           "I'd like a coffee, please."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I want a coffee, please.",
+            "category": "incorrect answer",
+            "explanation": "Want is closer to German ich will, which is too direct at a counter. möchte is the polite 'would like': I would like a coffee, please."
+          },
+          {
+            "answer": "A coffee, please.",
+            "category": "missing word",
+            "explanation": "The German includes möchte — the 'would like' that makes the request polite. Include it: I would like a coffee, please."
+          }
+        ]
       }
     },
     {
@@ -4480,7 +4628,9 @@
         "vocabulary"
       ],
       "prompt": "Read the café exchange. Which word marks the drink as the thing being ordered?",
-      "hints": [],
+      "hints": [
+        "Find the article right in front of the drink name — the object form that ends in -en."
+      ],
       "feedback": "Einen is the object form of the article; the coffee is what is being requested.",
       "evidenceKey": "de-cafe-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4495,14 +4645,25 @@
           "einen"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Kaffee",
+            "category": "incorrect answer",
+            "explanation": "Kaffee is the drink itself. The word that marks it as the thing being ordered is the article before it: einen."
+          },
+          {
+            "answer": "ein",
+            "category": "incorrect answer",
+            "explanation": "In this exchange the article carries its object ending: einen, not ein."
+          }
+        ]
       }
     },
     {
       "kind": "information",
       "id": "de-numbers-quantities-foundation-intro",
       "revision": 1,
-      "body": "German counts one to ten in two short runs. From twenty upward the system turns around: einundzwanzig is literally 'one-and-twenty', the unit spoken before the ten and joined to it by und. Ask a price with Was kostet? and mind the noun that follows, because German capitalises it and makes the article agree: ein Kaffee is a label, einen Kaffee is the one you want.",
+      "body": "German counts one to ten in two short runs. From twenty upward the system turns around: einundzwanzig is literally 'one-and-twenty', the unit spoken before the ten and joined to it by und. Ask a price with Was kostet? and mind the article: ein Kaffee is the label form of 'one coffee', and the coffee you order becomes einen Kaffee.",
       "stimulusId": "de-numbers-quantities-foundation-examples"
     },
     {
@@ -4518,7 +4679,9 @@
         "vocabulary"
       ],
       "prompt": "Start on the first run of five. Which German word is the number three?",
-      "hints": [],
+      "hints": [
+        "Count the first run aloud: eins, zwei, drei, vier, fünf. The number three is the third word of that run."
+      ],
       "feedback": "Drei is three, and it sits in the first run, eins to fünf. The second run, sechs to zehn, only begins after that.",
       "evidenceKey": "de-numbers-quantities-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4563,7 +4726,9 @@
         "grammar"
       ],
       "prompt": "Put the German words in order to ask what one coffee costs.",
-      "hints": [],
+      "hints": [
+        "The question begins with the fixed pair Was kostet ('what costs'), then the thing being priced: ein Kaffee."
+      ],
       "feedback": "Was kostet goes first as a fixed pair, then the thing being priced. Ein Kaffee here is the label form of 'one coffee'.",
       "evidenceKey": "de-numbers-quantities-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4613,7 +4778,9 @@
         "grammar"
       ],
       "prompt": "Say in German: Two apples, please.",
-      "hints": [],
+      "hints": [
+        "Number first — zwei — then the plural of Apfel with its capital and umlaut: Äpfel, and close with bitte."
+      ],
       "feedback": "Äpfel is a noun, so it keeps its capital and takes a plural ending on top of it. The number itself stays zwei.",
       "evidenceKey": "de-numbers-quantities-foundation-quantity",
       "assistanceAffectsEvidence": [
@@ -4627,7 +4794,23 @@
           "Zwei Äpfel, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Zwei Apfel, bitte.",
+            "category": "wrong number",
+            "explanation": "One Apfel, two Äpfel: the plural changes a to ä. Write Äpfel with the umlaut."
+          },
+          {
+            "answer": "Ein Apfel, bitte.",
+            "category": "wrong number",
+            "explanation": "The prompt asks for two, so the plural is needed: Zwei Äpfel, bitte."
+          },
+          {
+            "answer": "Zwei Äpfel.",
+            "category": "missing word",
+            "explanation": "Add the polite bitte to complete the request: Zwei Äpfel, bitte."
+          }
+        ]
       }
     },
     {
@@ -4643,7 +4826,9 @@
         "grammar"
       ],
       "prompt": "Think: you want one coffee and no price is on the board. Ask the question in German, then write it.",
-      "hints": [],
+      "hints": [
+        "Use the fixed pair Was kostet plus the label form ein Kaffee — the same question you built with the word tiles a moment ago."
+      ],
       "feedback": "Was kostet asks the price of one thing, and you have just built this question. Say it aloud before you check.",
       "evidenceKey": "de-numbers-quantities-foundation-think",
       "assistanceAffectsEvidence": [
@@ -4654,10 +4839,17 @@
       "id": "de-numbers-quantities-foundation-think",
       "answer": {
         "answers": [
-          "Was kostet ein Kaffee?"
+          "Was kostet ein Kaffee?",
+          "Wie viel kostet ein Kaffee?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Was kostet einen Kaffee?",
+            "category": "wrong article",
+            "explanation": "Here the coffee is the subject of kostet, so it takes the label form ein Kaffee. Einen is for the drink you order: Ich möchte einen Kaffee."
+          }
+        ]
       }
     },
     {

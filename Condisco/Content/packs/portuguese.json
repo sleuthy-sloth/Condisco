@@ -115,10 +115,10 @@
     {
       "id": "pt-introductions-concept",
       "title": "Introducing yourself",
-      "explanation": "Portuguese says Meu nome é Ana. The é is a word in its own right: é means 'is', and dropping the accent leaves e, 'and'. Sou Ana is the other introduction and needs no eu, because the verb already carries the person.",
+      "explanation": "Portuguese says O meu nome é Ana. The é is a word in its own right: é means 'is', and dropping the accent leaves e, 'and'. Sou Ana is the other introduction and needs no eu, because the verb already carries the person.",
       "examples": [
         {
-          "target": "Meu nome é Ana.",
+          "target": "O meu nome é Ana.",
           "meaning": "My name is Ana."
         },
         {
@@ -130,7 +130,7 @@
           "meaning": "Nice to meet you."
         }
       ],
-      "commonError": "Keep é in Meu nome é Ana. The accent belongs to the word é (is); e without an accent means and."
+      "commonError": "Keep é in O meu nome é Ana. The accent belongs to the word é (is); e without an accent means and."
     },
     {
       "id": "pt-cafe-requests-concept",
@@ -1058,10 +1058,10 @@
     },
     {
       "id": "pt-introductions-word-1",
-      "word": "meu nome é",
+      "word": "o meu nome é",
       "meaning": "my name is",
       "partOfSpeech": "word or expression",
-      "example": "Meu nome é Ana."
+      "example": "O meu nome é Ana."
     },
     {
       "id": "pt-introductions-word-2",
@@ -2594,7 +2594,7 @@
       "id": "pt-introductions-foundation-examples",
       "pairs": [
         {
-          "target": "Meu nome é Ana.",
+          "target": "O meu nome é Ana.",
           "meaning": "My name is Ana."
         },
         {
@@ -2610,7 +2610,7 @@
     {
       "kind": "text",
       "id": "pt-introductions-foundation-read-passage",
-      "body": "— Olá! Meu nome é Ana.\n— Prazer, Ana. Sou Leo.\n— Prazer, Leo.",
+      "body": "— Olá! O meu nome é Ana.\n— Prazer, Ana. Sou Leo.\n— Prazer, Leo.",
       "translation": "— Hello! My name is Ana.\n— Nice to meet you, Ana. I am Leo.\n— Nice to meet you, Leo."
     },
     {
@@ -3788,7 +3788,9 @@
         "vocabulary"
       ],
       "prompt": "At the pastelaria counter, the server looks up. How do you greet them?",
-      "hints": [],
+      "hints": [
+        "Obrigado thanks someone, Um café places an order, and Adeus says goodbye — greetings come first in the exchange."
+      ],
       "feedback": "Olá opens the exchange.",
       "evidenceKey": "pt-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -3837,7 +3839,9 @@
         "grammar"
       ],
       "prompt": "Build the order: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "The request leads with the thing you want, then closes with por favor — the tiles carry their own punctuation."
+      ],
       "feedback": "Um café, por favor. Keep the request together as one line.",
       "evidenceKey": "pt-cafe-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -3885,7 +3889,9 @@
         "vocabulary"
       ],
       "prompt": "The server hands you the cup. What do you say?",
-      "hints": [],
+      "hints": [
+        "The -o / -a ending of the thanks word matches your own gender, not the server's."
+      ],
       "feedback": "Obrigado or obrigada means thank you; the ending agrees with the speaker.",
       "evidenceKey": "pt-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -3933,8 +3939,10 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "Say the order once in your head. Then write in Portuguese: A coffee, please.",
-      "hints": [],
+      "prompt": "Think the order once in your head. Then write in Portuguese: A coffee, please.",
+      "hints": [
+        "You already built this with tiles: Um + café, + por favor — write the same three pieces."
+      ],
       "feedback": "You wrote the order without the tiles.",
       "evidenceKey": "pt-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -3946,7 +3954,23 @@
           "Um café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Café, por favor.",
+            "category": "missing word",
+            "explanation": "The request needs um before café — um café, por favor is the full order."
+          },
+          {
+            "answer": "Um café.",
+            "category": "missing word",
+            "explanation": "Close the request with por favor — it is the softener that makes an order polite."
+          },
+          {
+            "answer": "Quero um café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quero means 'I want' — the friendly order taught here has no verb: Um café, por favor."
+          }
+        ]
       }
     },
     {
@@ -3968,7 +3992,9 @@
         "vocabulary"
       ],
       "prompt": "Match the three lines you used to their meanings.",
-      "hints": [],
+      "hints": [
+        "Each Portuguese line plays one role in the exchange — opening, ordering, or thanking. Match role to role."
+      ],
       "feedback": "You can recognize the whole exchange.",
       "evidenceKey": "pt-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -4037,7 +4063,9 @@
         "speaking"
       ],
       "prompt": "Write the three lines in order: Hello. / A coffee, please. / Thank you.",
-      "hints": [],
+      "hints": [
+        "Write the exchange in the order it happened — the greeting first, then the order, then the thanks. Pick the thanks form for your own gender."
+      ],
       "feedback": "You greeted, ordered, and thanked the server.",
       "evidenceKey": "pt-cafe-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -4050,14 +4078,25 @@
           "Olá. Um café, por favor. Obrigada."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Obrigado. Olá. Um café, por favor.",
+            "category": "word-order problem",
+            "explanation": "The greeting opens the exchange: first Olá, then the order, then the thanks."
+          },
+          {
+            "answer": "Olá. Um café, por favor.",
+            "category": "missing word",
+            "explanation": "The exchange is not finished — it ends with thanks: Obrigado (or Obrigada) once the coffee arrives."
+          }
+        ]
       }
     },
     {
       "kind": "information",
       "id": "pt-introductions-foundation-intro",
       "revision": 1,
-      "body": "Portuguese introduces you with Meu nome é Ana — 'my name is Ana' — and the little word é carries an accent that matters: é means 'is', while e without the accent means 'and', so Meu nome e Ana would read as 'my name and Ana'. The other introduction is Sou Ana, built on 'to be'. European Portuguese also lets the subject pronoun go, which is why Sou Ana already says 'I am' with no eu in front of it.",
+      "body": "Portuguese introduces you with O meu nome é Ana — 'my name is Ana' — and the little word é carries an accent that matters: é means 'is', while e without the accent means 'and', so O meu nome e Ana would read as 'my name and Ana'. The other introduction is Sou Ana, built on 'to be'. European Portuguese also lets the subject pronoun go, which is why Sou Ana already says 'I am' with no eu in front of it.",
       "stimulusId": "pt-introductions-foundation-examples"
     },
     {
@@ -4076,8 +4115,10 @@
         "vocabulary"
       ],
       "prompt": "Which question would you ask a new neighbour to learn their name in Portuguese?",
-      "hints": [],
-      "feedback": "Qual é o seu nome? is the complete question. Meu nome é Ana answers it, and Prazer is what you say on meeting.",
+      "hints": [
+        "You are asking for information you don't have — the right line is a question, not a statement about yourself and not a greeting."
+      ],
+      "feedback": "Qual é o seu nome? is the complete question. O meu nome é Ana answers it, and Prazer is what you say on meeting.",
       "evidenceKey": "pt-introductions-foundation-notice",
       "assistanceAffectsEvidence": [
         "translation",
@@ -4092,7 +4133,7 @@
         },
         {
           "id": "meu-nome-e-ana",
-          "text": "Meu nome é Ana."
+          "text": "O meu nome é Ana."
         },
         {
           "id": "prazer",
@@ -4119,8 +4160,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Put the words back in order to give your name with Meu nome é.",
-      "hints": [],
+      "prompt": "Put the words back in order to give your name with O meu nome é.",
+      "hints": [
+        "The sentence opens with the little article O and the word for 'my' (meu), then nome — the accented é ('is') sits right before Ana."
+      ],
       "feedback": "Keep the accent on é; it is the verb 'is', and the sentence reads as nonsense without it.",
       "evidenceKey": "pt-introductions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4144,11 +4187,16 @@
         },
         {
           "id": "t4",
-          "text": "Meu"
+          "text": "meu"
+        },
+        {
+          "id": "t5",
+          "text": "O"
         }
       ],
       "acceptedOrders": [
         [
+          "t5",
           "t4",
           "t3",
           "t2",
@@ -4172,7 +4220,9 @@
         "grammar"
       ],
       "prompt": "Ask a neighbour's name using the full question taught here.",
-      "hints": [],
+      "hints": [
+        "The full question starts with Qual é and ends with o seu nome — keep the accent on é: that verb is what asks 'is'."
+      ],
       "feedback": "This is the complete question, and the accent on é stays in place.",
       "evidenceKey": "pt-introductions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -4186,7 +4236,18 @@
           "Qual é o seu nome?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Qual e o seu nome?",
+            "category": "accent/diacritic issue",
+            "explanation": "Without the accent, é becomes e, 'and' — the é inside the question is the verb 'is': Qual é o seu nome?"
+          },
+          {
+            "answer": "Qual é seu nome?",
+            "category": "missing word",
+            "explanation": "The question keeps the little o before seu: Qual é o seu nome?"
+          }
+        ]
       }
     },
     {
@@ -4205,8 +4266,10 @@
         "grammar"
       ],
       "prompt": "Give your name as Ana with the phrase 'my name is', keeping the accent on the word for 'is'.",
-      "hints": [],
-      "feedback": "Meu nome é Ana — the accented é is 'is'. Without the accent the word turns into 'and'.",
+      "hints": [
+        "'My name is' is O meu nome é — begin with the article O and the word meu, and keep the accent on é so it stays 'is'."
+      ],
+      "feedback": "O meu nome é Ana — the accented é is 'is'. Without the accent the word turns into 'and'.",
       "evidenceKey": "pt-introductions-foundation-recall",
       "assistanceAffectsEvidence": [
         "hint",
@@ -4216,10 +4279,21 @@
       "id": "pt-introductions-foundation-recall",
       "answer": {
         "answers": [
-          "Meu nome é Ana."
+          "O meu nome é Ana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Meu nome é Ana.",
+            "category": "missing word",
+            "explanation": "European Portuguese keeps the small article o before meu: O meu nome é Ana."
+          },
+          {
+            "answer": "O meu nome e Ana.",
+            "category": "accent/diacritic issue",
+            "explanation": "é means 'is'; without the accent it becomes e, 'and' — the line would read 'my name and Ana'."
+          }
+        ]
       }
     },
     {
@@ -4238,7 +4312,9 @@
         "vocabulary"
       ],
       "prompt": "Read the exchange. One speaker introduces themselves with no word for 'I' at all. Who is it?",
-      "hints": [],
+      "hints": [
+        "One line leans on meu nome ('my name'); the other uses sou, the verb that means 'I am' with no pronoun in front of it."
+      ],
       "feedback": "Sou Leo says 'I am Leo' with no eu; Portuguese does not need the pronoun.",
       "evidenceKey": "pt-introductions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4251,10 +4327,17 @@
       "answer": {
         "answers": [
           "Leo",
-          "Leo."
+          "Leo.",
+          "Sou Leo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ana",
+            "category": "incorrect answer",
+            "explanation": "Ana's line says 'my name' (meu nome) — sou is the verb that means 'I am' on its own, and that is Leo's line."
+          }
+        ]
       }
     },
     {
@@ -4273,7 +4356,9 @@
         "grammar"
       ],
       "prompt": "You have just been introduced to someone. Give the short Portuguese word meaning 'Nice to meet you'.",
-      "hints": [],
+      "hints": [
+        "It is the one-word greeting at the end of an introduction — it starts with P."
+      ],
       "feedback": "Prazer on its own is the friendly reply at an introduction.",
       "evidenceKey": "pt-introductions-foundation-reply",
       "assistanceAffectsEvidence": [
@@ -4284,10 +4369,22 @@
       "id": "pt-introductions-foundation-reply",
       "answer": {
         "answers": [
-          "Prazer."
+          "Prazer.",
+          "Muito prazer."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Obrigado",
+            "category": "incorrect answer",
+            "explanation": "Obrigado thanks someone for a favour — at an introduction the reply is Prazer."
+          },
+          {
+            "answer": "Olá",
+            "category": "incorrect answer",
+            "explanation": "Olá opens the meeting — the word for 'nice to meet you' is Prazer."
+          }
+        ]
       }
     },
     {
@@ -4313,8 +4410,10 @@
         "vocabulary"
       ],
       "prompt": "Only one of these keeps the little word that joins gostaria to the drink. Which is it?",
-      "hints": [],
-      "feedback": "De belongs between gostaria and the drink; without it the request loses the link. Meu nome é Ana is an introduction, not a request.",
+      "hints": [
+        "The right option keeps de between gostaria and the drink — only one of the café lines has it."
+      ],
+      "feedback": "De belongs between gostaria and the drink; without it the request loses the link. O meu nome é Ana is an introduction, not a request.",
       "evidenceKey": "pt-cafe-requests-foundation-choose",
       "assistanceAffectsEvidence": [
         "translation",
@@ -4333,7 +4432,7 @@
         },
         {
           "id": "meu-nome-e-ana",
-          "text": "Meu nome é Ana."
+          "text": "O meu nome é Ana."
         }
       ],
       "acceptedIds": [
@@ -4357,7 +4456,9 @@
         "grammar"
       ],
       "prompt": "The words are out of order. Build the polite request for one coffee with gostaria de.",
-      "hints": [],
+      "hints": [
+        "The polite request runs: Eu gostaria, then de, then the drink um café, then por favor."
+      ],
       "feedback": "Gostaria and the drink are held together by de, and por favor closes the request.",
       "evidenceKey": "pt-cafe-requests-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4424,7 +4525,9 @@
         "grammar"
       ],
       "prompt": "Ask for tea politely, keeping the word that joins gostaria to the drink.",
-      "hints": [],
+      "hints": [
+        "Same frame as the coffee request: gostaria + de + um chá, then por favor — chá keeps its accent."
+      ],
       "feedback": "Swap the drink but keep de: gostaria de um chá. Chá keeps its accent.",
       "evidenceKey": "pt-cafe-requests-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -4439,7 +4542,23 @@
           "Gostaria de um chá, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Eu gostaria um chá, por favor.",
+            "category": "missing word",
+            "explanation": "The de is the link between gostaria and the drink — without it the verb has nothing to join: gostaria de um chá."
+          },
+          {
+            "answer": "Eu gostaria de chá, por favor.",
+            "category": "missing word",
+            "explanation": "The drink keeps its um too: de um chá, not de chá."
+          },
+          {
+            "answer": "Quero um chá, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quero is 'I want' — this lesson practices the polite form gostaria de."
+          }
+        ]
       }
     },
     {
@@ -4458,7 +4577,9 @@
         "grammar"
       ],
       "prompt": "At the counter you want a coffee. Make the short request, with no verb in it.",
-      "hints": [],
+      "hints": [
+        "No verb this time — just the drink and the softener: Um café, por favor."
+      ],
       "feedback": "Um café, por favor — the short request keeps por favor and drops gostaria.",
       "evidenceKey": "pt-cafe-requests-foundation-recall",
       "assistanceAffectsEvidence": [
@@ -4472,7 +4593,18 @@
           "Um café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Eu gostaria de um café, por favor.",
+            "category": "extra word",
+            "explanation": "That is the polite form with a verb — the short request leaves it out: just Um café, por favor."
+          },
+          {
+            "answer": "Um café.",
+            "category": "missing word",
+            "explanation": "Close the request with por favor — the softener that makes an order polite."
+          }
+        ]
       }
     },
     {
@@ -4491,7 +4623,9 @@
         "vocabulary"
       ],
       "prompt": "Read the café exchange. The customer thanks the server. Which form of thanks tells you the customer is a woman?",
-      "hints": [],
+      "hints": [
+        "The exchange ends with the customer's thanks — a woman's thanks ends in -a, a man's in -o."
+      ],
       "feedback": "Obrigada, not obrigado: the word agrees with the person speaking, and this speaker is a woman.",
       "evidenceKey": "pt-cafe-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4506,7 +4640,18 @@
           "Obrigada."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Obrigado",
+            "category": "wrong gender",
+            "explanation": "Obrigado is the man's form — the thanks agrees with the speaker, and this customer is a woman: Obrigada."
+          },
+          {
+            "answer": "Sim",
+            "category": "incorrect answer",
+            "explanation": "Sim is the customer's 'yes' to the server — the question asks for the thanks word, the one ending in -a."
+          }
+        ]
       }
     },
     {
@@ -4525,7 +4670,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Eu gostaria de um café, por favor.",
-      "hints": [],
+      "hints": [
+        "Word by word: gostaria de = 'I would like', um café = 'a coffee', por favor = 'please'."
+      ],
       "feedback": "Gostaria de is 'I would like', and por favor is 'please'.",
       "evidenceKey": "pt-cafe-requests-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4541,7 +4688,18 @@
           "I'd like a coffee, please."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I want a coffee, please.",
+            "category": "incorrect answer",
+            "explanation": "Gostaria de is the polite 'I would like'; 'I want' would translate quero — softer language fits a shop."
+          },
+          {
+            "answer": "I would like coffee, please.",
+            "category": "missing word",
+            "explanation": "English keeps the article too: a coffee, not coffee."
+          }
+        ]
       }
     },
     {
@@ -4564,7 +4722,9 @@
         "vocabulary"
       ],
       "prompt": "Which word is three in Portuguese? Unlike two, it never changes with the noun.",
-      "hints": [],
+      "hints": [
+        "The examples counted from one: um, dois, três — pick the one that comes right after dois."
+      ],
       "feedback": "Três is three, and it has no masculine or feminine form to choose between.",
       "evidenceKey": "pt-numbers-quantities-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4610,7 +4770,9 @@
         "grammar"
       ],
       "prompt": "Say in Portuguese: Two apples, please.",
-      "hints": [],
+      "hints": [
+        "The noun decides the number: maçã is feminine, so it takes duas — build duas + maçãs + por favor."
+      ],
       "feedback": "Maçãs is feminine, so the number becomes duas. With a masculine noun such as cafés it would be dois.",
       "evidenceKey": "pt-numbers-quantities-foundation-quantity",
       "assistanceAffectsEvidence": [
@@ -4624,7 +4786,23 @@
           "Duas maçãs, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dois maçãs, por favor.",
+            "category": "wrong gender",
+            "explanation": "Maçã is a feminine noun, so the number takes its feminine twin: duas maçãs, not dois."
+          },
+          {
+            "answer": "Duas maças, por favor.",
+            "category": "accent/diacritic issue",
+            "explanation": "Maçã keeps its tilde — the ~ makes the nasal vowel: maçãs."
+          },
+          {
+            "answer": "Duas maçã, por favor.",
+            "category": "wrong number",
+            "explanation": "Two of them — the noun goes plural too: duas maçãs."
+          }
+        ]
       }
     },
     {
@@ -4640,7 +4818,9 @@
         "grammar"
       ],
       "prompt": "Think: you want one coffee and no price is posted. Ask in Portuguese, then write the question.",
-      "hints": [],
+      "hints": [
+        "Ask what the coffee costs: Quanto custa (which never changes shape) + um café."
+      ],
       "feedback": "Quanto custa is fixed and does not agree with anything. Say the question aloud before you check it.",
       "evidenceKey": "pt-numbers-quantities-foundation-think",
       "assistanceAffectsEvidence": [
@@ -4654,7 +4834,23 @@
           "Quanto custa um café?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto custa café?",
+            "category": "missing word",
+            "explanation": "Name the thing being priced — um café: the um marks one masculine coffee."
+          },
+          {
+            "answer": "Quanto custa uma café?",
+            "category": "wrong gender",
+            "explanation": "Café is masculine, so the article is um — uma goes with feminine nouns."
+          },
+          {
+            "answer": "Custa quanto um café?",
+            "category": "word-order problem",
+            "explanation": "The Portuguese question leads with Quanto: Quanto custa um café? (Custa quanto is the Brazilian ordering.)"
+          }
+        ]
       }
     },
     {
@@ -4670,7 +4866,9 @@
         "grammar"
       ],
       "prompt": "Put the Portuguese words in order to ask the price of one coffee.",
-      "hints": [],
+      "hints": [
+        "The price question leads with the two fixed words Quanto custa, then names the thing: um café."
+      ],
       "feedback": "Quanto custa leads, then um café names the thing being priced. Um matches the masculine café.",
       "evidenceKey": "pt-numbers-quantities-foundation-order",
       "assistanceAffectsEvidence": [
@@ -18826,7 +19024,7 @@
           "id": "pt-introductions-foundation-notice",
           "conceptId": "pt-introductions-concept",
           "prompt": "Which question would you ask a new neighbour to learn their name in Portuguese?",
-          "explanation": "Qual é o seu nome? is the complete question. Meu nome é Ana answers it, and Prazer is what you say on meeting.",
+          "explanation": "Qual é o seu nome? is the complete question. O meu nome é Ana answers it, and Prazer is what you say on meeting.",
           "vocabulary": [
             "pt-introductions-word-1",
             "pt-introductions-word-2",
@@ -18840,19 +19038,19 @@
           "mode": "recognition",
           "options": [
             "Qual é o seu nome?",
-            "Meu nome é Ana.",
+            "O meu nome é Ana.",
             "Prazer."
           ]
         },
         {
           "answers": [
-            "Meu nome é Ana."
+            "O meu nome é Ana."
           ],
           "allowTypo": true,
           "errors": [],
           "id": "pt-introductions-foundation-build",
           "conceptId": "pt-introductions-concept",
-          "prompt": "Put the words back in order to give your name with Meu nome é.",
+          "prompt": "Put the words back in order to give your name with O meu nome é.",
           "explanation": "Keep the accent on é; it is the verb 'is', and the sentence reads as nonsense without it.",
           "vocabulary": [
             "pt-introductions-word-1",
@@ -18869,7 +19067,8 @@
             "Ana.",
             "é",
             "nome",
-            "Meu"
+            "meu",
+            "O"
           ]
         },
         {
@@ -18877,7 +19076,18 @@
             "Qual é o seu nome?"
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Qual e o seu nome?",
+              "category": "accent/diacritic issue",
+              "explanation": "Without the accent, é becomes e, 'and' — the é inside the question is the verb 'is': Qual é o seu nome?"
+            },
+            {
+              "answer": "Qual é seu nome?",
+              "category": "missing word",
+              "explanation": "The question keeps the little o before seu: Qual é o seu nome?"
+            }
+          ],
           "id": "pt-introductions-foundation-ask",
           "conceptId": "pt-introductions-concept",
           "prompt": "Ask a neighbour's name using the full question taught here.",
@@ -18896,14 +19106,25 @@
         },
         {
           "answers": [
-            "Meu nome é Ana."
+            "O meu nome é Ana."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Meu nome é Ana.",
+              "category": "missing word",
+              "explanation": "European Portuguese keeps the small article o before meu: O meu nome é Ana."
+            },
+            {
+              "answer": "O meu nome e Ana.",
+              "category": "accent/diacritic issue",
+              "explanation": "é means 'is'; without the accent it becomes e, 'and' — the line would read 'my name and Ana'."
+            }
+          ],
           "id": "pt-introductions-foundation-recall",
           "conceptId": "pt-introductions-concept",
           "prompt": "Give your name as Ana with the phrase 'my name is', keeping the accent on the word for 'is'.",
-          "explanation": "Meu nome é Ana — the accented é is 'is'. Without the accent the word turns into 'and'.",
+          "explanation": "O meu nome é Ana — the accented é is 'is'. Without the accent the word turns into 'and'.",
           "vocabulary": [
             "pt-introductions-word-1",
             "pt-introductions-word-2",
@@ -18920,10 +19141,17 @@
         {
           "answers": [
             "Leo",
-            "Leo."
+            "Leo.",
+            "Sou Leo."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Ana",
+              "category": "incorrect answer",
+              "explanation": "Ana's line says 'my name' (meu nome) — sou is the verb that means 'I am' on its own, and that is Leo's line."
+            }
+          ],
           "id": "pt-introductions-foundation-read",
           "conceptId": "pt-introductions-concept",
           "prompt": "Read the exchange. One speaker introduces themselves with no word for 'I' at all. Who is it?",
@@ -18939,15 +19167,27 @@
           ],
           "kind": "reading",
           "mode": "recognition",
-          "passage": "— Olá! Meu nome é Ana.\n— Prazer, Ana. Sou Leo.\n— Prazer, Leo.",
+          "passage": "— Olá! O meu nome é Ana.\n— Prazer, Ana. Sou Leo.\n— Prazer, Leo.",
           "translation": "— Hello! My name is Ana.\n— Nice to meet you, Ana. I am Leo.\n— Nice to meet you, Leo."
         },
         {
           "answers": [
-            "Prazer."
+            "Prazer.",
+            "Muito prazer."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Obrigado",
+              "category": "incorrect answer",
+              "explanation": "Obrigado thanks someone for a favour — at an introduction the reply is Prazer."
+            },
+            {
+              "answer": "Olá",
+              "category": "incorrect answer",
+              "explanation": "Olá opens the meeting — the word for 'nice to meet you' is Prazer."
+            }
+          ],
           "id": "pt-introductions-foundation-reply",
           "conceptId": "pt-introductions-concept",
           "prompt": "You have just been introduced to someone. Give the short Portuguese word meaning 'Nice to meet you'.",
@@ -19074,7 +19314,7 @@
           "id": "pt-cafe-requests-foundation-choose",
           "conceptId": "pt-cafe-requests-concept",
           "prompt": "Only one of these keeps the little word that joins gostaria to the drink. Which is it?",
-          "explanation": "De belongs between gostaria and the drink; without it the request loses the link. Meu nome é Ana is an introduction, not a request.",
+          "explanation": "De belongs between gostaria and the drink; without it the request loses the link. O meu nome é Ana is an introduction, not a request.",
           "vocabulary": [
             "pt-cafe-requests-word-1",
             "pt-cafe-requests-word-2",
@@ -19089,7 +19329,7 @@
           "options": [
             "Eu gostaria de um café, por favor.",
             "Eu gostaria um café, por favor.",
-            "Meu nome é Ana."
+            "O meu nome é Ana."
           ]
         },
         {
@@ -19129,7 +19369,23 @@
             "Gostaria de um chá, por favor."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Eu gostaria um chá, por favor.",
+              "category": "missing word",
+              "explanation": "The de is the link between gostaria and the drink — without it the verb has nothing to join: gostaria de um chá."
+            },
+            {
+              "answer": "Eu gostaria de chá, por favor.",
+              "category": "missing word",
+              "explanation": "The drink keeps its um too: de um chá, not de chá."
+            },
+            {
+              "answer": "Quero um chá, por favor.",
+              "category": "incorrect answer",
+              "explanation": "Quero is 'I want' — this lesson practices the polite form gostaria de."
+            }
+          ],
           "id": "pt-cafe-requests-foundation-vary",
           "conceptId": "pt-cafe-requests-concept",
           "prompt": "Ask for tea politely, keeping the word that joins gostaria to the drink.",
@@ -19151,7 +19407,18 @@
             "Um café, por favor."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Eu gostaria de um café, por favor.",
+              "category": "extra word",
+              "explanation": "That is the polite form with a verb — the short request leaves it out: just Um café, por favor."
+            },
+            {
+              "answer": "Um café.",
+              "category": "missing word",
+              "explanation": "Close the request with por favor — the softener that makes an order polite."
+            }
+          ],
           "id": "pt-cafe-requests-foundation-recall",
           "conceptId": "pt-cafe-requests-concept",
           "prompt": "At the counter you want a coffee. Make the short request, with no verb in it.",
@@ -19174,7 +19441,18 @@
             "Obrigada."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Obrigado",
+              "category": "wrong gender",
+              "explanation": "Obrigado is the man's form — the thanks agrees with the speaker, and this customer is a woman: Obrigada."
+            },
+            {
+              "answer": "Sim",
+              "category": "incorrect answer",
+              "explanation": "Sim is the customer's 'yes' to the server — the question asks for the thanks word, the one ending in -a."
+            }
+          ],
           "id": "pt-cafe-requests-foundation-read",
           "conceptId": "pt-cafe-requests-concept",
           "prompt": "Read the café exchange. The customer thanks the server. Which form of thanks tells you the customer is a woman?",
@@ -19200,7 +19478,18 @@
             "I'd like a coffee, please."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "I want a coffee, please.",
+              "category": "incorrect answer",
+              "explanation": "Gostaria de is the polite 'I would like'; 'I want' would translate quero — softer language fits a shop."
+            },
+            {
+              "answer": "I would like coffee, please.",
+              "category": "missing word",
+              "explanation": "English keeps the article too: a coffee, not coffee."
+            }
+          ],
           "id": "pt-cafe-requests-foundation-meaning",
           "conceptId": "pt-cafe-requests-concept",
           "prompt": "Give the English meaning: Eu gostaria de um café, por favor.",
@@ -19233,7 +19522,7 @@
       "id": "pt-numbers-quantities-foundation",
       "unitId": "pt-unit-2",
       "title": "Numbers and quantities",
-      "objective": "Count one to ten, then choose between dois and duas to match the noun you are counting.",
+      "objective": "Count one to five, then choose between dois and duas to match the noun you are counting.",
       "family": "discovery",
       "revision": 1,
       "estimatedMinutes": 4,
@@ -19332,7 +19621,23 @@
             "Duas maçãs, por favor."
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Dois maçãs, por favor.",
+              "category": "wrong gender",
+              "explanation": "Maçã is a feminine noun, so the number takes its feminine twin: duas maçãs, not dois."
+            },
+            {
+              "answer": "Duas maças, por favor.",
+              "category": "accent/diacritic issue",
+              "explanation": "Maçã keeps its tilde — the ~ makes the nasal vowel: maçãs."
+            },
+            {
+              "answer": "Duas maçã, por favor.",
+              "category": "wrong number",
+              "explanation": "Two of them — the noun goes plural too: duas maçãs."
+            }
+          ],
           "id": "pt-numbers-quantities-foundation-quantity",
           "conceptId": "pt-numbers-quantities-concept",
           "prompt": "Say in Portuguese: Two apples, please.",
@@ -19350,7 +19655,23 @@
             "Quanto custa um café?"
           ],
           "allowTypo": true,
-          "errors": [],
+          "errors": [
+            {
+              "answer": "Quanto custa café?",
+              "category": "missing word",
+              "explanation": "Name the thing being priced — um café: the um marks one masculine coffee."
+            },
+            {
+              "answer": "Quanto custa uma café?",
+              "category": "wrong gender",
+              "explanation": "Café is masculine, so the article is um — uma goes with feminine nouns."
+            },
+            {
+              "answer": "Custa quanto um café?",
+              "category": "word-order problem",
+              "explanation": "The Portuguese question leads with Quanto: Quanto custa um café? (Custa quanto is the Brazilian ordering.)"
+            }
+          ],
           "id": "pt-numbers-quantities-foundation-think",
           "conceptId": "pt-numbers-quantities-concept",
           "prompt": "Think: you want one coffee and no price is posted. Ask in Portuguese, then write the question.",

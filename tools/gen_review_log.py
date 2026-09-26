@@ -15,6 +15,11 @@ JSONL directly (fill in reviewer / date / reviewMethod / disposition / ...),
 never this generator. Rows are keyed by `lessonId` (globally unique across
 the five packs).
 
+Per-pack merge: editorial lanes write docs/reviews/review-log/<pack>.jsonl
+(one row per lesson of that pack). Any row found there overrides the master
+row for the same `lessonId` — the per-pack file is the lane's source of truth.
+Master rows with no per-pack counterpart are preserved/re-derived as above.
+
 Output is deterministic: fixed pack order (french, italian, german,
 portuguese, spanish) then lesson id ascending, keys sorted.
 
@@ -61,11 +66,32 @@ def main():
                 rec = json.loads(line)
                 existing[rec["lessonId"]] = rec
 
+    # Per-pack lane files override master rows for the same lessonId.
+    per_pack = {}
+    per_pack_dir = os.path.join(ROOT, "docs", "reviews", "review-log")
+    if os.path.isdir(per_pack_dir):
+        for pack_name in PACKS:
+            path = os.path.join(per_pack_dir, pack_name + ".jsonl")
+            if not os.path.exists(path):
+                continue
+            with open(path, encoding="utf-8") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    rec = json.loads(line)
+                    per_pack[rec["lessonId"]] = rec
+
     lines = []
     for pack_name in PACKS:
         with open(os.path.join(PACKS_DIR, pack_name + ".json"), encoding="utf-8") as fh:
             pack = json.load(fh)
         for lesson in sorted(pack["lessons"], key=lambda l: l["id"]):
+            if lesson["id"] in per_pack:
+                lines.append(
+                    json.dumps(per_pack[lesson["id"]], ensure_ascii=False, sort_keys=True)
+                )
+                continue
             prior = existing.get(lesson["id"])
             # Preserve reviewed / partially recorded rows verbatim; only
             # unseen or still-unreviewed lessons are re-derived.

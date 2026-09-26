@@ -6,7 +6,7 @@
   "status": "active",
   "title": "Spanish foundations",
   "sourceLanguage": "en",
-  "description": "Fifty-two Spanish lessons: the full A1 arc (first words, introductions, café requests, numbers, directions, shopping, time and days, family, home and daily routine, everyday exchanges, getting around, past and future plans, weather and time-telling, months and dates, the market, free time, health and social life) plus seventeen new CEFR A2 lessons in five units — El pasado (preterite, imperfect, choosing between them, weekend narratives), El futuro (future formation and uses, plans and intentions), Deseos y cortesía (conditional, polite requests, first subjunctive), Conectar frases (relative clauses, comparatives, object pronouns, por vs para), and Trabajo y tecnología (superlatives, a hotel check-in mission, tech talk). Native-speaker editorial review remains open.",
+  "description": "Fifty-two Spanish lessons covering A1-level material — first words, introductions, café requests, numbers, directions, shopping, time and days, family, home and daily routine, everyday exchanges, getting around, past and future plans, weather and time-telling, months and dates, the market, free time, health and social life — plus seventeen A2 lessons in five units — El pasado (preterite, imperfect, choosing between them, weekend narratives), El futuro (future formation and uses, plans and intentions), Deseos y cortesía (conditional, polite requests, first subjunctive), Conectar frases (relative clauses, comparatives, object pronouns, por vs para), and Trabajo y tecnología (superlatives, a hotel check-in mission, tech talk). CEFR level tagging is partial, and native-speaker editorial review remains open for the whole pack; lessons are machine-authored and consistency-checked.",
   "attribution": "Original VerbaLibera authoring, 2026. MIT. Machine-authored and consistency-checked; the 21 lessons in units 7–12 were machine-authored in September 2026 and native-speaker editorial review remains open for the whole pack. The 17 A2 lessons in units 13–17 were machine-authored in September 2026 and are pending native-speaker review.",
   "units": [
     {
@@ -3926,7 +3926,9 @@
         "vocabulary"
       ],
       "prompt": "The server reaches your table. How do you greet them?",
-      "hints": [],
+      "hints": [
+        "The server spoke to you first, so you answer with a greeting — the one-word line that means 'hello'."
+      ],
       "feedback": "Hola opens the exchange.",
       "evidenceKey": "es-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -3975,7 +3977,9 @@
         "grammar"
       ],
       "prompt": "Build the order: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "The request starts with the article un, then the drink café, and por favor closes it — one line: Un café, por favor."
+      ],
       "feedback": "Un café, por favor. Keep the request together as one line.",
       "evidenceKey": "es-cafe-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -4023,7 +4027,9 @@
         "vocabulary"
       ],
       "prompt": "The cup reaches your table. What do you say?",
-      "hints": [],
+      "hints": [
+        "The order is over and the coffee has arrived — pick the line that closes the exchange by thanking the server."
+      ],
       "feedback": "Gracias closes the exchange.",
       "evidenceKey": "es-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -4072,7 +4078,9 @@
         "vocabulary"
       ],
       "prompt": "Say the order once in your head. Then write in Spanish: A coffee, please.",
-      "hints": [],
+      "hints": [
+        "It is the same three-word line you just built: un ('a') + café + por favor."
+      ],
       "feedback": "You wrote the order without the tiles.",
       "evidenceKey": "es-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -4084,7 +4092,23 @@
           "Un café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Café, por favor.",
+            "category": "missing word",
+            "explanation": "The request needs the small un ('a') in front of café: Un café, por favor."
+          },
+          {
+            "answer": "Un café.",
+            "category": "missing word",
+            "explanation": "Por favor is the polite part that makes the request courteous — keep it: Un café, por favor."
+          },
+          {
+            "answer": "Un café porfavor.",
+            "category": "incorrect answer",
+            "explanation": "Porfavor is not one word — por favor is two separate words."
+          }
+        ]
       }
     },
     {
@@ -4106,7 +4130,9 @@
         "vocabulary"
       ],
       "prompt": "Match the three lines you used to their meanings.",
-      "hints": [],
+      "hints": [
+        "Each Spanish line has exactly one English twin — Gracias is the one that means 'thank you'."
+      ],
       "feedback": "You can recognize the whole exchange.",
       "evidenceKey": "es-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -4175,7 +4201,9 @@
         "speaking"
       ],
       "prompt": "Write the three lines in order: Hello. / A coffee, please. / Thank you.",
-      "hints": [],
+      "hints": [
+        "Follow the order of the mission: greet first (Hola.), then the request (Un café, por favor.), then thank the server (Gracias.)."
+      ],
       "feedback": "You greeted, ordered, and thanked the server.",
       "evidenceKey": "es-cafe-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -4187,7 +4215,18 @@
           "Hola. Un café, por favor. Gracias."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hola. Un café. Gracias.",
+            "category": "missing word",
+            "explanation": "The polite request keeps por favor: Un café, por favor."
+          },
+          {
+            "answer": "Hola. Café, por favor. Gracias.",
+            "category": "missing word",
+            "explanation": "'A coffee' needs its article un in front of café."
+          }
+        ]
       }
     },
     {
@@ -4213,7 +4252,9 @@
         "vocabulary"
       ],
       "prompt": "Me llamo Ana and Soy Ana both give a name. Which one uses the verb that literally means 'I call myself'?",
-      "hints": [],
+      "hints": [
+        "The reflexive verb is llamarse — the option built on me llamo is the one that literally says 'I call myself'."
+      ],
       "feedback": "Me llamo Ana is the reflexive form — 'I call myself Ana'. Soy Ana uses ser ('to be'), and ¿Cómo te llamas? is the question.",
       "evidenceKey": "es-introductions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -4257,7 +4298,9 @@
         "grammar"
       ],
       "prompt": "Ask a classmate their name with the question whose pronoun changes to te.",
-      "hints": [],
+      "hints": [
+        "It starts with ¿Cómo ('how'), then the pronoun te, then the verb llamas — the question form of the same verb from Me llamo."
+      ],
       "feedback": "The verb is the same one as in Me llamo, but the pronoun turns into te when it points at the person you are speaking to.",
       "evidenceKey": "es-introductions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -4271,7 +4314,23 @@
           "¿Cómo te llamas?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me llamo Ana.",
+            "category": "wrong conjugation",
+            "explanation": "That is the self-introduction, not a question. Pointing at the other person turns the pronoun into te and the verb into llamas: ¿Cómo te llamas?"
+          },
+          {
+            "answer": "¿Cómo me llamas?",
+            "category": "wrong conjugation",
+            "explanation": "Me is for yourself; when you ask someone else the pronoun becomes te: ¿Cómo te llamas?"
+          },
+          {
+            "answer": "¿Qué es tu nombre?",
+            "category": "incorrect answer",
+            "explanation": "That is a word-for-word translation from English. Spanish asks 'how do you call yourself': ¿Cómo te llamas?"
+          }
+        ]
       }
     },
     {
@@ -4290,7 +4349,9 @@
         "vocabulary"
       ],
       "prompt": "Read the exchange. Which short word tells you the first speaker is talking about herself?",
-      "hints": [],
+      "hints": [
+        "Look at the first speaker's line: the two-letter word right before the verb llamo is the reflexive pronoun pointing back at Ana."
+      ],
       "feedback": "Me is the reflexive pronoun: it turns the verb llamarse back on the person speaking. The other introduction uses soy instead.",
       "evidenceKey": "es-introductions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4305,7 +4366,18 @@
           "me"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "soy",
+            "category": "incorrect answer",
+            "explanation": "Soy is the verb of the other introduction ('I am Leo') — it has no reflexive pronoun. The first speaker's pronoun is the two-letter word before llamo."
+          },
+          {
+            "answer": "llamo",
+            "category": "incorrect answer",
+            "explanation": "Llamo is the verb, not the pronoun. The short word that turns it back on the speaker is me, right before it."
+          }
+        ]
       }
     },
     {
@@ -4324,7 +4396,9 @@
         "grammar"
       ],
       "prompt": "A neighbour introduces herself to you. Give the two-word Spanish reply that closes an introduction.",
-      "hints": [],
+      "hints": [
+        "It is the fixed phrase from the examples that means 'nice to meet you' — two words, no verb, and it works for any speaker."
+      ],
       "feedback": "Mucho gusto closes an introduction, and the sentence needs no pronoun.",
       "evidenceKey": "es-introductions-foundation-reply",
       "assistanceAffectsEvidence": [
@@ -4338,7 +4412,18 @@
           "Mucho gusto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "De nada.",
+            "category": "incorrect answer",
+            "explanation": "De nada means 'you're welcome' — it answers gracias, not an introduction. The two-word closer is Mucho gusto."
+          },
+          {
+            "answer": "Encantada.",
+            "category": "incorrect answer",
+            "explanation": "Encantada is also a polite closer (it agrees with the speaker's gender), but the two-word form this lesson teaches is Mucho gusto."
+          }
+        ]
       }
     },
     {
@@ -4357,7 +4442,9 @@
         "grammar"
       ],
       "prompt": "The words are jumbled. Build the reflexive sentence that gives Ana's name.",
-      "hints": [],
+      "hints": [
+        "The reflexive pronoun comes first, then the verb, then the name: Me + llamo + Ana."
+      ],
       "feedback": "Me llamo Ana puts the reflexive pronoun first, then the verb, then the name.",
       "evidenceKey": "es-introductions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4404,7 +4491,9 @@
         "grammar"
       ],
       "prompt": "A classmate has introduced herself. Introduce yourself the same way, as Ana, using the verb that needs a pronoun.",
-      "hints": [],
+      "hints": [
+        "Use the same three words you just built: the pronoun Me, then llamo, then the name Ana — the pronoun cannot be left out."
+      ],
       "feedback": "Say the whole reflexive phrase; leaving out me would leave the verb belonging to nobody.",
       "evidenceKey": "es-introductions-foundation-recall",
       "assistanceAffectsEvidence": [
@@ -4418,7 +4507,18 @@
           "Me llamo Ana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Llamo Ana.",
+            "category": "missing word",
+            "explanation": "The reflexive verb needs its pronoun: without me, the verb belongs to nobody. Say Me llamo Ana."
+          },
+          {
+            "answer": "Soy Ana.",
+            "category": "incorrect answer",
+            "explanation": "Soy Ana uses plain 'to be'. The prompt asks for the reflexive form with its pronoun: Me llamo Ana."
+          }
+        ]
       }
     },
     {
@@ -4444,7 +4544,9 @@
         "vocabulary"
       ],
       "prompt": "Quiero and quisiera are the same verb. Which request is the softened, polite one?",
-      "hints": [],
+      "hints": [
+        "The polite form is the longer one that starts with Quis- and ends in -a — it sounds like 'key-syeh-rah'."
+      ],
       "feedback": "Quisiera gives the verb a conditional ending, and that is what makes the request courteous. Quiero is the blunt form.",
       "evidenceKey": "es-cafe-requests-foundation-choose",
       "assistanceAffectsEvidence": [
@@ -4488,7 +4590,9 @@
         "grammar"
       ],
       "prompt": "Ask for tea politely, using the softened verb rather than quiero.",
-      "hints": [],
+      "hints": [
+        "Same frame as the café request: start with Quisiera, then un té (with the accent on té), and close with por favor."
+      ],
       "feedback": "Same polite frame, tea instead of coffee: Quisiera un té, por favor, with the accent on té.",
       "evidenceKey": "es-cafe-requests-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -4502,7 +4606,23 @@
           "Quisiera un té, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quiero un té, por favor.",
+            "category": "wrong conjugation",
+            "explanation": "Quiero is the blunt 'I want'. The softened form is quisiera — the same verb with the conditional ending."
+          },
+          {
+            "answer": "Quisiera un te, por favor.",
+            "category": "accent/diacritic issue",
+            "explanation": "Té carries an accent — without it, te means 'you', not 'tea'."
+          },
+          {
+            "answer": "Quisiera un té.",
+            "category": "missing word",
+            "explanation": "Keep the polite closer: Quisiera un té, por favor."
+          }
+        ]
       }
     },
     {
@@ -4521,7 +4641,9 @@
         "vocabulary"
       ],
       "prompt": "Read the café exchange. How many drinks does the customer order?",
-      "hints": [],
+      "hints": [
+        "Count everything the customer asks for: the té in the first line, plus the extra drink added with 'y un café también' ('and a coffee too')."
+      ],
       "feedback": "The customer asks for a té and then adds un café, so two drinks in all.",
       "evidenceKey": "es-cafe-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4534,10 +4656,22 @@
       "answer": {
         "answers": [
           "Two.",
-          "2."
+          "2.",
+          "Dos."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "One.",
+            "category": "incorrect answer",
+            "explanation": "The first line asks for a té, but the customer comes back and adds un café too (y un café también) — two drinks in all."
+          },
+          {
+            "answer": "1.",
+            "category": "incorrect answer",
+            "explanation": "There is more than one order: a té, then an added un café — two drinks in all."
+          }
+        ]
       }
     },
     {
@@ -4556,7 +4690,9 @@
         "vocabulary"
       ],
       "prompt": "What does this café line mean in English: Quisiera un café, por favor.",
-      "hints": [],
+      "hints": [
+        "Quisiera is the polite 'I would like' (like 'I'd like'), un café is 'a coffee', and por favor is 'please'."
+      ],
       "feedback": "Quisiera is 'I would like', and por favor supplies the 'please'.",
       "evidenceKey": "es-cafe-requests-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -4572,7 +4708,18 @@
           "I'd like a coffee, please."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I want a coffee, please.",
+            "category": "wrong conjugation",
+            "explanation": "Quiero would mean 'I want'. The line uses quisiera, the polite 'I would like'."
+          },
+          {
+            "answer": "A coffee, please.",
+            "category": "missing word",
+            "explanation": "The line keeps the polite verb at the front: 'I would like a coffee, please'."
+          }
+        ]
       }
     },
     {
@@ -4591,7 +4738,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order to build the polite request for one coffee.",
-      "hints": [],
+      "hints": [
+        "The polite verb comes first (Quisiera), then the drink with its article (un café), then the two-word closer (por favor)."
+      ],
       "feedback": "Quisiera opens it, the drink follows with un, and por favor finishes the request.",
       "evidenceKey": "es-cafe-requests-foundation-build",
       "assistanceAffectsEvidence": [
@@ -4648,7 +4797,9 @@
         "grammar"
       ],
       "prompt": "You reach the counter and want a coffee. Make the short polite request, without the verb.",
-      "hints": [],
+      "hints": [
+        "Drop the verb entirely — simply name the drink with its article and add por favor: Un café, por favor."
+      ],
       "feedback": "Un café, por favor — the short request drops quisiera but keeps por favor.",
       "evidenceKey": "es-cafe-requests-foundation-recall",
       "assistanceAffectsEvidence": [
@@ -4659,10 +4810,22 @@
       "id": "es-cafe-requests-foundation-recall",
       "answer": {
         "answers": [
-          "Un café, por favor."
+          "Un café, por favor.",
+          "Quisiera un café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Café, por favor.",
+            "category": "missing word",
+            "explanation": "The request needs its article: 'a coffee' is un café, por favor."
+          },
+          {
+            "answer": "Un café.",
+            "category": "missing word",
+            "explanation": "Keep the polite closer por favor — it is what makes the short request courteous."
+          }
+        ]
       }
     },
     {
@@ -4685,7 +4848,9 @@
         "vocabulary"
       ],
       "prompt": "Three is hiding inside veintitrés, glued to veinte. Which Spanish word is it?",
-      "hints": [],
+      "hints": [
+        "Split veintitrés in half: veinti- carries the 'twenty', and the glued tail holds the number you already know from one to ten."
+      ],
       "feedback": "Tres is three. The twenties simply glue a number onto veinte, so veintitrés is twenty-three.",
       "evidenceKey": "es-numbers-quantities-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4731,7 +4896,9 @@
         "vocabulary"
       ],
       "prompt": "Read the price board. How much is the tea?",
-      "hints": [],
+      "hints": [
+        "Find the line that starts with Té — its price is the second one on the board: tres euros."
+      ],
       "feedback": "The board prices tea at tres euros. Dos and tres behave here exactly as they did when you counted.",
       "evidenceKey": "es-numbers-quantities-foundation-read",
       "assistanceAffectsEvidence": [
@@ -4743,10 +4910,18 @@
       "stimulusId": "es-numbers-quantities-foundation-read-passage",
       "answer": {
         "answers": [
-          "Three euros."
+          "Three euros.",
+          "Tres euros.",
+          "3 euros."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Two euros.",
+            "category": "incorrect answer",
+            "explanation": "Dos euros is the price of the coffee (Café: dos euros). The tea line reads Té: tres euros."
+          }
+        ]
       }
     },
     {
@@ -4762,7 +4937,9 @@
         "grammar"
       ],
       "prompt": "Put the Spanish words in order to ask the price of one coffee.",
-      "hints": [],
+      "hints": [
+        "The inverted question mark opens the sentence with ¿Cuánto, the verb cuesta follows, then the drink with its article: un café."
+      ],
       "feedback": "¿Cuánto cuesta? is the price question as a unit, and the upside-down question mark opens the sentence. Un café follows it.",
       "evidenceKey": "es-numbers-quantities-foundation-order",
       "assistanceAffectsEvidence": [
@@ -4812,7 +4989,9 @@
         "grammar"
       ],
       "prompt": "Say in Spanish: Two apples, please.",
-      "hints": [],
+      "hints": [
+        "Dos works for any noun, manzanas is the plural of 'apple', and the polite closer por favor ends the line."
+      ],
       "feedback": "Manzanas is feminine plural, so 'one' would be una, but two is dos either way, only the word for one changes with the noun.",
       "evidenceKey": "es-numbers-quantities-foundation-quantity",
       "assistanceAffectsEvidence": [
@@ -4826,7 +5005,23 @@
           "Dos manzanas, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dos manzana, por favor.",
+            "category": "wrong number",
+            "explanation": "With dos ('two') the noun is plural: dos manzanas."
+          },
+          {
+            "answer": "Una manzana, por favor.",
+            "category": "wrong number",
+            "explanation": "Una means 'one' — the prompt asks for two, which is dos: Dos manzanas, por favor."
+          },
+          {
+            "answer": "Dos manzanas.",
+            "category": "missing word",
+            "explanation": "End the request politely with por favor: Dos manzanas, por favor."
+          }
+        ]
       }
     },
     {
@@ -4843,7 +5038,9 @@
         "grammar"
       ],
       "prompt": "Think: a fruit seller has one apple but no sign. Ask the price in Spanish, then write the question.",
-      "hints": [],
+      "hints": [
+        "Use the same price question from this lesson — ¿Cuánto cuesta — and make 'one apple' agree with the feminine noun: una manzana."
+      ],
       "feedback": "One apple is una manzana, with the feminine una. The price question itself never changes.",
       "evidenceKey": "es-numbers-quantities-foundation-think",
       "assistanceAffectsEvidence": [
@@ -4857,7 +5054,18 @@
           "¿Cuánto cuesta una manzana?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Cuánto cuesta un manzana?",
+            "category": "wrong article",
+            "explanation": "Manzana is feminine, so 'one' must be una, not un: ¿Cuánto cuesta una manzana?"
+          },
+          {
+            "answer": "¿Cuánto cuesta manzana?",
+            "category": "missing word",
+            "explanation": "The question needs the article before the noun: una manzana."
+          }
+        ]
       }
     },
     {

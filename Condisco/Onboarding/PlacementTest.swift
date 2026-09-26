@@ -265,37 +265,45 @@ struct PlacementTestView: View {
 
     private var questionView: some View {
         let question = questions[index]
-        return VStack(alignment: .leading, spacing: 18) {
-            HStack {
-                Text("Find your level")
-                    .font(DesignTokens.text(13, weight: .semibold))
-                    .foregroundStyle(DesignTokens.primary)
-                    .textCase(.uppercase)
-                Spacer()
-                Text("\(index + 1) of \(questions.count)")
-                    .font(DesignTokens.text(13))
+        // Scrollable so the options and the skip action stay reachable at
+        // the largest Dynamic Type on the smallest phone; the skip action
+        // is pinned above the bottom edge for one-handed use.
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                HStack {
+                    Text("Find your level")
+                        .font(DesignTokens.text(13, weight: .semibold))
+                        .foregroundStyle(DesignTokens.primary)
+                        .textCase(.uppercase)
+                    Spacer()
+                    Text("\(index + 1) of \(questions.count)")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                .padding(.top, 16)
+                Text("What does this mean?")
+                    .font(DesignTokens.text(15))
                     .foregroundStyle(DesignTokens.muted)
+                Text(question.target)
+                    .font(DesignTokens.display(28))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.bottom, 8)
+                ForEach(question.options.indices, id: \.self) { optionIndex in
+                    optionButton(question: question, optionIndex: optionIndex)
+                }
             }
-            .padding(.top, 64)
-            Text("What does this mean?")
-                .font(DesignTokens.text(15))
-                .foregroundStyle(DesignTokens.muted)
-            Text(question.target)
-                .font(DesignTokens.display(28))
-                .foregroundStyle(DesignTokens.inkDeep)
-                .padding(.bottom, 8)
-            ForEach(question.options.indices, id: \.self) { optionIndex in
-                optionButton(question: question, optionIndex: optionIndex)
-            }
-            Spacer()
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             Button("Skip the check") { onSkip() }
                 .font(DesignTokens.text(15, weight: .medium))
                 .foregroundStyle(DesignTokens.muted)
                 .buttonStyle(.plain)
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 32)
+                .padding(.vertical, 12)
+                .background(DesignTokens.canvas)
         }
-        .padding(.horizontal, 24)
     }
 
     private func optionButton(question: PlacementQuestion, optionIndex: Int) -> some View {
@@ -355,67 +363,80 @@ struct PlacementTestView: View {
 
     private func resultView(recommendation: PlacementRecommendation) -> some View {
         let lesson = recommendation.lesson
-        return VStack(alignment: .leading, spacing: 16) {
-            Spacer()
-            Text("All done")
-                .font(DesignTokens.display(30))
-                .foregroundStyle(DesignTokens.inkDeep)
-            Text(recommendation.reason)
-                .font(DesignTokens.text(16))
-                .foregroundStyle(DesignTokens.ink)
-            Text("Here's where we'd start you — say the word and we'll open it. Or begin at the very start; it's a lovely first lesson.")
-                .font(DesignTokens.text(16))
-                .foregroundStyle(DesignTokens.ink)
-            PaperCard {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("SUGGESTED START")
-                        .font(DesignTokens.text(11, weight: .semibold))
-                        .foregroundStyle(DesignTokens.primary)
-                    Text(lesson.title)
-                        .font(DesignTokens.display(20))
-                        .foregroundStyle(DesignTokens.inkDeep)
-                    Text(lesson.objective)
-                        .font(DesignTokens.text(14))
-                        .foregroundStyle(DesignTokens.muted)
-                        .lineLimit(2)
+        // Scrollable at the largest Dynamic Type; the start actions stay
+        // pinned above the bottom edge for one-handed reach.
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("All done")
+                    .font(DesignTokens.display(30))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.top, 16)
+                Text(recommendation.reason)
+                    .font(DesignTokens.text(16))
+                    .foregroundStyle(DesignTokens.ink)
+                Text("Here's where we'd start you — say the word and we'll open it. Or begin at the very start; it's a lovely first lesson.")
+                    .font(DesignTokens.text(16))
+                    .foregroundStyle(DesignTokens.ink)
+                PaperCard {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("SUGGESTED START")
+                            .font(DesignTokens.text(11, weight: .semibold))
+                            .foregroundStyle(DesignTokens.primary)
+                        Text(lesson.title)
+                            .font(DesignTokens.display(20))
+                            .foregroundStyle(DesignTokens.inkDeep)
+                        Text(lesson.objective)
+                            .font(DesignTokens.text(14))
+                            .foregroundStyle(DesignTokens.muted)
+                            .lineLimit(2)
+                    }
                 }
             }
-            Spacer()
-            StudioPrimaryButton(label: "Start there", disabled: false) {
-                onDone(lesson.id)
-            }
-            HStack {
-                Spacer()
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 10) {
+                StudioPrimaryButton(label: "Start there", disabled: false) {
+                    onDone(lesson.id)
+                }
                 Button("Start from the beginning") {
                     onDone(pack.lessons.first?.id ?? lesson.id)
                 }
                 .font(DesignTokens.text(15, weight: .medium))
                 .foregroundStyle(DesignTokens.muted)
                 .buttonStyle(.plain)
-                Spacer()
             }
-            .padding(.bottom, 40)
+            .padding(.horizontal, 24)
+            .padding(.top, 10)
+            .padding(.bottom, 24)
+            .background(DesignTokens.canvas)
         }
-        .padding(.horizontal, 24)
     }
 
     private var emptyState: some View {
-        VStack(spacing: 12) {
-            Spacer()
-            Text("Not enough to go on")
-                .font(DesignTokens.display(24))
-                .foregroundStyle(DesignTokens.inkDeep)
-            Text("This course doesn't have enough example phrases to build the check yet. Starting fresh is the way.")
-                .font(DesignTokens.text(15))
-                .foregroundStyle(DesignTokens.muted)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            Spacer()
+        ScrollView {
+            VStack(spacing: 12) {
+                Text("Not enough to go on")
+                    .font(DesignTokens.display(24))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.top, 32)
+                Text("This course doesn't have enough example phrases to build the check yet. Starting fresh is the way.")
+                    .font(DesignTokens.text(15))
+                    .foregroundStyle(DesignTokens.muted)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+            }
+            .padding(.bottom, 32)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             StudioPrimaryButton(label: "Start fresh", disabled: false) {
                 onDone(pack.lessons.first?.id ?? "")
             }
             .padding(.horizontal, 24)
-            .padding(.bottom, 40)
+            .padding(.top, 10)
+            .padding(.bottom, 24)
+            .background(DesignTokens.canvas)
         }
     }
 }

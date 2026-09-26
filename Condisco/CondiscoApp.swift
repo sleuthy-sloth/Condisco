@@ -3,6 +3,63 @@ import SwiftUI
 import os
 #endif
 
+#if DEBUG
+// MARK: - UI-test review seeding (DEBUG only)
+//
+// The five-card review session cannot happen naturally right after a fresh
+// install: FSRS pushes the first replay at least a day out. To exercise the
+// full session on a simulator, the UI sweep seeds the local store with seven
+// graded attempts dated three days ago — each evidence key comes due
+// immediately, and the "Up to 5 reviews" Home invitation can be verified to
+// preselect a five-card session. Firing only on the explicit
+// `--condisco-ui-test-seed-review` launch argument keeps normal launches
+// untouched, and Release builds never compile this type.
+@MainActor
+enum SeedReviewHelper {
+    /// The number of seeded review cards: more than five, so the Review
+    /// tab's session-size picker is visible and the Home invitation's
+    /// five-card preselection is observable ("5 of 7 to review").
+    static let seedCount = 7
+
+    static func seedIfRequested() {
+        guard ProcessInfo.processInfo.arguments
+            .contains("--condisco-ui-test-seed-review") else { return }
+        do {
+            let store = try LearningStore.inDocuments()
+            let packs = try PackLoader.loadPacks()
+            let focusSlug = UserDefaults.standard.string(
+                forKey: "condisco.focusLanguage") ?? "french"
+            let pack = packs.first(where: { $0.language.slug == focusSlug })
+                ?? packs.first
+            guard let pack else { return }
+            let seededAt = Date().addingTimeInterval(-3 * 24 * 3600)
+            var seeded = 0
+            for activity in pack.activities {
+                guard seeded < seedCount else { break }
+                guard activity.base != nil,
+                      let key = activity.evidenceKey else { continue }
+                // Legacy exercises have no plain-text answer card; skip them
+                // so every seeded review shows a real prompt → answer pair.
+                if case .legacy = activity { continue }
+                guard let item = ReviewCatalog.makeItem(
+                    pack: pack, evidenceKey: key, dueAt: seededAt)
+                else { continue }
+                // Mixed verdicts: partly shaky (tricky list) and partly
+                // solid, so the review card renders both sides.
+                let verdict: ReviewVerdict = seeded % 2 == 0 ? .tryAgain : .exact
+                try store.record(.attempt(
+                    item.makeAttempt(verdict: verdict, at: seededAt)))
+                seeded += 1
+            }
+        } catch {
+            // Seeding is test support; fail the test loudly, never a silent
+            // crash of a normal launch.
+            assertionFailure("SeedReviewHelper failed: \(error)")
+        }
+    }
+}
+#endif
+
 // MARK: - Performance instrumentation (DEBUG only)
 //
 // Minimal signpost-based timing helpers for Instruments (Time Profiler and
@@ -95,6 +152,13 @@ struct CondiscoApp: App {
                     try? FileManager.default.removeItem(at: database)
                 }
             }
+        }
+        // UI-test support: five-plus review cards dated in the past so a
+        // fresh simulator can run the five-card review session without
+        // waiting out FSRS intervals. Only ever active behind an explicit
+        // launch argument; Release builds exclude the whole path.
+        MainActor.assumeIsolated {
+            SeedReviewHelper.seedIfRequested()
         }
         #endif
     }

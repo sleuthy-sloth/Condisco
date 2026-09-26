@@ -119,76 +119,93 @@ struct WelcomeFlow: View {
     // MARK: Language
 
     private var languageStep: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Which language are you learning?")
-                .font(DesignTokens.display(26))
-                .foregroundStyle(DesignTokens.inkDeep)
-                .padding(.top, 72)
-            if let loadError {
-                Text(loadError)
-                    .font(DesignTokens.text(14))
-                    .foregroundStyle(DesignTokens.muted)
-            }
-            ForEach(packs, id: \.id) { pack in
-                Button {
-                    focusSlug = pack.language.slug
-                } label: {
-                    PaperCard {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(pack.language.displayName)
-                                    .font(DesignTokens.text(17, weight: .semibold))
-                                    .foregroundStyle(DesignTokens.inkDeep)
-                                Text(pack.title)
-                                    .font(DesignTokens.text(13))
-                                    .foregroundStyle(DesignTokens.muted)
-                            }
-                            Spacer()
-                            if pack.language.slug == focusSlug {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(DesignTokens.primary)
-                                    .font(.system(size: 22))
+        // Scrollable under the largest Dynamic Type on the smallest phone:
+        // a fixed stack pushes the first card and the confirm action off
+        // screen. The confirm action stays pinned above the bottom edge so
+        // it is reachable one-handed at every type size.
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Which language are you learning?")
+                    .font(DesignTokens.display(26))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.top, 24)
+                if let loadError {
+                    Text(loadError)
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                ForEach(packs, id: \.id) { pack in
+                    Button {
+                        focusSlug = pack.language.slug
+                    } label: {
+                        PaperCard {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(pack.language.displayName)
+                                        .font(DesignTokens.text(17, weight: .semibold))
+                                        .foregroundStyle(DesignTokens.inkDeep)
+                                    Text(pack.title)
+                                        .font(DesignTokens.text(13))
+                                        .foregroundStyle(DesignTokens.muted)
+                                }
+                                Spacer()
+                                if pack.language.slug == focusSlug {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundStyle(DesignTokens.primary)
+                                        .font(.system(size: 22))
+                                }
                             }
                         }
                     }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
-            Spacer()
-            StudioPrimaryButton(label: "Continue", disabled: false) {
-                step = .experience
-            }
-            .padding(.bottom, 40)
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
         }
-        .padding(.horizontal, 24)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 8) {
+                StudioPrimaryButton(label: "Continue", disabled: false) {
+                    step = .experience
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 10)
+            .padding(.bottom, 24)
+            .background(DesignTokens.canvas)
+        }
     }
 
     // MARK: Experience
 
     private var experienceStep: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("How much \(selectedPack?.language.displayName ?? "of the language") do you know?")
-                .font(DesignTokens.display(26))
-                .foregroundStyle(DesignTokens.inkDeep)
-                .padding(.top, 72)
-            experienceCard(
-                title: "I'm starting fresh",
-                detail: "Begin with your first mission. No experience needed.",
-                icon: "sunrise"
-            ) {
-                let pack = selectedPack
-                onComplete(pack, pack?.lessons.first?.id)
+        // Scrollable at the largest Dynamic Type; the choice cards are the
+        // actions, so both stay reachable by scrolling on small phones.
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("How much \(selectedPack?.language.displayName ?? "of the language") do you know?")
+                    .font(DesignTokens.display(26))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.top, 24)
+                experienceCard(
+                    title: "I'm starting fresh",
+                    detail: "Begin with your first mission. No experience needed.",
+                    icon: "sunrise"
+                ) {
+                    let pack = selectedPack
+                    onComplete(pack, pack?.lessons.first?.id)
+                }
+                experienceCard(
+                    title: "I know some already",
+                    detail: "A quick check drawn from across the course — we'll suggest your starting lesson, and you always have the final say.",
+                    icon: "chart.bar"
+                ) {
+                    showPlacement = true
+                }
             }
-            experienceCard(
-                title: "I know some already",
-                detail: "A quick check drawn from across the course — we'll suggest your starting lesson, and you always have the final say.",
-                icon: "chart.bar"
-            ) {
-                showPlacement = true
-            }
-            Spacer()
+            .padding(.horizontal, 24)
+            .padding(.bottom, 32)
         }
-        .padding(.horizontal, 24)
     }
 
     private func experienceCard(

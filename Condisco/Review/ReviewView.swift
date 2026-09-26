@@ -105,7 +105,13 @@ struct ReviewView: View {
                         .foregroundStyle(DesignTokens.attentionInk)
                         .padding(24)
                 } else if model.due.isEmpty {
-                    restedState
+                    // Scrollable so the resting message never clips at the
+                    // largest Dynamic Type on the smallest phone.
+                    ScrollView {
+                        restedState
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 480)
+                    }
                 } else {
                     dueList
                 }
@@ -448,38 +454,44 @@ struct ReviewSessionView: View {
     }
 
     private var summary: some View {
-        VStack(spacing: 14) {
-            Text("Session complete")
-                .font(DesignTokens.display(22))
-                .foregroundStyle(DesignTokens.inkDeep)
-            PaperCard {
-                VStack(spacing: 8) {
-                    summaryRow("Knew it", counts[.exact] ?? 0)
-                    summaryRow("Almost", counts[.close] ?? 0)
-                    summaryRow("Not yet", counts[.tryAgain] ?? 0)
-                    summaryRow("Easy", counts[.easy] ?? 0)
+        // Scrollable so the verdict counts and Done action never clip at the
+        // largest Dynamic Type on the smallest phone.
+        ScrollView {
+            VStack(spacing: 14) {
+                Text("Session complete")
+                    .font(DesignTokens.display(22))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.top, 24)
+                PaperCard {
+                    VStack(spacing: 8) {
+                        summaryRow("Knew it", counts[.exact] ?? 0)
+                        summaryRow("Almost", counts[.close] ?? 0)
+                        summaryRow("Not yet", counts[.tryAgain] ?? 0)
+                        summaryRow("Easy", counts[.easy] ?? 0)
+                    }
                 }
-            }
-            .padding(.horizontal, 20)
-            Text("The shaky ones come back tomorrow. The solid ones rest longer.")
-                .font(DesignTokens.text(14))
-                .foregroundStyle(DesignTokens.muted)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            if !history.isEmpty {
-                Button("Undo last rating") { undoLast() }
-                    .font(DesignTokens.text(15, weight: .semibold))
-                    .foregroundStyle(DesignTokens.primary)
+                .padding(.horizontal, 20)
+                Text("The shaky ones come back tomorrow. The solid ones rest longer.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                if !history.isEmpty {
+                    Button("Undo last rating") { undoLast() }
+                        .font(DesignTokens.text(15, weight: .semibold))
+                        .foregroundStyle(DesignTokens.primary)
+                        .frame(minHeight: 44)
+                }
+                Button("Done") { onDone() }
+                    .font(DesignTokens.text(16, weight: .semibold))
+                    .foregroundStyle(DesignTokens.stock)
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 12)
+                    .background(DesignTokens.primary)
+                    .cornerRadius(10)
                     .frame(minHeight: 44)
+                    .padding(.bottom, 24)
             }
-            Button("Done") { onDone() }
-                .font(DesignTokens.text(16, weight: .semibold))
-                .foregroundStyle(DesignTokens.stock)
-                .padding(.horizontal, 28)
-                .padding(.vertical, 12)
-                .background(DesignTokens.primary)
-                .cornerRadius(10)
-                .frame(minHeight: 44)
         }
     }
 

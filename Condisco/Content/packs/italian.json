@@ -2365,7 +2365,7 @@
       "url": "/audio/italian/it-ordering-politely-answer.wav",
       "sha256": "06515d78327ef2fd7e2b7af80285a393195d8f6d6a67eba31ff8ac24127fcfef",
       "transcript": "Vorrei un caffè, per favore.",
-      "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance. Human listening review remains open.",
+      "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance/index.md. Human listening review remains open.",
       "kind": "audio"
     },
     {
@@ -2492,7 +2492,7 @@
       "kind": "audio",
       "id": "it-market-listen-audio",
       "url": "/audio/italian-foundations/it-market-foundation-listen.mp3",
-      "sha256": "c0c6bee6a13c875313bbdfd0469e8080c0dd8fef6a9fc76731f22cd79c026dd1",
+      "sha256": "4b62a0f69ac5c9becf88ee82553003ed9a45a70f514f11ee5168d9ad84166fe5",
       "transcript": "Ascolto lungo: Al mercato.",
       "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance/italian-market-listen.json. Native-speaker prosody review remains open."
     }
@@ -14249,7 +14249,7 @@
         "writing",
         "grammar"
       ],
-      "prompt": "The assistant asks: “Posso aiutarla?” (Can I help you?) Write a polite reply saying you are just looking.",
+      "prompt": "The assistant asks: “Posso aiutarla?” (Can I help you?) Type your polite reply: you are just looking.",
       "hints": [],
       "feedback": "Transfer: you reused “sto solo guardando, grazie” in a real exchange. That is the whole lesson in one sentence.",
       "evidenceKey": "it-a2-vorrei-act-10",

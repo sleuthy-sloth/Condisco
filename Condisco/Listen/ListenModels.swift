@@ -187,3 +187,109 @@ func formatListenPosition(_ seconds: Double) -> String {
 func formatListenDuration(_ seconds: Double) -> String {
     formatListenPosition(seconds)
 }
+
+// MARK: - Scenario loop (P3.2 pure core)
+//
+// The listen–respond–compare loop, as a *pure, side-effect-free* core:
+// section eligibility, per-section timing, and the step machine. There is
+// deliberately no audio, no view, and no scoring here — the sheet UI and
+// playback land in a later task, and the loop carries no score/accuracy
+// state by design.
+
+enum ListenScenario {
+    /// The sections a scenario can play, in track order: only sections
+    /// with a reveal (`target`) and a known start time (`startS`). Older
+    /// transcripts may omit either, so the filter stays defensive.
+    static func scenarioSections(track: ListenTrack) -> [ListenSection] {
+        track.sections.filter { $0.target != nil && $0.startS != nil }
+    }
+
+    /// End time for the `index`-th scenario section (`index` is an index
+    /// into `scenarioSections(track:)`). The next timed transcript section
+    /// bounds playback, even if that section has no target. The final
+    /// section runs to the track's declared duration.
+    static func sectionEnd(for index: Int, in track: ListenTrack) -> TimeInterval {
+        let eligibleIndices = track.sections.indices.filter {
+            track.sections[$0].target != nil && track.sections[$0].startS != nil
+        }
+        guard eligibleIndices.indices.contains(index) else { return 0 }
+        let sectionIndex = eligibleIndices[index]
+        let start = track.sections[sectionIndex].startS ?? 0
+        let nextStart = track.sections.dropFirst(sectionIndex + 1)
+            .compactMap(\.startS)
+            .first(where: { $0 > start })
+        let candidate = nextStart ?? track.durationS
+        // Defensive: degenerate transcripts must never yield an empty or
+        // backwards section window.
+        return max(candidate, start + 1)
+    }
+}
+
+/// Pure step machine for one listen scenario run. Holds only the loop
+/// position — the current section, the total section count, and the step —
+/// plus the mic availability flag that shapes the transition table. There
+/// is intentionally NO score/accuracy/grade state of any kind.
+struct ScenarioLoopState: Equatable {
+    enum Step: Equatable {
+        case line
+        case choose
+        case speak
+        case model
+        case done
+    }
+
+    /// How many sections the scenario covers.
+    let total: Int
+    /// Current section within the scenario (0-based).
+    private(set) var index: Int
+    /// Current step in the section loop.
+    private(set) var step: Step
+    /// When true (no microphone), the `.speak` step is skipped.
+    private let micUnavailable: Bool
+
+    /// Enters the first section at `.line`. An empty scenario (total 0)
+    /// starts directly at `.done` — there is nothing to play.
+    init(total: Int, micUnavailable: Bool) {
+        self.total = max(0, total)
+        self.micUnavailable = micUnavailable
+        self.index = 0
+        self.step = self.total == 0 ? .done : .line
+    }
+
+    var currentSectionIndex: Int { index }
+    var currentStep: Step { step }
+    var isDone: Bool { step == .done }
+
+    /// The transition table:
+    ///   `line` → `choose` → `speak` → `model` → (next section) `line` | `done`
+    ///   `choose` → `model` directly when `micUnavailable` (speak skipped)
+    ///   `done` is terminal: advancing is a no-op.
+    mutating func advance() {
+        switch step {
+        case .line:
+            step = .choose
+        case .choose:
+            step = micUnavailable ? .model : .speak
+        case .speak:
+            step = .model
+        case .model:
+            if index + 1 < total {
+                index += 1
+                step = .line
+            } else {
+                step = .done
+            }
+        case .done:
+            break
+        }
+    }
+}
+
+/// The playback rate for one scenario step, pinned by tests: the compare
+/// (`.model`) step replays its line at the slow rate (0.75×, the same
+/// constant as `ListenPlayerModel.slowRate`), every other step at normal
+/// speed. Pure, so the practice sheet's window playback stays honest and
+/// testable without touching audio.
+func scenarioStepRate(for step: ScenarioLoopState.Step) -> Float {
+    step == .model ? 0.75 : 1
+}

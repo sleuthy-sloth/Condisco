@@ -124,22 +124,28 @@ struct ShadowModeView: View {
                         .foregroundStyle(DesignTokens.muted)
                         .padding(.top, 8)
                     Spacer()
-                    Button {
-                        speaker.speak(
-                            phrases[index].text, languageCode: languageCode)
-                    } label: {
-                        Label(
-                            speaker.isSpeaking ? "Speaking…" : "Hear it",
-                            systemImage: "speaker.wave.2.fill")
-                            .font(DesignTokens.text(16, weight: .semibold))
-                            .foregroundStyle(DesignTokens.stock)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(DesignTokens.primary)
-                            .cornerRadius(10)
+                    VStack(spacing: 6) {
+                        Button {
+                            speaker.speak(
+                                phrases[index].text, languageCode: languageCode)
+                        } label: {
+                            Label(
+                                speaker.isSpeaking ? "Speaking…" : "Hear it",
+                                systemImage: "speaker.wave.2.fill")
+                                .font(DesignTokens.text(16, weight: .semibold))
+                                .foregroundStyle(DesignTokens.stock)
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 12)
+                                .background(DesignTokens.primary)
+                                .cornerRadius(10)
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(speaker.isSpeaking)
+                        .accessibilityHint("Synthesized course voice")
+                        Text("Course voice (synthesized)")
+                            .font(DesignTokens.text(12))
+                            .foregroundStyle(DesignTokens.muted)
                     }
-                    .buttonStyle(.plain)
-                    .disabled(speaker.isSpeaking)
                     HStack {
                         Button("Previous") {
                             speaker.stop()

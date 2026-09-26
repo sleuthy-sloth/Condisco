@@ -1,0 +1,23 @@
+{
+  "asset": "/audio/portuguese-foundations/pt-introductions-foundation-listen.mp3",
+  "packId": "portuguese",
+  "trackId": "pt-introductions-foundation",
+  "trackTitle": "Introductions and a first café visit (Brazilian Portuguese)",
+  "generator": {
+    "model": "unknown",
+    "voice": "unknown"
+  },
+  "method": "local text-to-speech synthesis",
+  "generatedDate": "unknown",
+  "sha256": "5cdec443b954c34f883dd6a52630ed225982d95d9b988b7ac0ab5ac05cfba66c",
+  "verificationStatus": "native-speaker review pending",
+  "sources": [
+    "Condisco/Content/listen-tracks/portuguese.json — reviewPending: true; durationS 785.17",
+    "Condisco/Listen/ListenModels.swift — header: Listen tracks are \"synthesized at author time and bundled with the app\"",
+    "git 012ff1d \"Initial commit: Condisco iOS app baseline\" — first tracking of the asset; the repo history contains no later audio-generation commit for it"
+  ],
+  "unknownFacts": [
+    "generator model/voice: this Listen track is not declared in the Portuguese pack's media array and carries no in-repo attribution naming a generator (verified by searching all pack JSONs and docs for generator references)",
+    "generated date: no in-repo record"
+  ]
+}

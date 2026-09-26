@@ -5,9 +5,10 @@ import UIKit
 
 // MARK: - Listen player model
 //
-// Audio-only lesson playback: play/pause, ±15s, scrubber, speed. Playback
-// continues with the screen off (UIBackgroundModes audio + .playback session)
-// with lock-screen controls via MPRemoteCommandCenter.
+// Audio-only lesson playback: play/pause, ±15s, scrubber, speed, and a
+// one-tap "Slow" replay that hears the current section again at 0.75×.
+// Playback continues with the screen off (UIBackgroundModes audio + .playback
+// session) with lock-screen controls via MPRemoteCommandCenter.
 //
 // Position honesty mirrors the web's position.ts: resume points under five
 // seconds are stray taps, stopping within ten seconds of the end counts as
@@ -17,6 +18,8 @@ import UIKit
 final class ListenPlayerModel: ObservableObject {
     static let skipSeconds = 15.0
     static let rates: [Float] = [1, 0.75, 1.25, 1.5]
+    /// Speed used by the explicit "Slow" replay; also reachable by cycling rates.
+    static let slowRate: Float = 0.75
 
     let track: ListenTrack
     let courseTitle: String
@@ -25,6 +28,7 @@ final class ListenPlayerModel: ObservableObject {
     @Published var current: Double = 0
     @Published var duration: Double
     @Published var rate: Float = 1
+    @Published var isSlowReplay = false
     @Published var sleepMinutesLeft: Int?
     @Published var resumeFrom: Double?
     @Published var resumeApplied = false
@@ -156,7 +160,13 @@ final class ListenPlayerModel: ObservableObject {
             resumeApplied = true
         }
         do {
-            try AVAudioSession.sharedInstance().setActive(true)
+            let session = AVAudioSession.sharedInstance()
+            // A prior record-and-compare cycle leaves the session in
+            // playAndRecord mode; re-assert plain playback so track audio
+            // keeps routing correctly (and with the screen off) after
+            // recording stops.
+            try session.setCategory(.playback, mode: .default)
+            try session.setActive(true)
         } catch {
             // Best effort: the player may still produce sound.
         }
@@ -188,11 +198,52 @@ final class ListenPlayerModel: ObservableObject {
     func cycleRate() {
         guard let index = Self.rates.firstIndex(of: rate) else {
             rate = Self.rates[0]
+            isSlowReplay = false
             return
         }
         rate = Self.rates[(index + 1) % Self.rates.count]
         if isPlaying { player?.rate = rate }
+        if rate != Self.slowRate { isSlowReplay = false }
         updateNowPlaying()
+    }
+
+    // MARK: slow replay
+
+    /// One tap replays the current section at a gentle pace: the playhead
+    /// jumps to the nearest section start and playback continues at
+    /// `slowRate`. A second tap returns to normal speed in place. The
+    /// rate-cycle button stays independent — it clears slow mode whenever
+    /// it moves the speed off 0.75×. Reuses the transport rate machinery,
+    /// so lock-screen rate reporting and background playback keep working.
+    func toggleSlowReplay() {
+        if isSlowReplay {
+            isSlowReplay = false
+            rate = 1
+            if isPlaying { player?.rate = rate }
+            updateNowPlaying()
+        } else {
+            isSlowReplay = true
+            rate = Self.slowRate
+            // An explicit replay supersedes any offered resume point.
+            resumeApplied = true
+            seek(to: nearestSectionStart())
+            if isPlaying {
+                player?.rate = rate
+            } else {
+                play()
+            }
+            updateNowPlaying()
+        }
+    }
+
+    /// Start of the section under the playhead: the last heading at or
+    /// before the current position. Transcripts without section timings
+    /// keep the playhead where it is.
+    private func nearestSectionStart() -> Double {
+        let candidates = track.sections
+            .compactMap(\.startS)
+            .filter { $0 <= current + 0.25 }
+        return candidates.max() ?? current
     }
 
     // MARK: sleep timer
@@ -438,6 +489,7 @@ struct ListenPlayerView: View {
     @State private var scrub: Double = 0
     @State private var isScrubbing = false
     @State private var showingShadow = false
+    @State private var showingPractice = false
     @State private var vocabularyByWord: [String: VocabularyItem] = [:]
 
     private var sectionIndices: [Int] {
@@ -510,6 +562,9 @@ struct ListenPlayerView: View {
                         }
                     }
                     transcript
+                        .sheet(isPresented: $showingPractice) {
+                            PracticeLoopView(track: track)
+                        }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -585,6 +640,33 @@ struct ListenPlayerView: View {
                                     .stroke(DesignTokens.edgeSoft, lineWidth: 1)
                             )
                     }
+
+                    Button {
+                        model.toggleSlowReplay()
+                    } label: {
+                        Text("Slow")
+                            .font(DesignTokens.text(14, weight: .semibold))
+                            .foregroundStyle(
+                                model.isSlowReplay
+                                    ? DesignTokens.primaryStrong
+                                    : DesignTokens.ink)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 6)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(
+                                        model.isSlowReplay
+                                            ? DesignTokens.primary
+                                            : DesignTokens.edgeSoft,
+                                        lineWidth: 1)
+                            )
+                    }
+                    .accessibilityLabel("Slow replay")
+                    .accessibilityHint(
+                        model.isSlowReplay
+                            ? "On. Tap to return to normal speed."
+                            : "Replays the current line at a gentle pace.")
+                    .accessibilityAddTraits(model.isSlowReplay ? .isSelected : [])
 
                     Menu {
                         Button("Off") { model.setSleepTimer(minutes: nil) }
@@ -728,6 +810,21 @@ struct ListenPlayerView: View {
                     .foregroundStyle(DesignTokens.inkDeep)
                     .padding(.horizontal, 4)
                 Spacer()
+                if !ListenScenario.scenarioSections(track: track).isEmpty {
+                    Button {
+                        model.pause()
+                        showingPractice = true
+                    } label: {
+                        Label("Practice", systemImage: "play.circle")
+                            .font(DesignTokens.text(14, weight: .semibold))
+                            .foregroundStyle(DesignTokens.primary)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 4)
+                    .accessibilityLabel("Practice: listen, respond, compare")
+                    .accessibilityHint(
+                        "Walks through each target phrase: hear it, predict it, record yourself, then compare with a slow replay.")
+                }
                 if track.sections.contains(where: { $0.target != nil }) {
                     Button {
                         model.pause()
@@ -745,6 +842,615 @@ struct ListenPlayerView: View {
             ForEach(sectionIndices, id: \.self) { index in
                 sectionRow(track.sections[index])
             }
+        }
+        // Selectable so learners can copy phrases. Renders entirely from the
+        // bundled transcript + audio — no network access.
+        .textSelection(.enabled)
+    }
+}
+
+// MARK: - Practice loop (P3.2): listen – respond – compare
+//
+// A guided section loop over the pure ListenScenario core. Per eligible
+// section: plays the line once (listen), hides its target behind a reveal
+// (choose), optionally records a take with the existing VoiceRecorder
+// (respond), then replays the line at 0.75× (compare). The loop carries no
+// score, grade, or accuracy state — the app never judges pronunciation.
+//
+// The sheet owns its own AVPlayer built from the bundled audio with its own
+// periodic observer, so the main ListenPlayerModel's position, sleep timer,
+// lock-screen controls, and resume point are never touched. The main player
+// is paused (only) when the sheet opens, exactly like Shadow mode.
+
+/// The practice sheet's isolated audio: its own AVPlayer plus the periodic
+/// observer that stops a play window at its section end. The main
+/// ListenPlayerModel is never mutated by this class.
+@MainActor
+private final class PracticeLoopPlayer: ObservableObject {
+    /// Observer tick; fine enough to stop close to a section's end.
+    private static let tick: TimeInterval = 0.1
+
+    @Published private(set) var isPlaying = false
+    @Published private(set) var failed = false
+
+    /// Called once when a play window reaches its end on its own (or the
+    /// track item finishes first). The view advances the loop from here —
+    /// skips and teardown call `stop()` and never fire this.
+    var onWindowEnded: (() -> Void)?
+
+    private var player: AVPlayer?
+    private var timeObserver: Any?
+    private var endObserver: NSObjectProtocol?
+    private var currentWindow: (start: Double, end: Double)?
+    private var tornDown = false
+
+    init(track: ListenTrack) {
+        guard let url = MediaResolver.bundleURL(for: track.audioUrl) else {
+            failed = true
+            return
+        }
+        let item = AVPlayerItem(url: url)
+        let player = AVPlayer(playerItem: item)
+        // A short track may end before its window; pause, don't loop.
+        player.actionAtItemEnd = .pause
+        self.player = player
+
+        timeObserver = player.addPeriodicTimeObserver(
+            forInterval: CMTime(seconds: Self.tick, preferredTimescale: 600),
+            queue: .main
+        ) { [weak self] time in
+            Task { @MainActor in self?.checkWindow(time: time) }
+        }
+
+        endObserver = NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.handleItemEnded() }
+        }
+    }
+
+    /// Seeks to `start` and plays until `end` at the given rate. (Re)claims
+    /// the audio session as playback so a prior VoiceRecorder record-compare
+    /// cycle can't leave it in playAndRecord mode.
+    func playWindow(start: Double, end: Double, rate: Float) {
+        guard let player, !failed, end > start else { return }
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .default)
+            try session.setActive(true)
+        } catch {
+            // Best effort: the player may still produce sound.
+        }
+        currentWindow = (start, end)
+        player.seek(
+            to: CMTime(seconds: start, preferredTimescale: 600),
+            toleranceBefore: .zero, toleranceAfter: .zero)
+        player.defaultRate = rate
+        player.play()
+        isPlaying = true
+    }
+
+    /// Stops the current window without advancing (Skip, Close, teardown).
+    /// Safe to call any time.
+    func stop() {
+        player?.pause()
+        isPlaying = false
+        currentWindow = nil
+    }
+
+    private func checkWindow(time: CMTime) {
+        guard isPlaying, let window = currentWindow else { return }
+        let current = time.secondsIfFinite ?? 0
+        if current >= window.end {
+            stop()
+            onWindowEnded?()
+        }
+    }
+
+    private func handleItemEnded() {
+        // The item finished before the window's end (degenerate timing or
+        // the very last section). Treat the item end as the window end.
+        guard isPlaying else { return }
+        stop()
+        onWindowEnded?()
+    }
+
+    /// Stops playback and removes the observer. Called on sheet disappear so
+    /// nothing keeps playing or leaks.
+    func teardown() {
+        guard !tornDown else { return }
+        tornDown = true
+        stop()
+        if let timeObserver {
+            player?.removeTimeObserver(timeObserver)
+        }
+        if let endObserver {
+            NotificationCenter.default.removeObserver(endObserver)
+        }
+        self.timeObserver = nil
+        self.endObserver = nil
+        player = nil
+    }
+}
+
+/// The listen–respond–compare sheet. Drives a `ScenarioLoopState`; all step
+/// transitions go through `advanceLoop()`, which only ever mutates the pure
+/// loop state and never touches `ListenPlayerModel`.
+struct PracticeLoopView: View {
+    let track: ListenTrack
+
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var player: PracticeLoopPlayer
+    @State private var loop: ScenarioLoopState
+    @State private var recorder: VoiceRecorder?
+    @State private var micSkipped: Bool
+
+    init(track: ListenTrack) {
+        self.track = track
+        let micDenied = AVAudioApplication.shared.recordPermission == .denied
+        let count = ListenScenario.scenarioSections(track: track).count
+        _loop = State(initialValue: ScenarioLoopState(
+            total: count, micUnavailable: micDenied))
+        _player = StateObject(wrappedValue: PracticeLoopPlayer(track: track))
+        _micSkipped = State(initialValue: micDenied)
+    }
+
+    private var sections: [ListenSection] {
+        ListenScenario.scenarioSections(track: track)
+    }
+
+    private func currentSection() -> ListenSection? {
+        guard sections.indices.contains(loop.currentSectionIndex) else { return nil }
+        return sections[loop.currentSectionIndex]
+    }
+
+    private var stepName: String {
+        switch loop.currentStep {
+        case .line:
+            return "Listen"
+        case .choose:
+            return "Choose"
+        case .speak:
+            return "Respond"
+        case .model:
+            return "Compare"
+        case .done:
+            return "Done"
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                DesignTokens.canvas.ignoresSafeArea()
+                VStack(spacing: 18) {
+                    header
+                    Spacer()
+                    stepContent
+                    Spacer()
+                    if micSkipped {
+                        Text("Mic unavailable — recording is skipped.")
+                            .font(DesignTokens.text(13))
+                            .foregroundStyle(DesignTokens.muted)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 20)
+            }
+            .navigationTitle("Practice")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { dismiss() }
+                }
+            }
+            .onAppear {
+                player.onWindowEnded = { self.advanceLoop() }
+            }
+            // The loop is the sole driver: every step change re-runs this
+            // and plays exactly the right window (or stops) for the step.
+            .task(id: loop) { handleStep() }
+            .onDisappear {
+                recorder?.discard()
+                player.teardown()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var header: some View {
+        if !loop.isDone {
+            Text("\(stepName) \(loop.currentSectionIndex + 1) of \(loop.total)")
+                .font(DesignTokens.text(13, weight: .semibold))
+                .foregroundStyle(DesignTokens.primary)
+                .textCase(.uppercase)
+                .accessibilityLabel("\(stepName), section \(loop.currentSectionIndex + 1) of \(loop.total)")
+        }
+    }
+
+    /// Enters the step: plays the listen/compare windows, or manages the
+    /// recorder on the respond step. Auto-play steps advance themselves via
+    /// the player's `onWindowEnded`.
+    @MainActor
+    private func handleStep() {
+        switch loop.currentStep {
+        case .line, .model:
+            // Leaving respond must silence the recorder first: a take or the
+            // synthesized course voice may still be playing, and would
+            // otherwise overlap the line/compare window.
+            discardRecorder()
+            playCurrentWindow()
+        case .speak:
+            player.stop()
+            makeRecorderIfNeeded()
+            if AVAudioApplication.shared.recordPermission == .denied
+                || recorder?.micUnavailable == true {
+                // Quiet skip — never an alert.
+                skipBecauseMicUnavailable()
+            }
+        case .choose, .done:
+            player.stop()
+            discardRecorder()
+        }
+    }
+
+    @MainActor
+    private func playCurrentWindow() {
+        guard let section = currentSection(), let start = section.startS else { return }
+        let end = ListenScenario.sectionEnd(for: loop.currentSectionIndex, in: track)
+        // The compare step replays at the slow rate; listen runs at normal
+        // speed. Pure helper, pinned by the tests.
+        player.playWindow(
+            start: start, end: end,
+            rate: scenarioStepRate(for: loop.currentStep))
+    }
+
+    /// Only the pure loop state changes here; nothing else in the app.
+    @MainActor
+    private func advanceLoop() {
+        loop.advance()
+    }
+
+    @MainActor
+    private func skipBecauseMicUnavailable() {
+        guard loop.currentStep == .speak else { return }
+        micSkipped = true
+        loop.advance()
+    }
+
+    /// One fresh disposable recorder per respond step, so the loop never
+    /// offers a phrase with the previous section's target.
+    @MainActor
+    private func makeRecorderIfNeeded() {
+        guard recorder == nil,
+              let section = currentSection(),
+              let target = section.target else { return }
+        recorder = VoiceRecorder(
+            target: target.text,
+            languageCode: ShadowVoice.languageCode(for: track.courseSlug))
+    }
+
+    @MainActor
+    private func discardRecorder() {
+        recorder?.discard()
+        recorder = nil
+    }
+
+    @ViewBuilder
+    private var stepContent: some View {
+        switch loop.currentStep {
+        case .line:
+            if player.failed {
+                failedStepCard(title: "Listen")
+            } else {
+                VStack(spacing: 14) {
+                    lineStepCard
+                    PracticeSecondaryButton(title: "Skip") {
+                        player.stop()
+                        advanceLoop()
+                    }
+                    .accessibilityHint("Skips the rest of the line and continues.")
+                }
+            }
+        case .choose:
+            if let section = currentSection() {
+                PracticeChooseStep(section: section) { advanceLoop() }
+            }
+        case .speak:
+            if let section = currentSection(), let recorder {
+                PracticeRespondStep(
+                    recorder: recorder,
+                    section: section,
+                    onContinue: { advanceLoop() },
+                    onMicUnavailable: { skipBecauseMicUnavailable() })
+            }
+        case .model:
+            if player.failed {
+                failedStepCard(title: "Compare")
+            } else {
+                VStack(spacing: 14) {
+                    modelStepCard
+                    PracticeSecondaryButton(title: "Skip replay") {
+                        player.stop()
+                        advanceLoop()
+                    }
+                    .accessibilityHint("Stops the slow replay and continues.")
+                }
+            }
+        case .done:
+            doneCard
+        }
+    }
+
+    private var lineStepCard: some View {
+        PracticeStepCard(title: "Listen") {
+            VStack(alignment: .leading, spacing: 10) {
+                if let section = currentSection() {
+                    Text(section.heading)
+                        .font(DesignTokens.text(15, weight: .semibold))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                }
+                Text("The line plays once — predict the target phrase before it's revealed.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.ink)
+                if player.isPlaying {
+                    Label("Playing…", systemImage: "speaker.wave.2.fill")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.primary)
+                }
+            }
+        }
+    }
+
+    private var modelStepCard: some View {
+        PracticeStepCard(title: "Compare") {
+            VStack(alignment: .leading, spacing: 10) {
+                if let target = currentSection()?.target {
+                    Text(target.text)
+                        .font(DesignTokens.text(17, weight: .semibold))
+                        .foregroundStyle(DesignTokens.primaryStrong)
+                        .lineSpacing(4)
+                    Text(target.meaning)
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                Text("Now hear it again at a gentle pace — follow along and compare.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.ink)
+                if player.isPlaying {
+                    Label("Playing at 0.75×…", systemImage: "speaker.wave.2.fill")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.primary)
+                }
+            }
+        }
+    }
+
+    private func failedStepCard(title: String) -> some View {
+        VStack(spacing: 14) {
+            PracticeStepCard(title: title) {
+                Text("This track's audio file is missing from the app bundle.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.attentionInk)
+            }
+            PracticePrimaryButton(title: "Continue") {
+                advanceLoop()
+            }
+        }
+    }
+
+    /// Plain completion: no score, no percentage, no accuracy claim.
+    private var doneCard: some View {
+        VStack(spacing: 16) {
+            Text("Done")
+                .font(DesignTokens.display(26))
+                .foregroundStyle(DesignTokens.inkDeep)
+            Text("The app never judges your pronunciation.")
+                .font(DesignTokens.text(17, weight: .semibold))
+                .foregroundStyle(DesignTokens.ink)
+                .multilineTextAlignment(.center)
+            Text("You listened to \(loop.total) sections, chose your answer, and compared with the slow replay. No score — just practice.")
+                .font(DesignTokens.text(14))
+                .foregroundStyle(DesignTokens.muted)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 8)
+            PracticePrimaryButton(title: "Close") {
+                dismiss()
+            }
+        }
+    }
+}
+
+// MARK: - Practice step building blocks
+
+/// PaperCard with the small uppercase caption used across the sheet.
+private struct PracticeStepCard<Content: View>: View {
+    let title: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        PaperCard {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(title)
+                    .font(DesignTokens.text(13, weight: .semibold))
+                    .foregroundStyle(DesignTokens.muted)
+                    .textCase(.uppercase)
+                content
+            }
+        }
+    }
+}
+
+/// Primary filled button used for Continue/Close.
+private struct PracticePrimaryButton: View {
+    let title: String
+    var systemImage: String? = nil
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Group {
+                if let systemImage {
+                    Label(title, systemImage: systemImage)
+                } else {
+                    Text(title)
+                }
+            }
+            .font(DesignTokens.text(16, weight: .semibold))
+            .foregroundStyle(DesignTokens.stock)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .background(DesignTokens.primary)
+            .cornerRadius(10)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// Quiet text button for skips.
+private struct PracticeSecondaryButton: View {
+    let title: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(title, action: action)
+            .font(DesignTokens.text(15, weight: .semibold))
+            .foregroundStyle(DesignTokens.primary)
+            .frame(minHeight: 44)
+    }
+}
+
+/// The choose step mirrors ReviewCardView's recall contract: the target is
+/// hidden behind a reveal, and there is no verdict — just an honest read.
+private struct PracticeChooseStep: View {
+    let section: ListenSection
+    let onContinue: () -> Void
+
+    @State private var revealed = false
+
+    var body: some View {
+        VStack(spacing: 16) {
+            PracticeStepCard(title: "Choose") {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(section.heading)
+                        .font(DesignTokens.text(15, weight: .semibold))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                    Text("Say it out loud or think it through, then reveal the answer.")
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.ink)
+                    if !revealed {
+                        Button("Reveal answer") { revealed = true }
+                            .font(DesignTokens.text(15, weight: .semibold))
+                            .foregroundStyle(DesignTokens.primary)
+                            .padding(.top, 2)
+                            .frame(minHeight: 44)
+                            .accessibilityHint("Shows the target phrase.")
+                    } else if let target = section.target {
+                        Text(target.text)
+                            .font(DesignTokens.text(17, weight: .semibold))
+                            .foregroundStyle(DesignTokens.primaryStrong)
+                            .lineSpacing(4)
+                        Text(target.meaning)
+                            .font(DesignTokens.text(14))
+                            .foregroundStyle(DesignTokens.muted)
+                        Text("No grading — just your honest read.")
+                            .font(DesignTokens.text(13))
+                            .foregroundStyle(DesignTokens.muted)
+                    }
+                }
+            }
+            if revealed {
+                PracticePrimaryButton(title: "Continue", systemImage: "arrow.right") {
+                    onContinue()
+                }
+                .accessibilityHint("Shows your take, or moves on when the mic is unavailable.")
+            }
+        }
+    }
+}
+
+/// The respond step: an optional record-and-compare for the current target,
+/// always skippable. A mid-flow mic denial quietly skips straight to the
+/// compare step through `onMicUnavailable` — never an alert.
+private struct PracticeRespondStep: View {
+    @ObservedObject var recorder: VoiceRecorder
+    let section: ListenSection
+    let onContinue: () -> Void
+    let onMicUnavailable: () -> Void
+
+    var body: some View {
+        VStack(spacing: 16) {
+            PracticeStepCard(title: "Respond") {
+                VStack(alignment: .leading, spacing: 10) {
+                    if let target = section.target {
+                        Text(target.text)
+                            .font(DesignTokens.text(17, weight: .semibold))
+                            .foregroundStyle(DesignTokens.primaryStrong)
+                            .lineSpacing(4)
+                        Text(target.meaning)
+                            .font(DesignTokens.text(14))
+                            .foregroundStyle(DesignTokens.muted)
+                    }
+                    Text("Your turn — say the phrase out loud. Recording is optional.")
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.ink)
+                    PracticeRecordButton(recorder: recorder)
+                }
+            }
+            PracticePrimaryButton(title: "Continue", systemImage: "arrow.right") {
+                onContinue()
+            }
+            .accessibilityHint("Stops any recording and replays the line slowly.")
+        }
+        .onChange(of: recorder.micUnavailable) { _, denied in
+            if denied { onMicUnavailable() }
+        }
+    }
+}
+
+/// The respond step's record control — same contract and labels as
+/// `RecordCompareButton`, but driven by the sheet's per-section recorder so
+/// the loop can observe mic availability.
+private struct PracticeRecordButton: View {
+    @ObservedObject var recorder: VoiceRecorder
+
+    var body: some View {
+        Button {
+            recorder.toggle()
+        } label: {
+            VStack(spacing: 1) {
+                Image(systemName: recorder.phase == .recording ? "stop.circle" : "mic")
+                    .font(.system(size: 15))
+                    .foregroundStyle(
+                        recorder.phase == .recording
+                            ? DesignTokens.primary
+                            : DesignTokens.muted)
+                if recorder.phase == .yourTake || recorder.phase == .native {
+                    Text(recorder.phase == .yourTake
+                         ? "Your take" : "Course voice (synthesized)")
+                        .font(DesignTokens.text(10))
+                        .foregroundStyle(DesignTokens.muted)
+                        .fixedSize()
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(buttonLabel)
+        .accessibilityHint(
+            recorder.micUnavailable
+                ? "Mic unavailable"
+                : "Records your take and plays it back with the course voice.")
+
+    }
+
+    private var buttonLabel: String {
+        switch recorder.phase {
+        case .idle:
+            return "Record your pronunciation of \"\(recorder.target)\""
+        case .recording:
+            return "Stop recording"
+        case .yourTake, .native:
+            return "Stop playback"
         }
     }
 }

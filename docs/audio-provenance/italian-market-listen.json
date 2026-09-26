@@ -1,0 +1,27 @@
+{
+  "asset": "/audio/italian-foundations/it-market-foundation-listen.mp3",
+  "packId": "italian",
+  "trackId": "it-market-foundation",
+  "trackTitle": "Italian Market Foundations",
+  "generator": {
+    "model": "Kokoro 0.9.4 (hexgrad/Kokoro-82M)",
+    "voice": "unknown"
+  },
+  "method": "local text-to-speech synthesis",
+  "generatedDate": "unknown",
+  "sha256": "4b62a0f69ac5c9becf88ee82553003ed9a45a70f514f11ee5168d9ad84166fe5",
+  "verificationStatus": "native-speaker review pending",
+  "sources": [
+    "Condisco/Content/packs/italian.json — media entry \"it-market-listen-audio\" attribution: \"Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance/italian-market-listen.json. Native-speaker prosody review remains open.\" (names the generator model)",
+    "Condisco/Content/packs/italian.json — media entry \"it-market-listen-audio\" declared sha256 4b62a0f6…, equal to the shipped file's hash (verified by tools/check_packs.sh)",
+    "Condisco/Content/listen-tracks/italian.json — reviewPending: true; durationS 663.92",
+    "Condisco/Listen/ListenModels.swift — header: Listen tracks are \"synthesized at author time and bundled with the app\"",
+    "docs/first-slice-verification.md — the track's previously stale SHA-256 was corrected to the shipped file's hash; \"the shipped file is treated as the source of truth; content review of that audio is still a human task\"",
+    "docs/engineering-findings.md — finding #6 recorded that this provenance record was missing; this file is the resolution",
+    "git 012ff1d \"Initial commit: Condisco iOS app baseline\" — first tracking of the asset; the repo history contains no later audio-generation commit for it"
+  ],
+  "unknownFacts": [
+    "voice: the listen-track attribution names no Kokoro voice; \"if_sara\" is documented only for the Italian foundation model clips (italian.json media entries it-identity-foundation-model … it-emergency-foundation-model)",
+    "generated date: no in-repo record; the closest documented dates are 2026-09-05 / 2026-09-06, cited only for the Italian foundation model clips"
+  ]
+}

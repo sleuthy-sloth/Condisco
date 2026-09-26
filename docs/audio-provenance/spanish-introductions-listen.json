@@ -1,0 +1,23 @@
+{
+  "asset": "/audio/spanish-foundations/es-introductions-foundation-listen.mp3",
+  "packId": "spanish",
+  "trackId": "es-introductions-foundation",
+  "trackTitle": "Introductions and a first café visit",
+  "generator": {
+    "model": "unknown",
+    "voice": "unknown"
+  },
+  "method": "local text-to-speech synthesis",
+  "generatedDate": "unknown",
+  "sha256": "94623d3b173504fdf7bd8b7ed11dd081e8df4325efcafbeb272909bfea429d80",
+  "verificationStatus": "native-speaker review pending",
+  "sources": [
+    "Condisco/Content/listen-tracks/spanish.json — reviewPending: true; durationS 795.6",
+    "Condisco/Listen/ListenModels.swift — header: Listen tracks are \"synthesized at author time and bundled with the app\"",
+    "git 012ff1d \"Initial commit: Condisco iOS app baseline\" — first tracking of the asset; the repo history contains no later audio-generation commit for it"
+  ],
+  "unknownFacts": [
+    "generator model/voice: this Listen track is not declared in the Spanish pack's media array and carries no in-repo attribution naming a generator (verified by searching all pack JSONs and docs for generator references)",
+    "generated date: no in-repo record"
+  ]
+}

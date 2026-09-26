@@ -2263,7 +2263,7 @@
       "url": "/audio/french-ordering/fr-ordering-politely-answer.wav",
       "sha256": "cff617ab5f17d2523d5abf80bac9e4b045dd2dbbe3372c98829c99c2703e960c",
       "transcript": "Je voudrais un café, s’il vous plaît.",
-      "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance. Human listening review remains open.",
+      "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance/index.md. Human listening review remains open.",
       "kind": "audio"
     },
     {
@@ -3846,7 +3846,7 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Nobody taught you this sentence. Sophie is introducing herself. What does she say? Think — then write it.",
+      "prompt": "Nobody taught you this sentence. Sophie is introducing herself. Think: how does she say “I am Sophie”? Build it from the blocks you know — then write it.",
       "hints": [],
       "feedback": "Je suis Sophie. You never practiced this sentence; you derived it. That is the whole method: new situations, same few blocks.",
       "evidenceKey": "fr-identity-foundation-transfer",
@@ -20048,7 +20048,7 @@
           "errors": [],
           "id": "fr-identity-foundation-transfer",
           "conceptId": "fr-identity-concept",
-          "prompt": "Nobody taught you this sentence. Sophie is introducing herself. What does she say? Think — then write it.",
+          "prompt": "Nobody taught you this sentence. Sophie is introducing herself. Think: how does she say “I am Sophie”? Build it from the blocks you know — then write it.",
           "explanation": "Je suis Sophie. You never practiced this sentence; you derived it. That is the whole method: new situations, same few blocks.",
           "vocabulary": [
             "fr-identity-word-1",

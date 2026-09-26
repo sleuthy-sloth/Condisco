@@ -1114,13 +1114,15 @@ final class ScenarioLoopTests: XCTestCase {
             startS: startS)
     }
 
-    private func makeTrack(sections: [ListenSection]) -> ListenTrack {
+    private func makeTrack(
+        sections: [ListenSection], durationS: Double = 120
+    ) -> ListenTrack {
         ListenTrack(
             lessonId: "scenario-fixture",
             courseSlug: "french",
             lessonTitle: "Scenario fixture",
             audioUrl: "audio/scenario-fixture.mp3",
-            durationS: 120,
+            durationS: durationS,
             reviewPending: nil,
             sections: sections)
     }
@@ -1168,6 +1170,50 @@ final class ScenarioLoopTests: XCTestCase {
         ])
         XCTAssertEqual(
             ListenScenario.sectionEnd(for: 0, in: endingWithUntargetedSection), 90)
+    }
+
+    func testSectionEndFinalEligibleSectionRunsToDeclaredDuration() {
+        // The last scenario section is followed only by an untimed,
+        // untargeted closing segment the learner skips: its window must
+        // run to the track's declared duration — end == durationS — and
+        // never past it.
+        let track = makeTrack(
+            sections: [
+                section("opening", startS: 0),
+                section("practice", startS: 30),
+                section("final", startS: 150),
+                section("closing", target: false, startS: nil),
+            ],
+            durationS: 200)
+        XCTAssertEqual(ListenScenario.scenarioSections(track: track).count, 3)
+        // Mid-track windows still bound at the next timed section.
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 0, in: track), 30)
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 1, in: track), 150)
+        // The final section runs to the declared audio duration.
+        let end = ListenScenario.sectionEnd(for: 2, in: track)
+        XCTAssertEqual(end, 200)
+        XCTAssertEqual(end, track.durationS)
+    }
+
+    func testUntargetedSectionsAreSkippedAndStillBoundThePriorWindow() {
+        // An untargeted section is never a scenario step the learner is
+        // on, but its timing still bounds the section before it; indices
+        // past the eligible list are degenerate (0), never a crash.
+        let track = makeTrack(sections: [
+            section("s1", startS: 0),
+            section("bridge", target: false, startS: 15),
+            section("s2", startS: 30),
+            section("outro", target: false, startS: 60),
+        ])
+        XCTAssertEqual(
+            ListenScenario.scenarioSections(track: track).map(\.heading),
+            ["s1", "s2"])
+        // s1 runs to the untargeted bridge's start; s2 runs to the outro's.
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 0, in: track), 15)
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 1, in: track), 60)
+        // Indices into the eligible list, not the raw transcript.
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 2, in: track), 0)
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 99, in: track), 0)
     }
 
     // MARK: Step machine
@@ -1250,6 +1296,30 @@ final class ScenarioLoopTests: XCTestCase {
                 forbidden.contains { label.lowercased().contains($0) },
                 "ScenarioLoopState must not carry \(label)")
         }
+    }
+
+    // MARK: Step playback rate
+
+    /// Pins the pure rate decision behind the practice sheet's window
+    /// playback: the compare (.model) step replays at the slow rate
+    /// (0.75), every other step (and done) at normal speed 1.0.
+    func testScenarioStepRatePinsModelStepToSlowRate() {
+        XCTAssertEqual(scenarioStepRate(for: .model), 0.75,
+                       "the compare step must replay at the slow rate")
+        for step: ScenarioLoopState.Step in [.line, .choose, .speak, .done] {
+            XCTAssertEqual(scenarioStepRate(for: step), 1,
+                           "\(step) must play at normal speed")
+        }
+    }
+
+    /// Drift guard between the helper's slow literal and the transport's
+    /// published `slowRate`: the compare step uses the same 0.75 the
+    /// player model exposes.
+    @MainActor
+    func testScenarioStepRateMatchesTransportSlowRate() {
+        XCTAssertEqual(ListenPlayerModel.slowRate, 0.75)
+        XCTAssertEqual(
+            scenarioStepRate(for: .model), ListenPlayerModel.slowRate)
     }
 }
 

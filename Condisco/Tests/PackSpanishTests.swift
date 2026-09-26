@@ -393,6 +393,267 @@ final class PackSpanishTests: XCTestCase {
         XCTAssertEqual(result.category, "missing word")
     }
 
+    /// The eight story-family lessons of wave C (units 7–14), keyed by
+    /// their six graded path activities.
+    private static let batch3Lessons: [String: [String]] = [
+        "es-home-foundation": [
+            "es-home-foundation-meet", "es-home-foundation-think",
+            "es-home-foundation-notice", "es-home-foundation-fill",
+            "es-home-foundation-write", "es-home-foundation-act-rb3",
+        ],
+        "es-routine-foundation": [
+            "es-routine-foundation-meet", "es-routine-foundation-think",
+            "es-routine-foundation-notice", "es-routine-foundation-fill",
+            "es-routine-foundation-write", "es-routine-foundation-act-rb3",
+        ],
+        "es-food-foundation": [
+            "es-food-foundation-meet", "es-food-foundation-think",
+            "es-food-foundation-notice", "es-food-foundation-fill",
+            "es-food-foundation-write", "es-food-foundation-act-rb3",
+        ],
+        "es-transport-foundation": [
+            "es-transport-foundation-meet", "es-transport-foundation-think",
+            "es-transport-foundation-notice", "es-transport-foundation-fill",
+            "es-transport-foundation-write", "es-transport-foundation-act-rb3",
+        ],
+        "es-weather-foundation": [
+            "es-weather-foundation-meet", "es-weather-foundation-think",
+            "es-weather-foundation-notice", "es-weather-foundation-fill",
+            "es-weather-foundation-write", "es-weather-foundation-act-rb3",
+        ],
+        "es-health-foundation": [
+            "es-health-foundation-meet", "es-health-foundation-think",
+            "es-health-foundation-notice", "es-health-foundation-fill",
+            "es-health-foundation-write", "es-health-foundation-act-rb3",
+        ],
+        "es-a2-imperfecto": [
+            "es-a2-imperfecto-meet", "es-a2-imperfecto-think",
+            "es-a2-imperfecto-notice", "es-a2-imperfecto-fill",
+            "es-a2-imperfecto-write", "es-a2-imperfecto-act-rb3",
+        ],
+        "es-a2-futuro-usos": [
+            "es-a2-futuro-usos-meet", "es-a2-futuro-usos-think",
+            "es-a2-futuro-usos-notice", "es-a2-futuro-usos-fill",
+            "es-a2-futuro-usos-write", "es-a2-futuro-usos-act-rb3",
+        ],
+    ]
+
+    // MARK: - Wave C (story family, units 7–14, rubric H4/H3 + M5)
+
+    /// Every graded step in wave-C story lessons has a real authored hint
+    /// (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch3GradedStepsHaveAuthoredHints() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and every cloze blank in wave-C lessons authors
+    /// error-specific feedback (audit_editorial error-gap must stay 0).
+    func testBatch3TextAndClozeActivitiesAuthorErrors() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Every wave-C story lesson closes with a text final-response step (M5)
+    /// and carries a non-empty objective (M2).
+    func testBatch3StoryLessonsEndWithTextFinalResponse() throws {
+        let pack = try spanishPack()
+        for lessonId in Self.batch3Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lessons.first { $0.id == lessonId }, "missing lesson \(lessonId)")
+            XCTAssertEqual(lesson.family, .story, "\(lessonId) must be a story lesson")
+            XCTAssertFalse(
+                lesson.objective.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                "\(lessonId) must have an objective")
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            var hasTextTerminal = false
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                if case .text = act { hasTextTerminal = true }
+            }
+            XCTAssertTrue(hasTextTerminal, "\(lessonId) must end with a text final-response step (M5)")
+        }
+    }
+
+    /// Plausible wrong answers in wave-C lessons hit their authored category
+    /// + explanation (text and cloze surfaces).
+    func testBatch3AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try spanishPack()
+
+        // es-home-foundation
+        var result = try gradeText("es-home-foundation-think", in: pack, "La mesa es en la cocina.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("es-home-foundation-think", in: pack, "La mesa está en cocina.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeClozeBlank("es-home-foundation-fill", in: pack, blank: "b1", "La")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeClozeBlank("es-home-foundation-fill", in: pack, blank: "b1", "Los")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-home-foundation-write", in: pack, "Vengo de el salón.")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeText("es-home-foundation-write", in: pack, "Vengo del baño.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-home-foundation-act-rb3", in: pack, "La cocina es grande y las dormitorios son pequeños.")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // es-routine-foundation
+        result = try gradeText("es-routine-foundation-think", in: pack, "Estudiar por la tarde.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-routine-foundation-think", in: pack, "Estudia en la tarde.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeClozeBlank("es-routine-foundation-fill", in: pack, blank: "b1", "trabajo")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-routine-foundation-write", in: pack, "Estudio en la noche.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("es-routine-foundation-act-rb3", in: pack, "Trabaja por la mañana y estudio por la noche.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-food-foundation
+        result = try gradeText("es-food-foundation-think", in: pack, "Beber agua.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-food-foundation-think", in: pack, "Bebo el agua.")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeClozeBlank("es-food-foundation-fill", in: pack, blank: "b1", "bebe")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-food-foundation-write", in: pack, "Como pan.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-food-foundation-act-rb3", in: pack, "Me gusto el pan y bebo agua.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-transport-foundation
+        result = try gradeText("es-transport-foundation-think", in: pack, "Voy a pie.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-transport-foundation-think", in: pack, "Vamos en pie.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeClozeBlank("es-transport-foundation-fill", in: pack, blank: "b1", "Como")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-transport-foundation-write", in: pack, "Voy a Madrid en coche.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-transport-foundation-act-rb3", in: pack, "Voy en metro y luego en pie.")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // es-weather-foundation
+        result = try gradeText("es-weather-foundation-think", in: pack, "Está frío.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-weather-foundation-think", in: pack, "Hace caliente.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-weather-foundation-think", in: pack, "Hace frio.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeClozeBlank("es-weather-foundation-fill", in: pack, blank: "b1", "es")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("es-weather-foundation-fill", in: pack, blank: "b1", "esta")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-weather-foundation-write", in: pack, "Hace nublado.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-weather-foundation-act-rb3", in: pack, "Es sol aquí y hace frío en las montañas.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-health-foundation
+        result = try gradeText("es-health-foundation-think", in: pack, "Me duele las manos.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-health-foundation-think", in: pack, "Me duelo las manos.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("es-health-foundation-fill", in: pack, blank: "b1", "mi cabeza")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeClozeBlank("es-health-foundation-fill", in: pack, blank: "b1", "cabeza")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("es-health-foundation-write", in: pack, "Estoy fiebre.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-health-foundation-write", in: pack, "Tengo la fiebre.")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeText("es-health-foundation-act-rb3", in: pack, "Me duele mi cabeza y tengo fiebre.")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // es-a2-imperfecto
+        result = try gradeText("es-a2-imperfecto-think", in: pack, "fue")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-imperfecto-think", in: pack, "es")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("es-a2-imperfecto-fill", in: pack, blank: "b1", "jugué")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-imperfecto-write", in: pack, "Hay mucha gente en la plaza.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-imperfecto-write", in: pack, "Había mucha gente en el plaza.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("es-a2-imperfecto-act-rb3", in: pack, "De niño jugué al fútbol todos los días.")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // es-a2-futuro-usos
+        result = try gradeText("es-a2-futuro-usos-think", in: pack, "Hay")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-futuro-usos-think", in: pack, "Habra")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeClozeBlank("es-a2-futuro-usos-fill", in: pack, blank: "b1", "Cree")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("es-a2-futuro-usos-fill", in: pack, blank: "b1", "Creo que")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeText("es-a2-futuro-usos-write", in: pack, "Creo que llueve mañana.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-futuro-usos-write", in: pack, "Creo que llovera mañana.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-a2-futuro-usos-act-rb3", in: pack, "Probablemente viene mañana.")
+        XCTAssertEqual(result.category, "wrong tense")
+    }
+
+    /// The authored accepted answers for wave-C surfaces stay accepted,
+    /// including the natural Spanish alternatives.
+    func testBatch3AcceptsAuthoredAnswers() throws {
+        let pack = try spanishPack()
+
+        var result = try gradeText("es-home-foundation-think", in: pack, "La mesa está en la cocina.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-home-foundation-write", in: pack, "Vengo del salón.")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-routine-foundation-think", in: pack, "Ella estudia por la tarde.")
+        XCTAssertTrue(result.accepted, "Ella alternative is authored")
+
+        result = try gradeText("es-food-foundation-write", in: pack, "Ella come pan.")
+        XCTAssertTrue(result.accepted, "Ella alternative is authored")
+
+        result = try gradeText("es-transport-foundation-write", in: pack, "Él va a Madrid en coche.")
+        XCTAssertTrue(result.accepted, "Él alternative is authored")
+
+        result = try gradeText("es-weather-foundation-act-rb3", in: pack, "Hace sol aquí y hace frío en las montañas.")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeClozeBlank("es-health-foundation-fill", in: pack, blank: "b1", "la cabeza")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-a2-imperfecto-act-rb3", in: pack, "Cuando era niño jugaba al fútbol todos los días.")
+        XCTAssertTrue(result.accepted, "cuando-era alternative is authored")
+
+        result = try gradeText("es-a2-futuro-usos-write", in: pack, "Creo que mañana lloverá.")
+        XCTAssertTrue(result.accepted, "mañana-first alternative is authored")
+    }
+
     // MARK: - Accepted answers (prompt ↔ answers alignment)
 
     /// Natural Spanish replies for comprehension/quantity prompts are accepted

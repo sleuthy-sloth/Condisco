@@ -1435,6 +1435,20 @@
       "example": "Oggi fa freddo."
     },
     {
+      "id": "it-weather-foundation-word-5",
+      "word": "estate",
+      "meaning": "summer",
+      "partOfSpeech": "word or expression",
+      "example": "In estate fa caldo."
+    },
+    {
+      "id": "it-weather-foundation-word-6",
+      "word": "inverno",
+      "meaning": "winter",
+      "partOfSpeech": "word or expression",
+      "example": "In inverno fa freddo."
+    },
+    {
       "id": "it-market-foundation-word-1",
       "word": "mercato",
       "meaning": "market",
@@ -7407,7 +7421,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “I go”?",
-      "hints": [],
+      "hints": [
+        "The story's first line is about going (andare); the io form in the passage is vado. Vai is the tu (you) form and means “you go”."
+      ],
       "feedback": "Vado means “I go”; Sofia is on her way to the station.",
       "evidenceKey": "it-transport-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7455,7 +7471,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Vai a Roma?",
-      "hints": [],
+      "hints": [
+        "Vai is the tu form of andare and the phrase is a question — keep the English question with the -ing form: Are you going to Rome?"
+      ],
       "feedback": "Vai a Roma? asks “Are you going to Rome?”",
       "evidenceKey": "it-transport-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7469,7 +7487,23 @@
           "Are you going to Rome?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You go to Rome.",
+            "category": "wrong conjugation",
+            "explanation": "Vai is the present you-form and the phrase is a question: Are you going to Rome? — “going”, not “go”."
+          },
+          {
+            "answer": "I am going to Rome.",
+            "category": "wrong conjugation",
+            "explanation": "Vai is the tu (you) form of andare; io vado would translate as “I am going to Rome”."
+          },
+          {
+            "answer": "Are you going Rome?",
+            "category": "missing word",
+            "explanation": "The English keeps the preposition: Are you going to Rome?"
+          }
+        ]
       }
     },
     {
@@ -7488,7 +7522,9 @@
         "grammar"
       ],
       "prompt": "Complete: Vado ___ stazione.",
-      "hints": [],
+      "hints": [
+        "Stazione is a feminine noun, so the preposition a merges with the article la: a + la = alla. (Al would be a + il, the masculine form.)"
+      ],
       "feedback": "Vado alla stazione: a + la becomes alla.",
       "evidenceKey": "it-transport-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7518,7 +7554,23 @@
             "alla"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "al",
+              "category": "wrong article",
+              "explanation": "Al is a + il, the masculine contraction; la stazione is feminine, so it is a + la = alla."
+            },
+            {
+              "answer": "a",
+              "category": "missing word",
+              "explanation": "The article must merge into one word: a + la stazione → alla stazione; “Vado a stazione” is incomplete."
+            },
+            {
+              "answer": "alle",
+              "category": "wrong article",
+              "explanation": "Alle is a + le, used with plurals and clock times (alle otto); here it is one station: alla."
+            }
+          ]
         }
       }
     },
@@ -9119,7 +9171,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “cold”?",
-      "hints": [],
+      "hints": [
+        "Freddo is the weather adjective for cold (the story's forecast says farà freddo); it pairs with fare: fa freddo."
+      ],
       "feedback": "Freddo means cold; fa freddo describes the weather.",
       "evidenceKey": "it-weather-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9167,7 +9221,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: C’è il sole.",
-      "hints": [],
+      "hints": [
+        "C'è means “there is”, but with il sole English weather talk says “it is sunny” — not “there is the sun”."
+      ],
       "feedback": "C’è il sole means it is sunny.",
       "evidenceKey": "it-weather-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -9181,7 +9237,18 @@
           "It is sunny."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "There is the sun.",
+            "category": "incorrect answer",
+            "explanation": "That is a word-for-word reading; English weather talk says: it is sunny."
+          },
+          {
+            "answer": "It is the sun.",
+            "category": "incorrect answer",
+            "explanation": "The phrase describes the weather, not the sun as an object: it is sunny."
+          }
+        ]
       }
     },
     {
@@ -9193,15 +9260,19 @@
         "it-weather-foundation-word-1",
         "it-weather-foundation-word-2",
         "it-weather-foundation-word-3",
-        "it-weather-foundation-word-4"
+        "it-weather-foundation-word-4",
+        "it-weather-foundation-word-5",
+        "it-weather-foundation-word-6"
       ],
       "skills": [
         "writing",
         "grammar"
       ],
-      "prompt": "Complete the forecast: Domani ___ caldo.",
-      "hints": [],
-      "feedback": "Domani fa caldo: fa + caldo describes tomorrow’s heat.",
+      "prompt": "Complete: In estate ___ caldo e in inverno ___ freddo.",
+      "hints": [
+        "Estate (summer) is hot, inverno (winter) is cold, and both take the weather verb fare: fa. (È + adjective describes things, not the weather.)"
+      ],
+      "feedback": "In estate fa caldo e in inverno fa freddo: weather takes fare + adjective in each season.",
       "evidenceKey": "it-weather-foundation-cloze",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9212,7 +9283,7 @@
       "segments": [
         {
           "kind": "text",
-          "text": "Complete the forecast: Domani "
+          "text": "Complete: In estate "
         },
         {
           "kind": "blank",
@@ -9221,7 +9292,16 @@
         },
         {
           "kind": "text",
-          "text": " caldo."
+          "text": " caldo e in inverno "
+        },
+        {
+          "kind": "blank",
+          "name": "b2",
+          "label": "Missing word"
+        },
+        {
+          "kind": "text",
+          "text": " freddo."
         }
       ],
       "blanks": {
@@ -9230,7 +9310,56 @@
             "fa"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "è",
+              "category": "wrong conjugation",
+              "explanation": "Weather descriptions take fare: fa caldo / fa freddo. È + adjective describes what something is."
+            },
+            {
+              "answer": "e",
+              "category": "wrong conjugation",
+              "explanation": "È (not e) is the form of fare used in the weather; e without the accent means “and”."
+            },
+            {
+              "answer": "sta",
+              "category": "wrong conjugation",
+              "explanation": "Sta caldo is not Italian; the weather verb is fare. (Stare + gerundio marks actions in progress, not weather.)"
+            },
+            {
+              "answer": "fà",
+              "category": "accent/diacritic issue",
+              "explanation": "Fa (it does / the weather verb) takes no accent in Italian."
+            }
+          ]
+        },
+        "b2": {
+          "answers": [
+            "fa"
+          ],
+          "allowTypo": false,
+          "errors": [
+            {
+              "answer": "è",
+              "category": "wrong conjugation",
+              "explanation": "Weather descriptions take fare: fa caldo / fa freddo. È + adjective describes what something is."
+            },
+            {
+              "answer": "e",
+              "category": "wrong conjugation",
+              "explanation": "È (not e) is the form of fare used in the weather; e without the accent means “and”."
+            },
+            {
+              "answer": "sta",
+              "category": "wrong conjugation",
+              "explanation": "Sta caldo is not Italian; the weather verb is fare. (Stare + gerundio marks actions in progress, not weather.)"
+            },
+            {
+              "answer": "fà",
+              "category": "accent/diacritic issue",
+              "explanation": "Fa (it does / the weather verb) takes no accent in Italian."
+            }
+          ]
         }
       }
     },
@@ -15814,7 +15943,9 @@
         "vocabulary"
       ],
       "prompt": "Cosa fai? — ___ cucinando. (I’m cooking)",
-      "hints": [],
+      "hints": [
+        "Cucinando is the gerundio; the subject is io, so the stare form is sto — “sto cucinando”. Sono never pairs with the gerundio."
+      ],
       "feedback": "An action in progress takes stare plus the gerundio: sto cucinando. “Sono cucinando” does not exist; sono plus a participle would be the passato prossimo (sono andato).",
       "evidenceKey": "it-a2-stare-gerundio-meet",
       "assistanceAffectsEvidence": [
@@ -15864,7 +15995,9 @@
         "grammar"
       ],
       "prompt": "Say it as an action in progress: Leggo un libro.",
-      "hints": [],
+      "hints": [
+        "Turn the present into an action in progress: stare (io → sto) + the gerundio leggendo — Sto leggendo un libro. Only stare is conjugated."
+      ],
       "feedback": "Present becomes in-progress: sto leggendo.",
       "evidenceKey": "it-a2-stare-gerundio-vary",
       "assistanceAffectsEvidence": [
@@ -15875,10 +16008,32 @@
       "id": "it-a2-stare-gerundio-vary",
       "answer": {
         "answers": [
-          "Sto leggendo un libro."
+          "Sto leggendo un libro.",
+          "Io sto leggendo un libro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sono leggendo un libro.",
+            "category": "wrong auxiliary",
+            "explanation": "Actions in progress take stare, not essere: sto leggendo. (Sono + participle, e.g. sono andato, is a completed action.)"
+          },
+          {
+            "answer": "Sto leggere un libro.",
+            "category": "wrong conjugation",
+            "explanation": "After stare the verb keeps the gerundio: leggendo, not the infinitive leggere."
+          },
+          {
+            "answer": "Sto leggo un libro.",
+            "category": "wrong conjugation",
+            "explanation": "Only stare is conjugated (sto); the action stays in the gerundio: leggendo."
+          },
+          {
+            "answer": "Leggo un libro.",
+            "category": "incorrect answer",
+            "explanation": "That is the starting sentence; the drill wants the same action in progress: Sto leggendo un libro."
+          }
+        ]
       }
     },
     {
@@ -15899,7 +16054,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The speaker says “I can't talk” — first person, so the form is sto: sto guidando. (Sta is he/she; sono never pairs with the gerundio.)"
+      ],
       "feedback": "Right now, on the phone: sto guidando — I am driving.",
       "evidenceKey": "it-a2-stare-gerundio-cloze",
       "assistanceAffectsEvidence": [
@@ -15929,7 +16086,28 @@
             "sto"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "sono",
+              "category": "wrong auxiliary",
+              "explanation": "The in-progress form needs stare: sto guidando. Sono + past participle (sono andato) is a completed action."
+            },
+            {
+              "answer": "sta",
+              "category": "wrong conjugation",
+              "explanation": "Sta is the lui/lei form; the speaker is talking about themselves, so it is io sto."
+            },
+            {
+              "answer": "stiamo",
+              "category": "wrong conjugation",
+              "explanation": "Stiamo is the we-form; the speaker says “I can't talk” — first person singular is sto."
+            },
+            {
+              "answer": "stò",
+              "category": "accent/diacritic issue",
+              "explanation": "Sto (I stay / I am) is written without an accent."
+            }
+          ]
         }
       }
     },
@@ -20542,7 +20720,9 @@
         "vocabulary"
       ],
       "prompt": "Where is Sofia going?",
-      "hints": [],
+      "hints": [
+        "The opening lines tell where Sofia is headed — va a Roma; the station is only where the journey starts."
+      ],
       "feedback": "A Roma — the station is just the beginning.",
       "evidenceKey": "it-transport-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20590,7 +20770,9 @@
         "vocabulary"
       ],
       "prompt": "Sofia calls a friend from the platform. Write in Italian: “I am going to Rome.”",
-      "hints": [],
+      "hints": [
+        "Use the io form of andare — vado — with the preposition a before the city: Vado a Roma. “Vado Roma” drops the a."
+      ],
       "feedback": "Vado a Roma.",
       "evidenceKey": "it-transport-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20603,7 +20785,28 @@
           "Io vado a Roma."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vado Roma.",
+            "category": "missing word",
+            "explanation": "The preposition a is required before a city: vado a Roma, not vado Roma."
+          },
+          {
+            "answer": "Va a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "Va is he/she goes; with io the form is vado — I am going."
+          },
+          {
+            "answer": "Andare a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "Andare is the infinitive (to go); the sentence needs the conjugated io form vado."
+          },
+          {
+            "answer": "Vado al Roma.",
+            "category": "wrong article",
+            "explanation": "City names take no article in this pattern: vado a Roma. Al is a + il and would need a masculine noun."
+          }
+        ]
       }
     },
     {
@@ -20639,7 +20842,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: Sofia arrives in Rome.",
-      "hints": [],
+      "hints": [
+        "The final scene ends with her arrival: Sofia (she) arriva a Roma — keep the subject first, the lei form arriva, and the preposition a before the city."
+      ],
       "feedback": "Sofia arriva a Roma.",
       "evidenceKey": "it-transport-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20652,7 +20857,28 @@
           "A Roma arriva Sofia."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sofia arriva Roma.",
+            "category": "missing word",
+            "explanation": "Keep the preposition a before the city: arriva a Roma, not arriva Roma."
+          },
+          {
+            "answer": "Sofia arrivano a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "Sofia is one person (lei), so the verb is arriva; arrivano is they."
+          },
+          {
+            "answer": "Sofia arrivare a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "Arrivare is the infinitive; the sentence needs the conjugated form arriva."
+          },
+          {
+            "answer": "Sofia arriva al Roma.",
+            "category": "wrong article",
+            "explanation": "City names take no article here: a Roma, not al Roma."
+          }
+        ]
       }
     },
     {
@@ -20703,7 +20929,9 @@
         "vocabulary"
       ],
       "prompt": "What is the weather like on Sunday?",
-      "hints": [],
+      "hints": [
+        "The Sunday passage describes the postponed picnic day: piove e fa freddo — the sunny and hot options belong to Saturday."
+      ],
       "feedback": "Piove e fa freddo — rain and cold: the weekend turns.",
       "evidenceKey": "it-weather-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20751,7 +20979,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: “It is cold today.”",
-      "hints": [],
+      "hints": [
+        "Cold weather takes fare: fa freddo. Put oggi before or after — “Oggi fa freddo.” or “Fa freddo oggi.” È freddo would describe a thing, not the weather."
+      ],
       "feedback": "Fa freddo oggi.",
       "evidenceKey": "it-weather-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20764,7 +20994,23 @@
           "Oggi fa freddo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "È freddo oggi.",
+            "category": "wrong conjugation",
+            "explanation": "Weather cold uses fare: fa freddo. È + freddo would describe a thing, not the weather."
+          },
+          {
+            "answer": "Faccio freddo oggi.",
+            "category": "wrong conjugation",
+            "explanation": "Faccio is the io form; the weather expression always uses the third person: fa freddo."
+          },
+          {
+            "answer": "Fa freddo domani.",
+            "category": "incorrect answer",
+            "explanation": "Domani is tomorrow; the drill asks for today: fa freddo oggi."
+          }
+        ]
       }
     },
     {
@@ -20800,7 +21046,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: On Monday the sun is out.",
-      "hints": [],
+      "hints": [
+        "Monday's passage says the sun returns: Lunedì c'è il sole (there is the sun) or Lunedì torna il sole — not “fa il sole”."
+      ],
       "feedback": "Lunedì c’è il sole.",
       "evidenceKey": "it-weather-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20813,7 +21061,23 @@
           "Lunedì torna il sole."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Lunedì fa il sole.",
+            "category": "incorrect answer",
+            "explanation": "With il sole Italian uses c'è (there is) or torna (returns); fa pairs with weather adjectives: fa caldo / fa freddo."
+          },
+          {
+            "answer": "Lunedì c'è sole.",
+            "category": "missing word",
+            "explanation": "Keep the article: c'è il sole, not c'è sole."
+          },
+          {
+            "answer": "Il sole è lunedì.",
+            "category": "word-order problem",
+            "explanation": "Natural order puts the day first, then the weather: Lunedì c'è il sole."
+          }
+        ]
       }
     },
     {
@@ -20870,7 +21134,9 @@
         "vocabulary"
       ],
       "prompt": "What are the two friends doing?",
-      "hints": [],
+      "hints": [
+        "The opening scene says the two friends are talking at the café: stanno parlando al bar. Reading is Marco; the other options never appear in the passage."
+      ],
       "feedback": "Stanno parlando — right now, in progress: stare plus gerundio.",
       "evidenceKey": "it-a2-stare-gerundio-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20920,7 +21186,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: “We are waiting for the bus.”",
-      "hints": [],
+      "hints": [
+        "The we-form of stare is stiamo; the action stays in the gerundio: stiamo aspettando l'autobus. Only stare is conjugated."
+      ],
       "feedback": "Stiamo aspettando l'autobus. — in this very moment.",
       "evidenceKey": "it-a2-stare-gerundio-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20932,7 +21200,23 @@
           "Stiamo aspettando l'autobus."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Siamo aspettando l'autobus.",
+            "category": "wrong auxiliary",
+            "explanation": "The in-progress form takes stare: stiamo aspettando, never siamo + gerundio."
+          },
+          {
+            "answer": "Stiamo aspettare l'autobus.",
+            "category": "wrong conjugation",
+            "explanation": "After stare use the gerundio (aspettando), not the infinitive (aspettare)."
+          },
+          {
+            "answer": "Stiamo aspettiamo l'autobus.",
+            "category": "wrong conjugation",
+            "explanation": "Only stare is conjugated (stiamo); the action verb stays in the gerundio: aspettando."
+          }
+        ]
       }
     },
     {
@@ -20972,7 +21256,9 @@
         "vocabulary"
       ],
       "prompt": "Write in Italian: Everyone is running for shelter.",
-      "hints": [],
+      "hints": [
+        "Tutti takes the plural of stare — stanno; the action is the gerundio correndo: Tutti stanno correndo al riparo."
+      ],
       "feedback": "Tutti stanno correndo al riparo.",
       "evidenceKey": "it-a2-stare-gerundio-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20984,7 +21270,23 @@
           "Tutti stanno correndo al riparo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tutti sono correndo al riparo.",
+            "category": "wrong auxiliary",
+            "explanation": "Actions in progress take stare: stanno correndo, not sono + gerundio."
+          },
+          {
+            "answer": "Tutti stanno correre al riparo.",
+            "category": "wrong conjugation",
+            "explanation": "After stare use the gerundio: correndo, not the infinitive correre."
+          },
+          {
+            "answer": "Tutti stanno corrono al riparo.",
+            "category": "wrong conjugation",
+            "explanation": "Only stare carries the person (stanno); the action stays in the gerundio: correndo."
+          }
+        ]
       }
     },
     {
@@ -25809,7 +26111,9 @@
         "it-weather-foundation-word-1",
         "it-weather-foundation-word-2",
         "it-weather-foundation-word-3",
-        "it-weather-foundation-word-4"
+        "it-weather-foundation-word-4",
+        "it-weather-foundation-word-5",
+        "it-weather-foundation-word-6"
       ],
       "legacyCompletionExerciseIds": [
         "it-weather-foundation-meet",

@@ -7189,7 +7189,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “yesterday”?",
-      "hints": [],
+      "hints": [
+        "Every beat of the story opens with the time word \"Hier…\" — it's the word for 'yesterday', not the past participle."
+      ],
       "feedback": "Hier means yesterday; it places Marc’s actions in the past.",
       "evidenceKey": "fr-past-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7237,7 +7239,9 @@
         "grammar"
       ],
       "prompt": "Complete the past action: Hier, j’___ étudié.",
-      "hints": [],
+      "hints": [
+        "The sentence is \"Hier, j'___ étudié\": the helper verb before étudié is the je-form of avoir — j'ai."
+      ],
       "feedback": "J’ai étudié uses ai as the helper verb before étudié.",
       "evidenceKey": "fr-past-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7267,7 +7271,23 @@
             "ai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "suis",
+              "category": "wrong auxiliary",
+              "explanation": "étudier is an avoir verb: j'ai étudié. Suis pairs with être verbs (je suis arrivé)."
+            },
+            {
+              "answer": "a",
+              "category": "wrong conjugation",
+              "explanation": "a is the il/elle/on form (Marc a étudié). With je, the helper is ai."
+            },
+            {
+              "answer": "est",
+              "category": "wrong auxiliary",
+              "explanation": "est comes from être ('is'). Hier, j'ai étudié — the helper for étudier is ai."
+            }
+          ]
         }
       }
     },
@@ -7287,7 +7307,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “tomorrow”?",
-      "hints": [],
+      "hints": [
+        "The word that frames the whole story — Anna and Marc are planning ahead: demain (tomorrow)."
+      ],
       "feedback": "Demain means tomorrow; Anna and Marc are planning ahead.",
       "evidenceKey": "fr-plans-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7335,7 +7357,9 @@
         "grammar"
       ],
       "prompt": "Complete: Demain, je vais ___.",
-      "hints": [],
+      "hints": [
+        "The plan structure is aller + infinitive: je vais + the infinitive meaning 'to study' — je vais étudier."
+      ],
       "feedback": "Je vais étudier is aller + infinitive: a plan for what comes next.",
       "evidenceKey": "fr-plans-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7365,7 +7389,23 @@
             "étudier"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "étudie",
+              "category": "wrong conjugation",
+              "explanation": "After the helper vais, the verb stays in the infinitive: je vais étudier. (Étudie is the present form.)"
+            },
+            {
+              "answer": "travailler",
+              "category": "incorrect answer",
+              "explanation": "The plan is to study (étudier), not to work (travailler)."
+            },
+            {
+              "answer": "étudiais",
+              "category": "wrong conjugation",
+              "explanation": "étudiais is the imperfect ('used to study'). A plan for tomorrow uses aller + infinitive: je vais étudier."
+            }
+          ]
         }
       }
     },
@@ -12394,7 +12434,9 @@
         "vocabulary"
       ],
       "prompt": "D’abord, je me suis levé. Which word orders the story — “first” ?",
-      "hints": [],
+      "hints": [
+        "The day's sequence opens with 'first'. Among the four words, only d'abord means 'first' — the morning got up at seven."
+      ],
       "feedback": "D’abord — the sequencing word. me suis levé is the passé composé of se lever (reflexive verbs take être); je just points at who.",
       "evidenceKey": "fr-a2-journee-recit-meet",
       "assistanceAffectsEvidence": [
@@ -12444,7 +12486,9 @@
         "vocabulary"
       ],
       "prompt": "L’après-midi, il faisait beau et nous avons marché. Which verb sets the scene ?",
-      "hints": [],
+      "hints": [
+        "The scene-setting verb paints the weather: faisait ('it was', the imparfait). The finished walk is avons marché."
+      ],
       "feedback": "faisait — the imparfait paints the afternoon weather. avons marché is the finished event inside that scene; l’après-midi is just the time-frame.",
       "evidenceKey": "fr-a2-journee-recit-notice",
       "assistanceAffectsEvidence": [
@@ -12494,7 +12538,9 @@
         "grammar"
       ],
       "prompt": "Complete: ___ je me suis levé à sept heures. (first)",
-      "hints": [],
+      "hints": [
+        "The prompt asks for 'first' — the opening beat of the day is d'abord, then je me suis levé."
+      ],
       "feedback": "D’abord — the story has to start somewhere, and d’abord is the classic opening beat.",
       "evidenceKey": "fr-a2-journee-recit-cloze",
       "assistanceAffectsEvidence": [
@@ -12522,7 +12568,23 @@
             "D’abord"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Ensuite",
+              "category": "incorrect answer",
+              "explanation": "Ensuite means 'next' — the middle of the day. The opening beat is d'abord ('first')."
+            },
+            {
+              "answer": "Enfin",
+              "category": "incorrect answer",
+              "explanation": "Enfin means 'finally' — the last beat. The day is just beginning: d'abord."
+            },
+            {
+              "answer": "Puis",
+              "category": "incorrect answer",
+              "explanation": "Puis also means 'then'. The prompt asks for 'first' — d'abord."
+            }
+          ]
         }
       }
     },
@@ -13601,7 +13663,9 @@
         "vocabulary"
       ],
       "prompt": "J’aimerais voyager. Which verb form carries the wish ?",
-      "hints": [],
+      "hints": [
+        "The wish sits in the verb ending -ais: aimerais ('would like'). J' is only the subject; voyager is the infinitive."
+      ],
       "feedback": "aimerais — the conditional of aimer. J’ points at who; voyager is the infinitive the wish governs.",
       "evidenceKey": "fr-a2-conditionnel-souhait-meet",
       "assistanceAffectsEvidence": [
@@ -13650,7 +13714,9 @@
         "vocabulary"
       ],
       "prompt": "Je rêve de voyager. After rêver de, what form follows ?",
-      "hints": [],
+      "hints": [
+        "rêver de takes the infinitive right after de: de voyager. Pick the unconjugated form."
+      ],
       "feedback": "voyager — the infinitive, as always after de. Je points at the dreamer; rêve names the dreaming.",
       "evidenceKey": "fr-a2-conditionnel-souhait-notice",
       "assistanceAffectsEvidence": [
@@ -13699,7 +13765,9 @@
         "grammar"
       ],
       "prompt": "Write in French: They would visit Rome.",
-      "hints": [],
+      "hints": [
+        "'They' = ils. The conditional for ils ends in -aient: visiter → ils visiteraient, then Rome."
+      ],
       "feedback": "Ils visiteraient Rome. Stem visiter- + -aient for ils — same pattern, new dreamers.",
       "evidenceKey": "fr-a2-conditionnel-souhait-vary",
       "assistanceAffectsEvidence": [
@@ -13711,7 +13779,23 @@
           "Ils visiteraient Rome."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ils visiterons Rome.",
+            "category": "wrong conjugation",
+            "explanation": "visiterons is the future ('will visit'). The conditional for ils ends in -aient: visiteraient."
+          },
+          {
+            "answer": "Il visiterait Rome.",
+            "category": "wrong conjugation",
+            "explanation": "visiterait is the singular il form. With ils ('they'), keep the plural ending: visiteraient."
+          },
+          {
+            "answer": "Ils visiteraient Paris.",
+            "category": "incorrect answer",
+            "explanation": "The prompt says Rome: ils visiteraient Rome."
+          }
+        ]
       }
     },
     {
@@ -13733,7 +13817,9 @@
         "grammar"
       ],
       "prompt": "Complete: Nous ___ partir au Japon. (aimer, conditionnel)",
-      "hints": [],
+      "hints": [
+        "The prompt gives aimer in the conditional for nous: stem aimer- + the -ions ending = aimerions."
+      ],
       "feedback": "aimerions — the conditional for nous: stem + -ions. The wish belongs to “we” now.",
       "evidenceKey": "fr-a2-conditionnel-souhait-cloze",
       "assistanceAffectsEvidence": [
@@ -13761,7 +13847,23 @@
             "aimerions"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "aimerais",
+              "category": "wrong conjugation",
+              "explanation": "aimerais is the je/tu form. With nous, the conditional ends in -ions: aimerions."
+            },
+            {
+              "answer": "aimerait",
+              "category": "wrong conjugation",
+              "explanation": "aimerait is the il/elle form. With nous, use aimerions."
+            },
+            {
+              "answer": "aimons",
+              "category": "wrong conjugation",
+              "explanation": "aimons is the present tense (we like). The prompt asks for the conditional: aimerions."
+            }
+          ]
         }
       }
     },
@@ -13784,7 +13886,9 @@
         "vocabulary"
       ],
       "prompt": "Si j’avais le temps, je voyagerais. Which clause sets the imaginary world ?",
-      "hints": [],
+      "hints": [
+        "The hypothesis clause opens with si: \"Si j'avais le temps\" (if I had time). The consequence is je voyagerais."
+      ],
       "feedback": "Si j’avais le temps — the si + imparfait clause opens the hypothesis. je voyagerais is the consequence that lives inside it.",
       "evidenceKey": "fr-a2-si-imparfait-intro-meet",
       "assistanceAffectsEvidence": [
@@ -13833,8 +13937,10 @@
         "vocabulary"
       ],
       "prompt": "Si j’étais riche… Which verb is in the imparfait after si ?",
-      "hints": [],
-      "feedback": "j’étais — être’s rebel imparfait stem ét-, right where the rule says the imparfait goes. Si opens it; riche just describes.",
+      "hints": [
+        "After si comes the imparfait: j'étais (être, stem ét-). Riche is just the adjective inside the condition."
+      ],
+      "feedback": "j'étais — the imparfait of être: stem ét- + -ais. Si opens the hypothesis; riche is the adjective inside it.",
       "evidenceKey": "fr-a2-si-imparfait-intro-notice",
       "assistanceAffectsEvidence": [
         "translation",
@@ -13882,7 +13988,9 @@
         "grammar"
       ],
       "prompt": "Write in French: If I were rich, I would buy a house.",
-      "hints": [],
+      "hints": [
+        "\"If I were rich\" = Si j'étais riche; consequence in the conditional: j'achèterais (I would buy) une maison."
+      ],
       "feedback": "Si j’étais riche, j’achèterais une maison. The full machine: hypothesis in the imparfait, consequence in the conditional.",
       "evidenceKey": "fr-a2-si-imparfait-intro-vary",
       "assistanceAffectsEvidence": [
@@ -13891,10 +13999,26 @@
       ],
       "answer": {
         "answers": [
-          "Si j’étais riche, j’achèterais une maison."
+          "Si j'étais riche, j'achèterais une maison."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Si j'étais riche, j'achète une maison.",
+            "category": "wrong conjugation",
+            "explanation": "The consequence of the hypothetical is the conditional: j'achèterais. (Achète is the present.)"
+          },
+          {
+            "answer": "Si j'était riche, j'achèterais une maison.",
+            "category": "wrong conjugation",
+            "explanation": "With je, the imparfait carries an s: j'étais riche."
+          },
+          {
+            "answer": "Si j'étais riche, j'achèterais un maison.",
+            "category": "wrong article",
+            "explanation": "maison is feminine: une maison."
+          }
+        ]
       }
     },
     {
@@ -13916,7 +14040,9 @@
         "grammar"
       ],
       "prompt": "Complete: Si tu ___, je serais content. (venir, imparfait)",
-      "hints": [],
+      "hints": [
+        "After si, the imparfait of venir: stem ven- + -ais → tu venais."
+      ],
       "feedback": "venais — after si, always the imparfait. The conditional (serais) waits for the consequence clause.",
       "evidenceKey": "fr-a2-si-imparfait-intro-cloze",
       "assistanceAffectsEvidence": [
@@ -13944,7 +14070,23 @@
             "venais"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "viens",
+              "category": "wrong conjugation",
+              "explanation": "viens is the present tense (tu viens). After si, the imparfait: tu venais."
+            },
+            {
+              "answer": "viendrai",
+              "category": "wrong conjugation",
+              "explanation": "The event is hypothetical, not certain: after si, use the imparfait venais, not the future viendrai."
+            },
+            {
+              "answer": "venu",
+              "category": "incorrect answer",
+              "explanation": "venu is the past participle. The imparfait form is tu venais."
+            }
+          ]
         }
       }
     },
@@ -19738,7 +19880,9 @@
         "vocabulary"
       ],
       "prompt": "What did Marc do yesterday morning?",
-      "hints": [],
+      "hints": [
+        "The opening beat: Marc \"studied French\" at home. Pick the option that says il a étudié le français."
+      ],
       "feedback": "Il a étudié le français — toute la matinée.",
       "evidenceKey": "fr-past-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19802,7 +19946,9 @@
         "vocabulary"
       ],
       "prompt": "What did Anna do in the afternoon?",
-      "hints": [],
+      "hints": [
+        "The afternoon beat is about Anna working at home on her computer — the option with elle a travaillé."
+      ],
       "feedback": "Elle a travaillé — puis ils ont mangé ensemble.",
       "evidenceKey": "fr-past-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19866,8 +20012,10 @@
         "vocabulary"
       ],
       "prompt": "Write in French: Today, he is resting.",
-      "hints": [],
-      "feedback": "Aujourd'hui, il se repose. — après hier, c'est mérité.",
+      "hints": [
+        "The contrast the story sets up: yesterday he studied, \"today I rest!\" — Aujourd'hui (today) + il se repose (he rests)."
+      ],
+      "feedback": "Aujourd'hui, il se repose. The coffee-stained day is over — today Marc rests.",
       "evidenceKey": "fr-past-foundation-act-rb6",
       "assistanceAffectsEvidence": [
         "hint",
@@ -19879,7 +20027,18 @@
           "Il se repose aujourd'hui."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Aujourd'hui, il repose.",
+            "category": "missing word",
+            "explanation": "se reposer is reflexive: the se belongs to the verb — il se repose."
+          },
+          {
+            "answer": "Aujourd'hui, il se reposé.",
+            "category": "wrong conjugation",
+            "explanation": "reposé is the past participle. The story's \"Today I rest!\" is present: il se repose."
+          }
+        ]
       }
     },
     {
@@ -19900,8 +20059,10 @@
         "vocabulary"
       ],
       "prompt": "Write in French what Anna did yesterday: Yesterday, she worked.",
-      "hints": [],
-      "feedback": "Hier… — ton passé composé à toi.",
+      "hints": [
+        "Yesterday's beat about Anna: elle a travaillé. Put Hier first, then the avoir past: a travaillé."
+      ],
+      "feedback": "Hier, elle a travaillé. Hier places the action in the past; elle a travaillé = she worked.",
       "evidenceKey": "fr-past-foundation-act-rb7",
       "assistanceAffectsEvidence": [
         "hint",
@@ -19913,7 +20074,23 @@
           "Elle a travaillé hier."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hier, elle est travaillé.",
+            "category": "wrong auxiliary",
+            "explanation": "travailler takes avoir: Hier, elle a travaillé. (Est pairs with être verbs.)"
+          },
+          {
+            "answer": "Hier, elle travaillé.",
+            "category": "missing word",
+            "explanation": "The past needs the helper verb a: Hier, elle a travaillé."
+          },
+          {
+            "answer": "Hier, elle a travail.",
+            "category": "wrong conjugation",
+            "explanation": "travail is the noun ('work'). The past participle is travaillé — elle a travaillé."
+          }
+        ]
       }
     },
     {
@@ -19950,7 +20127,9 @@
         "vocabulary"
       ],
       "prompt": "What will Anna study tomorrow morning?",
-      "hints": [],
+      "hints": [
+        "Anna's plan for tomorrow: French in the morning, maths in the afternoon — pick le français."
+      ],
       "feedback": "Le français demain matin — le plan est clair.",
       "evidenceKey": "fr-plans-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20014,7 +20193,9 @@
         "vocabulary"
       ],
       "prompt": "What are they preparing tonight?",
-      "hints": [],
+      "hints": [
+        "Tonight's table holds all three things for tomorrow: les livres, l'ordinateur, le café."
+      ],
       "feedback": "Les livres, l'ordinateur, le café — tout est prêt pour demain.",
       "evidenceKey": "fr-plans-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20078,8 +20259,10 @@
         "vocabulary"
       ],
       "prompt": "Write Anna’s plan in French: Tomorrow, she is going to study.",
-      "hints": [],
-      "feedback": "Demain, je vais… — l'histoire continue avec toi.",
+      "hints": [
+        "Anna's plan is to study (étudier), and plans use aller + infinitive: Demain + elle va + étudier."
+      ],
+      "feedback": "Demain, elle va étudier. Plans use aller + infinitive: elle va étudier.",
       "evidenceKey": "fr-plans-foundation-act-rb6",
       "assistanceAffectsEvidence": [
         "hint",
@@ -20090,7 +20273,23 @@
           "Demain, elle va étudier."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Demain, elle va étudie.",
+            "category": "wrong conjugation",
+            "explanation": "After va, the infinitive: elle va étudier, not étudie."
+          },
+          {
+            "answer": "Demain, elle va à étudier.",
+            "category": "wrong preposition",
+            "explanation": "aller + infinitive takes no à: elle va étudier, not va à étudier."
+          },
+          {
+            "answer": "Demain, elle étudie.",
+            "category": "missing word",
+            "explanation": "étudie is the present tense; a plan about tomorrow needs the aller future: elle va étudier."
+          }
+        ]
       }
     },
     {
@@ -20111,8 +20310,10 @@
         "vocabulary"
       ],
       "prompt": "Write Marc’s plan in French: Tomorrow, he is going to work at home.",
-      "hints": [],
-      "feedback": "Demain… — encore un plan, encore du français.",
+      "hints": [
+        "Marc's plan: travailler (to work) at home — à la maison. Build it as Demain + il va + travailler à la maison."
+      ],
+      "feedback": "Demain, il va travailler à la maison. Aller + infinitive again: il va travailler.",
       "evidenceKey": "fr-plans-foundation-act-rb7",
       "assistanceAffectsEvidence": [
         "hint",
@@ -20124,7 +20325,23 @@
           "Demain, Marc va travailler à la maison."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Demain, il va travaille à la maison.",
+            "category": "wrong conjugation",
+            "explanation": "After va, the infinitive: il va travailler, not travaille."
+          },
+          {
+            "answer": "Demain, il va travailler au maison.",
+            "category": "wrong article",
+            "explanation": "maison is feminine: à la maison. (Au needs a masculine place, like au bureau.)"
+          },
+          {
+            "answer": "Demain, il va à la maison.",
+            "category": "missing word",
+            "explanation": "The plan is to work at home: add travailler — il va travailler à la maison."
+          }
+        ]
       }
     },
     {
@@ -20201,7 +20418,9 @@
         "vocabulary"
       ],
       "prompt": "« Ensuite, nous avons déjeuné ensemble. » What does “ensuite” order?",
-      "hints": [],
+      "hints": [
+        "Ensuite = 'next': it belongs between the beginning and the end — the middle step of the day's story."
+      ],
       "feedback": "Ensuite — “next”: the story's middle step, between puis and enfin.",
       "evidenceKey": "fr-a2-journee-recit-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20251,7 +20470,9 @@
         "vocabulary"
       ],
       "prompt": "Write the final diary sentence in French: Finally, I went home.",
-      "hints": [],
+      "hints": [
+        "Finally = Enfin. Then the past of rentrer (to go home) with être: je suis rentré(e)."
+      ],
       "feedback": "Enfin, je suis rentré(e) closes the day in order.",
       "evidenceKey": "fr-a2-journee-recit-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20264,7 +20485,18 @@
           "Enfin, je suis rentrée."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Enfin, je suis rentrer.",
+            "category": "wrong conjugation",
+            "explanation": "With suis, the verb takes the past participle: je suis rentré(e). Rentrer is the infinitive."
+          },
+          {
+            "answer": "Enfin, je rentré.",
+            "category": "missing word",
+            "explanation": "The past needs the helper suis: Enfin, je suis rentré(e)."
+          }
+        ]
       }
     },
     {
@@ -20337,7 +20569,9 @@
         "vocabulary"
       ],
       "prompt": "In the dream, what would “nous” do in Paris?",
-      "hints": [],
+      "hints": [
+        "The dream line for 'we': Nous visiterions Paris — the conditional of visiter (would visit)."
+      ],
       "feedback": "Nous visiterions — the conditional keeps it a dream.",
       "evidenceKey": "fr-a2-conditionnel-souhait-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20386,8 +20620,10 @@
         "vocabulary"
       ],
       "prompt": "Write the note left on the desk in French: I would like to visit Rome.",
-      "hints": [],
-      "feedback": "J'aimerais… — le rêve est à toi.",
+      "hints": [
+        "The note says 'I would like to visit Rome': J'aimerais (the wish form) + visiter + Rome."
+      ],
+      "feedback": "J'aimerais visiter Rome. The conditional aimerais turns the wish into words.",
       "evidenceKey": "fr-a2-conditionnel-souhait-act-rb7",
       "assistanceAffectsEvidence": [
         "hint",
@@ -20396,12 +20632,21 @@
       "answer": {
         "answers": [
           "J'aimerais visiter Rome.",
-          "J'aimerais voyager.",
-          "Je voudrais voir le monde.",
-          "J'aimerais voir Paris."
+          "Je voudrais visiter Rome."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J'aimerais visiter Paris.",
+            "category": "incorrect answer",
+            "explanation": "The note is about Rome: J'aimerais visiter Rome, not Paris."
+          },
+          {
+            "answer": "J'aimerai visiter Rome.",
+            "category": "wrong conjugation",
+            "explanation": "aimerai is the future ('I will like'). A wish needs the conditional: J'aimerais."
+          }
+        ]
       }
     },
     {
@@ -20474,7 +20719,9 @@
         "vocabulary"
       ],
       "prompt": "In the story, what would he buy if he were rich?",
-      "hints": [],
+      "hints": [
+        "The daydream: if he were rich, he would buy a big white house with a garden — une maison."
+      ],
       "feedback": "Si j'étais riche, j'achèterais une maison — the great French “if” at work.",
       "evidenceKey": "fr-a2-si-imparfait-intro-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20523,8 +20770,10 @@
         "vocabulary"
       ],
       "prompt": "Write the narrator’s daydream in French: If I had time, I would travel.",
-      "hints": [],
-      "feedback": "Si j'avais le temps… — l'imaginaire est à toi.",
+      "hints": [
+        "The daydream opens with \"If I had time\" = Si j'avais le temps; the consequence in the conditional: je voyagerais."
+      ],
+      "feedback": "Si j'avais le temps, je voyagerais. Hypothesis in the imparfait, consequence in the conditional.",
       "evidenceKey": "fr-a2-si-imparfait-intro-act-rb7",
       "assistanceAffectsEvidence": [
         "hint",
@@ -20532,13 +20781,26 @@
       ],
       "answer": {
         "answers": [
-          "Si j'avais le temps, je voyagerais.",
-          "Je voyagerais.",
-          "Si j'avais le temps, je dormirais.",
-          "Si j'avais le temps, je lirais."
+          "Si j'avais le temps, je voyagerais."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Si j'ai le temps, je voyagerais.",
+            "category": "wrong conjugation",
+            "explanation": "The if-clause is hypothetical: after si, the imparfait j'avais le temps (j'ai is the present)."
+          },
+          {
+            "answer": "Si j'avais le temps, je voyagerai.",
+            "category": "wrong conjugation",
+            "explanation": "voyagerai is the future ('will travel'). A hypothetical consequence uses the conditional: je voyagerais."
+          },
+          {
+            "answer": "Si j'avais le temps, je dormirais.",
+            "category": "incorrect answer",
+            "explanation": "That is a correct sentence, but the prompt dictates 'I would travel': je voyagerais."
+          }
+        ]
       }
     },
     {

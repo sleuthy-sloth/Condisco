@@ -535,4 +535,195 @@ final class PackFrenchTests: XCTestCase {
         XCTAssertTrue(pharmacy.steps.contains { $0.id == "fr-pharmacy-mission-step-10" },
                       "pharmacy mission must end at step-10")
     }
+
+    // MARK: - Wave C (the five remaining French story lessons)
+
+    /// The five story lessons of Wave C (fr-unit-4, fr-unit-9, fr-unit-11),
+    /// keyed by the path activity ids each lesson references (graded steps
+    /// only).
+    private static let batch3Lessons: [String: [String]] = [
+        "fr-past-foundation": [
+            "fr-past-foundation-act-rb2", "fr-past-foundation-act-rb4",
+            "fr-past-foundation-meet", "fr-past-foundation-cloze",
+            "fr-past-foundation-act-rb6", "fr-past-foundation-act-rb7",
+        ],
+        "fr-plans-foundation": [
+            "fr-plans-foundation-act-rb2", "fr-plans-foundation-act-rb4",
+            "fr-plans-foundation-meet", "fr-plans-foundation-cloze",
+            "fr-plans-foundation-act-rb6", "fr-plans-foundation-act-rb7",
+        ],
+        "fr-a2-journee-recit": [
+            "fr-a2-journee-recit-meet", "fr-a2-journee-recit-notice",
+            "fr-a2-journee-recit-act-rb6", "fr-a2-journee-recit-cloze",
+            "fr-a2-journee-recit-act-rb7",
+        ],
+        "fr-a2-conditionnel-souhait": [
+            "fr-a2-conditionnel-souhait-meet", "fr-a2-conditionnel-souhait-notice",
+            "fr-a2-conditionnel-souhait-act-rb6", "fr-a2-conditionnel-souhait-cloze",
+            "fr-a2-conditionnel-souhait-act-rb7", "fr-a2-conditionnel-souhait-vary",
+        ],
+        "fr-a2-si-imparfait-intro": [
+            "fr-a2-si-imparfait-intro-meet", "fr-a2-si-imparfait-intro-notice",
+            "fr-a2-si-imparfait-intro-act-rb6", "fr-a2-si-imparfait-intro-cloze",
+            "fr-a2-si-imparfait-intro-act-rb7", "fr-a2-si-imparfait-intro-vary",
+        ],
+    ]
+
+    /// Every graded step in the five Wave C story lessons has a real authored
+    /// hint, not the runtime generic fallbacks.
+    func testBatch3GradedStepsHaveAuthoredHints() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text activity and cloze blank in the Wave C story lessons
+    /// authors error-specific feedback.
+    func testBatch3TextActivitiesAuthorErrors() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in the Wave C stories hit their authored
+    /// category + explanation and are never accepted.
+    func testBatch3ErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try frenchPack()
+
+        // fr-past-foundation
+        var result = try gradeBlank("fr-past-foundation-cloze", blank: "b1", in: pack, "suis")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeBlank("fr-past-foundation-cloze", blank: "b1", in: pack, "a")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-past-foundation-act-rb6", in: pack, "Aujourd'hui, il repose.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-past-foundation-act-rb7", in: pack, "Hier, elle est travaillé.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeText("fr-past-foundation-act-rb7", in: pack, "Hier, elle travaillé.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-plans-foundation
+        result = try gradeBlank("fr-plans-foundation-cloze", blank: "b1", in: pack, "étudie")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-plans-foundation-act-rb6", in: pack, "Demain, elle va étudie.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-plans-foundation-act-rb6", in: pack, "Demain, elle va à étudier.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("fr-plans-foundation-act-rb7", in: pack, "Demain, il va travaille à la maison.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // fr-a2-journee-recit
+        result = try gradeBlank("fr-a2-journee-recit-cloze", blank: "b1", in: pack, "Ensuite")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-journee-recit-act-rb7", in: pack, "Enfin, je suis rentrer.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-journee-recit-act-rb7", in: pack, "Enfin, je rentré.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-conditionnel-souhait
+        result = try gradeBlank("fr-a2-conditionnel-souhait-cloze", blank: "b1", in: pack, "aimerais")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "J'aimerais visiter Paris.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "J'aimerai visiter Rome.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-conditionnel-souhait-vary", in: pack, "Ils visiterons Rome.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-conditionnel-souhait-vary", in: pack, "Il visiterait Rome.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // fr-a2-si-imparfait-intro
+        result = try gradeBlank("fr-a2-si-imparfait-intro-cloze", blank: "b1", in: pack, "viens")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-si-imparfait-intro-act-rb7", in: pack, "Si j'ai le temps, je voyagerais.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-si-imparfait-intro-act-rb7", in: pack, "Si j'avais le temps, je dormirais.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-si-imparfait-intro-vary", in: pack, "Si j'étais riche, j'achète une maison.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-si-imparfait-intro-vary", in: pack, "Si j'étais riche, j'achèterais un maison.")
+        XCTAssertEqual(result.category, "wrong article")
+    }
+
+    /// Wave C prompt/answer alignment (H1): dictated forms stay accepted, and
+    /// the free variants previously auto-graded as correct are now rejected
+    /// because the prompt dictates the exact sentence.
+    func testBatch3PromptAnswerAlignmentHolds() throws {
+        let pack = try frenchPack()
+
+        // fr-past-foundation — both natural word orders of the dictated
+        // sentence are accepted.
+        var result = try gradeText("fr-past-foundation-act-rb7", in: pack, "Hier, elle a travaillé.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-past-foundation-act-rb7", in: pack, "Elle a travaillé hier.")
+        XCTAssertTrue(result.accepted)
+
+        // fr-a2-journee-recit — the narrator's gender is unstated, so both
+        // rentré and rentrée are legitimately accepted.
+        result = try gradeText("fr-a2-journee-recit-act-rb7", in: pack, "Enfin, je suis rentré.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-a2-journee-recit-act-rb7", in: pack, "Enfin, je suis rentrée.")
+        XCTAssertTrue(result.accepted)
+
+        // fr-a2-conditionnel-souhait — dictated note line accepted (both
+        // fixed renderings); the previous free variants are rejected.
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "J'aimerais visiter Rome.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "Je voudrais visiter Rome.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "J'aimerais voyager.")
+        XCTAssertFalse(result.accepted, "non-dictated variant must not be auto-graded as correct")
+        result = try gradeText("fr-a2-conditionnel-souhait-act-rb7", in: pack, "Je voudrais voir le monde.")
+        XCTAssertFalse(result.accepted, "non-dictated variant must not be auto-graded as correct")
+
+        // fr-a2-si-imparfait-intro — only the dictated daydream accepted.
+        result = try gradeText("fr-a2-si-imparfait-intro-act-rb7", in: pack, "Si j'avais le temps, je voyagerais.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-a2-si-imparfait-intro-act-rb7", in: pack, "Si j'avais le temps, je dormirais.")
+        XCTAssertFalse(result.accepted, "non-dictated daydream must not be auto-graded as correct")
+        result = try gradeText("fr-a2-si-imparfait-intro-act-rb7", in: pack, "Je voyagerais.")
+        XCTAssertFalse(result.accepted, "dropping the si-clause must not be auto-graded as correct")
+    }
+
+    /// Every Wave C story ends on a text final-response step (rubric M5,
+    /// audit final-response gap stays 0).
+    func testBatch3StoriesEndWithTextFinalResponse() throws {
+        let pack = try frenchPack()
+        for lessonId in Self.batch3Lessons.keys.sorted() {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), lessonId)
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                guard case .text = act else {
+                    XCTFail("\(lessonId): terminal step \(step.id) must be a text activity")
+                    continue
+                }
+            }
+        }
+    }
 }

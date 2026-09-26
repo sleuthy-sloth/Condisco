@@ -4920,7 +4920,9 @@
         "vocabulary"
       ],
       "prompt": "Portuguese asks where a place 'stays'. Which of these words does the asking?",
-      "hints": [],
+      "hints": [
+        "Where questions in Portuguese lead with Onde — the same word as English 'where'. Esquerda, direita and frente all describe a direction you give after the question, not the asking word itself."
+      ],
       "feedback": "Onde means where. Quem is the one for a person and o que for a thing. The direction words beside it answer rather than ask.",
       "evidenceKey": "pt-directions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4965,7 +4967,9 @@
         "grammar"
       ],
       "prompt": "Ask in Portuguese where the bathroom is.",
-      "hints": [],
+      "hints": [
+        "Start with Onde (where), keep ficar in the fixed form fica, then name the place with its article: a casa de banho, feminine, so a — not o."
+      ],
       "feedback": "Fica is the ficar form used for where something sits, and casa de banho is feminine, so its article is a. The question frame does not change with the noun.",
       "evidenceKey": "pt-directions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -4979,7 +4983,23 @@
           "Onde fica a casa de banho?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Onde fica o casa de banho?",
+            "category": "wrong article",
+            "explanation": "Casa de banho is feminine, so its article is a: Onde fica a casa de banho? O belongs with a masculine noun."
+          },
+          {
+            "answer": "Onde fica casa de banho?",
+            "category": "missing word",
+            "explanation": "The noun keeps its article: Onde fica a casa de banho?"
+          },
+          {
+            "answer": "Onde ficar a casa de banho?",
+            "category": "wrong conjugation",
+            "explanation": "Ficar is the infinitive; the question needs the inflected form fica: Onde fica a casa de banho?"
+          }
+        ]
       }
     },
     {
@@ -4996,7 +5016,9 @@
         "grammar"
       ],
       "prompt": "Complete the directions: Em frente, depois à ___",
-      "hints": [],
+      "hints": [
+        "The man points left: esquerda is 'left', and it follows à — the fused a + a you read after depois."
+      ],
       "feedback": "Esquerda is left. The accent on à fuses the preposition a with the article a, and direita would point the other way.",
       "evidenceKey": "pt-directions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5022,7 +5044,23 @@
             "esquerda"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "direita",
+              "category": "incorrect answer",
+              "explanation": "Direita is right — the man points the other way: à esquerda."
+            },
+            {
+              "answer": "frente",
+              "category": "incorrect answer",
+              "explanation": "Frente already does its job in em frente; the turn after depois goes à esquerda."
+            },
+            {
+              "answer": "direito",
+              "category": "wrong gender",
+              "explanation": "The direction words keep the feminine form — direita, esquerda. Direito is the masculine adjective and changes the meaning."
+            }
+          ]
         }
       }
     },
@@ -5039,7 +5077,9 @@
         "grammar"
       ],
       "prompt": "Soften the question by putting Desculpe in front: Onde fica a estação?",
-      "hints": [],
+      "hints": [
+        "Desculpe opens the softened question, a comma follows it, and the question itself stays untouched: Desculpe, onde fica a estação?"
+      ],
       "feedback": "Desculpe leads and a comma separates it from the question. The question itself is untouched.",
       "evidenceKey": "pt-directions-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5053,7 +5093,23 @@
           "Desculpe, onde fica a estação?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Desculpe, onde fica o estação?",
+            "category": "wrong article",
+            "explanation": "Estação is feminine — a estação, not o estação: Desculpe, onde fica a estação?"
+          },
+          {
+            "answer": "Desculpe, onde fica estação?",
+            "category": "missing word",
+            "explanation": "The noun keeps its article: Desculpe, onde fica a estação?"
+          },
+          {
+            "answer": "Onde fica a estação, desculpe?",
+            "category": "word-order problem",
+            "explanation": "The taught softener leads the question: Desculpe, onde fica a estação? Keeping Desculpe for the end reads as an afterthought."
+          }
+        ]
       }
     },
     {
@@ -5071,7 +5127,9 @@
         "vocabulary"
       ],
       "prompt": "Read the exchange and find the first direction the visitor is given.",
-      "hints": [],
+      "hints": [
+        "The first instruction comes as soon as the resident answers — em frente, straight ahead — before the depois clause à esquerda."
+      ],
       "feedback": "The first step is em frente, straight ahead, and the second comes after depois: à esquerda.",
       "evidenceKey": "pt-directions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5087,7 +5145,23 @@
           "Straight ahead"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "To the left.",
+            "category": "incorrect answer",
+            "explanation": "À esquerda is the second instruction, after depois. The first direction given is em frente — straight ahead."
+          },
+          {
+            "answer": "Behind you.",
+            "category": "incorrect answer",
+            "explanation": "The exchange never gives this direction — the visitor first hears em frente, straight ahead, then à esquerda."
+          },
+          {
+            "answer": "The beach.",
+            "category": "incorrect answer",
+            "explanation": "The beach is what the tourist asks about; the first direction given is em frente — straight ahead."
+          }
+        ]
       }
     },
     {
@@ -9856,7 +9930,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb means to drink?",
-      "hints": [],
+      "hints": [
+        "Think of a bottle of water: drinking it is beber. Comer is eating, gostar is liking, jantar is having dinner."
+      ],
       "feedback": "Beber is to drink — eu bebo, I drink.",
       "evidenceKey": "pt-food-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9901,7 +9977,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I eat soup at lunch. (-er verbs swap -er for -o.)",
-      "hints": [],
+      "hints": [
+        "Take the infinitive comer, drop the -er ending, add -o for I: como. Sopa stays sopa and ao almoço stays ao almoço."
+      ],
       "feedback": "Comer → como: Como sopa ao almoço.",
       "evidenceKey": "pt-food-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9915,7 +9993,23 @@
           "Como sopa ao almoço."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Comer sopa ao almoço.",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the infinitive; the sentence needs the I-form: como. Como sopa ao almoço."
+          },
+          {
+            "answer": "Comi sopa ao almoço.",
+            "category": "wrong tense",
+            "explanation": "Comi is the past ('I ate'); the habit sentence is present: Como sopa ao almoço."
+          },
+          {
+            "answer": "Como sopa no almoço.",
+            "category": "wrong preposition",
+            "explanation": "At lunch is ao almoço — the a + o fusion; no would mean 'in the lunch': Como sopa ao almoço."
+          }
+        ]
       }
     },
     {
@@ -9931,7 +10025,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Gostar always carries de before the thing you like: Gosto de peixe. Watch for the missing de, the misplaced muito, and the Brazilian-style me gosto."
+      ],
       "feedback": "Gostar needs de: Gosto de peixe.",
       "evidenceKey": "pt-food-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9977,7 +10073,9 @@
         "grammar"
       ],
       "prompt": "Change the verb: Como sopa ao almoço. → I drink water.",
-      "hints": [],
+      "hints": [
+        "Beber works exactly like comer: drop -er, add -o for I — bebo. Água is water; the sentence is Bebo água."
+      ],
       "feedback": "Beber → bebo: Bebo água.",
       "evidenceKey": "pt-food-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9991,7 +10089,23 @@
           "Bebo água."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Beber água.",
+            "category": "wrong conjugation",
+            "explanation": "Beber is the infinitive; the pattern calls for the I-form: bebo. Bebo água."
+          },
+          {
+            "answer": "Bebes água.",
+            "category": "wrong conjugation",
+            "explanation": "Bebes is the tu form; the model keeps the same I-subject as the prompt: bebo. Bebo água."
+          },
+          {
+            "answer": "Bebo aguá.",
+            "category": "accent/diacritic issue",
+            "explanation": "Água carries its accent on the first a: água, not aguá. Bebo água."
+          }
+        ]
       }
     },
     {
@@ -10007,7 +10121,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Gosto ___ fruta. (of)",
-      "hints": [],
+      "hints": [
+        "Gostar asks for the little word de before the thing liked: Gosto de fruta — never a bare noun after gostar."
+      ],
       "feedback": "Gostar brings de along: Gosto de fruta.",
       "evidenceKey": "pt-food-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10037,7 +10153,23 @@
             "de"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Gosto a fruta.",
+              "category": "wrong preposition",
+              "explanation": "Gostar takes de, not a: Gosto de fruta."
+            },
+            {
+              "answer": "Gosto do fruta.",
+              "category": "wrong gender",
+              "explanation": "Do is de + o, for a masculine noun; fruta is feminine and the phrase is generic — just de: Gosto de fruta."
+            },
+            {
+              "answer": "Gosto da fruta.",
+              "category": "incorrect answer",
+              "explanation": "Da would pick out one specific fruit; the taught phrase is generic, without an article: Gosto de fruta."
+            }
+          ]
         }
       }
     },
@@ -10055,7 +10187,9 @@
         "vocabulary"
       ],
       "prompt": "Read the food note. What fruit does the writer eat every day?",
-      "hints": [],
+      "hints": [
+        "Scan the note for a fruit with a daily habit: uma maçã todos os dias — an apple every day."
+      ],
       "feedback": "Uma maçã todos os dias — an apple every day.",
       "evidenceKey": "pt-food-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10072,7 +10206,23 @@
           "Apple."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "An orange.",
+            "category": "incorrect answer",
+            "explanation": "The note mentions orange juice (sumo de laranja) only as a drink; the daily fruit is the apple: uma maçã todos os dias."
+          },
+          {
+            "answer": "Soup.",
+            "category": "incorrect answer",
+            "explanation": "Sopa is what the writer eats at lunch, not a fruit — the daily fruit is an apple: uma maçã todos os dias."
+          },
+          {
+            "answer": "Fish.",
+            "category": "incorrect answer",
+            "explanation": "Peixe is lunch too; the fruit the writer eats every day is an apple: uma maçã todos os dias."
+          }
+        ]
       }
     },
     {
@@ -12532,7 +12682,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb goes with futebol?",
-      "hints": [],
+      "hints": [
+        "A sport played with rules takes jogar: jogar futebol. Ouvir is for listening, ler for reading, cozinhar for cooking."
+      ],
       "feedback": "Jogar futebol — jogar is for sports with rules.",
       "evidenceKey": "pt-free-time-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12578,7 +12730,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I like reading. (Gostar de + infinitive.)",
-      "hints": [],
+      "hints": [
+        "Gosto (gostar for I) + de + the activity as an infinitive: ler, to read. Gosto de ler."
+      ],
       "feedback": "Gosto de ler — de plus the infinitive.",
       "evidenceKey": "pt-free-time-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12592,7 +12746,23 @@
           "Gosto de ler."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gosto ler.",
+            "category": "missing word",
+            "explanation": "Gostar brings de with it: Gosto de ler."
+          },
+          {
+            "answer": "Gosto a ler.",
+            "category": "wrong preposition",
+            "explanation": "The preposition after gostar is de, not a: Gosto de ler."
+          },
+          {
+            "answer": "Me gosto de ler.",
+            "category": "incorrect answer",
+            "explanation": "Gostar takes no reflexive me in European Portuguese: Gosto de ler."
+          }
+        ]
       }
     },
     {
@@ -12608,7 +12778,9 @@
         "grammar"
       ],
       "prompt": "Which is correct?",
-      "hints": [],
+      "hints": [
+        "The de is non-negotiable: Gosto de ler. Reject the missing de, the wrong preposition a, and the reflexive me gosto."
+      ],
       "feedback": "Gostar always brings de.",
       "evidenceKey": "pt-free-time-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12653,7 +12825,9 @@
         "grammar"
       ],
       "prompt": "Change the hobby: Gosto de ler. → I like to swim.",
-      "hints": [],
+      "hints": [
+        "Swap the activity for its infinitive: nadar, to swim, keeping Gosto de in front: Gosto de nadar."
+      ],
       "feedback": "Gosto de nadar — infinitive after de.",
       "evidenceKey": "pt-free-time-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12667,7 +12841,23 @@
           "Gosto de nadar."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gosto nado.",
+            "category": "wrong conjugation",
+            "explanation": "After gostar de the activity stays an infinitive: gosto de nadar — not the conjugated nado."
+          },
+          {
+            "answer": "Gosto a nadar.",
+            "category": "wrong preposition",
+            "explanation": "The preposition is de, not a: Gosto de nadar."
+          },
+          {
+            "answer": "Gosto de nado.",
+            "category": "wrong conjugation",
+            "explanation": "Nado is 'I swim'; the phrase after de needs the infinitive: Gosto de nadar."
+          }
+        ]
       }
     },
     {
@@ -12683,7 +12873,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Jogo futebol ___ sábados. (on — aos)",
-      "hints": [],
+      "hints": [
+        "The day-of-week habit takes aos: aos sábados, on Saturdays — the a (on) fused with os (the plural article)."
+      ],
       "feedback": "Aos sábados — on Saturdays.",
       "evidenceKey": "pt-free-time-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12713,7 +12905,23 @@
             "aos"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "no",
+              "category": "wrong preposition",
+              "explanation": "No sábado would be one single Saturday; the weekly habit needs the plural fused form: aos sábados."
+            },
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "Em says 'in' with no fusion; on Saturdays is aos: aos sábados."
+            },
+            {
+              "answer": "os",
+              "category": "missing word",
+              "explanation": "The preposition a must fuse with os: aos sábados — not a bare os."
+            }
+          ]
         }
       }
     },
@@ -12731,7 +12939,9 @@
         "vocabulary"
       ],
       "prompt": "Read the weekend note. What does the writer's brother like to do?",
-      "hints": [],
+      "hints": [
+        "Find the sentence about the irmão — the brother — and read what follows gosta de: cozinhar, to cook."
+      ],
       "feedback": "O meu irmão gosta de cozinhar — to cook.",
       "evidenceKey": "pt-free-time-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12748,7 +12958,23 @@
           "Cooking."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "To play football.",
+            "category": "incorrect answer",
+            "explanation": "Football is the writer's own weekend habit (jogo futebol aos sábados); the brother's hobby is cooking: gosta de cozinhar."
+          },
+          {
+            "answer": "To listen to music.",
+            "category": "incorrect answer",
+            "explanation": "Ouço música todos os dias belongs to the writer; the brother's line is gosta de cozinhar."
+          },
+          {
+            "answer": "To rest.",
+            "category": "incorrect answer",
+            "explanation": "Descansar is the writer's weekend plan; the brother gosta de cozinhar — to cook."
+          }
+        ]
       }
     },
     {
@@ -12764,7 +12990,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'my head hurts'?",
-      "hints": [],
+      "hints": [
+        "Cabeça is the head, and pain takes the verb doer with -me glued after it and the article a: Dói-me a cabeça. Tenho and Estou don't express pain by themselves."
+      ],
       "feedback": "Dói-me a cabeça — the verb doer with -me.",
       "evidenceKey": "pt-health-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12809,7 +13037,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: My arm hurts. (Dói-me + article + part.)",
-      "hints": [],
+      "hints": [
+        "Use the same pain frame: Dói-me + the article that matches the body part. Braço is masculine, so o: Dói-me o braço."
+      ],
       "feedback": "Dói-me o braço — masculine o for o braço.",
       "evidenceKey": "pt-health-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12823,7 +13053,23 @@
           "Dói-me o braço."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dói-me a braço.",
+            "category": "wrong gender",
+            "explanation": "Braço is masculine — its article is o: Dói-me o braço. A belongs with feminine words like cabeça."
+          },
+          {
+            "answer": "Dói o braço.",
+            "category": "missing word",
+            "explanation": "The -me stays glued to the verb: Dói-me o braço."
+          },
+          {
+            "answer": "Me dói o braço.",
+            "category": "word-order problem",
+            "explanation": "European Portuguese keeps the pronoun after the verb: Dói-me o braço — not me dói."
+          }
+        ]
       }
     },
     {
@@ -12839,7 +13085,9 @@
         "grammar"
       ],
       "prompt": "Which is correct?",
-      "hints": [],
+      "hints": [
+        "The article a stays, and -me glues after the verb: Dói-me a cabeça. Reject the missing article, the fronted me, and the trailing -me tag."
+      ],
       "feedback": "The article stays, -me glues after the verb: Dói-me a cabeça.",
       "evidenceKey": "pt-health-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12885,7 +13133,9 @@
         "grammar"
       ],
       "prompt": "Change the symptom: Tenho febre. → I'm sick.",
-      "hints": [],
+      "hints": [
+        "Being sick is a temporary state — the estar verb: estou (I am) + doente (sick). Estou doente."
+      ],
       "feedback": "Estar for states: Estou doente.",
       "evidenceKey": "pt-health-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12899,7 +13149,23 @@
           "Estou doente."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sou doente.",
+            "category": "incorrect answer",
+            "explanation": "Sou doente would mean you are chronically unwell; a passing illness takes estar: Estou doente."
+          },
+          {
+            "answer": "Tenho doente.",
+            "category": "incorrect answer",
+            "explanation": "Ter is for symptoms like fever (tenho febre); being sick is a state, so estar: Estou doente."
+          },
+          {
+            "answer": "Estou doento.",
+            "category": "wrong gender",
+            "explanation": "Doente is invariable — it stays doente for a man or a woman: Estou doente."
+          }
+        ]
       }
     },
     {
@@ -12915,7 +13181,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Dói-me ___ cabeça. (the — feminine)",
-      "hints": [],
+      "hints": [
+        "The body part needs its definite article — cabeça is feminine, so a: Dói-me a cabeça."
+      ],
       "feedback": "Dói-me a cabeça — the article is required.",
       "evidenceKey": "pt-health-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12945,7 +13213,23 @@
             "a"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "o",
+              "category": "wrong gender",
+              "explanation": "Cabeça is feminine — its article is a, not o: Dói-me a cabeça."
+            },
+            {
+              "answer": "uma",
+              "category": "wrong article",
+              "explanation": "Uma would make it 'a head'; the pain is in your specific head, so the definite article: Dói-me a cabeça."
+            },
+            {
+              "answer": "meu",
+              "category": "wrong article",
+              "explanation": "The frame uses the definite article, not a possessive: Dói-me a cabeça."
+            }
+          ]
         }
       }
     },
@@ -12963,7 +13247,9 @@
         "vocabulary"
       ],
       "prompt": "Read the sick note. When is the writer going to the doctor?",
-      "hints": [],
+      "hints": [
+        "Look for the doctor appointment — vou ao médico — and the time phrase beside it: amanhã de manhã, tomorrow morning."
+      ],
       "feedback": "Amanhã vou ao médico de manhã — tomorrow morning.",
       "evidenceKey": "pt-health-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12980,7 +13266,23 @@
           "Amanhã de manhã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Today.",
+            "category": "incorrect answer",
+            "explanation": "Today (hoje) the writer stays home sick and does not work; the doctor visit is amanhã de manhã."
+          },
+          {
+            "answer": "Tomorrow evening.",
+            "category": "incorrect answer",
+            "explanation": "The note says de manhã — in the morning: Amanhã vou ao médico de manhã."
+          },
+          {
+            "answer": "In the afternoon.",
+            "category": "incorrect answer",
+            "explanation": "No afternoon appointment appears; the doctor visit happens amanhã de manhã."
+          }
+        ]
       }
     },
     {
@@ -13693,7 +13995,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'I spoke yesterday'?",
-      "hints": [],
+      "hints": [
+        "The perfect past (pretérito perfeito) of falar for I ends in -ei: falei. Falo is present, falava is the imperfeito, falar the infinitive."
+      ],
       "feedback": "Falei ontem — falei is the pretérito perfeito of falar (-ei ending). Falo is present, falava is the imperfeito, and falar is the infinitive.",
       "evidenceKey": "pt-a2-preterito-perfeito-meet",
       "assistanceAffectsEvidence": [
@@ -13738,7 +14042,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: you (tu) ate, yesterday — '___ o bolo todo?' (Did you eat the whole cake?)",
-      "hints": [],
+      "hints": [
+        "The tu form of -er verbs in the perfeito ends in -este: comer → comeste. Keep o bolo todo and the question mark."
+      ],
       "feedback": "Comeste o bolo todo? — -er verbs take -este for tu in the perfeito: comeste.",
       "evidenceKey": "pt-a2-preterito-perfeito-think",
       "assistanceAffectsEvidence": [
@@ -13749,10 +14055,27 @@
       "kind": "text",
       "answer": {
         "answers": [
-          "Comeste o bolo todo?"
+          "Comeste o bolo todo?",
+          "Comeste todo o bolo?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Comiste o bolo todo?",
+            "category": "wrong conjugation",
+            "explanation": "Comiste follows the -ir pattern; comer is an -er verb, so the tu form is comeste: Comeste o bolo todo?"
+          },
+          {
+            "answer": "Comeu o bolo todo?",
+            "category": "wrong conjugation",
+            "explanation": "Comeu is the ele/ela form; the question is about tu, so comeste: Comeste o bolo todo?"
+          },
+          {
+            "answer": "Comer o bolo todo?",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the infinitive; the tu perfect of comer is comeste: Comeste o bolo todo?"
+          }
+        ]
       }
     },
     {
@@ -13770,7 +14093,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb is irregular in the pretérito perfeito?",
-      "hints": [],
+      "hints": [
+        "Check how each past form is built: falei, comi and partiu are regular (-ei, -i, -iu); fiz breaks the pattern — fazer is the irregular one."
+      ],
       "feedback": "Fiz — fazer becomes fiz, an irregular. Falei, comi and partiu are all regular formations.",
       "evidenceKey": "pt-a2-preterito-perfeito-notice",
       "assistanceAffectsEvidence": [
@@ -13815,7 +14140,9 @@
         "grammar"
       ],
       "prompt": "Say: We bought bread this morning.",
-      "hints": [],
+      "hints": [
+        "The nós form of comprar in the perfeito is comprámos, with the accent on the á: comprámos + pão + de manhã (or esta manhã)."
+      ],
       "feedback": "Comprámos pão de manhã — nós form of comprar in the perfeito is comprámos, with the accent.",
       "evidenceKey": "pt-a2-preterito-perfeito-vary",
       "assistanceAffectsEvidence": [
@@ -13830,7 +14157,23 @@
           "Comprámos pão esta manhã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Compramos pão de manhã.",
+            "category": "accent/diacritic issue",
+            "explanation": "The nós form needs its accent: comprámos (comprar → comprámos). Without it the word reads as the present: Compramos pão de manhã."
+          },
+          {
+            "answer": "Comprou pão de manhã.",
+            "category": "wrong conjugation",
+            "explanation": "Comprou is the ele/ela form; the sentence is about nós: comprámos."
+          },
+          {
+            "answer": "Comprámos pão na manhã.",
+            "category": "wrong preposition",
+            "explanation": "The morning-phrase is de manhã (or esta manhã); na manhã is not the natural form: Comprámos pão de manhã."
+          }
+        ]
       }
     },
     {
@@ -13846,7 +14189,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Ela ___ às oito. (she left)",
-      "hints": [],
+      "hints": [
+        "Partir is an -ir verb; its ele/ela perfect ends in -iu — partiu, 'she left', matching às oito."
+      ],
       "feedback": "Partiu — ela form of partir in the perfeito: -iu ending.",
       "evidenceKey": "pt-a2-preterito-perfeito-cloze",
       "assistanceAffectsEvidence": [
@@ -13876,7 +14221,23 @@
             "partiu"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "parte",
+              "category": "wrong tense",
+              "explanation": "Parte is the present ('she leaves'); yesterday's leaving takes the perfect: partiu."
+            },
+            {
+              "answer": "partio",
+              "category": "wrong conjugation",
+              "explanation": "The -ir perfect ending for ela is -iu, not -io: partiu às oito."
+            },
+            {
+              "answer": "partimos",
+              "category": "wrong conjugation",
+              "explanation": "Partimos is nós ('we left'); the subject here is ela — partiu."
+            }
+          ]
         }
       }
     },
@@ -13893,8 +14254,10 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "Read about yesterday. What did she do in the afternoon?",
-      "hints": [],
+      "prompt": "Read about yesterday. What did the writer do in the afternoon?",
+      "hints": [
+        "Skip the morning phone call and find À tarde — in the afternoon — followed by the verbs: comi uma sandes e parti para o trabalho."
+      ],
       "feedback": "She ate a sandwich and left for work at two — 'comi uma sandes e parti para o trabalho às duas'.",
       "evidenceKey": "pt-a2-preterito-perfeito-read",
       "assistanceAffectsEvidence": [
@@ -13908,10 +14271,27 @@
         "answers": [
           "She ate a sandwich and left for work.",
           "She ate a sandwich and left for work at two.",
-          "Comeu uma sandes e partiu para o trabalho."
+          "Comeu uma sandes e partiu para o trabalho.",
+          "Ate a sandwich and left for work."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "She spoke to Ana on the phone.",
+            "category": "incorrect answer",
+            "explanation": "That was the morning (de manhã); the afternoon holds comi uma sandes e parti para o trabalho."
+          },
+          {
+            "answer": "She had dinner and watched a film.",
+            "category": "incorrect answer",
+            "explanation": "Jantei em casa e vi um filme belongs to the evening (à noite); the afternoon was the sandwich and leaving for work."
+          },
+          {
+            "answer": "She woke late.",
+            "category": "incorrect answer",
+            "explanation": "Waking late never appears in the note — the afternoon is comi uma sandes e parti para o trabalho."
+          }
+        ]
       }
     },
     {
@@ -14880,7 +15260,9 @@
         "vocabulary"
       ],
       "prompt": "Which is a promise about the future?",
-      "hints": [],
+      "hints": [
+        "The future of ser for eu is serei — the promise form. Fui is past, sou present, era a past habit (imperfeito)."
+      ],
       "feedback": "Serei pontual, prometo — serei is the future of ser. Fui is past, sou is present, era is imperfeito.",
       "evidenceKey": "pt-a2-futuro-simples-meet",
       "assistanceAffectsEvidence": [
@@ -14923,7 +15305,9 @@
         "grammar"
       ],
       "prompt": "Predict the future: eu falar — 'Amanhã ___ com o chefe.'",
-      "hints": [],
+      "hints": [
+        "Build the future straight from the infinitive: falar + the -ei ending for eu → falarei. Slot it after Amanhã: Amanhã falarei com o chefe."
+      ],
       "feedback": "Falarei — infinitivo falar + -ei ending: falarei.",
       "evidenceKey": "pt-a2-futuro-simples-think",
       "assistanceAffectsEvidence": [
@@ -14938,7 +15322,23 @@
           "falarei"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Amanhã falei com o chefe.",
+            "category": "wrong tense",
+            "explanation": "Falei is the past (pretérito perfeito); tomorrow needs the future of falar for eu: falarei."
+          },
+          {
+            "answer": "Amanhã falo com o chefe.",
+            "category": "wrong tense",
+            "explanation": "Falo is the present; the sentence points to amanhã, so the future: Falarei com o chefe."
+          },
+          {
+            "answer": "Amanhã falar com o chefe.",
+            "category": "wrong conjugation",
+            "explanation": "Falar is the infinitive; the future form for eu is falarei."
+          }
+        ]
       }
     },
     {
@@ -14952,7 +15352,9 @@
         "vocabulary"
       ],
       "prompt": "Falei vs falarei — which one is the future?",
-      "hints": [],
+      "hints": [
+        "Falarei carries the future's extra syllable and the -ei ending; falei is the past (pretérito perfeito), falava the imperfeito, falo the present."
+      ],
       "feedback": "Falarei — the extra syllable and accent mark the future. Falei is the pretérito perfeito (past), falava the imperfeito, falo the present.",
       "evidenceKey": "pt-a2-futuro-simples-notice",
       "assistanceAffectsEvidence": [
@@ -14997,7 +15399,9 @@
         "grammar"
       ],
       "prompt": "Say: I will help with the suitcases.",
-      "hints": [],
+      "hints": [
+        "ajudar + -ei for eu = ajudarei; com as malas is 'with the suitcases': Ajudarei com as malas."
+      ],
       "feedback": "Ajudarei com as malas — ajudar + -ei.",
       "evidenceKey": "pt-a2-futuro-simples-vary",
       "assistanceAffectsEvidence": [
@@ -15011,7 +15415,23 @@
           "Ajudarei com as malas."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ajudei com as malas.",
+            "category": "wrong tense",
+            "explanation": "Ajudei is the past ('I helped'); the future of ajudar for eu is ajudarei."
+          },
+          {
+            "answer": "Ajudarei com os malas.",
+            "category": "wrong gender",
+            "explanation": "Malas is feminine — as malas, not os malas: Ajudarei com as malas."
+          },
+          {
+            "answer": "Ajudar com as malas.",
+            "category": "wrong conjugation",
+            "explanation": "Ajudar is the infinitive; the I-future is ajudarei."
+          }
+        ]
       }
     },
     {
@@ -15028,7 +15448,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ pontual, prometo. (I will be)",
-      "hints": [],
+      "hints": [
+        "The future of ser for eu is irregular: serei — Serei pontual, prometo."
+      ],
       "feedback": "Serei — the future of ser for eu. Promises love the futuro simples.",
       "evidenceKey": "pt-a2-futuro-simples-cloze",
       "assistanceAffectsEvidence": [
@@ -15058,7 +15480,23 @@
             "Serei"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Sou",
+              "category": "wrong tense",
+              "explanation": "Sou is the present ('I am'); the promise points forward, so the future: serei."
+            },
+            {
+              "answer": "Fui",
+              "category": "wrong tense",
+              "explanation": "Fui is the past ('I was'); the promise is about the future: serei."
+            },
+            {
+              "answer": "Ser",
+              "category": "wrong conjugation",
+              "explanation": "Ser is the infinitive; the future I-form is serei."
+            }
+          ]
         }
       }
     },
@@ -15075,7 +15513,9 @@
         "vocabulary"
       ],
       "prompt": "Read João's promises. What will he do in the afternoon?",
-      "hints": [],
+      "hints": [
+        "Find the afternoon clause — à tarde — and the future verb attached to it: estudarei, will study, para o exame."
+      ],
       "feedback": "He will study for the exam — 'à tarde estudarei para o exame'.",
       "evidenceKey": "pt-a2-futuro-simples-read",
       "assistanceAffectsEvidence": [
@@ -15093,7 +15533,23 @@
           "Vai estudar para o exame."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "He will wake up early.",
+            "category": "incorrect answer",
+            "explanation": "Acordarei cedo belongs to tomorrow morning; the afternoon holds estudarei para o exame."
+          },
+          {
+            "answer": "He will make breakfast.",
+            "category": "incorrect answer",
+            "explanation": "Farei o pequeno-almoço is the morning too; à tarde he will study for the exam."
+          },
+          {
+            "answer": "He will rest.",
+            "category": "incorrect answer",
+            "explanation": "Descansarei is the evening (à noite) plan; the afternoon is estudarei para o exame."
+          }
+        ]
       }
     },
     {
@@ -15508,7 +15964,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the softest way to order a coffee?",
-      "hints": [],
+      "hints": [
+        "Queria (the imperfect of querer) softens a request: Queria um café, por favor. Quero states a want, dá-me commands, and a bare noun just points."
+      ],
       "feedback": "Queria um café, por favor — queria (imperfect of querer) is the polite 'would like'. Quero is blunt, dá-me is a command, and a bare 'Um café!' is just pointing with words.",
       "evidenceKey": "pt-a2-gostaria-queria-meet",
       "assistanceAffectsEvidence": [
@@ -15554,7 +16012,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: '___ de reservar uma mesa.' (I would like)",
-      "hints": [],
+      "hints": [
+        "Gostaria (the conditional of gostar) + de + the infinitive: Gostaria de reservar uma mesa."
+      ],
       "feedback": "Gostaria de reservar uma mesa — gostaria de + infinitivo.",
       "evidenceKey": "pt-a2-gostaria-queria-think",
       "assistanceAffectsEvidence": [
@@ -15569,7 +16029,23 @@
           "Gostaria"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gostaria reservar uma mesa.",
+            "category": "missing word",
+            "explanation": "Gostaria brings de with it: Gostaria de reservar uma mesa."
+          },
+          {
+            "answer": "Gosto de reservar uma mesa.",
+            "category": "incorrect answer",
+            "explanation": "Gosto says 'I like'; the polite 'I would like' is the conditional: Gostaria de reservar uma mesa."
+          },
+          {
+            "answer": "Gostaria de reservo uma mesa.",
+            "category": "wrong conjugation",
+            "explanation": "After de the verb stays an infinitive: reservar, not reservo."
+          }
+        ]
       }
     },
     {
@@ -15586,7 +16062,9 @@
         "vocabulary"
       ],
       "prompt": "After 'gostaria de', what follows?",
-      "hints": [],
+      "hints": [
+        "Only one option shows the base form of the verb — reservar. Gostaria de always takes the infinitive, never a conjugated verb or a gerund."
+      ],
       "feedback": "The infinitivo: gostaria de reservar. Never a conjugated verb, never a gerund — de + infinitivo, always.",
       "evidenceKey": "pt-a2-gostaria-queria-notice",
       "assistanceAffectsEvidence": [
@@ -15632,7 +16110,9 @@
         "grammar"
       ],
       "prompt": "Say: We'd like to book a table for two.",
-      "hints": [],
+      "hints": [
+        "The nós form of querer in the imperfect is queríamos: queríamos + reservar uma mesa para dois (for two)."
+      ],
       "feedback": "Queríamos reservar uma mesa para dois — the nós form: queríamos.",
       "evidenceKey": "pt-a2-gostaria-queria-vary",
       "assistanceAffectsEvidence": [
@@ -15646,7 +16126,23 @@
           "Queríamos reservar uma mesa para dois."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Queremos reservar uma mesa para dois.",
+            "category": "wrong tense",
+            "explanation": "Queremos is the present ('we want'); the polite 'we'd like' is the imperfect: queríamos."
+          },
+          {
+            "answer": "Queríamos reservar uma mesa para duas.",
+            "category": "wrong gender",
+            "explanation": "The fixed phrase for two people is para dois: uma mesa para dois (para duas would specify two women)."
+          },
+          {
+            "answer": "Queríamos reservar mesa para dois.",
+            "category": "missing word",
+            "explanation": "The table keeps its article: reservar uma mesa para dois."
+          }
+        ]
       }
     },
     {
@@ -15663,7 +16159,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ de falar com o gerente. (I would like)",
-      "hints": [],
+      "hints": [
+        "The polite 'I would like' is the conditional gostaria, and it takes de before the infinitive: Gostaria de falar com o gerente."
+      ],
       "feedback": "Gostaria — gostaria de + infinitivo: gostaria de falar.",
       "evidenceKey": "pt-a2-gostaria-queria-cloze",
       "assistanceAffectsEvidence": [
@@ -15693,7 +16191,23 @@
             "Gostaria"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Gosto",
+              "category": "wrong tense",
+              "explanation": "Gosto is the present ('I like'); the polite request is the conditional: gostaria."
+            },
+            {
+              "answer": "Queria",
+              "category": "incorrect answer",
+              "explanation": "Queria softens requests too, but this frame asks for gostaria de + infinitive: Gostaria de falar com o gerente."
+            },
+            {
+              "answer": "Gostar",
+              "category": "wrong conjugation",
+              "explanation": "Gostar is the infinitive; the I-form in the conditional is gostaria."
+            }
+          ]
         }
       }
     },
@@ -15711,7 +16225,9 @@
         "vocabulary"
       ],
       "prompt": "Read Mr Silva's restaurant visit. What did he ask for first?",
-      "hints": [],
+      "hints": [
+        "The first quoted request opens the visit: Queria uma mesa para dois — a table for two — before the menu (a ementa) and the bill (a conta)."
+      ],
       "feedback": "A table for two — 'Queria uma mesa para dois, por favor.'",
       "evidenceKey": "pt-a2-gostaria-queria-read",
       "assistanceAffectsEvidence": [
@@ -15727,7 +16243,23 @@
           "Uma mesa para dois."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The menu.",
+            "category": "incorrect answer",
+            "explanation": "The menu (a ementa) came second; the first request was a table: Queria uma mesa para dois."
+          },
+          {
+            "answer": "The bill.",
+            "category": "incorrect answer",
+            "explanation": "A conta came last, at the end of the meal; first came the table: uma mesa para dois."
+          },
+          {
+            "answer": "A coffee.",
+            "category": "incorrect answer",
+            "explanation": "No coffee is ordered in this note at all — the first request is a table for two: Queria uma mesa para dois, por favor."
+          }
+        ]
       }
     },
     {
@@ -16708,7 +17240,9 @@
         "vocabulary"
       ],
       "prompt": "Which is correct? 'Vens ___ ao cinema?'",
-      "hints": [],
+      "hints": [
+        "Com + mim fuses into comigo: Vens comigo? 'Com eu' never exists, and para mim means 'for me', not 'with me'."
+      ],
       "feedback": "Comigo — com + mim fuses into comigo. 'Com eu' is never correct, and para mim means 'for me', not 'with me'.",
       "evidenceKey": "pt-a2-pronomes-preposicoes-meet",
       "assistanceAffectsEvidence": [
@@ -16753,7 +17287,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: 'Este café é ___ .' (for me)",
-      "hints": [],
+      "hints": [
+        "After para, the subject pronoun eu changes to the prepositional form mim: Este café é para mim."
+      ],
       "feedback": "Para mim — after para, eu becomes mim.",
       "evidenceKey": "pt-a2-pronomes-preposicoes-think",
       "assistanceAffectsEvidence": [
@@ -16768,7 +17304,23 @@
           "para mim"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Este café é para eu.",
+            "category": "incorrect answer",
+            "explanation": "After para the pronoun changes to mim: para mim — never para eu."
+          },
+          {
+            "answer": "Este café é para tu.",
+            "category": "incorrect answer",
+            "explanation": "For me is para mim; tu ('you') has no place in this sentence: Este café é para mim."
+          },
+          {
+            "answer": "Este café para mim é.",
+            "category": "word-order problem",
+            "explanation": "The phrase keeps its verb first: Este café é para mim."
+          }
+        ]
       }
     },
     {
@@ -16784,7 +17336,9 @@
         "vocabulary"
       ],
       "prompt": "Which pair is correct after a preposition?",
-      "hints": [],
+      "hints": [
+        "Prepositions take the forms mim/ti — para ti is the correct pair. Para tu and por tu are the giveaway errors."
+      ],
       "feedback": "Para ti — prepositions take mim/ti, never eu/tu. 'Para tu' is the giveaway error.",
       "evidenceKey": "pt-a2-pronomes-preposicoes-notice",
       "assistanceAffectsEvidence": [
@@ -16829,7 +17383,9 @@
         "grammar"
       ],
       "prompt": "Say: This present is for you.",
-      "hints": [],
+      "hints": [
+        "Este presente é + para + ti: after para, the form is ti, not tu. Este presente é para ti."
+      ],
       "feedback": "Este presente é para ti — para + ti.",
       "evidenceKey": "pt-a2-pronomes-preposicoes-vary",
       "assistanceAffectsEvidence": [
@@ -16843,7 +17399,23 @@
           "Este presente é para ti."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Este presente é para tu.",
+            "category": "incorrect answer",
+            "explanation": "After para the form is ti: para ti — never para tu."
+          },
+          {
+            "answer": "Este presente é para tí.",
+            "category": "accent/diacritic issue",
+            "explanation": "Portuguese ti carries no accent — that spelling belongs to Spanish: para ti."
+          },
+          {
+            "answer": "Este presente é para mim.",
+            "category": "incorrect answer",
+            "explanation": "Para mim says 'for me'; the present is for you, so para ti."
+          }
+        ]
       }
     },
     {
@@ -16859,7 +17431,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Vens ___ ao cinema? (with me)",
-      "hints": [],
+      "hints": [
+        "Com + mim fuses into comigo — the 'with me' form. Vens comigo ao cinema?"
+      ],
       "feedback": "Comigo — the fused form of com + mim.",
       "evidenceKey": "pt-a2-pronomes-preposicoes-cloze",
       "assistanceAffectsEvidence": [
@@ -16889,7 +17463,23 @@
             "comigo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "contigo",
+              "category": "incorrect answer",
+              "explanation": "Contigo is 'with you'; the frame asks 'with me', the fused form comigo."
+            },
+            {
+              "answer": "conmigo",
+              "category": "incorrect answer",
+              "explanation": "Conmigo is Spanish; the Portuguese form is comigo: Vens comigo ao cinema?"
+            },
+            {
+              "answer": "me",
+              "category": "incorrect answer",
+              "explanation": "Me is an object pronoun, not the 'with me' form — after com it becomes comigo: Vens comigo?"
+            }
+          ]
         }
       }
     },
@@ -16907,7 +17497,9 @@
         "vocabulary"
       ],
       "prompt": "Read Joana's invitation. How many tickets does she have?",
-      "hints": [],
+      "hints": [
+        "Find the ticket sentence — Tenho dois bilhetes — and count what follows: um é para mim e o outro é para ti."
+      ],
       "feedback": "Two — 'Tenho dois bilhetes — um é para mim e o outro é para ti.'",
       "evidenceKey": "pt-a2-pronomes-preposicoes-read",
       "assistanceAffectsEvidence": [
@@ -16925,7 +17517,23 @@
           "Dois bilhetes."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "One.",
+            "category": "incorrect answer",
+            "explanation": "Joana has two tickets — um é para mim e o outro é para ti: Tenho dois bilhetes."
+          },
+          {
+            "answer": "Three.",
+            "category": "incorrect answer",
+            "explanation": "The note says dois bilhetes — two tickets: um é para mim e o outro é para ti."
+          },
+          {
+            "answer": "She has no tickets.",
+            "category": "incorrect answer",
+            "explanation": "She opens with Tenho dois bilhetes — she has two: um é para mim e o outro é para ti."
+          }
+        ]
       }
     },
     {
@@ -19309,7 +19917,9 @@
         "vocabulary"
       ],
       "prompt": "The old man points left as he speaks. Which direction does «à esquerda» give you?",
-      "hints": [],
+      "hints": [
+        "Esquerda is the word for left, and à in à esquerda is the preposition a fused with the article a. The options name four different directions — only one is left."
+      ],
       "feedback": "À esquerda — left. Repeat it like a spell and walk.",
       "evidenceKey": "pt-directions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -19385,7 +19995,7 @@
       "kind": "information",
       "id": "pt-a2-preterito-perfeito-act-rb2",
       "revision": 1,
-      "body": "What followed was a perfect pretérito perfeito of a day: falei com a Maria, comeste o bolo todo — well, you shared it — and comprámos pão de manhã as if nothing had happened. Some days you don’t live; you conjugate them."
+      "body": "What followed was a perfect pretérito perfeito of a day: falei com a Ana, comeste o bolo todo — well, you shared it — and comprámos pão de manhã as if nothing had happened. Some days you don’t live; you conjugate them."
     },
     {
       "kind": "information",
@@ -19403,7 +20013,7 @@
       "kind": "information",
       "id": "pt-a2-gostaria-queria-act-rb1",
       "revision": 1,
-      "body": "Mr. Silva has one perfect evening a month, and this is it. He walks into his favourite restaurant and the waiter already knows: gostaria de reservar uma mesa — done last Tuesday — and now, to open the evening, queria um café, por favor. Politeness, he believes, is a kind of music."
+      "body": "Mr. Silva has one perfect evening a month, and this is it. He walks into his favourite restaurant and the waiter already knows: gostaria de reservar uma mesa — done last Tuesday — and as the meal ends, as always, queria um café, por favor. Politeness, he believes, is a kind of music."
     },
     {
       "kind": "information",

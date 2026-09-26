@@ -484,6 +484,209 @@ final class PackPortugueseTests: XCTestCase {
         }
     }
 
+    // MARK: - Wave C story lessons (rubric H4/H3/M5)
+
+    /// The eight Wave C story lessons (units 3–16), keyed by the graded
+    /// path activity ids each lesson references.
+    private static let batch3Lessons: [String: [String]] = [
+        "pt-directions-foundation": [
+            "pt-directions-foundation-meet", "pt-directions-foundation-ask",
+            "pt-directions-foundation-act-rb3", "pt-directions-foundation-vary",
+            "pt-directions-foundation-cloze", "pt-directions-foundation-read",
+        ],
+        "pt-food-foundation": [
+            "pt-food-foundation-meet", "pt-food-foundation-think",
+            "pt-food-foundation-notice", "pt-food-foundation-vary",
+            "pt-food-foundation-cloze", "pt-food-foundation-read",
+        ],
+        "pt-free-time-foundation": [
+            "pt-free-time-foundation-meet", "pt-free-time-foundation-think",
+            "pt-free-time-foundation-notice", "pt-free-time-foundation-vary",
+            "pt-free-time-foundation-cloze", "pt-free-time-foundation-read",
+        ],
+        "pt-health-foundation": [
+            "pt-health-foundation-meet", "pt-health-foundation-think",
+            "pt-health-foundation-notice", "pt-health-foundation-vary",
+            "pt-health-foundation-cloze", "pt-health-foundation-read",
+        ],
+        "pt-a2-preterito-perfeito": [
+            "pt-a2-preterito-perfeito-meet", "pt-a2-preterito-perfeito-think",
+            "pt-a2-preterito-perfeito-notice", "pt-a2-preterito-perfeito-vary",
+            "pt-a2-preterito-perfeito-cloze", "pt-a2-preterito-perfeito-read",
+        ],
+        "pt-a2-futuro-simples": [
+            "pt-a2-futuro-simples-meet", "pt-a2-futuro-simples-think",
+            "pt-a2-futuro-simples-notice", "pt-a2-futuro-simples-vary",
+            "pt-a2-futuro-simples-cloze", "pt-a2-futuro-simples-read",
+        ],
+        "pt-a2-gostaria-queria": [
+            "pt-a2-gostaria-queria-meet", "pt-a2-gostaria-queria-think",
+            "pt-a2-gostaria-queria-notice", "pt-a2-gostaria-queria-vary",
+            "pt-a2-gostaria-queria-cloze", "pt-a2-gostaria-queria-read",
+        ],
+        "pt-a2-pronomes-preposicoes": [
+            "pt-a2-pronomes-preposicoes-meet", "pt-a2-pronomes-preposicoes-think",
+            "pt-a2-pronomes-preposicoes-notice", "pt-a2-pronomes-preposicoes-vary",
+            "pt-a2-pronomes-preposicoes-cloze", "pt-a2-pronomes-preposicoes-read",
+        ],
+    ]
+
+    /// Every graded step in the Wave C story lessons has a real authored
+    /// hint, not the runtime generic fallbacks (audit hint-gap must be 0).
+    func testWaveCGradedStepsHaveAuthoredHints() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text/cloze surface in the Wave C story lessons authors
+    /// error-specific feedback (audit error-feedback gap must be 0).
+    func testWaveCTextActivitiesAuthorErrors() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch3Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers hit their authored category + explanation.
+    func testWaveCAuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try portuguesePack()
+
+        // pt-directions-foundation
+        var result = try gradeText("pt-directions-foundation-ask", in: pack, "Onde fica o casa de banho?")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("pt-directions-foundation-vary", in: pack, "Onde fica a estação, desculpe?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeClozeBlank("pt-directions-foundation-cloze", blank: "b1", in: pack, "direita")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-food-foundation
+        result = try gradeText("pt-food-foundation-think", in: pack, "Comer sopa ao almoço.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-food-foundation-vary", in: pack, "Bebo aguá.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeClozeBlank("pt-food-foundation-cloze", blank: "b1", in: pack, "Gosto a fruta.")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // pt-free-time-foundation
+        result = try gradeText("pt-free-time-foundation-think", in: pack, "Gosto ler.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("pt-free-time-foundation-vary", in: pack, "Gosto de nado.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("pt-free-time-foundation-cloze", blank: "b1", in: pack, "no")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // pt-health-foundation
+        result = try gradeText("pt-health-foundation-think", in: pack, "Dói-me a braço.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("pt-health-foundation-vary", in: pack, "Sou doente.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("pt-health-foundation-cloze", blank: "b1", in: pack, "o")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // pt-a2-preterito-perfeito
+        result = try gradeText("pt-a2-preterito-perfeito-think", in: pack, "Comiste o bolo todo?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-a2-preterito-perfeito-vary", in: pack, "Compramos pão de manhã.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeClozeBlank("pt-a2-preterito-perfeito-cloze", blank: "b1", in: pack, "parte")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // pt-a2-futuro-simples
+        result = try gradeText("pt-a2-futuro-simples-think", in: pack, "Amanhã falei com o chefe.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-futuro-simples-vary", in: pack, "Ajudarei com os malas.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("pt-a2-futuro-simples-cloze", blank: "b1", in: pack, "Sou")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // pt-a2-gostaria-queria
+        result = try gradeText("pt-a2-gostaria-queria-think", in: pack, "Gostaria reservar uma mesa.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("pt-a2-gostaria-queria-vary", in: pack, "Queremos reservar uma mesa para dois.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("pt-a2-gostaria-queria-cloze", blank: "b1", in: pack, "Gosto")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // pt-a2-pronomes-preposicoes
+        result = try gradeText("pt-a2-pronomes-preposicoes-think", in: pack, "Este café é para eu.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-a2-pronomes-preposicoes-vary", in: pack, "Este presente é para tu.")
+        XCTAssertFalse(result.accepted, "para tu must not pass")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("pt-a2-pronomes-preposicoes-cloze", blank: "b1", in: pack, "contigo")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// Natural full/alternative lines are accepted where the learner would
+    /// not be wrong to give them.
+    func testWaveCAcceptsNaturalAlternatives() throws {
+        let pack = try portuguesePack()
+
+        // todo-o-bolo ordering variant is fine pt-PT.
+        var result = try gradeText("pt-a2-preterito-perfeito-think", in: pack, "Comeste todo o bolo?")
+        XCTAssertTrue(result.accepted, "Comeste todo o bolo? must be accepted")
+
+        // The first-person reading note takes the bare answer form.
+        result = try gradeText("pt-a2-preterito-perfeito-read", in: pack, "Ate a sandwich and left for work.")
+        XCTAssertTrue(result.accepted, "bare afternoon answer must be accepted")
+
+        // The ir + infinitive future is a natural alternative.
+        result = try gradeText("pt-a2-futuro-simples-read", in: pack, "Vai estudar para o exame.")
+        XCTAssertTrue(result.accepted, "Vai estudar para o exame. must be accepted")
+
+        // Short count answers stay accepted.
+        result = try gradeText("pt-a2-pronomes-preposicoes-read", in: pack, "Dois.")
+        XCTAssertTrue(result.accepted, "Dois. must be accepted")
+
+        // Wrong line still fails.
+        result = try gradeText("pt-a2-pronomes-preposicoes-vary", in: pack, "Este presente é para mim.")
+        XCTAssertFalse(result.accepted, "para mim changes the meaning and must not pass")
+    }
+
+    /// Wave C story lessons all close on a graded text final response with
+    /// an authored hint (audit final-response check).
+    func testWaveCStoryFinalStepsAreTextResponses() throws {
+        let pack = try portuguesePack()
+        for lessonId in Self.batch3Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+            let terminal = try XCTUnwrap(
+                lesson.steps.first { $0.nextStepId == nil && $0.branches.isEmpty },
+                "\(lessonId) has no terminal step")
+            let act = try activity(terminal.activityId, in: pack)
+            guard case .text = act else {
+                XCTFail("\(lessonId) terminal \(terminal.id) must be a text activity")
+                continue
+            }
+            XCTAssertFalse(
+                try XCTUnwrap(act.base).hints.allSatisfy { Self.genericHints.contains($0) },
+                "\(lessonId) final response must have an authored hint")
+        }
+    }
+
     // MARK: - Retained v1 legacy exercises stay in sync
 
     /// The lesson-level legacyExercises mirror the path activities; the

@@ -393,4 +393,255 @@ final class PackItalianTests: XCTestCase {
         XCTAssertFalse(missingA.accepted)
         XCTAssertEqual(missingA.category, "missing word")
     }
+
+    // MARK: - Wave C stories (units 3, 5, 12; family == "story")
+
+    /// The three in-scope Wave C stories must ship an authored, non-generic
+    /// hint on every graded path step (rubric H4).
+    func testWaveCStoriesHaveAuthoredStepHints() throws {
+        let pack = try italianPack()
+        let lessonIds = ["it-transport-foundation", "it-weather-foundation",
+                         "it-a2-stare-gerundio"]
+        let generic: Set<String> = ["Try it", "Try again", "Not quite — try again.",
+            "That selection is not valid. Try again.", "The order is not right yet. Try again.",
+            "Some pairs are off. Try again.", "Place every token exactly once.",
+            "Each pairing must use listed items exactly once.",
+            "Each region counts once. Try again."]
+        for lessonId in lessonIds {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), "missing \(lessonId)")
+            for step in lesson.steps {
+                guard let activity = pack.activity(id: step.activityId),
+                      let base = activity.base else { continue }
+                XCTAssertFalse(base.hints.isEmpty,
+                               "\(lessonId) step \(step.id) has no authored hint")
+                XCTAssertFalse(base.hints.allSatisfy(generic.contains),
+                               "\(lessonId) step \(step.id) has only generic hints")
+            }
+        }
+    }
+
+    /// Every text answer and cloze blank in the Wave C set carries authored
+    /// errors, so the wrong-answer path never falls back to the generic
+    /// string on those surfaces (rubric H3).
+    func testWaveCStoriesHaveAuthoredErrors() throws {
+        let pack = try italianPack()
+        let lessonIds = ["it-transport-foundation", "it-weather-foundation",
+                         "it-a2-stare-gerundio"]
+        for lessonId in lessonIds {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), "missing \(lessonId)")
+            for step in lesson.steps {
+                for activityID in [step.activityId, step.supportActivityId].compactMap({ $0 }) {
+                    guard let activity = pack.activity(id: activityID) else { continue }
+                    switch activity {
+                    case .text(let spec):
+                        XCTAssertFalse(spec.answer.errors.isEmpty,
+                                       "\(lessonId) \(activityID) text has no authored errors")
+                    case .cloze(let spec):
+                        for (name, blank) in spec.blanks {
+                            XCTAssertFalse(blank.errors.isEmpty,
+                                           "\(lessonId) \(activityID) blank \(name) has no authored errors")
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    /// it-transport-foundation-cloze b1: a + la stazione merges to alla; the
+    /// masculine al and a bare a are authored errors.
+    func testTransportClozeStationArticle() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-transport-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "alla", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Alla", spec: spec).accepted)
+        let al = AnswerEngine.evaluate(response: "al", spec: spec)
+        XCTAssertFalse(al.accepted)
+        XCTAssertEqual(al.category, "wrong article")
+        let bare = AnswerEngine.evaluate(response: "a", spec: spec)
+        XCTAssertFalse(bare.accepted)
+        XCTAssertEqual(bare.category, "missing word")
+    }
+
+    /// it-transport-foundation-act-rb4: the dictated sentence keeps the
+    /// preposition a; the he/she va form and the infinitive are authored
+    /// wrong-conjugation errors.
+    func testTransportGoToRomeForms() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-transport-foundation-act-rb4")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vado a Roma.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Io vado a Roma.", spec: spec).accepted)
+        let droppedA = AnswerEngine.evaluate(response: "Vado Roma.", spec: spec)
+        XCTAssertFalse(droppedA.accepted)
+        XCTAssertEqual(droppedA.category, "missing word")
+        let va = AnswerEngine.evaluate(response: "Va a Roma.", spec: spec)
+        XCTAssertFalse(va.accepted)
+        XCTAssertEqual(va.category, "wrong conjugation")
+        let infinitive = AnswerEngine.evaluate(response: "Andare a Roma.", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+    }
+
+    /// it-transport-foundation-act-rb6 (final response): Sofia takes the
+    /// singular arriva; the plural and infinitive forms are authored errors.
+    func testTransportArrivalConjugation() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-transport-foundation-act-rb6")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Sofia arriva a Roma.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "A Roma arriva Sofia.", spec: spec).accepted)
+        let plural = AnswerEngine.evaluate(response: "Sofia arrivano a Roma.", spec: spec)
+        XCTAssertFalse(plural.accepted)
+        XCTAssertEqual(plural.category, "wrong conjugation")
+        let infinitive = AnswerEngine.evaluate(response: "Sofia arrivare a Roma.", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+    }
+
+    /// it-transport-foundation-meaning: the tu-form question keeps the
+    /// -ing form and the question word order in English.
+    func testTransportMeaningQuestionForm() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-transport-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Are you going to Rome?", spec: spec).accepted)
+        let statement = AnswerEngine.evaluate(response: "You go to Rome.", spec: spec)
+        XCTAssertFalse(statement.accepted)
+        XCTAssertEqual(statement.category, "wrong conjugation")
+        let firstPerson = AnswerEngine.evaluate(response: "I am going to Rome.", spec: spec)
+        XCTAssertFalse(firstPerson.accepted)
+        XCTAssertEqual(firstPerson.category, "wrong conjugation")
+    }
+
+    /// it-weather-foundation-cloze b1/b2: both seasons take the weather verb
+    /// fa; è (essere) and the accented fà are authored errors. The drill now
+    /// delivers the two seasons the objective/concept promise (estate, inverno).
+    func testWeatherSeasonsClozeFarePattern() throws {
+        let pack = try italianPack()
+        for blank in ["b1", "b2"] {
+            let spec = try clozeBlank(pack, "it-weather-foundation-cloze", blank)
+            XCTAssertTrue(AnswerEngine.evaluate(response: "fa", spec: spec).accepted,
+                          "\(blank) accepts fa")
+            XCTAssertTrue(AnswerEngine.evaluate(response: "Fa", spec: spec).accepted,
+                          "\(blank) accepts capitalized Fa")
+            let essere = AnswerEngine.evaluate(response: "è", spec: spec)
+            XCTAssertFalse(essere.accepted)
+            XCTAssertEqual(essere.category, "wrong conjugation")
+            let sta = AnswerEngine.evaluate(response: "sta", spec: spec)
+            XCTAssertFalse(sta.accepted)
+            XCTAssertEqual(sta.category, "wrong conjugation")
+            let accented = AnswerEngine.evaluate(response: "fà", spec: spec)
+            XCTAssertFalse(accented.accepted)
+            XCTAssertEqual(accented.category, "accent/diacritic issue")
+        }
+    }
+
+    /// it-weather-foundation-act-rb4: today's cold takes fare + oggi; the
+    /// essere form and yesterday/tomorrow mix-ups are authored errors.
+    func testWeatherColdTodayFarePattern() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-weather-foundation-act-rb4")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Fa freddo oggi.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Oggi fa freddo.", spec: spec).accepted)
+        let essere = AnswerEngine.evaluate(response: "È freddo oggi.", spec: spec)
+        XCTAssertFalse(essere.accepted)
+        XCTAssertEqual(essere.category, "wrong conjugation")
+        let domani = AnswerEngine.evaluate(response: "Fa freddo domani.", spec: spec)
+        XCTAssertFalse(domani.accepted)
+        XCTAssertEqual(domani.category, "incorrect answer")
+    }
+
+    /// it-weather-foundation-act-rb6 (final response): Monday's sun is c'è il
+    /// sole / torna il sole — never fa il sole, and the article stays.
+    func testWeatherMondaySunForms() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-weather-foundation-act-rb6")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Lunedì c'è il sole.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Lunedì torna il sole.", spec: spec).accepted)
+        let faIl = AnswerEngine.evaluate(response: "Lunedì fa il sole.", spec: spec)
+        XCTAssertFalse(faIl.accepted)
+        XCTAssertEqual(faIl.category, "incorrect answer")
+        let bare = AnswerEngine.evaluate(response: "Lunedì c'è sole.", spec: spec)
+        XCTAssertFalse(bare.accepted)
+        XCTAssertEqual(bare.category, "missing word")
+    }
+
+    /// it-weather-foundation-meaning: c'è il sole is English "it is sunny",
+    /// not the literal "there is the sun".
+    func testWeatherMeaningSunnyEnglish() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-weather-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "It is sunny.", spec: spec).accepted)
+        let literal = AnswerEngine.evaluate(response: "There is the sun.", spec: spec)
+        XCTAssertFalse(literal.accepted)
+        XCTAssertEqual(literal.category, "incorrect answer")
+    }
+
+    /// it-a2-stare-gerundio-vary: the transform keeps stare + gerundio; the
+    /// explicit io is a natural alternative, sono + gerundio is an authored
+    /// wrong-auxiliary error, and leggere/leggo never follow stare.
+    func testStareGerundioVaryTransform() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-stare-gerundio-vary")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Sto leggendo un libro.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Io sto leggendo un libro.", spec: spec).accepted)
+        let essere = AnswerEngine.evaluate(response: "Sono leggendo un libro.", spec: spec)
+        XCTAssertFalse(essere.accepted)
+        XCTAssertEqual(essere.category, "wrong auxiliary")
+        let infinitive = AnswerEngine.evaluate(response: "Sto leggere un libro.", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+        let doubleVerb = AnswerEngine.evaluate(response: "Sto leggo un libro.", spec: spec)
+        XCTAssertFalse(doubleVerb.accepted)
+        XCTAssertEqual(doubleVerb.category, "wrong conjugation")
+    }
+
+    /// it-a2-stare-gerundio-act-rb4: we-form stiamo + gerundio; siamo +
+    /// gerundio and double conjugation are authored errors.
+    func testStareGerundioBusWaiting() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-stare-gerundio-act-rb4")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Stiamo aspettando l'autobus.", spec: spec).accepted)
+        let siamo = AnswerEngine.evaluate(response: "Siamo aspettando l'autobus.", spec: spec)
+        XCTAssertFalse(siamo.accepted)
+        XCTAssertEqual(siamo.category, "wrong auxiliary")
+        let infinitive = AnswerEngine.evaluate(response: "Stiamo aspettare l'autobus.", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+    }
+
+    /// it-a2-stare-gerundio-cloze b1: the first-person form is sto; sono is
+    /// the wrong-auxiliary mistake, sta/stiamo the wrong-person forms, and
+    /// stò an authored accent error.
+    func testStareGerundioClozeIoForm() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-a2-stare-gerundio-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "sto", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Sto", spec: spec).accepted)
+        let sono = AnswerEngine.evaluate(response: "sono", spec: spec)
+        XCTAssertFalse(sono.accepted)
+        XCTAssertEqual(sono.category, "wrong auxiliary")
+        let sta = AnswerEngine.evaluate(response: "sta", spec: spec)
+        XCTAssertFalse(sta.accepted)
+        XCTAssertEqual(sta.category, "wrong conjugation")
+        let accented = AnswerEngine.evaluate(response: "stò", spec: spec)
+        XCTAssertFalse(accented.accepted)
+        XCTAssertEqual(accented.category, "accent/diacritic issue")
+    }
+
+    /// it-a2-stare-gerundio-act-rb6 (final response): tutti takes stanno +
+    /// gerundio; sono + gerundio and double conjugation are authored errors.
+    func testStareGerundioRainShelter() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-stare-gerundio-act-rb6")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Tutti stanno correndo al riparo.", spec: spec).accepted)
+        let sono = AnswerEngine.evaluate(response: "Tutti sono correndo al riparo.", spec: spec)
+        XCTAssertFalse(sono.accepted)
+        XCTAssertEqual(sono.category, "wrong auxiliary")
+        let infinitive = AnswerEngine.evaluate(response: "Tutti stanno correre al riparo.", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+        let doubleVerb = AnswerEngine.evaluate(response: "Tutti stanno corrono al riparo.", spec: spec)
+        XCTAssertFalse(doubleVerb.accepted)
+        XCTAssertEqual(doubleVerb.category, "wrong conjugation")
+    }
 }

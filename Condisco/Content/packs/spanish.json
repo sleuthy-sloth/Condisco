@@ -8421,7 +8421,9 @@
         "vocabulary"
       ],
       "prompt": "Cocina is feminine. Which article belongs with it?",
-      "hints": [],
+      "hints": [
+        "Cocina ends in -a and the moving-day tour introduced it as la cocina — the feminine singular article. El is masculine, and los/las are plural, so only la fits."
+      ],
       "feedback": "Cocina is feminine and singular, so it takes la. El is masculine, and los and las are plural.",
       "evidenceKey": "es-home-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8467,7 +8469,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: the table is in the kitchen.",
-      "hints": [],
+      "hints": [
+        "Build it from left to right: mesa is feminine like cocina (la mesa), a location takes está (not es), and en means in — La mesa está en la cocina."
+      ],
       "feedback": "Mesa is feminine, so la mesa; está places it, and en means in: La mesa está en la cocina.",
       "evidenceKey": "es-home-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8481,7 +8485,23 @@
           "La mesa está en la cocina."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La mesa es en la cocina.",
+            "category": "wrong conjugation",
+            "explanation": "Es says what a thing is; being in a place takes está: La mesa está en la cocina."
+          },
+          {
+            "answer": "La mesa está en cocina.",
+            "category": "missing word",
+            "explanation": "The room carries its article — en la cocina, not en cocina."
+          },
+          {
+            "answer": "El mesa está en la cocina.",
+            "category": "wrong article",
+            "explanation": "Mesa is feminine, so la mesa — exactly like la cocina in the story."
+          }
+        ]
       }
     },
     {
@@ -8497,7 +8517,9 @@
         "vocabulary"
       ],
       "prompt": "The contraction al is a + el fused. Choose the correct line for I'm going to the bathroom.",
-      "hints": [],
+      "hints": [
+        "The lesson's rule: a + el always fuses into al. Reject the option that splits them (a el), the one that reverses the trip (del = from the bathroom), and the gender mismatch (la baño) — only al survives."
+      ],
       "feedback": "A + el always fuses into al — a el is never written. Del would mean from the bathroom, the opposite trip.",
       "evidenceKey": "es-home-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8542,7 +8564,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I come from the living room.",
-      "hints": [],
+      "hints": [
+        "Vengo is 'I come', and the little word de meets el and fuses — the story's evening walk used the same contraction: Vengo del salón."
+      ],
       "feedback": "Vengo is I come, and de + el fuses: Vengo del salón.",
       "evidenceKey": "es-home-foundation-write",
       "assistanceAffectsEvidence": [
@@ -8556,7 +8580,23 @@
           "Vengo del salón."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vengo de el salón.",
+            "category": "extra word",
+            "explanation": "De + el never stay separate — they fuse into the single word del: Vengo del salón."
+          },
+          {
+            "answer": "Vengo de salón.",
+            "category": "missing word",
+            "explanation": "The fused de + el (del) belongs in the phrase: Vengo del salón."
+          },
+          {
+            "answer": "Vengo del baño.",
+            "category": "incorrect answer",
+            "explanation": "Baño is the bathroom — the step asks for the living room, salón: Vengo del salón."
+          }
+        ]
       }
     },
     {
@@ -8572,7 +8612,9 @@
         "grammar"
       ],
       "prompt": "Dormitorio is masculine. Fill the gap: ___ dormitorio es pequeño.",
-      "hints": [],
+      "hints": [
+        "The prompt already hands you the gender: dormitorio is masculine, and es pequeño is singular — that leaves the masculine singular article El."
+      ],
       "feedback": "Dormitorio is masculine, so it takes el: El dormitorio es pequeño.",
       "evidenceKey": "es-home-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -8602,7 +8644,23 @@
             "El"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "La",
+              "category": "wrong article",
+              "explanation": "Dormitorio is masculine, so it takes el, not la."
+            },
+            {
+              "answer": "Los",
+              "category": "wrong number",
+              "explanation": "Es pequeño is singular, so the article is singular too: el, not los."
+            },
+            {
+              "answer": "Las",
+              "category": "wrong article",
+              "explanation": "Las is the feminine plural; dormitorio is masculine and singular — El."
+            }
+          ]
         }
       }
     },
@@ -9142,7 +9200,9 @@
         "vocabulary"
       ],
       "prompt": "Which line correctly says I work in the morning?",
-      "hints": [],
+      "hints": [
+        "The I form of trabajar drops -ar and adds -o: trabajo. Mornings take the fixed phrase por la mañana — the other lines use the infinitive (trabajar), the wrong preposition (en), or drop the article (por mañana)."
+      ],
       "feedback": "The verb needs its -o ending, and the time phrase is fixed: Trabajo por la mañana.",
       "evidenceKey": "es-routine-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9188,7 +9248,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: she studies in the afternoon.",
-      "hints": [],
+      "hints": [
+        "She takes the -a ending — estudia, like the sister in the story — and the afternoon phrase is por la tarde: Estudia por la tarde."
+      ],
       "feedback": "Estudiar takes -a for she, and the afternoon is por la tarde: Estudia por la tarde.",
       "evidenceKey": "es-routine-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9203,7 +9265,23 @@
           "Ella estudia por la tarde."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Estudiar por la tarde.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive estudiar needs its ending — she takes -a: Estudia por la tarde."
+          },
+          {
+            "answer": "Estudia en la tarde.",
+            "category": "wrong preposition",
+            "explanation": "Spanish places parts of the day with por: por la tarde."
+          },
+          {
+            "answer": "Estudia por tarde.",
+            "category": "missing word",
+            "explanation": "The time phrase keeps its article: por la tarde."
+          }
+        ]
       }
     },
     {
@@ -9220,7 +9298,9 @@
         "vocabulary"
       ],
       "prompt": "The subject is yo. Choose the verb form that fits: ___ por la noche.",
-      "hints": [],
+      "hints": [
+        "Yo takes the -o ending — the story's alarm-clock machine works the same for trabajar and estudiar: trabajo, estudio. Trabaja is she, trabajan is they, trabajamos is we."
+      ],
       "feedback": "For I, the -ar verb ends in -o: trabajo.",
       "evidenceKey": "es-routine-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9266,7 +9346,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I study at night.",
-      "hints": [],
+      "hints": [
+        "Your I form of estudiar is estudio, and the night sits in the fixed por la noche phrase: Estudio por la noche."
+      ],
       "feedback": "Estudio for I, and the night takes por: Estudio por la noche.",
       "evidenceKey": "es-routine-foundation-write",
       "assistanceAffectsEvidence": [
@@ -9280,7 +9362,23 @@
           "Estudio por la noche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Estudiar por la noche.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive does not carry the -o ending you need: Estudio por la noche."
+          },
+          {
+            "answer": "Estudio en la noche.",
+            "category": "wrong preposition",
+            "explanation": "Parts of the day take por: Estudio por la noche."
+          },
+          {
+            "answer": "Estudio por noche.",
+            "category": "missing word",
+            "explanation": "The phrase keeps its article: por la noche."
+          }
+        ]
       }
     },
     {
@@ -9297,7 +9395,9 @@
         "grammar"
       ],
       "prompt": "The subject is mi hermana, so the verb ends in -a. Fill the gap: Mi hermana ___ por la mañana.",
-      "hints": [],
+      "hints": [
+        "Mi hermana is 'she', and the prompt gives the ending: -a. The story's sister works with the same form — trabaja."
+      ],
       "feedback": "For she, the -ar verb ends in -a: Mi hermana trabaja por la mañana.",
       "evidenceKey": "es-routine-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -9327,7 +9427,23 @@
             "trabaja"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "trabajo",
+              "category": "wrong conjugation",
+              "explanation": "Trabajo is the yo form ('I work'); mi hermana takes -a: trabaja."
+            },
+            {
+              "answer": "trabajar",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive does not conjugate for a person — drop -ar and add -a: trabaja."
+            },
+            {
+              "answer": "trabajamos",
+              "category": "wrong conjugation",
+              "explanation": "Trabajamos is 'we work'; one sister takes the singular -a form: trabaja."
+            }
+          ]
         }
       }
     },
@@ -9764,7 +9880,9 @@
         "vocabulary"
       ],
       "prompt": "Which line correctly says I like the bread?",
-      "hints": [],
+      "hints": [
+        "Liking runs backwards — the bread pleases me — so the verb stays gusta, matched to singular el pan. Me gusto turns it reflexive ('I please myself'), yo gusto drops the me, and pan without el loses its article."
+      ],
       "feedback": "Gustar agrees with the bread — singular — so it stays gusta: Me gusta el pan.",
       "evidenceKey": "es-food-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9809,7 +9927,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I drink water.",
-      "hints": [],
+      "hints": [
+        "Beber is a regular -er verb: your I form drops -er and adds -o — bebo. Water here is a general thing, so it travels bare: Bebo agua."
+      ],
       "feedback": "Beber takes -o for I: Bebo agua.",
       "evidenceKey": "es-food-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9823,7 +9943,23 @@
           "Bebo agua."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Beber agua.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive beber needs its ending — your I form is bebo: Bebo agua."
+          },
+          {
+            "answer": "Bebe agua.",
+            "category": "wrong conjugation",
+            "explanation": "Bebe is 'he/she drinks'; 'I drink' is bebo."
+          },
+          {
+            "answer": "Bebo el agua.",
+            "category": "extra word",
+            "explanation": "Water as a general thing takes no article here — the model is Bebo agua."
+          }
+        ]
       }
     },
     {
@@ -9839,7 +9975,9 @@
         "vocabulary"
       ],
       "prompt": "The noun is plural, so the verb must be too. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "The dessert table made the fruit plural: las frutas, and the backwards verb agrees with it — gustan. Gusta is singular, me gusto is the reflexive slip, and me gustas addresses a person."
+      ],
       "feedback": "Las frutas is plural, so gustar becomes gustan: Me gustan las frutas.",
       "evidenceKey": "es-food-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9884,7 +10022,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: She eats bread.",
-      "hints": [],
+      "hints": [
+        "Comer is a regular -er verb and she takes the -e ending: come. The bread is a general thing, so it travels bare — Come pan."
+      ],
       "feedback": "Comer takes -e for she: Come pan.",
       "evidenceKey": "es-food-foundation-write",
       "assistanceAffectsEvidence": [
@@ -9899,7 +10039,23 @@
           "Ella come pan."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Comer pan.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive does not conjugate — she takes -e: Come pan."
+          },
+          {
+            "answer": "Como pan.",
+            "category": "wrong conjugation",
+            "explanation": "Como is 'I eat'; 'she eats' is come."
+          },
+          {
+            "answer": "Come el pan.",
+            "category": "extra word",
+            "explanation": "El pan is 'the bread'; general bread travels bare here: Come pan."
+          }
+        ]
       }
     },
     {
@@ -9915,7 +10071,9 @@
         "grammar"
       ],
       "prompt": "The subject is yo, so the verb ends in -o. Fill the gap: Yo ___ agua por la mañana.",
-      "hints": [],
+      "hints": [
+        "The prompt gives the ending: yo takes -o, and the lesson's drinking verb is beber — its I form is bebo."
+      ],
       "feedback": "The I form of beber is bebo: Yo bebo agua por la mañana.",
       "evidenceKey": "es-food-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -9945,7 +10103,23 @@
             "bebo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bebe",
+              "category": "wrong conjugation",
+              "explanation": "Bebe is 'he/she drinks'; yo takes -o: bebo."
+            },
+            {
+              "answer": "beber",
+              "category": "wrong conjugation",
+              "explanation": "Drop -er for the conjugated form — yo bebo, not the infinitive."
+            },
+            {
+              "answer": "como",
+              "category": "incorrect answer",
+              "explanation": "Como is 'I eat' — the step asks for the drinking verb: bebo."
+            }
+          ]
         }
       }
     },
@@ -10203,7 +10377,9 @@
         "vocabulary"
       ],
       "prompt": "Which line says I go by subway?",
-      "hints": [],
+      "hints": [
+        "Your form of ir is voy, and vehicles ride on en — the story's first ride was en metro. Voy a metro uses the wrong preposition, Ir en metro is the bare infinitive, and the last option crams two trips into one line."
+      ],
       "feedback": "Ir gives voy for I, and transport takes en: Voy en metro.",
       "evidenceKey": "es-transport-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10249,7 +10425,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: we go on foot.",
-      "hints": [],
+      "hints": [
+        "The we form of ir is vamos, and on foot is the lesson's fixed phrase a pie — no vehicle, no en: Vamos a pie."
+      ],
       "feedback": "The we form of ir is vamos, and on foot is the rebel a pie: Vamos a pie.",
       "evidenceKey": "es-transport-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10263,7 +10441,23 @@
           "Vamos a pie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voy a pie.",
+            "category": "wrong conjugation",
+            "explanation": "Voy is 'I go'; for 'we go' ir gives vamos: Vamos a pie."
+          },
+          {
+            "answer": "Vamos en pie.",
+            "category": "wrong preposition",
+            "explanation": "On foot is the fixed phrase a pie, not en pie."
+          },
+          {
+            "answer": "Vamos a el pie.",
+            "category": "extra word",
+            "explanation": "A pie is a fixed expression with no article between: Vamos a pie."
+          }
+        ]
       }
     },
     {
@@ -10279,7 +10473,9 @@
         "vocabulary"
       ],
       "prompt": "The subject is ella. Choose the form of ir that fits: Ella ___ al centro.",
-      "hints": [],
+      "hints": [
+        "Ir is irregular in a friendly way — voy, vas, va — and for ella the form is va, the very one the story's sister used driving through the traffic."
+      ],
       "feedback": "For he/she, ir is va: Ella va al centro.",
       "evidenceKey": "es-transport-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10325,7 +10521,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: He goes to Madrid by car.",
-      "hints": [],
+      "hints": [
+        "Ir gives va for he, the destination takes a (va a Madrid), and the car rides on en (en coche) — in that order: Va a Madrid en coche."
+      ],
       "feedback": "Va for he, a for the destination, en for the car: Va a Madrid en coche.",
       "evidenceKey": "es-transport-foundation-write",
       "assistanceAffectsEvidence": [
@@ -10340,7 +10538,23 @@
           "Él va a Madrid en coche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voy a Madrid en coche.",
+            "category": "wrong conjugation",
+            "explanation": "Voy is 'I go'; 'he goes' is va: Va a Madrid en coche."
+          },
+          {
+            "answer": "Va Madrid en coche.",
+            "category": "missing word",
+            "explanation": "The destination needs the little word a: Va a Madrid."
+          },
+          {
+            "answer": "Va a Madrid a coche.",
+            "category": "wrong preposition",
+            "explanation": "Vehicles ride on en, not a: Va a Madrid en coche."
+          }
+        ]
       }
     },
     {
@@ -10356,7 +10570,9 @@
         "grammar"
       ],
       "prompt": "You want to ask how. Fill the gap: ¿___ vas al trabajo?",
-      "hints": [],
+      "hints": [
+        "All morning the story asked ¿cómo voy? — 'how' is cómo (with its accent), and here it pairs with vas: ¿Cómo vas al trabajo?"
+      ],
       "feedback": "Cómo asks how: ¿Cómo vas al trabajo?",
       "evidenceKey": "es-transport-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -10386,7 +10602,18 @@
             "Cómo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Cuánto",
+              "category": "incorrect answer",
+              "explanation": "Cuánto asks 'how much'; the question word for 'how' is cómo: ¿Cómo vas al trabajo?"
+            },
+            {
+              "answer": "Como",
+              "category": "accent/diacritic issue",
+              "explanation": "Without its accent, como means 'as' or 'I eat' — the question word carries it: Cómo."
+            }
+          ]
         }
       }
     },
@@ -10879,7 +11106,9 @@
         "vocabulary"
       ],
       "prompt": "Which line says it's sunny?",
-      "hints": [],
+      "hints": [
+        "Sunny is made, not been — the story's beach-plan opener used hace sol. Es and está try to 'be' the weather, and hace soleado forces the adjective Spanish doesn't use here."
+      ],
       "feedback": "Sunny weather is made with hacer: Hace sol.",
       "evidenceKey": "es-weather-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10924,7 +11153,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: it's cold.",
-      "hints": [],
+      "hints": [
+        "Cold is made too: the formula is hace + the weather noun, like the story's mountain line — Hace frío, with the accent on frío."
+      ],
       "feedback": "Cold is made, not been: Hace frío.",
       "evidenceKey": "es-weather-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10938,7 +11169,23 @@
           "Hace frío."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Está frío.",
+            "category": "wrong conjugation",
+            "explanation": "Cold is made with hacer, not estar: Hace frío."
+          },
+          {
+            "answer": "Hace caliente.",
+            "category": "incorrect answer",
+            "explanation": "Caliente is the adjective 'hot'; the cold here is the noun frío: Hace frío."
+          },
+          {
+            "answer": "Hace frio.",
+            "category": "accent/diacritic issue",
+            "explanation": "Frío carries its accent: Hace frío."
+          }
+        ]
       }
     },
     {
@@ -10955,7 +11202,9 @@
         "vocabulary"
       ],
       "prompt": "Choose the correct line about summer.",
-      "hints": [],
+      "hints": [
+        "Summer sits in en verano, the heat is made with hace (never es or hay here), and the noun is calor — not the adjective caliente: En verano hace mucho calor."
+      ],
       "feedback": "Hacer carries the weather noun calor: En verano hace mucho calor.",
       "evidenceKey": "es-weather-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11000,7 +11249,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: It's cloudy.",
-      "hints": [],
+      "hints": [
+        "Cloudy is the one weather that switches to estar — está, with its accent — plus the nublado from the story's Valencia forecast: Está nublado."
+      ],
       "feedback": "Cloudy skies take estar: Está nublado.",
       "evidenceKey": "es-weather-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11014,7 +11265,23 @@
           "Está nublado."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hace nublado.",
+            "category": "wrong conjugation",
+            "explanation": "Cloudy skies take estar, not hacer: Está nublado."
+          },
+          {
+            "answer": "Es nublado.",
+            "category": "wrong conjugation",
+            "explanation": "Cloudiness is a state, so estar: Está nublado."
+          },
+          {
+            "answer": "Esta nublado.",
+            "category": "accent/diacritic issue",
+            "explanation": "Está carries its accent on the a: Está nublado."
+          }
+        ]
       }
     },
     {
@@ -11030,7 +11297,9 @@
         "grammar"
       ],
       "prompt": "Cloudy skies take estar, not hacer. Fill the gap: Hoy ___ nublado.",
-      "hints": [],
+      "hints": [
+        "The prompt gives the rule and the partner: cloudy skies take estar, and the story's Valencia forecast used the same form — está, accent on the a."
+      ],
       "feedback": "Cloudy skies take estar: Hoy está nublado.",
       "evidenceKey": "es-weather-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11060,7 +11329,23 @@
             "está"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "es",
+              "category": "wrong conjugation",
+              "explanation": "Cloudiness is a state, so estar, not ser: está nublado."
+            },
+            {
+              "answer": "hace",
+              "category": "wrong conjugation",
+              "explanation": "Cloudy skies are the exception that takes estar, not hacer: está nublado."
+            },
+            {
+              "answer": "esta",
+              "category": "accent/diacritic issue",
+              "explanation": "The form of estar needs its accent: está."
+            }
+          ]
         }
       }
     },
@@ -11699,7 +11984,9 @@
         "vocabulary"
       ],
       "prompt": "Which line says my head hurts?",
-      "hints": [],
+      "hints": [
+        "Pain runs backwards like liking: me + duele — the head hurts to me. The other lines use the wrong reflexive (me duelo), a possessive (mi cabeza), or scramble the order (Duele me)."
+      ],
       "feedback": "Doler works like gustar — duele agrees with la cabeza — and body parts take the article: Me duele la cabeza.",
       "evidenceKey": "es-health-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11744,7 +12031,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: my hands hurt.",
-      "hints": [],
+      "hints": [
+        "Las manos is plural, so the backwards verb stretches into duelen — the story's noon line used the same switch: Me duelen las manos."
+      ],
       "feedback": "Las manos is plural, so doler becomes duelen: Me duelen las manos.",
       "evidenceKey": "es-health-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11758,7 +12047,23 @@
           "Me duelen las manos."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me duele las manos.",
+            "category": "wrong number",
+            "explanation": "Las manos is plural, so the verb agrees and becomes duelen: Me duelen las manos."
+          },
+          {
+            "answer": "Me duelen los manos.",
+            "category": "wrong article",
+            "explanation": "Manos is feminine, so its plural article is las: las manos."
+          },
+          {
+            "answer": "Me duelo las manos.",
+            "category": "wrong conjugation",
+            "explanation": "Me duelo would be 'I hurt myself' — the hands hurt, so duele's plural: duelen."
+          }
+        ]
       }
     },
     {
@@ -11775,7 +12080,9 @@
         "vocabulary"
       ],
       "prompt": "The noun is singular. Choose the verb that matches: Me ___ el estómago.",
-      "hints": [],
+      "hints": [
+        "El estómago is singular, so the backwards verb stays duele — the form the clinic scene used; duelen would need several body parts, and me duelo is the reflexive slip."
+      ],
       "feedback": "El estómago is singular, so duele stays singular: Me duele el estómago.",
       "evidenceKey": "es-health-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11820,7 +12127,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I have a fever.",
-      "hints": [],
+      "hints": [
+        "Spanish carries a fever with tener, it doesn't be it — your form is tengo, and the fever rides bare: Tengo fiebre."
+      ],
       "feedback": "Spanish has a fever rather than being feverish: Tengo fiebre.",
       "evidenceKey": "es-health-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11834,7 +12143,23 @@
           "Tengo fiebre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Estoy fiebre.",
+            "category": "wrong conjugation",
+            "explanation": "A fever is carried with tener, not estar: Tengo fiebre."
+          },
+          {
+            "answer": "Tengo la fiebre.",
+            "category": "extra word",
+            "explanation": "Fiebre here is a general condition and takes no article: Tengo fiebre."
+          },
+          {
+            "answer": "Tener fiebre.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive needs its ending — your I form is tengo: Tengo fiebre."
+          }
+        ]
       }
     },
     {
@@ -11850,7 +12175,9 @@
         "grammar"
       ],
       "prompt": "Body parts take the article, not a possessive. Fill the gap: Me duele ___.",
-      "hints": [],
+      "hints": [
+        "The prompt states the rule: the article, not a possessive. The part that woke Pablo up wrong was la cabeza — Me duele la cabeza."
+      ],
       "feedback": "The article, not a possessive, with body parts: Me duele la cabeza.",
       "evidenceKey": "es-health-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11880,7 +12207,23 @@
             "la cabeza"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mi cabeza",
+              "category": "wrong article",
+              "explanation": "Spanish uses the article, not a possessive, with body parts: la cabeza."
+            },
+            {
+              "answer": "el cabeza",
+              "category": "wrong article",
+              "explanation": "Cabeza is feminine — the article is la: la cabeza."
+            },
+            {
+              "answer": "cabeza",
+              "category": "missing word",
+              "explanation": "The body part keeps its article: la cabeza."
+            }
+          ]
         }
       }
     },
@@ -12976,7 +13319,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence describes a habit in the past?",
-      "hints": [],
+      "hints": [
+        "The album's first caption is the model: de niño jugaba = 'used to play', the stretched habit. Ayer jugué snaps it shut (pretérito), and the present forms (juego, mañana juego) are the wrong time."
+      ],
       "feedback": "jugaba = used to play, the habit. jugué = played once and done; juego = present. Only the imperfecto stretches time into a habit.",
       "evidenceKey": "es-a2-imperfecto-meet",
       "assistanceAffectsEvidence": [
@@ -13021,7 +13366,9 @@
         "grammar"
       ],
       "prompt": "Predict the imperfecto of ser (he/she was, setting the scene).",
-      "hints": [],
+      "hints": [
+        "Ser is one of the three irregular imperfectos the intro named — era, iba, veía. Era paints the scene; the pretérito fue would snap it shut."
+      ],
       "feedback": "era — one of only three irregular imperfectos (era, iba, veía). Everything else follows -aba/-ía.",
       "evidenceKey": "es-a2-imperfecto-think",
       "assistanceAffectsEvidence": [
@@ -13035,7 +13382,18 @@
           "era"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "fue",
+            "category": "wrong tense",
+            "explanation": "Fue is the pretérito — snapped shut. The imperfecto stretches the scene: era."
+          },
+          {
+            "answer": "es",
+            "category": "wrong tense",
+            "explanation": "Es is the present; the scene-setting past of ser is era."
+          }
+        ]
       }
     },
     {
@@ -13049,7 +13407,9 @@
         "vocabulary"
       ],
       "prompt": "Which is NOT a regular imperfecto form?",
-      "hints": [],
+      "hints": [
+        "The movie camera wears -aba and -ía — scan the endings: hablaba, comía and vivía all fit the pattern, while habló carries -ó, the pretérito's snapping ending. It is the odd one out."
+      ],
       "feedback": "habló is pretérito — the -ó ending snaps the action shut. The -aba/-ía endings are the imperfecto's signature.",
       "evidenceKey": "es-a2-imperfecto-notice",
       "assistanceAffectsEvidence": [
@@ -13094,7 +13454,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: There were many people in the square.",
-      "hints": [],
+      "hints": [
+        "The frozen photo used había — the imperfecto of hay — and it stays singular even for many people: Había mucha gente en la plaza."
+      ],
       "feedback": "había — the imperfecto of hay, for there-was scenes. No plural form: había covers many people too.",
       "evidenceKey": "es-a2-imperfecto-write",
       "assistanceAffectsEvidence": [
@@ -13108,7 +13470,23 @@
           "Había mucha gente en la plaza."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hay mucha gente en la plaza.",
+            "category": "wrong tense",
+            "explanation": "Hay is the present; the past scene takes había."
+          },
+          {
+            "answer": "Hubo mucha gente en la plaza.",
+            "category": "wrong tense",
+            "explanation": "Hubo is the pretérito — a finished moment. The background scene takes había."
+          },
+          {
+            "answer": "Había mucha gente en el plaza.",
+            "category": "wrong article",
+            "explanation": "Plaza is feminine: la plaza."
+          }
+        ]
       }
     },
     {
@@ -13124,7 +13502,9 @@
         "grammar"
       ],
       "prompt": "De niño, ___ al fútbol todos los días. (jugar, yo)",
-      "hints": [],
+      "hints": [
+        "De niño + todos los días spells habit, and the prompt conjugates it for yo: jugar → jugaba — the very form that opened the album."
+      ],
       "feedback": "De niño + todos los días = habit → imperfecto: jugaba. The time words decide the tense.",
       "evidenceKey": "es-a2-imperfecto-fill",
       "assistanceAffectsEvidence": [
@@ -13154,7 +13534,23 @@
             "jugaba"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "jugué",
+              "category": "wrong tense",
+              "explanation": "Jugué is the pretérito — a finished game. 'Every day' needs the stretched habit: jugaba."
+            },
+            {
+              "answer": "juego",
+              "category": "wrong tense",
+              "explanation": "Juego is the present; the habit lives in the past: jugaba."
+            },
+            {
+              "answer": "jugo",
+              "category": "incorrect answer",
+              "explanation": "Jugo means 'juice' — the imperfecto is jugaba, keeping the -aba the camera uses."
+            }
+          ]
         }
       }
     },
@@ -13454,7 +13850,9 @@
         "vocabulary"
       ],
       "prompt": "¿Dónde estará? — What is the future doing here?",
-      "hints": [],
+      "hints": [
+        "The fortune teller isn't forecasting tomorrow here — estará wonders where he is right now. The intro named it the future's third job: a guess about the present."
+      ],
       "feedback": "guessing about now — estará wonders where he is at this moment. The future of supposition isn't about tomorrow at all.",
       "evidenceKey": "es-a2-futuro-usos-meet",
       "assistanceAffectsEvidence": [
@@ -13499,7 +13897,9 @@
         "grammar"
       ],
       "prompt": "Predict: there will be sun → ___ sol.",
-      "hints": [],
+      "hints": [
+        "Haber's future stem is habr-, and the -á ending makes 'there will be': habrá. The intro's examples — habrá gente, habrá tiempo — all use this one form."
+      ],
       "feedback": "haber → habrá — the future of there-is. Habrá sol, habrá gente, habrá tiempo.",
       "evidenceKey": "es-a2-futuro-usos-think",
       "assistanceAffectsEvidence": [
@@ -13513,7 +13913,23 @@
           "Habrá"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hay",
+            "category": "wrong tense",
+            "explanation": "Hay is the present 'there is'; the prediction needs the future habrá."
+          },
+          {
+            "answer": "Habría",
+            "category": "wrong tense",
+            "explanation": "Habría is the conditional ('there would be'); for 'there will be' the future is habrá."
+          },
+          {
+            "answer": "Habra",
+            "category": "accent/diacritic issue",
+            "explanation": "The future form carries its accent: habrá."
+          }
+        ]
       }
     },
     {
@@ -13527,7 +13943,9 @@
         "vocabulary"
       ],
       "prompt": "Te llamaré esta noche is a…",
-      "hints": [],
+      "hints": [
+        "Te llamaré commits the speaker to actually calling — the future's promising job, the fortune teller's very first line. Predictions forecast weather; guesses wonder about now; habits live in the past."
+      ],
       "feedback": "promise — te llamaré commits the speaker. Predictions need a forecast (lloverá); guesses wonder (estará).",
       "evidenceKey": "es-a2-futuro-usos-notice",
       "assistanceAffectsEvidence": [
@@ -13572,7 +13990,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I think it will rain tomorrow.",
-      "hints": [],
+      "hints": [
+        "Open with the booster creo que, pull the weather verb into the future — lloverá, with its accent — and drop mañana: Creo que lloverá mañana (or Creo que mañana lloverá)."
+      ],
       "feedback": "Creo que turns lloverá into a personal forecast. Prediction + booster = natural Spanish.",
       "evidenceKey": "es-a2-futuro-usos-write",
       "assistanceAffectsEvidence": [
@@ -13587,7 +14007,23 @@
           "Creo que mañana lloverá."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Creo que llueve mañana.",
+            "category": "wrong tense",
+            "explanation": "Llueve is the present; the forecast needs the future lloverá."
+          },
+          {
+            "answer": "Creo que llover mañana.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive llover needs its future ending: lloverá."
+          },
+          {
+            "answer": "Creo que llovera mañana.",
+            "category": "accent/diacritic issue",
+            "explanation": "The future form carries its accent: lloverá."
+          }
+        ]
       }
     },
     {
@@ -13603,7 +14039,9 @@
         "grammar"
       ],
       "prompt": "___ que vendrá. (I think…)",
-      "hints": [],
+      "hints": [
+        "The prompt hands you the meaning — 'I think' — and the que after the blank is already written. The lesson's booster is creo: Creo que vendrá."
+      ],
       "feedback": "Creo que vendrá — I think he will come. The booster softens the prediction into an opinion.",
       "evidenceKey": "es-a2-futuro-usos-fill",
       "assistanceAffectsEvidence": [
@@ -13633,7 +14071,23 @@
             "Creo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Cree",
+              "category": "wrong conjugation",
+              "explanation": "Cree is 'he/she thinks'; 'I think' is creo: Creo que vendrá."
+            },
+            {
+              "answer": "Creo que",
+              "category": "extra word",
+              "explanation": "The que in the sentence is already written — the blank holds just Creo: Creo que vendrá."
+            },
+            {
+              "answer": "Pienso",
+              "category": "incorrect answer",
+              "explanation": "Pienso que is grammatical Spanish, but this lesson models the booster creo: Creo que vendrá."
+            }
+          ]
         }
       }
     },
@@ -17666,7 +18120,9 @@
         "vocabulary"
       ],
       "prompt": "Leo writes his diary. Complete his day in Spanish: I work in the morning and study at night.",
-      "hints": [],
+      "hints": [
+        "Chain both halves with y — trabajo and estudio each keep their -o ending, and each half keeps its por la phrase: por la mañana … por la noche."
+      ],
       "feedback": "Trabajo por la mañana y estudio por la noche — the -o ending is yours, and por carries the time.",
       "evidenceKey": "es-routine-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17680,7 +18136,23 @@
           "Trabajo por la mañana y estudio por la noche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Trabaja por la mañana y estudio por la noche.",
+            "category": "wrong conjugation",
+            "explanation": "The diary is yours — 'I work' takes the -o form: Trabajo por la mañana."
+          },
+          {
+            "answer": "Trabajo por la mañana y estudia por la noche.",
+            "category": "wrong conjugation",
+            "explanation": "'I study' keeps your -o ending: … y estudio por la noche."
+          },
+          {
+            "answer": "Trabajo por mañana y estudio por noche.",
+            "category": "missing word",
+            "explanation": "Both time phrases keep their article: por la mañana, por la noche."
+          }
+        ]
       }
     },
     {
@@ -17715,7 +18187,9 @@
         "vocabulary"
       ],
       "prompt": "Ana texts her friend about the flat. Write in Spanish: the kitchen is big and the bedrooms are small.",
-      "hints": [],
+      "hints": [
+        "Two clauses joined by y: the kitchen is feminine singular (la cocina es grande) and the bedrooms are masculine plural (los dormitorios son pequeños) — match each verb to its noun."
+      ],
       "feedback": "La cocina es grande y los dormitorios son pequeños — feminine singular la, masculine plural los, adjective matching both.",
       "evidenceKey": "es-home-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17729,7 +18203,23 @@
           "La cocina es grande y los dormitorios son pequeños."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La cocina es grande y las dormitorios son pequeños.",
+            "category": "wrong article",
+            "explanation": "Dormitorios is masculine, so its plural article is los: los dormitorios son pequeños."
+          },
+          {
+            "answer": "La cocina es grande y los dormitorios es pequeños.",
+            "category": "wrong number",
+            "explanation": "A plural noun needs the plural verb son: los dormitorios son pequeños."
+          },
+          {
+            "answer": "El cocina es grande y los dormitorios son pequeños.",
+            "category": "wrong article",
+            "explanation": "Cocina is feminine — la cocina, just as in the moving-day tour."
+          }
+        ]
       }
     },
     {
@@ -17764,7 +18254,9 @@
         "vocabulary"
       ],
       "prompt": "You join the table. Write in Spanish: I like the bread and I drink water.",
-      "hints": [],
+      "hints": [
+        "Two halves joined by y: the backwards liking keeps its article (Me gusta el pan) and the drinking stays straight with your -o (bebo agua)."
+      ],
       "feedback": "Me gusta el pan y bebo agua — liking is backwards (the bread pleases me), drinking is straightforward.",
       "evidenceKey": "es-food-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17778,7 +18270,23 @@
           "Me gusta el pan y bebo agua."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me gusta pan y bebo agua.",
+            "category": "missing word",
+            "explanation": "The liked thing keeps its article: Me gusta el pan."
+          },
+          {
+            "answer": "Me gusto el pan y bebo agua.",
+            "category": "wrong conjugation",
+            "explanation": "Me gusto would be 'I please myself' — the bread pleases me, so gusta: Me gusta el pan."
+          },
+          {
+            "answer": "Me gusta el pan y bebe agua.",
+            "category": "wrong conjugation",
+            "explanation": "You drink, so keep your -o ending: … y bebo agua."
+          }
+        ]
       }
     },
     {
@@ -17812,7 +18320,9 @@
         "vocabulary"
       ],
       "prompt": "Marta arrives at last. Write in Spanish: I go by subway and then on foot.",
-      "hints": [],
+      "hints": [
+        "Keep your I form (voy), ride the metro with en, and switch to the fixed a pie after luego: Voy en metro y luego a pie."
+      ],
       "feedback": "Voy en metro y luego a pie — ir for the going, en for the vehicle, a pie for your own two feet.",
       "evidenceKey": "es-transport-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17826,7 +18336,23 @@
           "Voy en metro y luego a pie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voy en metro y luego en pie.",
+            "category": "wrong preposition",
+            "explanation": "On foot is the fixed a pie: … y luego a pie."
+          },
+          {
+            "answer": "Va en metro y luego a pie.",
+            "category": "wrong conjugation",
+            "explanation": "You travel, so your -o form comes first: Voy en metro…."
+          },
+          {
+            "answer": "Voy a metro y luego a pie.",
+            "category": "wrong preposition",
+            "explanation": "The metro is a vehicle and rides on en: Voy en metro…."
+          }
+        ]
       }
     },
     {
@@ -17861,7 +18387,9 @@
         "vocabulary"
       ],
       "prompt": "You message a friend about the trip. Write in Spanish: it is sunny here and cold in the mountains.",
-      "hints": [],
+      "hints": [
+        "Both halves are made with hace: hace sol and hace frío. Here is aquí, and the mountains keep their article — en las montañas."
+      ],
       "feedback": "Hace sol aquí y hace frío en las montañas — weather is made with hace, and aquí anchors it here.",
       "evidenceKey": "es-weather-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17875,7 +18403,23 @@
           "Hace sol aquí y hace frío en las montañas."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hace sol aquí y hace frío en montañas.",
+            "category": "missing word",
+            "explanation": "The mountains keep their article: en las montañas."
+          },
+          {
+            "answer": "Es sol aquí y hace frío en las montañas.",
+            "category": "wrong conjugation",
+            "explanation": "Sunny weather is made with hace: Hace sol aquí."
+          },
+          {
+            "answer": "Hace sol aquí y está frío en las montañas.",
+            "category": "wrong conjugation",
+            "explanation": "The cold here is made with hace too: … y hace frío."
+          }
+        ]
       }
     },
     {
@@ -17909,7 +18453,9 @@
         "vocabulary"
       ],
       "prompt": "At the clinic Pablo explains himself. Write in Spanish: my head hurts and I have a fever.",
-      "hints": [],
+      "hints": [
+        "Two complaints joined by y: the single aching head takes me duele la cabeza, and the fever is what you carry — tengo fiebre."
+      ],
       "feedback": "Me duele la cabeza y tengo fiebre — duele for the single aching head, tengo for the fever you carry.",
       "evidenceKey": "es-health-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17923,7 +18469,23 @@
           "Me duele la cabeza y tengo fiebre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me duele la cabeza y estoy fiebre.",
+            "category": "wrong conjugation",
+            "explanation": "The fever is carried with tener: … y tengo fiebre."
+          },
+          {
+            "answer": "Me duele la cabeza y tengo la fiebre.",
+            "category": "extra word",
+            "explanation": "Fiebre takes no article here: … y tengo fiebre."
+          },
+          {
+            "answer": "Me duele mi cabeza y tengo fiebre.",
+            "category": "wrong article",
+            "explanation": "Body parts take the article, not a possessive: Me duele la cabeza."
+          }
+        ]
       }
     },
     {
@@ -17958,7 +18520,9 @@
         "vocabulary"
       ],
       "prompt": "You tell a friend your fortune. Write in Spanish: she will probably come tomorrow.",
-      "hints": [],
+      "hints": [
+        "Lead with the forecast word probablemente, then venir's future form vendrá (accented), then mañana — the predicting job in action: Probablemente vendrá mañana."
+      ],
       "feedback": "Probablemente vendrá mañana — the forecast word first, then the future doing its predicting job.",
       "evidenceKey": "es-a2-futuro-usos-act-rb3",
       "assistanceAffectsEvidence": [
@@ -17973,7 +18537,23 @@
           "Vendrá mañana probablemente."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Probablemente viene mañana.",
+            "category": "wrong tense",
+            "explanation": "Viene is the present; a forecast about tomorrow takes the future vendrá."
+          },
+          {
+            "answer": "Probablemente venir mañana.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive venir needs its future form: vendrá."
+          },
+          {
+            "answer": "Probablemente vendra mañana.",
+            "category": "accent/diacritic issue",
+            "explanation": "The future form carries its accent: vendrá."
+          }
+        ]
       }
     },
     {
@@ -18008,7 +18588,9 @@
         "vocabulary"
       ],
       "prompt": "Close the album. Write in Spanish: when I was a kid I used to play football every day.",
-      "hints": [],
+      "hints": [
+        "Keep the camera running: de niño (or cuando era niño) sets the scene, the daily habit takes jugaba, and football keeps its little al — De niño jugaba al fútbol todos los días."
+      ],
       "feedback": "De niño jugaba al fútbol todos los días — jugaba keeps the habit running; the pretérito would have ended it.",
       "evidenceKey": "es-a2-imperfecto-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18023,7 +18605,23 @@
           "Cuando era niño jugaba al fútbol todos los días."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "De niño jugué al fútbol todos los días.",
+            "category": "wrong tense",
+            "explanation": "'Every day' is a habit — the imperfecto jugaba, not the finished jugué."
+          },
+          {
+            "answer": "Cuando era niño juego al fútbol todos los días.",
+            "category": "wrong tense",
+            "explanation": "Juego is the present; the childhood habit takes jugaba."
+          },
+          {
+            "answer": "De niño jugaba fútbol todos los días.",
+            "category": "missing word",
+            "explanation": "Football keeps its little al: jugaba al fútbol."
+          }
+        ]
       }
     },
     {

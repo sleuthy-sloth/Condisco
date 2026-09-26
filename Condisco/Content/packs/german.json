@@ -4868,7 +4868,9 @@
         "vocabulary"
       ],
       "prompt": "German's question word takes the front slot and the verb has to follow it. Which of these words is 'where'?",
-      "hints": [],
+      "hints": [
+        "Jonas asks it twice in the story — the word before „ist das Schloss?« and „ist die Toilette?« A question word, not a route word: wo. links, rechts and geradeaus are where the woman's answer points, not questions."
+      ],
       "feedback": "Wo asks about a place, and it takes the front slot so that ist can take the second. Wer is its counterpart for a person, was for a thing.",
       "evidenceKey": "de-directions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -4913,7 +4915,9 @@
         "grammar"
       ],
       "prompt": "Ask in German where the toilet is. Toilette is feminine.",
-      "hints": [],
+      "hints": [
+        "The second tourist's exact frame: „Entschuldigung, wo ist …?« Only the noun and its article change — die, because Toilette is feminine: Wo ist die Toilette?"
+      ],
       "feedback": "The frame Wo ist does not change; only the noun and its article do, and die marks the feminine Toilette.",
       "evidenceKey": "de-directions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -4927,7 +4931,23 @@
           "Wo ist die Toilette?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Wo ist der Toilette?",
+            "category": "wrong gender",
+            "explanation": "der marks a masculine noun; Toilette is feminine and takes die: Wo ist die Toilette?"
+          },
+          {
+            "answer": "Wo ist das Toilette?",
+            "category": "wrong article",
+            "explanation": "das marks a neuter noun; Toilette is feminine and takes die: Wo ist die Toilette?"
+          },
+          {
+            "answer": "Wo die Toilette ist?",
+            "category": "word-order problem",
+            "explanation": "That is the word order of a subordinate clause. An open question puts the verb second: Wo ist die Toilette?"
+          }
+        ]
       }
     },
     {
@@ -4945,7 +4965,9 @@
         "grammar"
       ],
       "prompt": "Complete the directions: Geradeaus, dann ___",
-      "hints": [],
+      "hints": [
+        "The woman's route was geradeaus, dann links, dann rechts — so after dann comes the middle word, the left turn. Write the direction before the final rechts: links."
+      ],
       "feedback": "Links is left. Rechts would send you the other way, and it is the word the second step used in the exchange you read.",
       "evidenceKey": "de-directions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -4971,7 +4993,18 @@
             "links"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "rechts",
+              "category": "incorrect answer",
+              "explanation": "rechts is the right turn — the opposite direction. The route goes straight ahead, THEN left: Geradeaus, dann links."
+            },
+            {
+              "answer": "geradeaus",
+              "category": "incorrect answer",
+              "explanation": "geradeaus is 'straight ahead' — the FIRST direction, before dann. After dann comes the left turn: links."
+            }
+          ]
         }
       }
     },
@@ -5592,7 +5625,9 @@
         "vocabulary"
       ],
       "prompt": "Four everyday nouns, all with a capital letter. Which one is the weather?",
-      "hints": [],
+      "hints": [
+        "The noun that names what the forecast talks about — rain, sun, wind: das Wetter. Zeit is time, Tag is day and Jahr is year — the calendar words around it."
+      ],
       "feedback": "Wetter is the weather. Zeit is the time, Tag the day and Jahr the year, and all four share the neuter das.",
       "evidenceKey": "de-weather-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5637,7 +5672,9 @@
         "grammar"
       ],
       "prompt": "It is raining, and nobody is doing the raining. Predict the German before you write it: it is raining.",
-      "hints": [],
+      "hints": [
+        "Nobody is doing the raining — German lends the sentence the tiny placeholder es at the front, and the verb takes the -t form: Es regnet."
+      ],
       "feedback": "German puts the tiny es in front and lets regnen carry the sentence: Es regnet.",
       "evidenceKey": "de-weather-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5651,7 +5688,18 @@
           "Es regnet."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Regnet es.",
+            "category": "word-order problem",
+            "explanation": "Regnet es? is the question form. The statement starts with the placeholder: Es regnet."
+          },
+          {
+            "answer": "Es regnen.",
+            "category": "wrong conjugation",
+            "explanation": "regnen is the infinitive. With the placeholder es, the verb ends in -t: Es regnet."
+          }
+        ]
       }
     },
     {
@@ -5667,7 +5715,9 @@
         "vocabulary"
       ],
       "prompt": "Rain needs the tiny es, but the sun acts for itself. Which sentence says the sun is shining?",
-      "hints": [],
+      "hints": [
+        "The sun is the one doing the shining, so it stands before the verb and acts as the subject: Die Sonne scheint. „Es scheint die Sonne« would make the sun the object, and ist + scheinen never combines into a sentence."
+      ],
       "feedback": "Die Sonne is the subject and scheinen is its verb, so the sun does the shining. Es scheint die Sonne treats the sun as an object and reads wrong.",
       "evidenceKey": "de-weather-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5708,7 +5758,9 @@
         "grammar"
       ],
       "prompt": "The little word that stands in for the whole situation is missing. Fill it in: ___ regnet.",
-      "hints": [],
+      "hints": [
+        "The little placeholder from the story's raining text — the word that stands in for the whole situation with no person involved: Es regnet. (das Wetter would name the noun instead.)"
+      ],
       "feedback": "Es is the placeholder that lets German talk about weather with no subject at all.",
       "evidenceKey": "de-weather-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5738,7 +5790,18 @@
             "Es"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Das",
+              "category": "incorrect answer",
+              "explanation": "das Wetter is the noun 'the weather'. The rain sentence uses the placeholder es alone: Es regnet."
+            },
+            {
+              "answer": "Regnet es.",
+              "category": "word-order problem",
+              "explanation": "That is the question order. The statement puts the placeholder first: Es regnet."
+            }
+          ]
         }
       }
     },
@@ -5755,7 +5818,9 @@
         "vocabulary"
       ],
       "prompt": "Four time words, all feminine. Which one is the time you are free?",
-      "hints": [],
+      "hints": [
+        "The word built from 'free' and 'time' — the hours when you are not working or at school: die Freizeit. Arbeit, Schule and Woche fill the other slots of the week."
+      ],
       "feedback": "Freizeit is free time. Arbeit is work, Schule is school and Woche is the week; all four take die.",
       "evidenceKey": "de-free-time-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5800,7 +5865,9 @@
         "grammar"
       ],
       "prompt": "Say that you like reading. German has no second verb for liking it — predict where the small word goes: I like reading.",
-      "hints": [],
+      "hints": [
+        "German has no 'like + verb' second verb — the small word gern travels with the verb you mean and sits right behind it: Ich lese gern."
+      ],
       "feedback": "The verb comes second and gern follows it immediately: Ich lese gern.",
       "evidenceKey": "de-free-time-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5811,10 +5878,22 @@
       "id": "de-free-time-foundation-think",
       "answer": {
         "answers": [
-          "Ich lese gern."
+          "Ich lese gern.",
+          "Ich lese gerne."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich gern lese.",
+            "category": "word-order problem",
+            "explanation": "The verb must come second; gern follows it: Ich lese gern."
+          },
+          {
+            "answer": "Ich lesen gern.",
+            "category": "wrong conjugation",
+            "explanation": "lesen is the infinitive. With ich the verb ends in -e: Ich lese gern."
+          }
+        ]
       }
     },
     {
@@ -5831,7 +5910,9 @@
         "vocabulary"
       ],
       "prompt": "Gern travels with the verb, not with the person. Which sentence says I like playing football?",
-      "hints": [],
+      "hints": [
+        "The verb holds second position and gern rides right behind it: Ich spiele gern Fußball. „Ich gern spiele« parks gern before the verb, and „gern nicht« turns it into not liking it."
+      ],
       "feedback": "The verb holds second position and gern sits behind it. Leading with gern puts the little word where the verb belongs.",
       "evidenceKey": "de-free-time-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5872,7 +5953,9 @@
         "grammar"
       ],
       "prompt": "The small word that turns playing into liking it is missing. Fill it in: Ich spiele ___ Fußball.",
-      "hints": [],
+      "hints": [
+        "The small word from the brother's taunt in the story — „Ich spiele gern Tennis!« — the adverb that goes right after the verb: Ich spiele gern Fußball."
+      ],
       "feedback": "Gern is the whole of German's liking, and it belongs directly behind the verb.",
       "evidenceKey": "de-free-time-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5899,10 +5982,22 @@
       "blanks": {
         "b1": {
           "answers": [
-            "gern"
+            "gern",
+            "gerne"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "nicht",
+              "category": "incorrect answer",
+              "explanation": "nicht would negate the sentence ('I do not play'). The word that says you enjoy playing is gern: Ich spiele gern Fußball."
+            },
+            {
+              "answer": "Tennis",
+              "category": "incorrect answer",
+              "explanation": "Tennis is the sport, not the liking-word. The blank asks for the small adverb that means 'like doing': gern."
+            }
+          ]
         }
       }
     },
@@ -10325,7 +10420,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘to fly’?",
-      "hints": [],
+      "hints": [
+        "The verb for going through the air — by plane: fliegen. The other three all stay on the ground: gehen on foot, fahren by vehicle, laufen at a run."
+      ],
       "feedback": "Fliegen is to fly. Gehen is to go on foot, fahren is to go by vehicle, laufen is to run.",
       "evidenceKey": "de-transport-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10372,7 +10469,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct sentence.",
-      "hints": [],
+      "hints": [
+        "A bus is a vehicle, so the verb is fahren, not gehen — and after mit the dative marks the masculine Bus as dem, never den."
+      ],
       "feedback": "By bus needs fahren, not gehen, and mit takes the dative dem — mit den is the wrong case.",
       "evidenceKey": "de-transport-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10415,7 +10514,9 @@
         "grammar"
       ],
       "prompt": "Change the vehicle to the train: Ich fahre mit dem Bus.",
-      "hints": [],
+      "hints": [
+        "Swap the vehicle noun and change nothing else: Bus → Zug. Both are masculine, so dem stays: Ich fahre mit dem Zug."
+      ],
       "feedback": "Bus becomes Zug; dem stays because Zug is masculine too: Ich fahre mit dem Zug.",
       "evidenceKey": "de-transport-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10429,7 +10530,18 @@
           "Ich fahre mit dem Zug."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich fahre mit die Zug.",
+            "category": "wrong article",
+            "explanation": "mit takes the dative, and Zug is masculine, so the article is dem: Ich fahre mit dem Zug."
+          },
+          {
+            "answer": "Ich gehe mit dem Zug.",
+            "category": "incorrect answer",
+            "explanation": "gehen is for walking; with a train you ride: fahren. Ich fahre mit dem Zug."
+          }
+        ]
       }
     },
     {
@@ -10446,7 +10558,9 @@
         "grammar"
       ],
       "prompt": "Complete the phrase for ‘on foot’: Ich gehe ___ Fuß.",
-      "hints": [],
+      "hints": [
+        "The fixed phrase for walking from the vocab list: zu Fuß. mit belongs to vehicles (mit dem Bus), not to feet."
+      ],
       "feedback": "Zu Fuß is the fixed phrase for on foot: Ich gehe zu Fuß.",
       "evidenceKey": "de-transport-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10476,7 +10590,18 @@
             "zu"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mit",
+              "category": "wrong preposition",
+              "explanation": "mit dem Bus is 'by bus' — a vehicle. The fixed phrase for walking is zu Fuß: Ich gehe zu Fuß."
+            },
+            {
+              "answer": "in",
+              "category": "wrong preposition",
+              "explanation": "in would say 'into' something. The idiom for on foot is zu Fuß: Ich gehe zu Fuß."
+            }
+          ]
         }
       }
     },
@@ -10693,7 +10818,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the past participle of essen?",
-      "hints": [],
+      "hints": [
+        "essen is a strong verb — its participle changes the vowel and keeps the -en ending: gegessen. The other three forms try regular -t endings that essen does not take."
+      ],
       "feedback": "Essen is strong: the vowel changes to gegessen. The other forms mix the wrong endings.",
       "evidenceKey": "de-past-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10738,7 +10865,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct past-tense sentence.",
-      "hints": [],
+      "hints": [
+        "The perfect frame is helper + participle, participle last: Ich habe gelernt. „Ich habe lernen« forgets the participle ending, and „Ich gelernt habe« moves the helper out of second position."
+      ],
       "feedback": "The past needs the participle gelernt, and it must stand at the end — habe stays second.",
       "evidenceKey": "de-past-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10780,7 +10909,9 @@
         "grammar"
       ],
       "prompt": "Change it to ‘I have drunk’: Ich habe gegessen.",
-      "hints": [],
+      "hints": [
+        "Keep the frame Ich habe … and swap in the strong participle of trinken — the vowel changes to -u-: getrunken."
+      ],
       "feedback": "Swap the participle; the frame stays: Ich habe getrunken.",
       "evidenceKey": "de-past-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10794,7 +10925,23 @@
           "Ich habe getrunken."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe trinken.",
+            "category": "wrong conjugation",
+            "explanation": "trinken is the infinitive. The past needs the participle at the end: Ich habe getrunken."
+          },
+          {
+            "answer": "Ich getrunken habe.",
+            "category": "word-order problem",
+            "explanation": "The helper habe keeps second position; the participle goes last: Ich habe getrunken."
+          },
+          {
+            "answer": "Ich habe getrinkt.",
+            "category": "wrong conjugation",
+            "explanation": "trinken is strong: the participle changes the vowel — getrunken, not getrinkt."
+          }
+        ]
       }
     },
     {
@@ -10810,7 +10957,9 @@
         "grammar"
       ],
       "prompt": "Complete with the participle of arbeiten: Ich habe heute ___.",
-      "hints": [],
+      "hints": [
+        "arbeiten is regular: ge- + the stem arbeit- + -t → gearbeitet, standing last after habe."
+      ],
       "feedback": "Arbeiten is regular: ge- plus -t — Ich habe heute gearbeitet.",
       "evidenceKey": "de-past-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10840,7 +10989,18 @@
             "gearbeitet"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "arbeitet",
+              "category": "wrong conjugation",
+              "explanation": "arbeitet is the present-tense form. The past participle adds ge- in front: gearbeitet."
+            },
+            {
+              "answer": "gearbeitt",
+              "category": "wrong conjugation",
+              "explanation": "The regular participle of arbeiten ends in -et after the stem: gearbeitet."
+            }
+          ]
         }
       }
     },
@@ -13563,7 +13723,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence opens a story correctly?",
-      "hints": [],
+      "hints": [
+        "The signpost takes first position, so the verb must jump to second: Zuerst habe ich gefrühstückt. „Zuerst ich habe« keeps the wrong order, and „… gefrühstückt ich« buries the subject at the end."
+      ],
       "feedback": "Zuerst habe ich gefrühstückt — the connector takes position one, verb second. Zuerst ich habe... breaks the verb-second rule.",
       "evidenceKey": "de-a2-wochenende-erzaehlen-meet",
       "assistanceAffectsEvidence": [
@@ -13609,7 +13771,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: Then I went for a walk.",
-      "hints": [],
+      "hints": [
+        "spazieren gehen is movement, and movement takes the helper sein — bin gegangen, participle last: Dann bin ich spazieren gegangen."
+      ],
       "feedback": "Dann bin ich spazieren gegangen — gehen means movement, so it takes sein.",
       "evidenceKey": "de-a2-wochenende-erzaehlen-think",
       "assistanceAffectsEvidence": [
@@ -13623,7 +13787,23 @@
           "Dann bin ich spazieren gegangen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dann habe ich spazieren gegangen.",
+            "category": "wrong auxiliary",
+            "explanation": "gehen is movement, and movement takes sein, not haben: Dann bin ich spazieren gegangen."
+          },
+          {
+            "answer": "Dann bin ich spazieren gehen.",
+            "category": "wrong conjugation",
+            "explanation": "The participle of gehen is gegangen — at the end of the frame: Dann bin ich spazieren gegangen."
+          },
+          {
+            "answer": "Dann ich bin spazieren gegangen.",
+            "category": "word-order problem",
+            "explanation": "The connector takes first position, so the verb follows it: Dann bin ich spazieren gegangen."
+          }
+        ]
       }
     },
     {
@@ -13639,7 +13819,9 @@
         "vocabulary"
       ],
       "prompt": "Which connector means 'afterwards'?",
-      "hints": [],
+      "hints": [
+        "The signpost between dann and am Ende in Maria's chain zuerst, dann, danach, am Ende: danach. davor points to things BEFORE, dabei 'along with it', dafür 'for it'."
+      ],
       "feedback": "Danach means afterwards. Davor means before, dabei means along or with it, dafür means for it.",
       "evidenceKey": "de-a2-wochenende-erzaehlen-notice",
       "assistanceAffectsEvidence": [
@@ -13684,7 +13866,9 @@
         "grammar"
       ],
       "prompt": "Complete the ending: ___ Ende sind wir nach Hause gegangen.",
-      "hints": [],
+      "hints": [
+        "The last signpost of the chain: am Ende — the preposition an merged with the dative dem. Capital A, because it opens the sentence."
+      ],
       "feedback": "Am Ende — in the end.",
       "evidenceKey": "de-a2-wochenende-erzaehlen-cloze",
       "assistanceAffectsEvidence": [
@@ -13714,7 +13898,18 @@
             "Am"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "An",
+              "category": "wrong preposition",
+              "explanation": "An Ende needs the dative contraction in front: am (an + dem). The signpost is Am Ende."
+            },
+            {
+              "answer": "Zum",
+              "category": "wrong preposition",
+              "explanation": "zum Ende would mean 'to the end'. The signpost 'in the end' is am Ende."
+            }
+          ]
         }
       }
     },
@@ -13999,7 +14194,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is a guess, not a plan?",
-      "hints": [],
+      "hints": [
+        "A guess about the present hedges with wohl and closes with sein at the end: Sie wird wohl krank sein. The plan sentence has no hedge, and ist / war state facts."
+      ],
       "feedback": "Sie wird wohl krank sein guesses about now. Morgen werde ich arbeiten is a plan; the others aren't future forms at all.",
       "evidenceKey": "de-a2-futur-vermutung-meet",
       "assistanceAffectsEvidence": [
@@ -14044,7 +14241,9 @@
         "vocabulary"
       ],
       "prompt": "Which little word softens a guess?",
-      "hints": [],
+      "hints": [
+        "The hedge Lena leans on in both guesses — the vocab word for 'probably': wohl. sicherlich is stronger ('certainly'), schon means 'already'."
+      ],
       "feedback": "Wohl — the classic hedge. Sicherlich is stronger, schon means 'already'.",
       "evidenceKey": "de-a2-futur-vermutung-notice",
       "assistanceAffectsEvidence": [
@@ -14090,7 +14289,9 @@
         "grammar"
       ],
       "prompt": "Turn the fact into a guess: Er ist krank.",
-      "hints": [],
+      "hints": [
+        "Keep the fact's words and rebuild the frame with wird + the hedge, infinitive last: Er wird wohl krank sein."
+      ],
       "feedback": "Er wird wohl krank sein.",
       "evidenceKey": "de-a2-futur-vermutung-vary",
       "assistanceAffectsEvidence": [
@@ -14104,7 +14305,23 @@
           "Er wird wohl krank sein."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Er wird krank sein.",
+            "category": "missing word",
+            "explanation": "Without the hedge this is a plain statement about the future. A guess needs wohl: Er wird wohl krank sein."
+          },
+          {
+            "answer": "Er ist wohl krank.",
+            "category": "wrong tense",
+            "explanation": "ist stays in the present. The guess frame taught here uses wird + the infinitive at the end: Er wird wohl krank sein."
+          },
+          {
+            "answer": "Er wird wohl krank.",
+            "category": "missing word",
+            "explanation": "The frame needs the infinitive sein to close it: Er wird wohl krank sein."
+          }
+        ]
       }
     },
     {
@@ -14121,7 +14338,9 @@
         "grammar"
       ],
       "prompt": "Complete the guess: Das wird ___ stimmen.",
-      "hints": [],
+      "hints": [
+        "The softening word from the vocab list — the hedge that keeps the statement a guess: Das wird wohl stimmen."
+      ],
       "feedback": "Wohl: Das wird wohl stimmen.",
       "evidenceKey": "de-a2-futur-vermutung-cloze",
       "assistanceAffectsEvidence": [
@@ -14151,7 +14370,18 @@
             "wohl"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "sicherlich",
+              "category": "incorrect answer",
+              "explanation": "sicherlich means 'certainly' — too strong for a guess. The soft hedge is wohl: Das wird wohl stimmen."
+            },
+            {
+              "answer": "schon",
+              "category": "incorrect answer",
+              "explanation": "schon means 'already' and turns the line into reassurance. The hedge that keeps it a guess is wohl: Das wird wohl stimmen."
+            }
+          ]
         }
       }
     },
@@ -14168,7 +14398,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence states a plan correctly?",
-      "hints": [],
+      "hints": [
+        "The plan frame is ich habe vor + the infinitive with zu: mehr zu lesen. Options 2 and 4 drop the zu; option 3 glues vorhaben together and loses the frame."
+      ],
       "feedback": "Ich habe vor, mehr zu lesen — vor + zu + infinitive. The others drop the zu or scramble vorhaben.",
       "evidenceKey": "de-a2-plaene-vorsaetze-meet",
       "assistanceAffectsEvidence": [
@@ -14214,7 +14446,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: I plan to do more sport.",
-      "hints": [],
+      "hints": [
+        "Jonas' line, assembled: ich habe vor + the plan + zu + infinitive at the end: Ich habe vor, mehr Sport zu machen."
+      ],
       "feedback": "Ich habe vor, mehr Sport zu machen.",
       "evidenceKey": "de-a2-plaene-vorsaetze-think",
       "assistanceAffectsEvidence": [
@@ -14228,7 +14462,18 @@
           "Ich habe vor, mehr Sport zu machen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe vor, mehr Sport machen.",
+            "category": "missing word",
+            "explanation": "The infinitive after the plan frame needs zu: Ich habe vor, mehr Sport zu machen."
+          },
+          {
+            "answer": "Ich vorhabe, mehr Sport zu machen.",
+            "category": "word-order problem",
+            "explanation": "vorhaben splits in the sentence: the finite verb habe holds second position — Ich habe vor, mehr Sport zu machen."
+          }
+        ]
       }
     },
     {
@@ -14244,7 +14489,9 @@
         "vocabulary"
       ],
       "prompt": "Which word means 'resolution'?",
-      "hints": [],
+      "hints": [
+        "The word the January scene uses for each friend's promise — der Vorsatz. Plan, Wunsch and Traum are related but mean plan, wish and dream."
+      ],
       "feedback": "Der Vorsatz. Der Plan is a plan, der Wunsch a wish.",
       "evidenceKey": "de-a2-plaene-vorsaetze-notice",
       "assistanceAffectsEvidence": [
@@ -14290,7 +14537,9 @@
         "grammar"
       ],
       "prompt": "Complete the plan: Ich habe vor, ___ Sport zu machen.",
-      "hints": [],
+      "hints": [
+        "Jonas' January promise was for MORE sport — the word from his own line, „mehr Sport zu machen«: mehr."
+      ],
       "feedback": "Mehr: Ich habe vor, mehr Sport zu machen.",
       "evidenceKey": "de-a2-plaene-vorsaetze-cloze",
       "assistanceAffectsEvidence": [
@@ -14320,7 +14569,18 @@
             "mehr"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "kein",
+              "category": "incorrect answer",
+              "explanation": "kein negates the plan ('no sport'). Jonas plans MORE sport: Ich habe vor, mehr Sport zu machen."
+            },
+            {
+              "answer": "viel",
+              "category": "incorrect answer",
+              "explanation": "viel is 'a lot of'. Jonas' plan is MORE than before — mehr: Ich habe vor, mehr Sport zu machen."
+            }
+          ]
         }
       }
     },
@@ -18672,7 +18932,9 @@
       "kind": "selection",
       "id": "de-directions-foundation-act-rb4",
       "prompt": "Jonas repeats the route under his breath. Which word means 'straight ahead'?",
-      "hints": [],
+      "hints": [
+        "The route's first word — the one the woman said before „dann links«: geradeaus. links and rechts are the turns that come after dann, and wo asks a question."
+      ],
       "feedback": "Geradeaus is straight ahead — the first word of almost every route. Links and rechts come after dann.",
       "evidenceKey": "de-directions-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18720,7 +18982,9 @@
       "kind": "text",
       "id": "de-directions-foundation-act-rb5",
       "prompt": "Write in German the first two directions Jonas heard: Straight ahead, then left.",
-      "hints": [],
+      "hints": [
+        "The first two words of the woman's route, in order — the straight-ahead word first, then the left turn after dann, with a comma before dann: Geradeaus, dann links."
+      ],
       "feedback": "Geradeaus, dann links: the first two directions to the castle.",
       "evidenceKey": "de-directions-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18732,7 +18996,18 @@
           "Geradeaus, dann links."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Geradeaus, dann rechts.",
+            "category": "incorrect answer",
+            "explanation": "rechts is the right turn — but the woman's route turns LEFT after straight ahead: Geradeaus, dann links. (rechts came later, after the castle gate.)"
+          },
+          {
+            "answer": "Links, dann geradeaus.",
+            "category": "word-order problem",
+            "explanation": "The route starts straight ahead first, then turns left: Geradeaus, dann links — not the other way round."
+          }
+        ]
       }
     },
     {
@@ -18798,7 +19073,9 @@
       "kind": "text",
       "id": "de-weather-foundation-act-rb4",
       "prompt": "Write in German: The sun is shining, but it is cold.",
-      "hints": [],
+      "hints": [
+        "Join the two weather sentences from the story with aber: the sun part first, then the cold part — which needs its own placeholder es: Die Sonne scheint, aber es ist kalt."
+      ],
       "feedback": "Die Sonne scheint, aber es ist kalt: the picnic needs a jacket.",
       "evidenceKey": "de-weather-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18810,7 +19087,18 @@
           "Die Sonne scheint, aber es ist kalt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es scheint die Sonne, aber es ist kalt.",
+            "category": "incorrect answer",
+            "explanation": "The sun acts for itself in this lesson, so it is the subject: Die Sonne scheint, aber es ist kalt."
+          },
+          {
+            "answer": "Die Sonne scheint, aber ist kalt.",
+            "category": "missing word",
+            "explanation": "The cold part needs its own subject placeholder: Die Sonne scheint, aber es ist kalt."
+          }
+        ]
       }
     },
     {
@@ -18876,7 +19164,9 @@
       "kind": "text",
       "id": "de-free-time-foundation-act-rb4",
       "prompt": "Write Tim’s new answer in German: I like playing tennis.",
-      "hints": [],
+      "hints": [
+        "Tim switches sides for the bet — his brother's sport, in the same verb + gern order he just learned: Ich spiele gern Tennis."
+      ],
       "feedback": "Ich spiele gern Tennis: Tim has changed his mind about Saturdays.",
       "evidenceKey": "de-free-time-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18885,10 +19175,27 @@
       ],
       "answer": {
         "answers": [
-          "Ich spiele gern Tennis."
+          "Ich spiele gern Tennis.",
+          "Ich spiele gerne Tennis."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich gern spiele Tennis.",
+            "category": "word-order problem",
+            "explanation": "The verb holds second position and gern comes after it: Ich spiele gern Tennis."
+          },
+          {
+            "answer": "Ich spiele gern Fußball.",
+            "category": "incorrect answer",
+            "explanation": "That is the OLD answer from the bet — his brother's line. Tim's new line switches to Tennis."
+          },
+          {
+            "answer": "Ich spiele gern.",
+            "category": "missing word",
+            "explanation": "The sentence is about the sport of the bet: Ich spiele gern Tennis."
+          }
+        ]
       }
     },
     {
@@ -18962,7 +19269,9 @@
       "kind": "text",
       "id": "de-transport-foundation-act-rb4",
       "prompt": "Write Anna’s message in German: I am in Berlin.",
-      "hints": [],
+      "hints": [
+        "Anna's text to her phone — the being-verb with ich: Ich bin in Berlin. fahren would still be travelling; she has arrived."
+      ],
       "feedback": "Ich bin in Berlin: Anna made the train.",
       "evidenceKey": "de-transport-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18974,7 +19283,18 @@
           "Ich bin in Berlin."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe in Berlin.",
+            "category": "wrong auxiliary",
+            "explanation": "haben means possession, not location. Being somewhere uses sein: Ich bin in Berlin."
+          },
+          {
+            "answer": "Ich fahre in Berlin.",
+            "category": "incorrect answer",
+            "explanation": "fahren says you are still travelling; Anna's message says she ARRIVED: Ich bin in Berlin."
+          }
+        ]
       }
     },
     {
@@ -19044,7 +19364,9 @@
       "kind": "text",
       "id": "de-past-foundation-act-rb4",
       "prompt": "Write Paul’s honest answer in German: I played.",
-      "hints": [],
+      "hints": [
+        "Paul's honest Saturday, in the same perfect frame: spielen's regular participle gespielt at the end — Ich habe gespielt."
+      ],
       "feedback": "Ich habe gespielt: that is what Paul really did.",
       "evidenceKey": "de-past-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19056,7 +19378,18 @@
           "Ich habe gespielt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe spielen.",
+            "category": "wrong conjugation",
+            "explanation": "spielen is the infinitive. The perfect participle ends in -t: Ich habe gespielt."
+          },
+          {
+            "answer": "Ich gespielt habe.",
+            "category": "word-order problem",
+            "explanation": "habe keeps second position; the participle goes last: Ich habe gespielt."
+          }
+        ]
       }
     },
     {
@@ -19130,7 +19463,9 @@
       "kind": "text",
       "id": "de-a2-wochenende-erzaehlen-act-rb4",
       "prompt": "Give Jonas one opening sentence in German: First I had breakfast.",
-      "hints": [],
+      "hints": [
+        "The opening signpost first, then the perfect frame — the way Maria opened her story: Zuerst habe ich gefrühstückt."
+      ],
       "feedback": "Zuerst habe ich gefrühstückt: Jonas can start with something true.",
       "evidenceKey": "de-a2-wochenende-erzaehlen-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19142,7 +19477,13 @@
           "Zuerst habe ich gefrühstückt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Zuerst ich habe gefrühstückt.",
+            "category": "word-order problem",
+            "explanation": "With zuerst in first position the verb must follow: Zuerst habe ich gefrühstückt."
+          }
+        ]
       }
     },
     {
@@ -19216,7 +19557,9 @@
       "kind": "text",
       "id": "de-a2-futur-vermutung-act-rb4",
       "prompt": "Write Lena’s guess in German: He is probably tanned.",
-      "hints": [],
+      "hints": [
+        "The same guess frame as the sick guess, with braun before sein: Er wird wohl braun sein — the tan was the clue."
+      ],
       "feedback": "Er wird wohl braun sein: the tan is the clue.",
       "evidenceKey": "de-a2-futur-vermutung-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19228,7 +19571,18 @@
           "Er wird wohl braun sein."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Er ist wohl braun.",
+            "category": "wrong tense",
+            "explanation": "ist stays in the present. The guess frame taught here uses wird + sein at the end: Er wird wohl braun sein."
+          },
+          {
+            "answer": "Er wird wohl braun.",
+            "category": "missing word",
+            "explanation": "The guess frame closes with the infinitive sein: Er wird wohl braun sein."
+          }
+        ]
       }
     },
     {
@@ -19302,7 +19656,9 @@
       "kind": "text",
       "id": "de-a2-plaene-vorsaetze-act-rb4",
       "prompt": "Write Tim’s new resolution in German: I intend to snack less.",
-      "hints": [],
+      "hints": [
+        "Tim's promise in the same frame, with the OPPOSITE amount word — less, not more: Ich habe vor, weniger zu naschen."
+      ],
       "feedback": "Ich habe vor, weniger zu naschen: a clearer promise than “on Monday.”",
       "evidenceKey": "de-a2-plaene-vorsaetze-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19314,7 +19670,18 @@
           "Ich habe vor, weniger zu naschen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe vor, weniger naschen.",
+            "category": "missing word",
+            "explanation": "The zu-infinitive completes the frame: Ich habe vor, weniger zu naschen."
+          },
+          {
+            "answer": "Ich habe vor, mehr zu naschen.",
+            "category": "incorrect answer",
+            "explanation": "mehr would RAISE the snacking. Tim's resolution is to snack less: weniger zu naschen."
+          }
+        ]
       }
     }
   ],

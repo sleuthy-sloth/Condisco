@@ -530,15 +530,15 @@ final class LessonSessionTests: XCTestCase {
 // MARK: - Next lesson: the shared path helper and its consumer surfaces
 
 /// "What comes next on the learner's path" has one source of truth —
-/// `CoursePack.firstUncompletedLesson(completed:)` — and three consumer
-/// surfaces: the Home continue card, `condisco://continue`, and the
-/// widget snapshot. Every surface must feed the helper the same
-/// completed set (`PackProgress.participationCompleted`) so all three
-/// agree on the next lesson. These tests pin the helper's ordering and
-/// orphan handling, then prove Home and the widget delegate to it.
-///
-/// See `testContinueDeepLinkResolutionRequiresStoreSeam` for the deep
-/// link surface's known blocker.
+/// `CoursePack.firstUncompletedLesson(completed:)` — surfaced through the
+/// shared `continueLessonResolution` function (focus-pack selection +
+/// next-lesson), with three consumer surfaces: the Home continue card,
+/// `condisco://continue`, and the widget snapshot. Every surface must
+/// feed the helper the same completed set
+/// (`PackProgress.participationCompleted`) so all three agree on the next
+/// lesson. These tests pin the helper's ordering and orphan handling,
+/// then prove Home, the widget, and the deep-link resolution agree on the
+/// same completed set through the shared function.
 @MainActor
 final class NextLessonTests: XCTestCase {
 
@@ -858,25 +858,133 @@ final class NextLessonTests: XCTestCase {
             .lesson(packId: u1, lessonId: "l1"))
     }
 
-    /// BLOCKER — the `condisco://continue` resolution itself cannot be
-    /// exercised from a unit test without a production seam.
-    ///
-    /// `DeepLinkRouter.resolve(_:)` (DeepLink.swift:99) is private, opens
-    /// `LearningStore.inDocuments()` directly (the host app's real
-    /// Documents store, whose state is unknown to a test), and loads
-    /// packs via `PackLoader.loadPacks()`. There is no store/progress
-    /// injection point, and `DeepLink.swift` is outside this task's file
-    /// scope, so no seam could be added here. The continuation code is a
-    /// straight delegation to the shared helper with the projected
-    /// `participationCompleted` set — the exact call this suite pins for
-    /// Home and the widget — so the only untested piece is the router
-    /// plumbing, not the choice of next lesson. A future seam (inject a
-    /// progress-providing store into the router) unlocks this test.
-    func testContinueDeepLinkResolutionRequiresStoreSeam() throws {
-        throw XCTSkip(
-            "Blocker: DeepLinkRouter.resolve is private and opens " +
-            "LearningStore.inDocuments() with no injectable seam " +
-            "(see comment above)")
+    /// The deep-link surface runs through the extracted pure resolver:
+    /// `continueLessonResolution` selects the focus pack and the next
+    /// uncompleted lesson from `participationCompleted` — the exact
+    /// function `DeepLinkRouter.resolve` calls after projecting the
+    /// Documents store. Partial progress: each step of the path resolves
+    /// in order, and a fresh pack (nothing completed) starts at the first
+    /// lesson.
+    func testContinueResolutionPartialPackProgress() throws {
+        let pack = try fixturePack(lessons: [
+            (id: "l1", unitId: u1),
+            (id: "l2", unitId: u1),
+            (id: "l3", unitId: u2),
+        ])
+
+        // Nothing completed: the very first lesson is next.
+        let fresh = try XCTUnwrap(
+            continueLessonResolution(
+                packs: [pack], focusSlug: "french",
+                completedByPack: [pack.id: []]))
+        XCTAssertEqual(fresh.pack.id, pack.id)
+        XCTAssertEqual(fresh.lesson.id, "l1")
+        XCTAssertEqual(fresh.unit.id, u1)
+
+        // One lesson done: the second of the first unit is next.
+        let partial = try XCTUnwrap(
+            continueLessonResolution(
+                packs: [pack], focusSlug: "french",
+                completedByPack: [pack.id: ["l1"]]))
+        XCTAssertEqual(partial.lesson.id, "l2")
+
+        // First unit done: the path crosses into u2.
+        let nextUnit = try XCTUnwrap(
+            continueLessonResolution(
+                packs: [pack], focusSlug: "french",
+                completedByPack: [pack.id: ["l1", "l2"]]))
+        XCTAssertEqual(nextUnit.lesson.id, "l3")
+        XCTAssertEqual(nextUnit.unit.id, u2)
+    }
+
+    /// Fully complete pack: nothing left on the path, so the resolution
+    /// is nil — a deep link does nothing (best-effort), Home shows no
+    /// lesson headline, and the widget renders "Path complete".
+    func testContinueResolutionFullyCompletePackReturnsNil() throws {
+        let pack = try fixturePackWithOrphan()
+        XCTAssertNil(continueLessonResolution(
+            packs: [pack], focusSlug: "french",
+            completedByPack: [pack.id: ["l1", "l2", "l3", "l4"]]))
+
+        // Real content too: the bundled French path fully walked.
+        let real = try frenchPack()
+        XCTAssertNil(continueLessonResolution(
+            packs: [real], focusSlug: "french",
+            completedByPack: [real.id: Set(real.lessons.map(\.id))]))
+    }
+
+    /// Orphaned progress: completed ids that don't exist in the pack mark
+    /// no lesson (the learner's first lesson is still next), and a pack
+    /// whose only lesson is orphaned has no path at all — nil either way,
+    /// never a crash and never a bogus lesson.
+    func testContinueResolutionOrphanedCompletedIdsAndOrphanOnlyPack() throws {
+        let pack = try fixturePack(lessons: [
+            (id: "l1", unitId: u1),
+            (id: "l2", unitId: u1),
+        ])
+        XCTAssertEqual(
+            continueLessonResolution(
+                packs: [pack], focusSlug: "french",
+                completedByPack: [pack.id: ["ghost-lesson"]])?.lesson.id,
+            "l1",
+            "completed ids outside the pack must not count as progress")
+
+        let orphanOnly = try fixturePack(lessons: [
+            (id: "orphan", unitId: orphanUnit),
+        ])
+        XCTAssertNil(continueLessonResolution(
+            packs: [orphanOnly], focusSlug: "french",
+            completedByPack: [orphanOnly.id: []]))
+        // Even with the orphan's own id "completed": no valid path remains.
+        XCTAssertNil(continueLessonResolution(
+            packs: [orphanOnly], focusSlug: "french",
+            completedByPack: [orphanOnly.id: ["orphan"]]))
+    }
+
+    /// Home, the widget, and the deep-link resolution must agree on the
+    /// same completed set (`participationCompleted`) across every path
+    /// shape: fresh, partial, fully complete, and orphaned completed ids.
+    /// The deep link's choice is the shared function itself — this pins
+    /// that Home and the widget derive from exactly the same call, so no
+    /// surface can drift.
+    func testHomeWidgetAndDeepLinkResolutionAgreeOnSameCompletedSet() throws {
+        let pack = try fixturePackWithOrphan()
+        let completedSets: [Set<String>] = [
+            [],
+            ["l1"],
+            ["l1", "l3"],
+            ["l1", "l2", "l3", "l4"], // path complete
+            ["ghost"],                // completed id with no lesson
+        ]
+        for completed in completedSets {
+            // Deep link surface: the shared resolver DeepLinkRouter calls.
+            let deepLink = continueLessonResolution(
+                packs: [pack], focusSlug: "french",
+                completedByPack: [pack.id: completed])
+
+            // Home surface: the Today card derives from the same function.
+            let home = HomeModel()
+            home.packs = [pack]
+            home.progress = [pack.id: PackProgress(
+                participationCompleted: completed)]
+            let homeNext = home.continuationLesson(focusSlug: "french")
+
+            // Widget surface: the snapshot's next-lesson fields.
+            let snapshot = WidgetSnapshotWriter.makeSnapshot(
+                packs: [pack], focusSlug: "french",
+                progress: [pack.id: PackProgress(
+                    participationCompleted: completed)],
+                dueCount: 0, weekFlags: [], practiceDays: 0)
+
+            XCTAssertEqual(
+                homeNext?.lesson.id, deepLink?.lesson.id,
+                "Home must agree with the deep-link resolution "
+                + "(completed \(completed.sorted()))")
+            XCTAssertEqual(
+                snapshot.nextLessonId, deepLink?.lesson.id,
+                "The widget must agree with the deep-link resolution "
+                + "(completed \(completed.sorted()))")
+        }
     }
 }
 
@@ -984,5 +1092,230 @@ final class TodayPlanTests: XCTestCase {
         XCTAssertEqual(restPlan.dueCount, 0)
         XCTAssertNil(restPlan.listen)
         XCTAssertNotNil(restPlan.nextDueAt)
+    }
+}
+
+// MARK: - Scenario loop (P3.2 pure core)
+
+/// Pins the listen–respond–compare loop's pure core: section eligibility,
+/// per-section timing, and the step machine. No audio, no views, no
+/// scoring — the state type is asserted to carry no score baggage.
+final class ScenarioLoopTests: XCTestCase {
+
+    // MARK: Fixtures
+
+    private func section(
+        _ heading: String, target: Bool = true, startS: Double? = nil
+    ) -> ListenSection {
+        ListenSection(
+            heading: heading,
+            teacher: "teacher of \(heading)",
+            target: target ? ListenTarget(text: "Texte", meaning: "Text") : nil,
+            startS: startS)
+    }
+
+    private func makeTrack(sections: [ListenSection]) -> ListenTrack {
+        ListenTrack(
+            lessonId: "scenario-fixture",
+            courseSlug: "french",
+            lessonTitle: "Scenario fixture",
+            audioUrl: "audio/scenario-fixture.mp3",
+            durationS: 120,
+            reviewPending: nil,
+            sections: sections)
+    }
+
+    // MARK: Eligibility
+
+    func testScenarioSectionsEligibilityAndOrder() {
+        let track = makeTrack(sections: [
+            section("s1", target: true, startS: 0),
+            section("s2", target: false, startS: 10),   // no target: ineligible
+            section("s3", target: true, startS: nil),   // no start: ineligible
+            section("s4", target: true, startS: 30),
+        ])
+        let eligible = ListenScenario.scenarioSections(track: track)
+        XCTAssertEqual(eligible.map(\.heading), ["s1", "s4"])
+        XCTAssertTrue(eligible.allSatisfy { $0.target != nil && $0.startS != nil })
+
+        // A track with no eligible sections yields [].
+        let none = makeTrack(sections: [
+            section("a", target: false, startS: 0),
+            section("b", target: true, startS: nil),
+        ])
+        XCTAssertTrue(ListenScenario.scenarioSections(track: none).isEmpty)
+    }
+
+    func testSectionEndUsesNextTranscriptBoundaryOrTrackDuration() {
+        let track = makeTrack(sections: [
+            section("s1", startS: 0),
+            section("s2", startS: 15),
+            section("s3", startS: 40),
+            section("s4", startS: 70),
+        ])
+        // Mid-track: the next section's startS.
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 0, in: track), 15)
+        XCTAssertEqual(ListenScenario.sectionEnd(for: 2, in: track), 70)
+        // Last section: the audio's declared duration, not an arbitrary cap.
+        let start = try! XCTUnwrap(track.sections[3].startS)
+        let last = ListenScenario.sectionEnd(for: 3, in: track)
+        XCTAssertEqual(last, 120)
+        XCTAssertGreaterThan(last, start)
+
+        let endingWithUntargetedSection = makeTrack(sections: [
+            section("practice", startS: 70),
+            section("closing", target: false, startS: 90),
+        ])
+        XCTAssertEqual(
+            ListenScenario.sectionEnd(for: 0, in: endingWithUntargetedSection), 90)
+    }
+
+    // MARK: Step machine
+
+    func testScenarioLoopTransitionsThroughAllSteps() {
+        // Two sections × line→choose→speak→model.
+        var state = ScenarioLoopState(total: 2, micUnavailable: false)
+        XCTAssertEqual(state.total, 2)
+        XCTAssertEqual(state.currentSectionIndex, 0)
+        XCTAssertEqual(state.currentStep, .line)
+        XCTAssertFalse(state.isDone)
+
+        // First section: line → choose → speak → model.
+        for expected in [ScenarioLoopState.Step.choose, .speak, .model] {
+            state.advance()
+            XCTAssertEqual(state.currentStep, expected)
+            XCTAssertEqual(state.currentSectionIndex, 0)
+        }
+
+        // Model of section 0 → line of section 1.
+        state.advance()
+        XCTAssertEqual(state.currentStep, .line)
+        XCTAssertEqual(state.currentSectionIndex, 1)
+
+        // Second section: same walk.
+        for expected in [ScenarioLoopState.Step.choose, .speak, .model] {
+            state.advance()
+            XCTAssertEqual(state.currentStep, expected)
+            XCTAssertEqual(state.currentSectionIndex, 1)
+        }
+
+        // Model of the last section → done; done is terminal.
+        state.advance()
+        XCTAssertEqual(state.currentStep, .done)
+        XCTAssertEqual(state.currentSectionIndex, 1)
+        XCTAssertTrue(state.isDone)
+        state.advance()
+        XCTAssertEqual(state.currentStep, .done)
+    }
+
+    func testScenarioLoopSkipsSpeakWhenMicUnavailable() {
+        var state = ScenarioLoopState(total: 2, micUnavailable: true)
+        XCTAssertEqual(state.currentStep, .line)
+
+        state.advance() // line → choose
+        XCTAssertEqual(state.currentStep, .choose)
+
+        state.advance() // choose → model; speak silently skipped
+        XCTAssertEqual(state.currentStep, .model)
+        XCTAssertNotEqual(state.currentStep, .speak)
+        XCTAssertFalse(state.isDone)
+
+        state.advance() // model → next section's line
+        XCTAssertEqual(state.currentStep, .line)
+        XCTAssertEqual(state.currentSectionIndex, 1)
+
+        state.advance()
+        XCTAssertEqual(state.currentStep, .choose)
+        state.advance()
+        XCTAssertEqual(state.currentStep, .model)
+        state.advance()
+        XCTAssertEqual(state.currentStep, .done)
+        XCTAssertTrue(state.isDone)
+    }
+
+    func testScenarioLoopHasNoScoreState() {
+        // Shape assertion: the state machine carries zero
+        // score/accuracy/grade baggage. Reflect the stored member list and
+        // check it is exactly the loop-position fields — nothing else.
+        let state = ScenarioLoopState(total: 3, micUnavailable: false)
+        let labels = Mirror(reflecting: state).children.compactMap(\.label)
+        XCTAssertEqual(
+            Set(labels), ["total", "index", "step", "micUnavailable"],
+            "ScenarioLoopState must expose exactly the loop fields, got \(labels)")
+
+        let forbidden = ["score", "accuracy", "grade", "credit", "points",
+                         "correct", "wrong", "mistake"]
+        for label in labels {
+            XCTAssertFalse(
+                forbidden.contains { label.lowercased().contains($0) },
+                "ScenarioLoopState must not carry \(label)")
+        }
+    }
+}
+
+// MARK: - Recap split
+
+/// The recap's honest split counts each distinct step once per visit:
+/// retrying a trouble spot updates nothing and never inflates the numbers.
+final class RecapSplitTests: XCTestCase {
+
+    private func eval(_ outcome: AttemptEvaluation.Outcome,
+                      independent: Bool = false) -> AttemptEvaluation {
+        AttemptEvaluation(outcome: outcome, independent: independent, feedback: "f")
+    }
+
+    /// (a) One step submitted three times (first try wrong, in-pass retry
+    /// tainted by the revealed model, retry-pass clean solve) claims exactly
+    /// one slot, decided by the first countable check.
+    func testOneStepSubmittedThreeTimesCountsOnce() {
+        var split = LessonRecapSplit()
+        split.record(stepId: "s1", evaluation: eval(.incorrect))
+        split.record(stepId: "s1", evaluation: eval(.correct))
+        split.record(stepId: "s1", evaluation: eval(.correct, independent: true))
+        XCTAssertEqual(split.independentCount, 0)
+        XCTAssertEqual(split.practiceCount, 1)
+    }
+
+    /// (b) Two steps each submitted once: one recall, one self-compare
+    /// (self-compares are always practice-with-help).
+    func testTwoStepsEachSubmittedOnce() {
+        var split = LessonRecapSplit()
+        split.record(stepId: "s1", evaluation: eval(.correct, independent: true))
+        split.record(stepId: "s2", evaluation: eval(.selfAssessed))
+        XCTAssertEqual(split.independentCount, 1)
+        XCTAssertEqual(split.practiceCount, 1)
+    }
+
+    /// (c) A retried trouble spot that flips from with-help to independent
+    /// keeps its first class: help was used on that step this run, so an
+    /// upgrade by the later clean solve would overstate recall.
+    func testRetriedTroubleSpotStaysWithHelp() {
+        var split = LessonRecapSplit()
+        split.record(stepId: "s1", evaluation: eval(.incorrect)) // with help
+        split.record(stepId: "s1", evaluation: eval(.correct, independent: true))
+        XCTAssertEqual(split.independentCount, 0)
+        XCTAssertEqual(split.practiceCount, 1)
+    }
+
+    /// Reading steps (ungraded) and failed saves (blocked) claim nothing, and
+    /// a later countable check on the same step still gets its slot.
+    func testUngradedAndBlockedExcluded() {
+        var split = LessonRecapSplit()
+        split.record(stepId: "s1", evaluation: eval(.ungraded))
+        split.record(stepId: "s2", evaluation: eval(.blocked))
+        XCTAssertEqual(split.independentCount, 0)
+        XCTAssertEqual(split.practiceCount, 0)
+        split.record(stepId: "s2", evaluation: eval(.correct, independent: true))
+        XCTAssertEqual(split.independentCount, 1)
+        XCTAssertEqual(split.practiceCount, 0)
+    }
+
+    /// A fresh split resets to zero (the per-visit `switchLesson` reset).
+    func testFreshSplitStartsAtZero() {
+        var split = LessonRecapSplit()
+        split.record(stepId: "s1", evaluation: eval(.correct, independent: true))
+        split = LessonRecapSplit()
+        XCTAssertEqual(split.independentCount, 0)
+        XCTAssertEqual(split.practiceCount, 0)
     }
 }

@@ -51,6 +51,41 @@ struct DeepLinkPlayerRequest: Identifiable {
     let store: LearningStore
 }
 
+// MARK: - Shared continue resolution
+//
+// `condisco://continue`, Home's Today card, and the widget snapshot all
+// answer the same question — "what's next on the learner's path?" — and
+// must answer identically. This pure function is that single source of
+// truth: it selects the focus pack (the first pack whose `language.slug`
+// matches, falling back to the first pack) and asks the shared
+// `CoursePack.firstUncompletedLesson(completed:)` helper for the next
+// uncompleted lesson, fed the SAME completed set every surface uses:
+// `PackProgress.participationCompleted`. Pure — no store, no I/O — so the
+// deep-link router (which resolves against the Documents store) and the
+// unit tests can both exercise exactly the choice a learner's deep link
+// makes, and Home and the widget can never drift from it.
+
+/// The learner's next lesson for `focusSlug`, or nil when every lesson on
+/// the path is complete (or the focus pack has no projected progress).
+///
+/// - Parameters:
+///   - packs: the bundled course packs, in catalog order.
+///   - focusSlug: the learner's focus language slug (`condisco.focusLanguage`).
+///   - completedByPack: each pack's `PackProgress.participationCompleted`.
+/// - Returns: the resolved pack with its next lesson and unit.
+func continueLessonResolution(
+    packs: [CoursePack],
+    focusSlug: String,
+    completedByPack: [String: Set<String>]
+) -> (pack: CoursePack, lesson: Lesson, unit: CourseUnit)? {
+    let pack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first
+    guard let pack,
+          let completed = completedByPack[pack.id],
+          let next = pack.firstUncompletedLesson(completed: completed)
+    else { return nil }
+    return (pack, next.lesson, next.unit)
+}
+
 // MARK: - Lesson completion
 //
 // Posted when a deep-linked lesson player closes, so Home and Courses can
@@ -117,8 +152,13 @@ final class DeepLinkRouter: ObservableObject {
                 } catch {
                     return
                 }
-                guard let (lesson, _) = pack.firstUncompletedLesson(
-                    completed: completed) else { return }
+                // Same shared resolution Home's Today card and the widget
+                // snapshot use, fed the same participationCompleted set.
+                guard let (pack, lesson, _) = continueLessonResolution(
+                    packs: packs,
+                    focusSlug: focusSlug,
+                    completedByPack: [pack.id: completed]
+                ) else { return }
                 playerRequest = DeepLinkPlayerRequest(
                     id: "\(pack.id)/\(lesson.id)",
                     pack: pack,

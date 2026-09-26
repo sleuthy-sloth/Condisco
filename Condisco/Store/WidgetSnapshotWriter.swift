@@ -17,12 +17,12 @@ enum WidgetSnapshotWriter {
     /// focus pack's entry is consulted (the focus pack is the first pack
     /// whose `language.slug` matches `focusSlug`, falling back to the
     /// first pack — the same selection `refresh` and Home make). The next
-    /// lesson is picked by the shared `firstUncompletedLesson(completed:)`
-    /// helper, fed the same `participationCompleted` set Home and
-    /// `condisco://continue` use, so the widget always points at the same
-    /// next lesson as the other surfaces. When every lesson is complete
-    /// the next-lesson fields are nil and the widget renders
-    /// "Path complete".
+    /// lesson is picked through the shared `continueLessonResolution`
+    /// function — the same pure path Home's Today card and
+    /// `condisco://continue` use, fed the same `participationCompleted`
+    /// set — so the widget always points at the same next lesson as the
+    /// other surfaces. When every lesson is complete the next-lesson
+    /// fields are nil and the widget renders "Path complete".
     ///
     /// Extracted (rather than inlined in `refresh`) so unit tests can pin
     /// the snapshot's next-lesson contract without a store or WidgetKit.
@@ -41,14 +41,19 @@ enum WidgetSnapshotWriter {
         var minutes: Int?
         var packId: String?
         var lessonId: String?
-        if let pack = focusPack,
-           let projected = progress[pack.id],
-           let next = pack.firstUncompletedLesson(
-               completed: projected.participationCompleted) {
+        if let focusPack,
+           let projected = progress[focusPack.id],
+           let next = continueLessonResolution(
+               packs: packs,
+               focusSlug: focusSlug,
+               // Only the focus pack's entry is consulted — the snapshot
+               // never reads the other languages' progress.
+               completedByPack: [focusPack.id: projected.participationCompleted]
+           ) {
             title = next.lesson.title
             unit = next.unit.title
             minutes = next.lesson.estimatedMinutes
-            packId = pack.id
+            packId = next.pack.id
             lessonId = next.lesson.id
         }
         return WidgetSnapshot(

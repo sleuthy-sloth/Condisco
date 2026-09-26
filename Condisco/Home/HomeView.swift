@@ -2,9 +2,11 @@ import SwiftUI
 
 // MARK: - Home tab
 //
-// Central dashboard: focus-language picker, continue-your-path card,
-// reviews due, and the week's activity. The Courses tab stays the
-// complete browsing library; Home is the daily starting point.
+// Central dashboard: focus-language picker, one Today card (a single
+// headline action — resume, next lesson, review, or listen — with the
+// review and listen rows alongside when they aren't the headline), and
+// the week's activity. The Courses tab stays the complete browsing
+// library; Home is the daily starting point.
 // The focus language also re-aims Courses and Listen ordering.
 
 @MainActor
@@ -104,18 +106,6 @@ final class HomeModel: ObservableObject {
             pack.language.displayName)
     }
 
-    /// The gentle plan: one suggestion, chosen as an invitation. Reviews
-    /// waiting come first, then the lesson left mid-way, then a listen
-    /// track. Never a demand.
-    func gentlePlan(focusSlug: String) -> GentlePlan? {
-        if dueCount > 0 { return .review(due: dueCount) }
-        if let resume { return .resume(resume) }
-        if let track = gentleListenTrack(focusSlug: focusSlug) {
-            return .listen(track)
-        }
-        return nil
-    }
-
     /// The focus language's listen track, or any track when the focus
     /// language has none.
     func gentleListenTrack(focusSlug: String) -> ListenTrack? {
@@ -152,6 +142,16 @@ final class HomeModel: ObservableObject {
     func nextLesson(in pack: CoursePack) -> (lesson: Lesson, unit: CourseUnit)? {
         pack.firstUncompletedLesson(
             completed: progress[pack.id]?.participationCompleted ?? [])
+    }
+
+    /// The focus language's continuation lesson through `continueLessonResolution`
+    /// — the same pure path Home's Today card, the widget snapshot, and the
+    /// deep-link router all share, fed the same `participationCompleted` set.
+    func continuationLesson(focusSlug: String) -> (pack: CoursePack, lesson: Lesson, unit: CourseUnit)? {
+        continueLessonResolution(
+            packs: packs,
+            focusSlug: focusSlug,
+            completedByPack: progress.mapValues { $0.participationCompleted })
     }
 
     /// The most recently written checkpoint across every pack, resolved
@@ -231,12 +231,70 @@ struct ResumeInfo {
     var stepCount: Int { lesson.steps.count }
 }
 
-/// One quiet suggestion for the gentle-plan card: reviews waiting take
-/// priority, then the lesson left mid-way, then a listen track.
-enum GentlePlan {
-    case review(due: Int)
+// MARK: - Today plan
+//
+// One headline action for the day, chosen by pure precedence:
+// resume > next lesson > review > listen > rest. The plan also carries
+// the due count and the listen track so the card can render them as
+// secondary rows whenever they are not the headline.
+
+/// The single headline action on the Today card.
+enum TodayPrimary {
     case resume(ResumeInfo)
+    case lesson(Lesson, CourseUnit)
+    case review(Int)
     case listen(ListenTrack)
+    case rest
+}
+
+extension TodayPrimary {
+    var isReview: Bool {
+        if case .review = self { return true }
+        return false
+    }
+
+    var isListen: Bool {
+        if case .listen = self { return true }
+        return false
+    }
+}
+
+/// One day's plan: a headline action plus the secondary review/listen
+/// rows, which render whenever they are not the headline.
+struct TodayPlan {
+    let primary: TodayPrimary
+    let dueCount: Int
+    let nextDueAt: Date?
+    let listen: ListenTrack?
+
+    /// Pure precedence: resume > next lesson > review > listen > rest.
+    /// Review wins only when nothing is outstanding on the path; rest
+    /// only when nothing at all is available.
+    static func make(
+        resume: ResumeInfo?,
+        nextLesson: (lesson: Lesson, unit: CourseUnit)?,
+        dueCount: Int,
+        nextDueAt: Date?,
+        listen: ListenTrack?
+    ) -> TodayPlan {
+        let primary: TodayPrimary
+        if let resume {
+            primary = .resume(resume)
+        } else if let nextLesson {
+            primary = .lesson(nextLesson.lesson, nextLesson.unit)
+        } else if dueCount > 0 {
+            primary = .review(dueCount)
+        } else if let listen {
+            primary = .listen(listen)
+        } else {
+            primary = .rest
+        }
+        return TodayPlan(
+            primary: primary,
+            dueCount: dueCount,
+            nextDueAt: nextDueAt,
+            listen: listen)
+    }
 }
 
 private struct HomeListenRequest: Identifiable {
@@ -308,17 +366,15 @@ struct HomeView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 editorialHeader
-                if model.resume != nil {
-                    resumeSection
-                } else if let pack = model.focusPack(slug: focusSlug) {
-                    pathSection(pack: pack)
-                }
-                reviewSection
+                todaySection
                 weekSection
                 journeySection
-                DisclosureGroup("Monthly activity") {
+                DisclosureGroup {
                     monthSection
                         .padding(.top, 14)
+                } label: {
+                    Text("Monthly activity")
+                        .accessibilityAddTraits(.isHeader)
                 }
                 .font(DesignTokens.text(15, weight: .medium))
                 .foregroundStyle(DesignTokens.inkDeep)
@@ -362,12 +418,15 @@ struct HomeView: View {
                         Text(model.focusPack(slug: focusSlug)?.language.displayName ?? "Choose a language")
                         Image(systemName: "chevron.down")
                             .font(.system(size: 11, weight: .semibold))
+                            .accessibilityHidden(true)
                     }
                     .font(DesignTokens.text(15, weight: .medium))
                     .foregroundStyle(DesignTokens.primaryStrong)
                     .padding(.vertical, 8)
+                    .frame(minHeight: 44)
                 }
                 .accessibilityLabel("Focus language")
+                .accessibilityHint("Opens a menu to choose your focus language")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -381,146 +440,242 @@ struct HomeView: View {
         }
     }
 
-    // MARK: Resume
+    // MARK: Today
 
-    /// A checkpoint-aware card: the exact lesson and step the learner
-    /// left off on, across any language. Opening it resumes mid-lesson.
-    @ViewBuilder
-    private var resumeSection: some View {
-        if let resume = model.resume, let store = model.makeStore() {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Continue learning")
-                    .font(DesignTokens.text(18, weight: .semibold))
-                    .foregroundStyle(DesignTokens.inkDeep)
-                    .padding(.horizontal, 4)
-                Button {
-                    playerRequest = HomePlayerRequest(
-                        id: resume.lesson.id, pack: resume.pack,
-                        lesson: resume.lesson, store: store)
-                } label: {
-                    QuietSurface {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(resume.pack.language.displayName)
-                                .font(DesignTokens.text(13, weight: .medium))
-                                .foregroundStyle(DesignTokens.muted)
-                            Text(resume.lesson.title)
-                                .font(DesignTokens.display(20))
-                                .foregroundStyle(DesignTokens.inkDeep)
-                            Text("Step \(resume.stepIndex + 1) of \(resume.stepCount)")
-                                .font(DesignTokens.text(14))
-                                .foregroundStyle(DesignTokens.muted)
-                            HStack {
-                                Spacer()
-                                Image(systemName: "play.circle.fill")
-                                    .font(.system(size: 30))
-                                    .foregroundStyle(DesignTokens.primary)
-                            }
-                            .padding(.top, 4)
-                        }
+    /// The single daily plan, derived from the model. The pure precedence
+    /// lives in `TodayPlan.make` so the tests exercise it directly.
+    private var todayPlan: TodayPlan {
+        let next = model.continuationLesson(focusSlug: focusSlug)
+        return TodayPlan.make(
+            resume: model.resume,
+            nextLesson: next.map { (lesson: $0.lesson, unit: $0.unit) },
+            dueCount: model.dueCount,
+            nextDueAt: model.nextDueAt,
+            listen: model.gentleListenTrack(focusSlug: focusSlug))
+    }
+
+    /// One card: a single headline action plus the review and listen rows
+    /// whenever they are not already the headline.
+    private var todaySection: some View {
+        let plan = todayPlan
+        return VStack(alignment: .leading, spacing: 10) {
+            Text("Today")
+                .font(DesignTokens.text(18, weight: .semibold))
+                .foregroundStyle(DesignTokens.inkDeep)
+                .padding(.horizontal, 4)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("home.today.header")
+            QuietSurface {
+                VStack(alignment: .leading, spacing: 0) {
+                    todayPrimaryRow(plan)
+                    if plan.dueCount > 0 && !plan.primary.isReview {
+                        todayRowDivider
+                        reviewRow(dueCount: plan.dueCount, headline: false)
+                    }
+                    if let listen = plan.listen, !plan.primary.isListen {
+                        todayRowDivider
+                        listenRow(track: listen, headline: false)
                     }
                 }
-                .buttonStyle(.plain)
             }
         }
     }
 
-    // MARK: Path
+    private var todayRowDivider: some View {
+        Divider()
+            .overlay(DesignTokens.edgeSoft)
+            .padding(.vertical, 12)
+    }
 
-    private func pathSection(pack: CoursePack) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Continue learning")
-                .font(DesignTokens.text(18, weight: .semibold))
-                .foregroundStyle(DesignTokens.inkDeep)
-                .padding(.horizontal, 4)
-            if let (lesson, unit) = model.nextLesson(in: pack),
-               let store = model.makeStore() {
-                Button {
-                    playerRequest = HomePlayerRequest(
-                        id: lesson.id, pack: pack, lesson: lesson, store: store)
-                } label: {
-                    QuietSurface {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(pack.language.displayName)
-                                .font(DesignTokens.text(13, weight: .medium))
-                                .foregroundStyle(DesignTokens.muted)
-                            Text(lesson.title)
-                                .font(DesignTokens.display(20))
-                                .foregroundStyle(DesignTokens.inkDeep)
-                            Text(unit.title)
-                                .font(DesignTokens.text(14))
-                                .foregroundStyle(DesignTokens.muted)
-                            HStack(spacing: 8) {
-                                Text("\(lesson.estimatedMinutes) min")
-                                    .font(DesignTokens.text(12))
-                                    .foregroundStyle(DesignTokens.muted)
-                                Spacer()
-                                Image(systemName: "play.circle.fill")
-                                    .font(.system(size: 30))
-                                    .foregroundStyle(DesignTokens.primary)
-                            }
-                            .padding(.top, 4)
-                        }
+    @ViewBuilder
+    private func todayPrimaryRow(_ plan: TodayPlan) -> some View {
+        switch plan.primary {
+        case .resume(let resume):
+            resumeRow(resume)
+        case .lesson(let lesson, let unit):
+            lessonRow(lesson, unit: unit)
+        case .review(let due):
+            reviewRow(dueCount: due, headline: true)
+        case .listen(let track):
+            listenRow(track: track, headline: true)
+        case .rest:
+            restRow(plan)
+        }
+    }
+
+    /// The checkpoint headline: the exact lesson and step the learner
+    /// left off on, across any language. Opening it resumes mid-lesson.
+    @ViewBuilder
+    private func resumeRow(_ resume: ResumeInfo) -> some View {
+        if let store = model.makeStore() {
+            Button {
+                playerRequest = HomePlayerRequest(
+                    id: resume.lesson.id, pack: resume.pack,
+                    lesson: resume.lesson, store: store)
+            } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(resume.pack.language.displayName)
+                        .font(DesignTokens.text(13, weight: .medium))
+                        .foregroundStyle(DesignTokens.muted)
+                    Text(resume.lesson.title)
+                        .font(DesignTokens.display(20))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                    HStack {
+                        Text("Step \(resume.stepIndex + 1) of \(resume.stepCount)")
+                            .font(DesignTokens.text(14))
+                            .foregroundStyle(DesignTokens.muted)
+                        Spacer()
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(size: 30))
+                            .foregroundStyle(DesignTokens.primary)
+                            .accessibilityHidden(true)
                     }
+                    .padding(.top, 4)
                 }
-                .buttonStyle(.plain)
-            } else {
-                QuietSurface {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Path complete")
+                .padding(.vertical, 4)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Opens the lesson where you left off")
+            .accessibilityIdentifier("home.today.primary")
+        }
+    }
+
+    /// The next-lesson headline: the focus language's next step on the
+    /// path, in unit order.
+    @ViewBuilder
+    private func lessonRow(_ lesson: Lesson, unit: CourseUnit) -> some View {
+        if let pack = model.focusPack(slug: focusSlug),
+           let store = model.makeStore() {
+            Button {
+                playerRequest = HomePlayerRequest(
+                    id: lesson.id, pack: pack, lesson: lesson, store: store)
+            } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(pack.language.displayName)
+                        .font(DesignTokens.text(13, weight: .medium))
+                        .foregroundStyle(DesignTokens.muted)
+                    Text(lesson.title)
+                        .font(DesignTokens.display(20))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                    Text(unit.title)
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.muted)
+                    HStack(spacing: 8) {
+                        Text("\(lesson.estimatedMinutes) min")
+                            .font(DesignTokens.text(12))
+                            .foregroundStyle(DesignTokens.muted)
+                        Spacer()
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(size: 30))
+                            .foregroundStyle(DesignTokens.primary)
+                            .accessibilityHidden(true)
+                    }
+                    .padding(.top, 4)
+                }
+                .padding(.vertical, 4)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Opens the next lesson in this course")
+            .accessibilityIdentifier("home.today.primary")
+        }
+    }
+
+    /// The review row: a short-sitting invitation that reuses the
+    /// five-item session option — "a few minutes", no streak demanded.
+    private func reviewRow(dueCount: Int, headline: Bool) -> some View {
+        Button(action: onOpenReview) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("\(dueCount) review\(dueCount == 1 ? "" : "s") due")
+                        .font(headline
+                            ? DesignTokens.display(20)
+                            : DesignTokens.text(16, weight: .semibold))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                    Text("Up to 5 reviews — a few minutes")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(DesignTokens.muted)
+                    .font(.system(size: 16, weight: .semibold))
+                    .accessibilityHidden(true)
+            }
+            .padding(.vertical, headline ? 8 : 6)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint("Opens the Review tab")
+        .accessibilityIdentifier("home.today.review")
+    }
+
+    /// The listen row: the focus language's audio track. Reuses the
+    /// Listen duration formatting so the card and the Listen tab agree.
+    private func listenRow(track: ListenTrack, headline: Bool) -> some View {
+        Button {
+            listenRequest = HomeListenRequest(id: track.id, track: track)
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    if headline {
+                        Text(ListenCourse.displayName(for: track.courseSlug))
+                            .font(DesignTokens.text(13, weight: .medium))
+                            .foregroundStyle(DesignTokens.muted)
+                        Text(track.lessonTitle)
                             .font(DesignTokens.display(20))
                             .foregroundStyle(DesignTokens.inkDeep)
-                        Text("You've finished every \(pack.language.displayName) lesson. Reviews keep it fresh.")
-                            .font(DesignTokens.text(14))
+                        HStack {
+                            Text(formatListenDuration(track.durationS))
+                                .font(DesignTokens.text(14))
+                                .foregroundStyle(DesignTokens.muted)
+                            Spacer()
+                            Image(systemName: "play.circle.fill")
+                                .font(.system(size: 30))
+                                .foregroundStyle(DesignTokens.primary)
+                                .accessibilityHidden(true)
+                        }
+                        .padding(.top, 4)
+                    } else {
+                        Text(track.lessonTitle)
+                            .font(DesignTokens.text(16, weight: .semibold))
+                            .foregroundStyle(DesignTokens.inkDeep)
+                        Text("\(formatListenDuration(track.durationS)) · \(ListenCourse.displayName(for: track.courseSlug))")
+                            .font(DesignTokens.text(13))
                             .foregroundStyle(DesignTokens.muted)
                     }
                 }
-            }
-        }
-    }
-
-    // MARK: Reviews
-
-    private var reviewSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Review")
-                .font(DesignTokens.text(18, weight: .semibold))
-                .foregroundStyle(DesignTokens.inkDeep)
-                .padding(.horizontal, 4)
-            Button(action: onOpenReview) {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        if model.dueCount > 0 {
-                            Text("\(model.dueCount) review\(model.dueCount == 1 ? "" : "s") due")
-                                .font(DesignTokens.text(16, weight: .semibold))
-                                .foregroundStyle(DesignTokens.inkDeep)
-                            Text("Short recall rounds, oldest first.")
-                                .font(DesignTokens.text(13))
-                                .foregroundStyle(DesignTokens.muted)
-                        } else {
-                            Text("All caught up")
-                                .font(DesignTokens.text(16, weight: .semibold))
-                                .foregroundStyle(DesignTokens.inkDeep)
-                            if let next = model.nextDueAt {
-                                Text("Next review \(next.formatted(date: .abbreviated, time: .omitted)).")
-                                    .font(DesignTokens.text(13))
-                                    .foregroundStyle(DesignTokens.muted)
-                            } else {
-                                Text("Reviews appear after your first lesson.")
-                                    .font(DesignTokens.text(13))
-                                    .foregroundStyle(DesignTokens.muted)
-                            }
-                        }
-                    }
+                if !headline {
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundStyle(DesignTokens.muted)
                         .font(.system(size: 16, weight: .semibold))
+                        .accessibilityHidden(true)
                 }
-                .padding(.horizontal, 4)
-                .padding(.vertical, 6)
             }
-            .buttonStyle(.plain)
+            .padding(.vertical, headline ? 4 : 6)
         }
+        .buttonStyle(.plain)
+        .accessibilityHint("Opens the listening track")
+        .accessibilityIdentifier("home.today.listen")
+    }
+
+    /// The rest state: nothing on the path, nothing due, nothing to
+    /// listen to. Grounded, with the next review date when there is one.
+    private func restRow(_ plan: TodayPlan) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("All caught up")
+                .font(DesignTokens.display(20))
+                .foregroundStyle(DesignTokens.inkDeep)
+            if let next = plan.nextDueAt {
+                Text("Come back \(next.formatted(date: .abbreviated, time: .omitted)) for the next review.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+            } else {
+                Text("Reviews appear after your first lesson.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+        }
+        .padding(.vertical, 4)
     }
 
     // MARK: Week
@@ -531,6 +686,7 @@ struct HomeView: View {
                 .font(DesignTokens.text(18, weight: .semibold))
                 .foregroundStyle(DesignTokens.inkDeep)
                 .padding(.horizontal, 4)
+                .accessibilityAddTraits(.isHeader)
             HStack(spacing: 0) {
                 ForEach(Array(model.weekDays.enumerated()), id: \.offset) { index, day in
                     let active = index < model.weekFlags.count && model.weekFlags[index]
@@ -550,6 +706,11 @@ struct HomeView: View {
                             }
                     }
                     .frame(maxWidth: .infinity)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(
+                        active
+                            ? "\(day.formatted(.dateTime.weekday(.wide))), practiced"
+                            : day.formatted(.dateTime.weekday(.wide)))
                 }
             }
             .padding(.vertical, 10)
@@ -564,6 +725,7 @@ struct HomeView: View {
                 .font(DesignTokens.text(18, weight: .semibold))
                 .foregroundStyle(DesignTokens.inkDeep)
                 .padding(.horizontal, 4)
+                .accessibilityAddTraits(.isHeader)
             QuietSurface {
                 MonthView(days: model.monthDays, flags: model.monthFlags)
             }
@@ -582,6 +744,7 @@ struct HomeView: View {
                     .font(DesignTokens.text(18, weight: .semibold))
                     .foregroundStyle(DesignTokens.inkDeep)
                     .padding(.horizontal, 4)
+                    .accessibilityAddTraits(.isHeader)
                 QuietSurface {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("\(journey.done) of \(journey.total) \(journey.languageName) lessons finished")
@@ -598,6 +761,7 @@ struct HomeView: View {
                             .frame(height: 6)
                         }
                         .frame(height: 6)
+                        .accessibilityHidden(true)
                         HStack(spacing: 28) {
                             journeyStat(
                                 value: "\(journey.practiceDays)",
@@ -650,6 +814,7 @@ struct HomeView: View {
             .padding(.vertical, 10)
             .background(DesignTokens.primary)
             .cornerRadius(8)
+            .frame(minHeight: 44)
         }
     }
 }

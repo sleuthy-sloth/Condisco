@@ -6463,7 +6463,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I take / I will have”?",
-      "hints": [],
+      "hints": [
+        "The form for yourself starts with 'je' — the option that reads je prends, 'I take / I'll have'. The tu-form and the drink names are the distractors."
+      ],
       "feedback": "Je prends means “I’ll have”; it fits the market order.",
       "evidenceKey": "fr-food-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6511,7 +6513,9 @@
         "grammar"
       ],
       "prompt": "Complete: Je ___ un café.",
-      "hints": [],
+      "hints": [
+        "The blank holds the je-form of prendre — the word from the 'I take' step above: Je prends un café."
+      ],
       "feedback": "Je prends un café: prends is the je form of prendre.",
       "evidenceKey": "fr-food-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6541,7 +6545,18 @@
             "prends"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prend",
+              "category": "wrong conjugation",
+              "explanation": "With je, prendre keeps its final s: je prends."
+            },
+            {
+              "answer": "prendre",
+              "category": "incorrect answer",
+              "explanation": "The blank holds the je-form — prendre is the infinitive: prends."
+            }
+          ]
         }
       }
     },
@@ -6561,7 +6576,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Will you have a tea?",
-      "hints": [],
+      "hints": [
+        "Start with the person (Tu), then the verb (prends), then the phrase for 'a tea' (un thé): Tu prends un thé ?"
+      ],
       "feedback": "Tu prends un thé ? asks whether the other person will have tea.",
       "evidenceKey": "fr-food-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6613,7 +6630,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I will have a coffee.",
-      "hints": [],
+      "hints": [
+        "Write Je + the je-form of prendre (the word that means 'I take / I'll have'), then un café: Je prends un café."
+      ],
       "feedback": "Je prends un café. This is the sentence to say when ordering.",
       "evidenceKey": "fr-food-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6837,7 +6856,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I go”?",
-      "hints": [],
+      "hints": [
+        "The option with 'je' is the one that means 'I go' — je vais. The tu-form and the place names are the distractors."
+      ],
       "feedback": "Je vais means “I go”; use it for the next move.",
       "evidenceKey": "fr-transport-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6885,7 +6906,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Are you going to Paris?",
-      "hints": [],
+      "hints": [
+        "Person first (Tu), then the aller form used with tu (vas), then à + the city: Tu vas à Paris ?"
+      ],
       "feedback": "Tu vas à Paris ? The verb changes to vas with tu.",
       "evidenceKey": "fr-transport-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6937,7 +6960,9 @@
         "grammar"
       ],
       "prompt": "Complete: Je ___ à la gare.",
-      "hints": [],
+      "hints": [
+        "The blank is the je-form of aller — the word that means 'I go' from the first choice: vais."
+      ],
       "feedback": "Je vais à la gare. À la marks the destination.",
       "evidenceKey": "fr-transport-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6967,7 +6992,23 @@
             "vais"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vas",
+              "category": "wrong conjugation",
+              "explanation": "With je, aller is vais — vas belongs with tu."
+            },
+            {
+              "answer": "va",
+              "category": "wrong conjugation",
+              "explanation": "Va is the il/elle form; with je you need vais."
+            },
+            {
+              "answer": "aller",
+              "category": "incorrect answer",
+              "explanation": "The blank holds the je-form — vais, not the infinitive aller."
+            }
+          ]
         }
       }
     },
@@ -6987,7 +7028,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I am going to the station.",
-      "hints": [],
+      "hints": [
+        "Write Je + the je-form of aller + à la gare: Je vais à la gare."
+      ],
       "feedback": "Je vais à la gare. Now you can say where you are headed.",
       "evidenceKey": "fr-transport-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8165,7 +8208,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “help”?",
-      "hints": [],
+      "hints": [
+        "The call for help is the noun inside 'Au secours !' — the third option. Ambulance is the vehicle, not the cry."
+      ],
       "feedback": "Au secours ! is a call for help.",
       "evidenceKey": "fr-emergency-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8213,7 +8258,9 @@
         "grammar"
       ],
       "prompt": "Complete the call: Appelez une ___ !",
-      "hints": [],
+      "hints": [
+        "The blank is the vehicle after 'une' — the word for the thing the operator will send: ambulance."
+      ],
       "feedback": "Ambulance is the noun after une.",
       "evidenceKey": "fr-emergency-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8243,7 +8290,18 @@
             "ambulance"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "secours",
+              "category": "incorrect answer",
+              "explanation": "Secours is the help you shout — the blank asks for the vehicle the operator sends: une ambulance."
+            },
+            {
+              "answer": "urgence",
+              "category": "incorrect answer",
+              "explanation": "Urgence is the situation, not the vehicle — the blank wants the thing they send: une ambulance."
+            }
+          ]
         }
       }
     },
@@ -8263,7 +8321,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "The cry comes first (Au + secours!), then the command for the vehicle — Appelez une ambulance !. Two short sentences."
+      ],
       "feedback": "Au secours ! Appelez une ambulance ! Keep the two requests clear.",
       "evidenceKey": "fr-emergency-foundation-order",
       "assistanceAffectsEvidence": [
@@ -8320,7 +8380,9 @@
         "grammar"
       ],
       "prompt": "Write in French: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "Write the call for help (Au secours !), then the command with Appelez — two sentences: Au secours ! Appelez une ambulance !"
+      ],
       "feedback": "Au secours ! Appelez une ambulance ! Both requests are ready to use.",
       "evidenceKey": "fr-emergency-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -9311,7 +9373,9 @@
         "vocabulary"
       ],
       "prompt": "First decision: the market is open. What do you buy for the picnic?",
-      "hints": [],
+      "hints": [
+        "The picnic needs food — the market word with 'kilo' (the apples). Medicine, the station, and a headache belong to other missions."
+      ],
       "feedback": "Un kilo de pommes is picnic food — and kilo was your market measure word. The other options belong to the pharmacy, the station, and the doctor.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9358,7 +9422,9 @@
         "grammar"
       ],
       "prompt": "Build your plan: I go to the market Saturday.",
-      "hints": [],
+      "hints": [
+        "Person (Je), the aller verb (vais), then à + le = au for 'to the market', and the day at the end: Je vais au marché samedi."
+      ],
       "feedback": "Je vais plus a place is the going-places frame from «Going places with aller». The day sits at the end: Je vais au marché samedi.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9413,7 +9479,9 @@
         "grammar"
       ],
       "prompt": "The seller answers: Un kilo de pommes coûte ___ euros.",
-      "hints": [],
+      "hints": [
+        "The seller quotes the price from the market examples — the number that followed 'coûte' there: deux."
+      ],
       "feedback": "Deux euros — the exact price from the market examples: Ça coûte deux euros. Kilo and euro are your market pair.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9443,7 +9511,18 @@
             "deux"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "trois",
+              "category": "incorrect answer",
+              "explanation": "The seller quoted two euros in the market examples — the price in the blank is deux."
+            },
+            {
+              "answer": "euros",
+              "category": "incorrect answer",
+              "explanation": "The blank already sits right before 'euros' — fill in the number: deux."
+            }
+          ]
         }
       }
     },
@@ -9460,7 +9539,9 @@
         "vocabulary"
       ],
       "prompt": "Second decision: invite your friend for Saturday. What do you say?",
-      "hints": [],
+      "hints": [
+        "An invitation asks whether your friend WANTS to come — the option with 'tu veux venir'. The 'désolé' line is what they would say back to you."
+      ],
       "feedback": "Tu veux venir samedi ? invites — the pattern from «Invitations». Désolé, je ne peux pas is the polite decline: exactly what you do not want to hear.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9505,7 +9586,9 @@
         "grammar"
       ],
       "prompt": "Your friend accepts: Oui, avec ___.",
-      "hints": [],
+      "hints": [
+        "The warm yes from the invitations lesson: 'avec' + the word that means 'pleasure' — avec plaisir."
+      ],
       "feedback": "Avec plaisir — with pleasure — is the warm yes from «Invitations».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9535,7 +9618,18 @@
             "plaisir"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vous",
+              "category": "incorrect answer",
+              "explanation": "'Avec plaisir' is the fixed phrase for 'with pleasure'; 'avec vous' would mean 'with you'."
+            },
+            {
+              "answer": "plaisirs",
+              "category": "wrong number",
+              "explanation": "Plaisir is uncountable in this phrase — it stays singular: avec plaisir."
+            }
+          ]
         }
       }
     },
@@ -9555,7 +9649,9 @@
         "vocabulary"
       ],
       "prompt": "Check the price list: match each market word to its meaning.",
-      "hints": [],
+      "hints": [
+        "Match the plain one-to-one names first (marché = market, kilo = kilo, euro = euro); the leftover right-side word is the meaning of prix."
+      ],
       "feedback": "Marché, euro, kilo, prix — the four market words. You need them before you pay.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9632,7 +9728,9 @@
         "grammar"
       ],
       "prompt": "Before you pay, ask the price. Write in French: How much does it cost?",
-      "hints": [],
+      "hints": [
+        "Write the price question you already know from the café: Combien + ça coûte, and in French the question mark gets a space before it."
+      ],
       "feedback": "Combien ça coûte ? works at the market too — the same question you used at the café.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9643,10 +9741,22 @@
       "id": "fr-picnic-plan-mission-act-8",
       "answer": {
         "answers": [
-          "Combien ça coûte ?"
+          "Combien ça coûte ?",
+          "Ça coûte combien ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Comment ça coûte ?",
+            "category": "incorrect answer",
+            "explanation": "Comment asks 'how' — a price question uses combien: Combien ça coûte ?"
+          },
+          {
+            "answer": "Combien coûte ça ?",
+            "category": "word-order problem",
+            "explanation": "The natural order is Combien ça coûte ? — subject (ça) before the verb (coûte)."
+          }
+        ]
       }
     },
     {
@@ -9664,7 +9774,9 @@
         "grammar"
       ],
       "prompt": "Mission complete: announce your plan. Write in French: I go to the market Saturday.",
-      "hints": [],
+      "hints": [
+        "Announce your plan in the same words you ordered at step 3: Je + vais + au marché + samedi."
+      ],
       "feedback": "Je vais au marché samedi — mission accomplished. You bought, you invited, you announced: all in French.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9679,7 +9791,23 @@
           "Je vais au marché samedi."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je vais au marché.",
+            "category": "missing word",
+            "explanation": "The plan names the day — add samedi at the end: Je vais au marché samedi."
+          },
+          {
+            "answer": "Je vais le marché samedi.",
+            "category": "wrong preposition",
+            "explanation": "Going TO a place takes à, and à + le contracts to au: Je vais au marché samedi."
+          },
+          {
+            "answer": "Tu vas au marché samedi.",
+            "category": "wrong conjugation",
+            "explanation": "You announce your own plan — je vais, not tu vas."
+          }
+        ]
       }
     },
     {
@@ -10087,7 +10215,9 @@
         "vocabulary"
       ],
       "prompt": "First move: you need the station. Which question finds it?",
-      "hints": [],
+      "hints": [
+        "You need the station — the where-question that starts with Où. 'Qui' asks about a person, and the other two don't ask for directions at all."
+      ],
       "feedback": "Où asks where — exactly what a lost traveler needs: Où est la gare ? Qui asks who, and the other two options don't ask for directions at all.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10133,7 +10263,9 @@
         "grammar"
       ],
       "prompt": "Build your first move: I'm going to the station.",
-      "hints": [],
+      "hints": [
+        "Person first (Je), the aller verb (vais), then à + la gare: Je vais à la gare."
+      ],
       "feedback": "Je vais plus a place is the going-places frame from «Going places with aller»: Je vais à la gare.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10188,7 +10320,9 @@
         "vocabulary"
       ],
       "prompt": "The station clock shows quarter to midday, and the market closes at noon. First, read the time — what does the clock say?",
-      "hints": [],
+      "hints": [
+        "The clock is before noon — pick the option that counts back from midi ('moins le quart'), not the one that says half past."
+      ],
       "feedback": "Moins le quart counts back from the hour: Il est midi moins le quart — 11:45, so you can still make it. Et demie would mean half past, which would already be too late.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10236,7 +10370,9 @@
         "grammar"
       ],
       "prompt": "Ask a passerby: Where is the market?",
-      "hints": [],
+      "hints": [
+        "Start with the question word Où, then the verb est, then le + marché: Où est le marché ?"
+      ],
       "feedback": "Où est…? is your where-question frame, and the market is le marché: Où est le marché ?",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10290,7 +10426,9 @@
         "grammar"
       ],
       "prompt": "A friend texts: Tu ___ à Paris ? (Are you going to Paris?) — fill in the aller form.",
-      "hints": [],
+      "hints": [
+        "The text says 'Tu' — so the blank takes the tu-form of aller, not the je-form you used earlier: tu vas."
+      ],
       "feedback": "Aller bends for tu: tu vas. Je vais for I, tu vas for you — straight from «Going places with aller».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10320,7 +10458,23 @@
             "vas"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vais",
+              "category": "wrong conjugation",
+              "explanation": "The text says Tu, so aller takes its tu-form: tu vas. Je vais only goes with je."
+            },
+            {
+              "answer": "va",
+              "category": "wrong conjugation",
+              "explanation": "Va is the il/elle form — with tu you need vas."
+            },
+            {
+              "answer": "aller",
+              "category": "incorrect answer",
+              "explanation": "The blank holds the tu-form — vas, not the infinitive aller."
+            }
+          ]
         }
       }
     },
@@ -10339,7 +10493,9 @@
         "vocabulary"
       ],
       "prompt": "Type the question yourself: Where is the market?",
-      "hints": [],
+      "hints": [
+        "Type the same question you arranged above: Où est le marché, with a space before the question mark."
+      ],
       "feedback": "Où est le marché ? — the where-question plus your market word. Notice the space before the ? in French.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10353,7 +10509,23 @@
           "Où est le marché ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Où est la marché ?",
+            "category": "wrong article",
+            "explanation": "Marché is masculine: le marché, so Où est le marché ?"
+          },
+          {
+            "answer": "Où le marché est ?",
+            "category": "word-order problem",
+            "explanation": "In a French où-question the verb comes right after où: Où est le marché ?"
+          },
+          {
+            "answer": "Ou est le marché ?",
+            "category": "accent/diacritic issue",
+            "explanation": "Où with a grave accent means 'where'; ou without it means 'or'. The question needs où."
+          }
+        ]
       }
     },
     {
@@ -10371,7 +10543,9 @@
         "vocabulary"
       ],
       "prompt": "It's midday and the market is closing. Final decision — where now?",
-      "hints": [],
+      "hints": [
+        "It's midday and the market is closing — the mission says home by midday, so the answer is the house, not the station or the market."
+      ],
       "feedback": "Mission step 3 says home by midday: Je vais à la maison. The market is closing, and the station would send you backwards.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10420,7 +10594,9 @@
         "grammar"
       ],
       "prompt": "Announce your arrival and close the mission: I'm going home at midday.",
-      "hints": [],
+      "hints": [
+        "Place the pieces in order: Je vais à la maison, then the time phrase à midi right at the end."
+      ],
       "feedback": "Je vais à la maison à midi — mission complete. You navigated Paris with aller, où and the clock.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10500,7 +10676,9 @@
         "vocabulary"
       ],
       "prompt": "You wake up and your head is pounding. What do you say?",
-      "hints": [],
+      "hints": [
+        "Name the pain with 'mal à' + the body part — the option about the head. Fièvre is a different symptom and 'au secours' is for emergencies."
+      ],
       "feedback": "J'ai mal à la tête names the pain — mal à la plus a body part. Fièvre is a fever, a different symptom, and au secours is for emergencies, not headaches.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10547,7 +10725,9 @@
         "grammar"
       ],
       "prompt": "Get moving: I'm going to the pharmacy.",
-      "hints": [],
+      "hints": [
+        "The going-places frame from the station lesson: Je vais à la pharmacie — person, verb, à + the pharmacy."
+      ],
       "feedback": "The same aller frame as «Going places with aller»: Je vais à la pharmacie.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10605,7 +10785,9 @@
         "vocabulary"
       ],
       "prompt": "The pharmacist looks up. Choose the polite request for medicine:",
-      "hints": [],
+      "hints": [
+        "Polite request: the option with 'voudrais' (would like) and the polite 's'il vous plaît' tag. The café order doesn't belong at the pharmacy counter."
+      ],
       "feedback": "Voudrais is the polite would-like from «Au café : commander et payer», and s'il vous plaît softens any request: Je voudrais un médicament, s'il vous plaît.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10653,7 +10835,9 @@
         "grammar"
       ],
       "prompt": "The pharmacist explains the dose. Complete: Je ___ un comprimé ce soir. (I'll take a pill this evening.)",
-      "hints": [],
+      "hints": [
+        "The blank is the je-form of prendre — the word that means 'I take' before the pill: je prends."
+      ],
       "feedback": "Prendre does the work of taking: je prends. And ce soir pins it to this evening: Je prends un comprimé ce soir.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10683,7 +10867,23 @@
             "prends"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prend",
+              "category": "wrong conjugation",
+              "explanation": "With je, prendre is prends — keep the final s."
+            },
+            {
+              "answer": "prendre",
+              "category": "incorrect answer",
+              "explanation": "The blank holds the je-form — prendre is the infinitive: prends."
+            },
+            {
+              "answer": "bois",
+              "category": "incorrect answer",
+              "explanation": "Boire is to drink; a pill is taken — je prends un comprimé."
+            }
+          ]
         }
       }
     },
@@ -10705,7 +10905,9 @@
         "grammar"
       ],
       "prompt": "Ask politely, with Est-ce que: Can I take a syrup?",
-      "hints": [],
+      "hints": [
+        "Polite can-I frame: Est-ce que first, then je peux, then the infinitive prendre un sirop, and the question mark at the very end."
+      ],
       "feedback": "Est-ce que je peux plus an infinitive is the polite can-I frame from «Can I? Modal requests»: Est-ce que je peux prendre un sirop ?",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10778,7 +10980,9 @@
         "vocabulary"
       ],
       "prompt": "Ask for the medicine yourself, politely: I would like a medicine, please.",
-      "hints": [],
+      "hints": [
+        "Write the polite request you chose above: Je voudrais un médicament, with s'il vous plaît after the comma."
+      ],
       "feedback": "Je voudrais un médicament, s'il vous plaît — voudrais for politeness, s'il vous plaît to soften. The pharmacist understands.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10792,7 +10996,23 @@
           "Je voudrais un médicament, s'il vous plaît."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je veux un médicament, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "Veux is 'I want' — with a pharmacist the polite would-like form is voudrais: Je voudrais un médicament."
+          },
+          {
+            "answer": "Je voudrais un médicament.",
+            "category": "missing word",
+            "explanation": "Add the polite tag to soften the request: Je voudrais un médicament, s'il vous plaît."
+          },
+          {
+            "answer": "Je voudrais le médicament, s'il vous plaît.",
+            "category": "wrong article",
+            "explanation": "You are asking for one medicine among many — the indefinite article: un médicament."
+          }
+        ]
       }
     },
     {
@@ -10812,7 +11032,9 @@
         "vocabulary"
       ],
       "prompt": "Your mission card says when to take the pill. Choose the right time:",
-      "hints": [],
+      "hints": [
+        "Your mission card says when to take the pill — the option with 'soir' (this evening). 'Hier' is already past, and the card didn't say midday or tomorrow."
+      ],
       "feedback": "Ce soir — this evening, exactly what your mission card said. Hier is yesterday (already past), and the card didn't say midi or demain.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10860,7 +11082,9 @@
         "grammar"
       ],
       "prompt": "Announce the plan and close the mission: I'll take a pill this evening.",
-      "hints": [],
+      "hints": [
+        "Je + prends + un comprimé, then the time phrase ce soir at the end: Je prends un comprimé ce soir."
+      ],
       "feedback": "Je prends un comprimé ce soir — mission complete. You named the pain, asked politely, and set the dose.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -15317,7 +15541,9 @@
         "vocabulary"
       ],
       "prompt": "The receptionist looks up. What leaves your mouth first ?",
-      "hints": [],
+      "hints": [
+        "It's evening check-in — open with the evening greeting (Bonsoir) and state the booking in the same breath. Merci comes later; au revoir at the very end."
+      ],
       "feedback": "Bonsoir, j’ai réservé une chambre. — the greeting opens every interaction in France; the booking comes with it. Merci comes later, au revoir at the very end.",
       "evidenceKey": "fr-a2-hotel-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -15366,7 +15592,9 @@
         "grammar"
       ],
       "prompt": "She nods and taps the keyboard. Now state the booking plainly: “I booked a room.”",
-      "hints": [],
+      "hints": [
+        "State the booking with the passé composé you just saw: j'ai + the past participle of réserver (réservé) + une chambre."
+      ],
       "feedback": "J’ai réservé une chambre. The passé composé does the work — the booking happened, it’s done, réserver → réservé.",
       "evidenceKey": "fr-a2-hotel-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -15378,7 +15606,23 @@
           "J’ai réservé une chambre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J'ai réserver une chambre.",
+            "category": "wrong conjugation",
+            "explanation": "After j'ai, the verb becomes its past participle: réservé, not the infinitive réserver."
+          },
+          {
+            "answer": "Je suis réservé une chambre.",
+            "category": "wrong auxiliary",
+            "explanation": "Réserver builds its passé composé with avoir, not être: j'ai réservé."
+          },
+          {
+            "answer": "J'ai réservé le chambre.",
+            "category": "wrong article",
+            "explanation": "Chambre is feminine — the indefinite article is une: une chambre."
+          }
+        ]
       }
     },
     {
@@ -15400,7 +15644,9 @@
         "grammar"
       ],
       "prompt": "She slides something across the desk. Build: “Here is the key.”",
-      "hints": [],
+      "hints": [
+        "The key is presented with Voici — 'here is' — followed by the noun: Voici la clé. Two pieces, in that order."
+      ],
       "feedback": "Voici la clé. Voici presents — “here is” — and la clé is what you’ve been waiting for.",
       "evidenceKey": "fr-a2-hotel-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -15443,7 +15689,9 @@
         "grammar"
       ],
       "prompt": "She points upstairs. Complete: La chambre est au ___ étage. (second)",
-      "hints": [],
+      "hints": [
+        "The blank holds the 'second' ordinal the receptionist used — deuxième. And à + le contracts to au: au deuxième étage."
+      ],
       "feedback": "deuxième — “second”. au deuxième étage: à + le contracts to au, and deuxième is the ordinal you’ll use in every hotel.",
       "evidenceKey": "fr-a2-hotel-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -15468,10 +15716,22 @@
       "blanks": {
         "b1": {
           "answers": [
-            "deuxième"
+            "deuxième",
+            "second"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "deux",
+              "category": "incorrect answer",
+              "explanation": "Deux is the number two; the floor asks for the ordinal — deuxième (or second)."
+            },
+            {
+              "answer": "troisième",
+              "category": "incorrect answer",
+              "explanation": "The receptionist said second, not third — the blank is deuxième."
+            }
+          ]
         }
       }
     },
@@ -15494,7 +15754,9 @@
         "vocabulary"
       ],
       "prompt": "“Le petit-déjeuner est à huit heures.” What is she telling you ?",
-      "hints": [],
+      "hints": [
+        "Le petit-déjeuner is the morning meal — 'little lunch'. Dinner is le dîner and checkout is le départ, so only the breakfast answer fits."
+      ],
       "feedback": "Breakfast is at eight. petit-déjeuner is “little lunch” — the French morning meal. Dinner would be le dîner; checkout, le départ.",
       "evidenceKey": "fr-a2-hotel-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -15543,7 +15805,9 @@
         "grammar"
       ],
       "prompt": "Think: the street side might be noisy. Ask for a quiet room: “Do you have a quiet room ?”",
-      "hints": [],
+      "hints": [
+        "Ask with the polite inverted form avez-vous, then une chambre calme: Avez-vous une chambre calme ?"
+      ],
       "feedback": "Avez-vous une chambre calme ? — the polite inversion you learned for requests, now earning its keep in the real world.",
       "evidenceKey": "fr-a2-hotel-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -15554,10 +15818,27 @@
         "answers": [
           "Avez-vous une chambre calme ?",
           "Avez-vous une chambre calme.",
-          "Est-ce que vous avez une chambre calme ?"
+          "Est-ce que vous avez une chambre calme ?",
+          "Vous avez une chambre calme ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Avez-vous un chambre calme ?",
+            "category": "wrong article",
+            "explanation": "Chambre is feminine: une chambre calme."
+          },
+          {
+            "answer": "Tu as une chambre calme ?",
+            "category": "incorrect answer",
+            "explanation": "At a hotel desk you stay polite with vous — avez-vous / vous avez. Tu as is only for people you call tu."
+          },
+          {
+            "answer": "J'ai une chambre calme ?",
+            "category": "incorrect answer",
+            "explanation": "That states that YOU have a quiet room; the question asks whether the hotel has one — avez-vous une chambre calme ?"
+          }
+        ]
       }
     },
     {
@@ -15579,7 +15860,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check before you head up — match each line to its meaning.",
-      "hints": [],
+      "hints": [
+        "Pair the lines you've produced: Voici = here is, réservé = booked; the remaining pair is the one about breakfast time."
+      ],
       "feedback": "Three for three. The script is yours now.",
       "evidenceKey": "fr-a2-hotel-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -15648,7 +15931,9 @@
         "grammar"
       ],
       "prompt": "Final line — say the whole check-in in one breath: “Good evening, I booked a room.”",
-      "hints": [],
+      "hints": [
+        "Greeting first (Bonsoir), comma, then the booking — the same pair you chose at the counter: Bonsoir, j'ai réservé une chambre."
+      ],
       "feedback": "Bonsoir, j’ai réservé une chambre. Greeting first, booking second — the script, performed.",
       "evidenceKey": "fr-a2-hotel-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -15661,7 +15946,23 @@
           "Bonsoir, j’ai réservé une chambre"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Bonsoir, j'ai réserver une chambre.",
+            "category": "wrong conjugation",
+            "explanation": "After j'ai, réserver becomes its past participle réservé: j'ai réservé une chambre."
+          },
+          {
+            "answer": "Bonjour, j'ai réservé une chambre.",
+            "category": "incorrect answer",
+            "explanation": "The check-in happens in the evening — French switches to Bonsoir in the evening; Bonjour belongs to the daytime."
+          },
+          {
+            "answer": "Bonsoir, j'ai réservé chambre.",
+            "category": "missing word",
+            "explanation": "Chambre needs its article — une chambre."
+          }
+        ]
       }
     },
     {
@@ -16288,7 +16589,9 @@
         "vocabulary"
       ],
       "prompt": "Le marchand sourit : « Bonjour ! » Que réponds-tu en premier ?",
-      "hints": [],
+      "hints": [
+        "A French market exchange opens with the greeting — the option that means 'Hello'. The order, the thanks, and the goodbye all come after it."
+      ],
       "feedback": "Bonjour d'abord — toujours. In France the greeting opens every exchange; the order comes after.",
       "evidenceKey": "fr-food-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16336,7 +16639,9 @@
         "vocabulary"
       ],
       "prompt": "Le marchand tend le sac : « Ça fait deux euros. » Tu paies. Que dis-tu ?",
-      "hints": [],
+      "hints": [
+        "The money is paid and the bag is handed over — close with thanks, then goodbye. The option with both in one line is the one."
+      ],
       "feedback": "Merci, au revoir ! — the mission ends the French way: thanks, then goodbye.",
       "evidenceKey": "fr-food-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -16384,7 +16689,9 @@
         "vocabulary"
       ],
       "prompt": "Mission accomplie. Écris ta commande complète en français, comme tu la dirais au marchand : un café pour Marc et un thé pour Anna.",
-      "hints": [],
+      "hints": [
+        "Say what you take for Marc (a coffee) and for Anna (a tea), in the order you used at the counter, with the polite phrase if you like: Je prends un café et un thé, s'il vous plaît."
+      ],
       "feedback": "Je prends un café et un thé, s'il vous plaît. — mission accomplished.",
       "evidenceKey": "fr-food-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -16398,7 +16705,23 @@
           "Un café et un thé, s'il vous plaît."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je prends un café.",
+            "category": "missing word",
+            "explanation": "The mission has two drinks — a coffee for Marc and a tea for Anna. Name both: Je prends un café et un thé."
+          },
+          {
+            "answer": "Je prends un café et une thé.",
+            "category": "wrong article",
+            "explanation": "Thé is masculine: un thé, not une thé. The tea for Anna is un thé."
+          },
+          {
+            "answer": "Je prend un café et un thé, s'il vous plaît.",
+            "category": "wrong conjugation",
+            "explanation": "With je, prendre is prends — keep the final s even in a longer order."
+          }
+        ]
       }
     },
     {
@@ -16435,7 +16758,9 @@
         "vocabulary"
       ],
       "prompt": "Au guichet : « Bonjour, vous allez où ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "The clerk asks where YOU are going — answer with je + vais. 'Tu vas' would be about the other person, and 'Merci' answers nothing."
+      ],
       "feedback": "Je vais à Paris — je + vais for yourself; tu vas is for the other person.",
       "evidenceKey": "fr-transport-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16483,7 +16808,9 @@
         "vocabulary"
       ],
       "prompt": "Dans le train, le contrôleur demande : « Votre billet, s'il vous plaît. » Tu le tends et tu dis…",
-      "hints": [],
+      "hints": [
+        "You hand over the ticket — say 'here it is' (Voilà) and add thanks. The option with Voilà is the one."
+      ],
       "feedback": "Voilà — “here it is”, then merci. Mission nearly complete.",
       "evidenceKey": "fr-transport-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -16531,7 +16858,9 @@
         "vocabulary"
       ],
       "prompt": "Le train démarre. Écris en français où tu vas, comme tu le dirais à ton voisin.",
-      "hints": [],
+      "hints": [
+        "Say where the train takes you, in the phrase the mission notice taught: Je vais à Paris."
+      ],
       "feedback": "Je vais à Paris. — bon voyage !",
       "evidenceKey": "fr-transport-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -16544,7 +16873,23 @@
           "Je vais à Paris !"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je vas à Paris.",
+            "category": "wrong conjugation",
+            "explanation": "With je, aller is vais — vas belongs with tu."
+          },
+          {
+            "answer": "Je vais à la gare.",
+            "category": "incorrect answer",
+            "explanation": "You have left the station behind — the mission destination is Paris: Je vais à Paris."
+          },
+          {
+            "answer": "Tu vas à Paris.",
+            "category": "wrong conjugation",
+            "explanation": "You say it for yourself on the train — je vais, not tu vas."
+          }
+        ]
       }
     },
     {
@@ -16581,7 +16926,9 @@
         "vocabulary"
       ],
       "prompt": "Marc est par terre. Quel est le premier mot qui sort ?",
-      "hints": [],
+      "hints": [
+        "Marc is on the ground — the first word out is the call for help. Greetings and thanks wait their turn."
+      ],
       "feedback": "Au secours ! — “Help!” always comes first. Everything else can wait.",
       "evidenceKey": "fr-emergency-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16629,7 +16976,9 @@
         "vocabulary"
       ],
       "prompt": "L'opératrice demande : « C'est urgent ? » Tu réponds…",
-      "hints": [],
+      "hints": [
+        "The operator asks whether it's urgent — answer honestly and directly: the 'Oui, c'est urgent !' option."
+      ],
       "feedback": "Oui, c'est urgent ! — clear and direct. In an emergency, clarity saves time.",
       "evidenceKey": "fr-emergency-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -16677,7 +17026,9 @@
         "vocabulary"
       ],
       "prompt": "Donne l'adresse à l'opératrice, en français : 12 rue de la Paix, Paris.",
-      "hints": [],
+      "hints": [
+        "Give the address in the mission order: the street with its number, then the city — 12 rue de la Paix, Paris. You can add 'C'est le…' if you want a full sentence."
+      ],
       "feedback": "12 rue de la Paix, Paris. — l'ambulance arrive. Mission accomplished.",
       "evidenceKey": "fr-emergency-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -16691,7 +17042,23 @@
           "C'est le 12 rue de la Paix, à Paris."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "12 rue de la Paix.",
+            "category": "missing word",
+            "explanation": "Add the city — the operator must know it's Paris before the ambulance can leave: 12 rue de la Paix, Paris."
+          },
+          {
+            "answer": "Paris, 12 rue de la Paix.",
+            "category": "word-order problem",
+            "explanation": "Street (with number) comes first, city after: 12 rue de la Paix, Paris."
+          },
+          {
+            "answer": "L'ambulance, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "The operator asked for the address, not for the vehicle — give the street and city: 12 rue de la Paix, Paris."
+          }
+        ]
       }
     },
     {
@@ -20172,6 +20539,109 @@
         ],
         "allowTypo": true,
         "errors": []
+      }
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "fr-transport-concept",
+        "fr-home-concept",
+        "fr-time-concept"
+      ],
+      "vocabulary": [
+        "fr-transport-word-1",
+        "fr-home-word-3",
+        "fr-time-foundation-word-2"
+      ],
+      "skills": [
+        "writing",
+        "grammar"
+      ],
+      "prompt": "Write your closing line in French: I'm going home at midday.",
+      "hints": [
+        "Type your closing line exactly as you arranged it: Je vais à la maison à midi — the time phrase stays at the end."
+      ],
+      "feedback": "Je vais à la maison à midi — mission complete. You navigated Paris with aller, où and the clock, and got home by midday.",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "model"
+      ],
+      "evidenceKey": "fr-city-mission-act-10",
+      "kind": "text",
+      "id": "fr-city-mission-act-10",
+      "answer": {
+        "answers": [
+          "Je vais à la maison à midi."
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Je vais à la maison.",
+            "category": "missing word",
+            "explanation": "Close the loop with the time phrase — add à midi at the end: Je vais à la maison à midi."
+          },
+          {
+            "answer": "Je vais à le maison à midi.",
+            "category": "wrong article",
+            "explanation": "Maison is feminine: à la maison, not à le."
+          },
+          {
+            "answer": "Tu vas à la maison à midi.",
+            "category": "wrong conjugation",
+            "explanation": "You announce your own plan — je vais, not tu vas."
+          }
+        ]
+      }
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "fr-pharmacy-concept",
+        "fr-plans-concept"
+      ],
+      "vocabulary": [
+        "fr-pharmacy-foundation-word-3",
+        "fr-plans-word-4",
+        "fr-requests-word-3"
+      ],
+      "skills": [
+        "writing",
+        "grammar"
+      ],
+      "prompt": "Write your closing line in French: I'll take a pill this evening.",
+      "hints": [
+        "Type your closing line exactly as you arranged it: Je prends un comprimé ce soir — the time phrase stays at the end."
+      ],
+      "feedback": "Je prends un comprimé ce soir — mission complete. You named the pain, asked politely, and set the dose.",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "model"
+      ],
+      "evidenceKey": "fr-pharmacy-mission-act-10",
+      "kind": "text",
+      "id": "fr-pharmacy-mission-act-10",
+      "answer": {
+        "answers": [
+          "Je prends un comprimé ce soir."
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Je prends un comprimé.",
+            "category": "missing word",
+            "explanation": "Set the time too — add ce soir at the end: Je prends un comprimé ce soir."
+          },
+          {
+            "answer": "Je prend un comprimé ce soir.",
+            "category": "wrong conjugation",
+            "explanation": "With je, prendre is prends — keep the final s."
+          },
+          {
+            "answer": "Je bois un comprimé ce soir.",
+            "category": "incorrect answer",
+            "explanation": "Boire is for drinks — you take a pill: je prends un comprimé."
+          }
+        ]
       }
     }
   ],
@@ -24038,6 +24508,13 @@
           "id": "fr-city-mission-step-9",
           "purpose": "practice",
           "activityId": "fr-city-mission-act-9",
+          "required": true,
+          "nextStepId": "fr-city-mission-step-10"
+        },
+        {
+          "id": "fr-city-mission-step-10",
+          "purpose": "transfer",
+          "activityId": "fr-city-mission-act-10",
           "required": true
         }
       ],
@@ -24134,6 +24611,13 @@
           "id": "fr-pharmacy-mission-step-9",
           "purpose": "practice",
           "activityId": "fr-pharmacy-mission-act-9",
+          "required": true,
+          "nextStepId": "fr-pharmacy-mission-step-10"
+        },
+        {
+          "id": "fr-pharmacy-mission-step-10",
+          "purpose": "transfer",
+          "activityId": "fr-pharmacy-mission-act-10",
           "required": true
         }
       ],

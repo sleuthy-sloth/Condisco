@@ -8875,7 +8875,7 @@
       }
     },
     {
-      "revision": 2,
+      "revision": 3,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -8890,7 +8890,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “half past”?",
-      "hints": [],
+      "hints": [
+        "You're looking for the phrase that means 'half past' — it attaches to the hour with e: tre e mezza. Mezzogiorno is noon, meno un quarto is quarter to, ora is just 'hour'."
+      ],
       "feedback": "Mezza means half; tre e mezza is half past three.",
       "evidenceKey": "it-time-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8923,7 +8925,7 @@
       "multiple": false
     },
     {
-      "revision": 2,
+      "revision": 3,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -8938,7 +8940,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: It is half past three.",
-      "hints": [],
+      "hints": [
+        "Build like the model half-past sentence: Sono le, then the hour tre, then e mezza — the hour always comes before the minutes."
+      ],
       "feedback": "Sono le tre e mezza: use sono le for hours other than one.",
       "evidenceKey": "it-time-foundation-order",
       "assistanceAffectsEvidence": [
@@ -8980,7 +8984,7 @@
       ]
     },
     {
-      "revision": 2,
+      "revision": 3,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -8995,7 +8999,9 @@
         "grammar"
       ],
       "prompt": "Complete the time: ___ l’una.",
-      "hints": [],
+      "hints": [
+        "One o'clock breaks the pattern: l'una takes the singular form È — the sono le construction is only for hours from two on."
+      ],
       "feedback": "È l’una: one o’clock uses the singular è.",
       "evidenceKey": "it-time-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9025,12 +9031,28 @@
             "È"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Sono",
+              "category": "wrong conjugation",
+              "explanation": "One o'clock takes the singular È: È l'una. Sono le is for hours from two onward."
+            },
+            {
+              "answer": "E",
+              "category": "accent/diacritic issue",
+              "explanation": "Without the accent, e means 'and'. Write the verb with its grave accent: È l'una."
+            },
+            {
+              "answer": "E'",
+              "category": "accent/diacritic issue",
+              "explanation": "Write the accent on the è — E' with an apostrophe is a keyboard shortcut, not the written form: È l'una."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 2,
+      "revision": 3,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -9045,7 +9067,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: It is half past three.",
-      "hints": [],
+      "hints": [
+        "Half past three: Sono le tre e mezza — hours from two on take sono le, and mezza agrees with the feminine ora."
+      ],
       "feedback": "Sono le tre e mezza. You can now say the time without tiles.",
       "evidenceKey": "it-time-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -9065,6 +9089,16 @@
             "answer": "È le tre e mezza.",
             "category": "incorrect answer",
             "explanation": "Hours take sono, except one o’clock: Sono le tre e mezza."
+          },
+          {
+            "answer": "Le tre e mezza.",
+            "category": "missing word",
+            "explanation": "The sentence needs its verb: Sono le tre e mezza."
+          },
+          {
+            "answer": "Sono le tre e mezzo.",
+            "category": "wrong gender",
+            "explanation": "The half hour is feminine (l'ora): mezza, not mezzo — Sono le tre e mezza."
           }
         ]
       }
@@ -11706,12 +11740,12 @@
     {
       "kind": "information",
       "id": "it-market-run-mission-act-1",
-      "revision": 1,
-      "body": "Your mission: buy three things at il mercato. For each one, ask the price — Quanto costa? for a single thing, Quanto costano? for several. The two model exchanges above are your tools. Read them once, then the stall is yours: three items, three questions, one goodbye.",
+      "revision": 2,
+      "body": "Your mission: buy two things at il mercato. For each one, ask the price — Quanto costa? for a single thing, Quanto costano? for several. The two model exchanges above are your tools. Read them once, then the stall is yours: two items, two questions, one goodbye.",
       "stimulusId": "it-market-run-mission-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-market-concept"
       ],
@@ -11724,7 +11758,9 @@
         "vocabulary"
       ],
       "prompt": "First stall: apples. You want one kilo. What do you ask?",
-      "hints": [],
+      "hints": [
+        "You want ONE kilo, and one kilo is a single thing — the question takes the singular verb: Quanto costa. Prices never appear in the question itself."
+      ],
       "feedback": "One thing → costa (singular). The price comes in the answer, never in the question.",
       "evidenceKey": "it-market-run-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -11757,7 +11793,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-market-concept"
       ],
@@ -11768,9 +11804,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "The seller answers. Complete it: ___ tre euro.",
-      "hints": [],
-      "feedback": "Several euros → costano (plural). Costa for one thing, costano for several — the verb agrees with the price.",
+      "prompt": "The seller answers about your kilo: it costs three euros. Complete it: ___ tre euro.",
+      "hints": [
+        "The seller answers about YOUR kilo — un chilo is one thing, so the verb is singular: Costa tre euro. Costano would answer for several things, like the peaches later."
+      ],
+      "feedback": "The kilo is one thing, so the verb agrees with it: Costa tre euro. Costano answers for several things — you will hear it at the peach stall.",
       "evidenceKey": "it-market-run-mission-act-3",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11796,15 +11834,31 @@
       "blanks": {
         "b1": {
           "answers": [
-            "Costano"
+            "Costa"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Costano",
+              "category": "wrong number",
+              "explanation": "Un chilo is one thing, so the verb is singular: Costa tre euro. Costano would answer for several things, like le pesche."
+            },
+            {
+              "answer": "Costo",
+              "category": "wrong conjugation",
+              "explanation": "Costo would be io — 'I cost'. The subject here is the kilo: Costa tre euro."
+            },
+            {
+              "answer": "Costa tre",
+              "category": "extra word",
+              "explanation": "The sentence already contains tre euro — the blank holds just the verb: Costa tre euro."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-market-concept"
       ],
@@ -11816,7 +11870,9 @@
         "grammar"
       ],
       "prompt": "Second stall: peaches, several of them. Which question is right?",
-      "hints": [],
+      "hints": [
+        "Peaches are several things, so the question takes the plural verb: Quanto costano le pesche? Only one option asks about the peaches themselves."
+      ],
       "feedback": "Several things → costano. You learned the singular/plural pair in «At the market: prices»: costa for one, costano for many.",
       "evidenceKey": "it-market-run-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -11849,7 +11905,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-market-concept"
       ],
@@ -11862,7 +11918,9 @@
         "grammar"
       ],
       "prompt": "Write it with no help: How much is a kilo of apples?",
-      "hints": [],
+      "hints": [
+        "The market question from the first stall: Quanto costa + un chilo di mele. Un chilo is one thing, so the verb stays costa."
+      ],
       "feedback": "Quanto costa un chilo di mele? — the market question, now yours without tiles.",
       "evidenceKey": "it-market-run-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -11876,11 +11934,27 @@
           "Quanto costa un chilo di mele?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto costano un chilo di mele?",
+            "category": "wrong conjugation",
+            "explanation": "Un chilo is one thing, so the verb agrees with it: costa — Quanto costa un chilo di mele?"
+          },
+          {
+            "answer": "Quanto costa le mele?",
+            "category": "wrong number",
+            "explanation": "The errand fixes a weight — un chilo — not the plural apples: Quanto costa un chilo di mele?"
+          },
+          {
+            "answer": "Quanto costa tre euro?",
+            "category": "incorrect answer",
+            "explanation": "Tre euro is a price, and the price comes in the ANSWER, never in the question. Ask: Quanto costa un chilo di mele?"
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 3,
       "conceptIds": [
         "it-market-concept"
       ],
@@ -11892,8 +11966,10 @@
         "grammar"
       ],
       "prompt": "The seller's answer, as tiles: They cost three euros.",
-      "hints": [],
-      "feedback": "Costano tre euro. Plural verb, plural price — they match.",
+      "hints": [
+        "The answer is three euros, with the verb first: costano, then tre euro — the plural verb matches the several things being priced."
+      ],
+      "feedback": "Costano tre euro. Several things (the peaches) take the plural verb costano — you contrasted costa with costano at the two stalls.",
       "evidenceKey": "it-market-run-mission-act-8",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11924,7 +12000,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-market-concept",
         "it-food-concept"
@@ -11937,38 +12013,42 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "Mission nearly done. You take the apples. Which sentence closes it?",
-      "hints": [],
-      "feedback": "Prendo — io take the apples. Prendi would hand them to someone else, tre chilo breaks the singular kilo, and costa can't carry a subject it doesn't have. Mission complete: three items, three questions, one goodbye.",
+      "prompt": "Type: “Thank you, I’ll take a kilo of apples.”",
+      "hints": [
+        "Close the deal the way you practiced: grazie, then prendo un chilo di mele — the speaker is io, so the verb is prendo, never prendi."
+      ],
+      "feedback": "Missione compiuta: you asked the prices with costa and costano, and closed with Grazie, prendo un chilo di mele. The market question is yours now.",
       "evidenceKey": "it-market-run-mission-act-9",
       "assistanceAffectsEvidence": [
         "hint",
         "model"
       ],
-      "kind": "selection",
+      "kind": "text",
       "id": "it-market-run-mission-act-9",
-      "options": [
-        {
-          "id": "o1",
-          "text": "Grazie, prendo un chilo di mele."
-        },
-        {
-          "id": "o2",
-          "text": "Grazie, prendi un chilo di mele."
-        },
-        {
-          "id": "o3",
-          "text": "Grazie, prendo tre chilo di mele."
-        },
-        {
-          "id": "o4",
-          "text": "Grazie, costa un chilo di mele."
-        }
-      ],
-      "acceptedIds": [
-        "o1"
-      ],
-      "multiple": false
+      "answer": {
+        "answers": [
+          "Grazie, prendo un chilo di mele.",
+          "Prendo un chilo di mele, grazie."
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Grazie, prendi un chilo di mele.",
+            "category": "wrong conjugation",
+            "explanation": "Prendi is tu. You are the one taking the apples, so the verb is prendo (io)."
+          },
+          {
+            "answer": "Grazie, prendo tre chilo di mele.",
+            "category": "wrong number",
+            "explanation": "The errand fixes one kilo: un chilo. Tre would need the plural chili — and it contradicts what you asked for."
+          },
+          {
+            "answer": "Grazie, costa un chilo di mele.",
+            "category": "wrong conjugation",
+            "explanation": "Costa states a price; it can't say what you take. The closing line is prendo — I take."
+          }
+        ]
+      }
     },
     {
       "kind": "information",
@@ -12328,7 +12408,7 @@
       "stimulusId": "it-restaurant-mission-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-requests-concept",
         "it-cafe-order-concept"
@@ -12342,7 +12422,9 @@
         "vocabulary"
       ],
       "prompt": "The waiter approaches. How do you ask for a table for two?",
-      "hints": [],
+      "hints": [
+        "A table request opens with the polite vorrei — I would like: Vorrei un tavolo per due. Prendo is for choosing food, and puoi needs an infinitive after it."
+      ],
       "feedback": "Vorrei is the fixed polite request — I would like. Prendo is for choosing food and drink, not for asking; and puoi needs an infinitive after it, like puoi portare.",
       "evidenceKey": "it-restaurant-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -12375,7 +12457,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-food-concept"
       ],
@@ -12387,7 +12469,9 @@
         "grammar"
       ],
       "prompt": "Your friend asks what you'll have. Answer: «___ una pizza.»",
-      "hints": [],
+      "hints": [
+        "Your friend asks what YOU will have, so answer with the io form: prendo — I take. The verb ends in -o when the speaker is io."
+      ],
       "feedback": "Io + prendere → prendo. Think first: who is choosing? Io — so the verb ends in -o.",
       "evidenceKey": "it-restaurant-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -12417,12 +12501,28 @@
             "Prendo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Prende",
+              "category": "wrong conjugation",
+              "explanation": "Prende is for lui/lei. Your friend asks what YOU will have, so the verb is prendo (io)."
+            },
+            {
+              "answer": "Prendi",
+              "category": "wrong conjugation",
+              "explanation": "Prendi is tu. You are choosing for yourself, so the verb flips to io: prendo."
+            },
+            {
+              "answer": "Prendere",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive prendere can't answer ‘what will you have’ — conjugate it for io: prendo."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-requests-concept",
         "it-cafe-order-concept"
@@ -12436,7 +12536,9 @@
         "grammar"
       ],
       "prompt": "Think about the model, then build: I would like a pizza, please.",
-      "hints": [],
+      "hints": [
+        "Build the request like the model «Vorrei un caffè, per favore»: Vorrei opens it, then the pizza, then per favore closes it."
+      ],
       "feedback": "Vorrei opens politely, then what you want, then per favore to close — the same rhythm as «Vorrei un caffè, per favore».",
       "evidenceKey": "it-restaurant-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -12473,7 +12575,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-food-concept",
         "it-negation-concept"
@@ -12488,7 +12590,9 @@
         "grammar"
       ],
       "prompt": "The waiter asks: «Prendi un caffè?» You want one. Choose your answer.",
-      "hints": [],
+      "hints": [
+        "The waiter's question uses prendi (tu), but you answer for yourself — the verb flips to prendo (io). A yes-question wants sì, not no."
+      ],
       "feedback": "Prendi is tu — you are answering for yourself, so io → prendo. And sì must match a yes answer: no + prendo contradicts itself.",
       "evidenceKey": "it-restaurant-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -12521,7 +12625,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-numbers-concept"
       ],
@@ -12533,7 +12637,9 @@
         "vocabulary"
       ],
       "prompt": "Dinner is done. The waiter says the total: «Sono ___ euro.» Write the number: thirty.",
-      "hints": [],
+      "hints": [
+        "Thirty is trenta — you met it in «Hai trenta anni?». Numbers stay unchanged before euro: trenta euro."
+      ],
       "feedback": "Trenta is thirty — you met it in «Hai trenta anni?». Numbers don't change: trenta euro, trenta anni.",
       "evidenceKey": "it-restaurant-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -12563,12 +12669,28 @@
             "trenta"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "tredici",
+              "category": "incorrect answer",
+              "explanation": "Tredici is thirteen — the waiter said thirty: trenta."
+            },
+            {
+              "answer": "tre",
+              "category": "incorrect answer",
+              "explanation": "Tre is three — the total is thirty: trenta."
+            },
+            {
+              "answer": "trenta euro",
+              "category": "extra word",
+              "explanation": "The sentence already ends with euro — the blank holds just the number: trenta."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-cafe-order-concept",
         "it-requests-concept"
@@ -12581,7 +12703,9 @@
         "writing"
       ],
       "prompt": "Type the full polite request for the bill.",
-      "hints": [],
+      "hints": [
+        "Then the bill, then the politeness: Il conto, per favore — the same rhythm as the café's «Un caffè, per favore»."
+      ],
       "feedback": "Say it in your head first: the thing you want, then the politeness. Il conto, per favore — you now own this sentence.",
       "evidenceKey": "it-restaurant-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -12592,14 +12716,31 @@
       "id": "it-restaurant-mission-act-8",
       "answer": {
         "answers": [
-          "Il conto, per favore."
+          "Il conto, per favore.",
+          "Per favore, il conto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il conto, favore.",
+            "category": "missing word",
+            "explanation": "The politeness needs its full form: Il conto, per favore."
+          },
+          {
+            "answer": "Il conto.",
+            "category": "missing word",
+            "explanation": "Il conto alone skips the courtesy the lesson tests. The full request is Il conto, per favore."
+          },
+          {
+            "answer": "La conto, per favore.",
+            "category": "wrong gender",
+            "explanation": "Conto is masculine: il conto, never la conto."
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-cafe-order-concept",
         "it-first-words-concept"
@@ -12611,38 +12752,46 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "You pay. The waiter smiles: «Grazie!» Mission complete — choose your goodbye.",
-      "hints": [],
+      "prompt": "The waiter smiles: «Grazie!» Type your goodbye: “Thank you, goodbye!”",
+      "hints": [
+        "Close the night the way you started it — politely: grazie, then arrivederci, the goodbye for someone you've just met."
+      ],
       "feedback": "Missione compiuta: you asked for the table with vorrei, ordered with prendo, and closed with il conto. Grazie, arrivederci — see you at the next mission.",
       "evidenceKey": "it-restaurant-mission-act-9",
       "assistanceAffectsEvidence": [
         "hint",
         "model"
       ],
-      "kind": "selection",
+      "kind": "text",
       "id": "it-restaurant-mission-act-9",
-      "options": [
-        {
-          "id": "o1",
-          "text": "Grazie, arrivederci!"
-        },
-        {
-          "id": "o2",
-          "text": "Prendo il conto."
-        },
-        {
-          "id": "o3",
-          "text": "Il conto prende me."
-        },
-        {
-          "id": "o4",
-          "text": "Non conto, grazie."
-        }
-      ],
-      "acceptedIds": [
-        "o1"
-      ],
-      "multiple": false
+      "answer": {
+        "answers": [
+          "Grazie, arrivederci!"
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Prendo il conto.",
+            "category": "incorrect answer",
+            "explanation": "That repeats the bill request — this is the goodbye. The closing line is Grazie, arrivederci!"
+          },
+          {
+            "answer": "Il conto prende me.",
+            "category": "incorrect answer",
+            "explanation": "The bill doesn't take you — this scrambles the words. Close with the goodbye: Grazie, arrivederci!"
+          },
+          {
+            "answer": "Non conto, grazie.",
+            "category": "incorrect answer",
+            "explanation": "Conto here is the bill (a noun), not the verb contare. The goodbye is Grazie, arrivederci!"
+          },
+          {
+            "answer": "Grazie, ciao!",
+            "category": "incorrect answer",
+            "explanation": "Ciao is for friends — the waiter is a stranger, so the polite goodbye is arrivederci."
+          }
+        ]
+      }
     },
     {
       "kind": "information",
@@ -12652,7 +12801,7 @@
       "stimulusId": "it-directions-mission-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept",
         "it-requests-concept"
@@ -12665,7 +12814,9 @@
         "grammar"
       ],
       "prompt": "You stop a passerby. What do you ask?",
-      "hints": [],
+      "hints": [
+        "The question for a place is Dov'è + the place — here la piazza. Vai asks about where YOU are going, not where something is."
+      ],
       "feedback": "Dov'è fuses dove + è — where is. The second option asks about THEM (vai = you go); the third names the wrong place; the fourth scrambles the word order. One question, one per favore, one destination.",
       "evidenceKey": "it-directions-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -12698,7 +12849,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept"
       ],
@@ -12710,7 +12861,9 @@
         "grammar"
       ],
       "prompt": "You will need the station later too. Ask: «Dov'è ___?»",
-      "hints": [],
+      "hints": [
+        "The article travels with the place: la stazione. Ask Dov'è la stazione? — never drop the la."
+      ],
       "feedback": "Dov'è + the place: Dov'è la stazione? The article stays — la stazione, never just stazione.",
       "evidenceKey": "it-directions-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -12740,12 +12893,28 @@
             "la stazione"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "stazione",
+              "category": "missing word",
+              "explanation": "The article stays: the full place name is la stazione."
+            },
+            {
+              "answer": "il stazione",
+              "category": "wrong article",
+              "explanation": "Stazione is feminine, so it takes la: la stazione."
+            },
+            {
+              "answer": "il treno",
+              "category": "incorrect answer",
+              "explanation": "Il treno is the train — the prompt asks for the station: la stazione."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept"
       ],
@@ -12758,7 +12927,9 @@
         "grammar"
       ],
       "prompt": "Build: I'm going to the piazza, thanks.",
-      "hints": [],
+      "hints": [
+        "Vado + a + la fuses into vado alla — the same alla you met in «Vado alla stazione». Same fusion, new destination: Vado alla piazza."
+      ],
       "feedback": "A + la fuses into alla — you learned it in «Vado alla stazione». Same fusion, new destination: vado alla piazza.",
       "evidenceKey": "it-directions-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -12795,7 +12966,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept",
         "it-negation-concept"
@@ -12811,7 +12982,9 @@
         "grammar"
       ],
       "prompt": "The passerby points left and checks: «Vai alla stazione?» You're not going there. Answer.",
-      "hints": [],
+      "hints": [
+        "The passerby guessed wrong, so answer no — then restate YOUR trip with the io form: vado alla piazza."
+      ],
       "feedback": "No corrects them, then restate where YOU go: io → vado. The second option gives your trip to tu; the third agrees with the wrong destination; the fourth negates the very place you want.",
       "evidenceKey": "it-directions-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -12844,7 +13017,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept"
       ],
@@ -12857,7 +13030,9 @@
         "grammar"
       ],
       "prompt": "Your friend calls: «Dove vai?» Answer: «___ alla piazza!»",
-      "hints": [],
+      "hints": [
+        "The friend's question uses vai (tu); your answer flips to io: vado. Think about who is moving before you pick the verb."
+      ],
       "feedback": "Dove vai? — Vado. The question uses tu (vai); the answer flips to io (vado). Think about who is moving before you pick the verb.",
       "evidenceKey": "it-directions-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -12887,12 +13062,28 @@
             "Vado"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Vai",
+              "category": "wrong conjugation",
+              "explanation": "Vai is tu — the question's verb. Your answer flips to io: Vado alla piazza!"
+            },
+            {
+              "answer": "Va",
+              "category": "wrong conjugation",
+              "explanation": "Va is for lui/lei. You are the one going, so the verb is vado (io)."
+            },
+            {
+              "answer": "Andare",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive can't answer «Dove vai?» — conjugate it for io: vado."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept",
         "it-negation-concept"
@@ -12907,7 +13098,9 @@
         "grammar"
       ],
       "prompt": "Build a polite correction: No, thanks, I'm going to the piazza.",
-      "hints": [],
+      "hints": [
+        "A polite correction: no, grazie first, then the clear restatement — vado alla piazza."
+      ],
       "feedback": "No, grazie softens the correction, then the clear restatement: vado alla piazza. Polite and impossible to misunderstand.",
       "evidenceKey": "it-directions-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -12949,7 +13142,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept",
         "it-requests-concept"
@@ -12961,7 +13154,9 @@
         "writing"
       ],
       "prompt": "Type the question that started it all.",
-      "hints": [],
+      "hints": [
+        "The question that started it all: Dov'è la piazza? — dove + è fuse into Dov'è with the apostrophe, and the article stays."
+      ],
       "feedback": "Dov'è la piazza? — four words that got you across town. Say it once more out loud; it should feel automatic now.",
       "evidenceKey": "it-directions-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -12975,11 +13170,27 @@
           "Dov'è la piazza?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dove è la piazza?",
+            "category": "accent/diacritic issue",
+            "explanation": "The written question contracts dove + è into one word: Dov'è la piazza? — write the apostrophe."
+          },
+          {
+            "answer": "Dov'è la stazione?",
+            "category": "incorrect answer",
+            "explanation": "The mission's destination is the piazza: Dov'è la piazza?"
+          },
+          {
+            "answer": "Dov'è piazza?",
+            "category": "missing word",
+            "explanation": "The article stays: Dov'è LA piazza?"
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-transport-concept",
         "it-first-words-concept"
@@ -12992,38 +13203,41 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "You arrive — there's your friend, waving. Mission complete. What do you say?",
-      "hints": [],
-      "feedback": "Missione compiuta: you asked with dov'è, corrected with no + vado, and arrived. Sono alla piazza — you are exactly where you said you'd be.",
+      "prompt": "You arrive — there’s your friend, waving. Type what you say: “Hi! I’m at the piazza!”",
+      "hints": [
+        "You're there — say where you are: sono (I am) alla piazza. Vado would still be on the way."
+      ],
+      "feedback": "Missione compiuta: you asked with dov’è, corrected with no + vado, and arrived. Ciao! Sono alla piazza — you are exactly where you said you’d be.",
       "evidenceKey": "it-directions-mission-act-9",
       "assistanceAffectsEvidence": [
         "hint",
         "model"
       ],
-      "kind": "selection",
+      "kind": "text",
       "id": "it-directions-mission-act-9",
-      "options": [
-        {
-          "id": "o1",
-          "text": "Ciao! Sono alla piazza!"
-        },
-        {
-          "id": "o2",
-          "text": "Ciao! Vado a Roma."
-        },
-        {
-          "id": "o3",
-          "text": "Ciao! Vai alla piazza."
-        },
-        {
-          "id": "o4",
-          "text": "Ciao! Sono alla stazione."
-        }
-      ],
-      "acceptedIds": [
-        "o1"
-      ],
-      "multiple": false
+      "answer": {
+        "answers": [
+          "Ciao! Sono alla piazza!"
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Ciao! Vado a Roma.",
+            "category": "incorrect answer",
+            "explanation": "Vado a Roma sends you somewhere else entirely. You've ARRIVED, so say where you are: Sono alla piazza!"
+          },
+          {
+            "answer": "Ciao! Vai alla piazza.",
+            "category": "wrong conjugation",
+            "explanation": "Vai is tu — your friend is the one asking. You're there, so the verb is sono: Sono alla piazza!"
+          },
+          {
+            "answer": "Ciao! Sono alla stazione.",
+            "category": "incorrect answer",
+            "explanation": "Sono alla stazione puts you at the station — the mission ends at the piazza: Sono alla piazza!"
+          }
+        ]
+      }
     },
     {
       "kind": "information",
@@ -13672,7 +13886,7 @@
       "stimulusId": "it-a2-progetti-futuri-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -13689,7 +13903,9 @@
         "vocabulary"
       ],
       "prompt": "___ di cambiare lavoro quest’anno. (I intend…)",
-      "hints": [],
+      "hints": [
+        "The fixed phrase for 'I intend to' is avere intenzione di — so 'I intend' is ho intenzione. The other options sound alike but aren't real forms: intenzione is a noun."
+      ],
       "feedback": "The fixed phrase is avere intenzione di plus the infinitive. The others are invented forms — intenzione is a noun, not a verb.",
       "evidenceKey": "it-a2-progetti-futuri-meet",
       "assistanceAffectsEvidence": [
@@ -13722,7 +13938,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -13739,7 +13955,9 @@
         "grammar"
       ],
       "prompt": "Type: We are going to travel in August. (viaggiare)",
-      "hints": [],
+      "hints": [
+        "The near future again with a new verb: andiamo a viaggiare — andare + a + infinitive, and ad before agosto, which starts with a vowel."
+      ],
       "feedback": "andare a plus the infinitive is the near future: andiamo a viaggiare.",
       "evidenceKey": "it-a2-progetti-futuri-think",
       "assistanceAffectsEvidence": [
@@ -13753,11 +13971,27 @@
           "Andiamo a viaggiare ad agosto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Andiamo viaggiare ad agosto.",
+            "category": "missing word",
+            "explanation": "The near future needs a before the infinitive: andiamo a viaggiare ad agosto."
+          },
+          {
+            "answer": "Andare a viaggiare ad agosto.",
+            "category": "wrong conjugation",
+            "explanation": "The subject is we, so the verb is conjugated: andiamo, not the infinitive andare."
+          },
+          {
+            "answer": "Andiamo a viaggio ad agosto.",
+            "category": "wrong conjugation",
+            "explanation": "After a comes the INFINITIVE viaggiare, not the noun viaggio: andiamo a viaggiare."
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -13774,7 +14008,9 @@
         "vocabulary"
       ],
       "prompt": "Spero ___ trovare un buon hotel. (to find)",
-      "hints": [],
+      "hints": [
+        "sperare takes di before the infinitive: spero di trovare. Not a (that's for andare) and not che (that starts a clause with its own subject)."
+      ],
       "feedback": "sperare takes di before the infinitive: spero di trovare.",
       "evidenceKey": "it-a2-progetti-futuri-notice",
       "assistanceAffectsEvidence": [
@@ -13807,7 +14043,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -13824,7 +14060,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: We are planning to move to Milan.",
-      "hints": [],
+      "hints": [
+        "pensare takes di before the infinitive: pensiamo di trasferirci — then the destination, a Milano."
+      ],
       "feedback": "pensare takes DI before the infinitive: Pensiamo di trasferirci a Milano.",
       "evidenceKey": "it-a2-progetti-futuri-build",
       "assistanceAffectsEvidence": [
@@ -13866,7 +14104,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -13883,7 +14121,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The near future with andare: the noi form andiamo, then a, then the infinitive — andiamo a visitare."
+      ],
       "feedback": "The near future with andare: andiamo a visitare — we are going to visit.",
       "evidenceKey": "it-a2-progetti-futuri-cloze",
       "assistanceAffectsEvidence": [
@@ -13913,7 +14153,23 @@
             "andiamo a"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "andiamo",
+              "category": "missing word",
+              "explanation": "The near future needs the full bridge: andiamo A visitare — andare takes a before the infinitive."
+            },
+            {
+              "answer": "andare a",
+              "category": "wrong conjugation",
+              "explanation": "The sentence needs a conjugated verb: andiamo a visitare. The bare infinitive can't carry the subject."
+            },
+            {
+              "answer": "vado a",
+              "category": "wrong conjugation",
+              "explanation": "The subject is noi — this summer, we: andiamo, not vado (io)."
+            }
+          ]
         }
       }
     },
@@ -15951,7 +16207,7 @@
       "stimulusId": "it-a2-lavoro-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -15968,7 +16224,9 @@
         "vocabulary"
       ],
       "prompt": "In Italia ___ molto caffè. (bere — one drinks)",
-      "hints": [],
+      "hints": [
+        "The si impersonale puts si before a third-person-singular verb: si beve. Si bevi is second person and si bevono is a plural — neither fits 'one drinks'."
+      ],
       "feedback": "si plus the third person singular: si beve. si bevi is second person — wrong; si bevono would need a plural object; “beve si” puts si in the wrong place.",
       "evidenceKey": "it-a2-lavoro-meet",
       "assistanceAffectsEvidence": [
@@ -16001,7 +16259,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -16018,7 +16276,9 @@
         "vocabulary"
       ],
       "prompt": "___ dice che pioverà domani. (People say…)",
-      "hints": [],
+      "hints": [
+        "'People say' is si dice — the impersonal si plus the verb. Ci means 'there', ne 'of it', li 'them': none of them say who does the saying."
+      ],
       "feedback": "“People say” is si dice. ci means “there”; ne means “of it”; li means “them”.",
       "evidenceKey": "it-a2-lavoro-notice",
       "assistanceAffectsEvidence": [
@@ -16051,7 +16311,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -16068,7 +16328,9 @@
         "grammar"
       ],
       "prompt": "Make it impersonal: La gente mangia bene qui.",
-      "hints": [],
+      "hints": [
+        "The impersonal version drops the subject: si + third-person-singular verb takes over — qui si mangia bene."
+      ],
       "feedback": "“La gente mangia” becomes the impersonal si mangia.",
       "evidenceKey": "it-a2-lavoro-vary",
       "assistanceAffectsEvidence": [
@@ -16083,11 +16345,27 @@
           "Si mangia bene qui."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Si mangiano bene qui.",
+            "category": "wrong number",
+            "explanation": "The si impersonale always keeps the verb singular: si mangia bene, never si mangiano."
+          },
+          {
+            "answer": "Qui la gente si mangia bene.",
+            "category": "incorrect answer",
+            "explanation": "The transformation replaces la gente with si — the people can't 'eat themselves'. Keep si impersonale and drop the subject: Qui si mangia bene."
+          },
+          {
+            "answer": "Mangia bene qui.",
+            "category": "missing word",
+            "explanation": "The impersonal sentence needs si: Qui si mangia bene."
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -16104,7 +16382,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "A general truth about the company starts with si: Si parla tre lingue."
+      ],
       "feedback": "A general truth about the company: Si parla tre lingue.",
       "evidenceKey": "it-a2-lavoro-cloze",
       "assistanceAffectsEvidence": [
@@ -16130,7 +16410,23 @@
             "Si"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Ci",
+              "category": "incorrect answer",
+              "explanation": "Ci is a particle meaning there/us — the impersonal subject is si: Si parla tre lingue."
+            },
+            {
+              "answer": "Si parla",
+              "category": "extra word",
+              "explanation": "The blank holds only si — parla is already written in the sentence."
+            },
+            {
+              "answer": "Parla",
+              "category": "missing word",
+              "explanation": "Without si the sentence loses its impersonal meaning: Si parla tre lingue."
+            }
+          ]
         }
       }
     },
@@ -16142,7 +16438,7 @@
       "stimulusId": "it-a2-albergo-mission-stim-1"
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16159,7 +16455,9 @@
         "vocabulary"
       ],
       "prompt": "Arrivi alla reception. Cosa dici per primo?",
-      "hints": [],
+      "hints": [
+        "Open with the greeting that fits the evening and give your reservation: Buonasera, ho una prenotazione a nome… — polite, and it hands them exactly what they need."
+      ],
       "feedback": "Start with a greeting plus the reservation — polite, and it gives them exactly what they need. “Dammi” is rude; the price and the room location come later.",
       "evidenceKey": "it-a2-albergo-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -16192,7 +16490,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16209,7 +16507,9 @@
         "grammar"
       ],
       "prompt": "Type: I have a reservation under the name Bianchi.",
-      "hints": [],
+      "hints": [
+        "The fixed phrase is a nome + surname: ho una prenotazione a nome Bianchi — the surname follows a nome."
+      ],
       "feedback": "The fixed phrase is “a nome” plus the surname: a nome Bianchi.",
       "evidenceKey": "it-a2-albergo-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -16220,14 +16520,26 @@
       "id": "it-a2-albergo-mission-act-3",
       "answer": {
         "answers": [
-          "Ho una prenotazione a nome Bianchi."
+          "Ho una prenotazione a nome Bianchi.",
+          "Io ho una prenotazione a nome Bianchi."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho una prenotazione con nome Bianchi.",
+            "category": "wrong preposition",
+            "explanation": "The fixed phrase is a nome: a nome Bianchi, not con."
+          },
+          {
+            "answer": "Ho una prenotazione nome Bianchi.",
+            "category": "missing word",
+            "explanation": "The phrase needs a: ho una prenotazione a nome Bianchi."
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16244,7 +16556,9 @@
         "vocabulary"
       ],
       "prompt": "Vuoi la password del wifi. Come chiedi?",
-      "hints": [],
+      "hints": [
+        "Asking for the wifi starts with Qual è (what is): Qual è la password del wifi? The imperative Dammi is rude at a reception desk."
+      ],
       "feedback": "“Qual è la password del wifi?” is the natural, polite question. The others are rude or ask the wrong thing.",
       "evidenceKey": "it-a2-albergo-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -16277,7 +16591,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16294,7 +16608,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: What time is breakfast?",
-      "hints": [],
+      "hints": [
+        "The question frame is a che ora è (at what hour is), then the thing: la colazione — A che ora è la colazione?"
+      ],
       "feedback": "A che ora è…? — the classic question frame, then the thing: la colazione.",
       "evidenceKey": "it-a2-albergo-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -16341,7 +16657,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16358,7 +16674,9 @@
         "grammar"
       ],
       "prompt": "In camera, la doccia non funziona. Type: The shower doesn’t work.",
-      "hints": [],
+      "hints": [
+        "For a broken machine or fixture use non funziona — the shower: La doccia non funziona."
+      ],
       "feedback": "funzionare means “to work” for machines, showers and wifi: non funziona.",
       "evidenceKey": "it-a2-albergo-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -16372,11 +16690,27 @@
           "La doccia non funziona."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La doccia non funziono.",
+            "category": "wrong conjugation",
+            "explanation": "The shower is the subject (la doccia), so the verb is third person: non funziona. Funziono would be io."
+          },
+          {
+            "answer": "La doccia non funzione.",
+            "category": "incorrect answer",
+            "explanation": "Funzione is the noun 'function' — the verb is funziona: La doccia non funziona."
+          },
+          {
+            "answer": "La doccia no funziona.",
+            "category": "incorrect answer",
+            "explanation": "Negation is non before the verb: non funziona. No is for answering yes/no questions."
+          }
+        ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16393,7 +16727,9 @@
         "grammar"
       ],
       "prompt": "Complete the polite request at the reception.",
-      "hints": [],
+      "hints": [
+        "The polite 'give me' is darmi, and potrebbe carries the courtesy: Potrebbe darmi una camera più tranquilla? — a request, not a demand."
+      ],
       "feedback": "potrebbe plus darmi — the formal “mi” attached to the infinitive: potrebbe darmi. A polite request, not a demand.",
       "evidenceKey": "it-a2-albergo-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -16423,12 +16759,28 @@
             "darmi"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mi dare",
+              "category": "word-order problem",
+              "explanation": "With potrebbe the pronoun goes on the END of the infinitive: potrebbe darmi — not mi dare."
+            },
+            {
+              "answer": "dare mi",
+              "category": "word-order problem",
+              "explanation": "The pronoun attaches to the end of the infinitive: darmi, not dare mi."
+            },
+            {
+              "answer": "dammi",
+              "category": "incorrect answer",
+              "explanation": "Dammi is the blunt command 'give me' — the polite form is potrebbe darmi."
+            }
+          ]
         }
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16445,7 +16797,9 @@
         "vocabulary"
       ],
       "prompt": "Il check-out è ___ mezzogiorno. (at noon)",
-      "hints": [],
+      "hints": [
+        "Times expressed with essere take a: il check-out è a mezzogiorno — a is the preposition for clock moments."
+      ],
       "feedback": "Time expressions with essere use a: è a mezzogiorno.",
       "evidenceKey": "it-a2-albergo-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -16478,7 +16832,7 @@
       "multiple": false
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-albergo-mission-concept"
       ],
@@ -16495,7 +16849,9 @@
         "grammar"
       ],
       "prompt": "Tutto è andato bene. Type: I’d like the bill — everything was perfect.",
-      "hints": [],
+      "hints": [
+        "Combine the two closing lines: vorrei il conto (the polite request) + è andato tutto benissimo (everything went great)."
+      ],
       "feedback": "Close the mission in style: vorrei il conto plus è andato tutto benissimo. Missione compiuta!",
       "evidenceKey": "it-a2-albergo-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -16510,7 +16866,23 @@
           "Vorrei il conto, è andato tutto bene."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vorrei il conto.",
+            "category": "missing word",
+            "explanation": "The prompt asks for both lines — add that everything went well: è andato tutto benissimo."
+          },
+          {
+            "answer": "Voglio il conto, è andato tutto benissimo.",
+            "category": "incorrect answer",
+            "explanation": "Voglio is blunt; the polite request is vorrei (I would like)."
+          },
+          {
+            "answer": "Vorrei il conto, è andato tutto meglio.",
+            "category": "incorrect answer",
+            "explanation": "Meglio is 'better' — the closing phrase is benissimo (everything went great)."
+          }
+        ]
       }
     },
     {
@@ -16862,7 +17234,7 @@
     {
       "kind": "selection",
       "id": "it-time-foundation-act-rb2",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -16877,7 +17249,9 @@
         "vocabulary"
       ],
       "prompt": "The departure board flashes: «Partenza 8:15». A traveler asks what time that is. What do you say?",
-      "hints": [],
+      "hints": [
+        "8:15 is a quarter PAST eight, so the time is otto e un quarto. Meno un quarto would be 7:45, and only one option pairs the right hour with the right minutes."
+      ],
       "feedback": "Sono le otto e un quarto — hours first, then the minutes. Meno un quarto would be 7:45.",
       "evidenceKey": "it-time-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16910,7 +17284,7 @@
     {
       "kind": "text",
       "id": "it-time-foundation-act-rb3",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -16925,7 +17299,9 @@
         "vocabulary"
       ],
       "prompt": "You call your friend: tell them the train leaves at quarter to eight. Write it in Italian.",
-      "hints": [],
+      "hints": [
+        "Quarter to eight is alle otto meno un quarto. Start with Il treno parte (the train leaves) or just Parte — you're on the phone, so the subject can stay out."
+      ],
       "feedback": "Il treno parte alle otto meno un quarto. — say it out loud, then run.",
       "evidenceKey": "it-time-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -16938,13 +17314,29 @@
           "Parte alle otto meno un quarto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il treno parte alle otto e un quarto.",
+            "category": "incorrect answer",
+            "explanation": "e un quarto is quarter PAST the hour (8:15). Quarter to eight is meno un quarto: alle otto meno un quarto."
+          },
+          {
+            "answer": "Il treno parte alle sette meno un quarto.",
+            "category": "incorrect answer",
+            "explanation": "Alle sette meno un quarto would be 6:45. Quarter to eight is an hour later: alle otto meno un quarto."
+          },
+          {
+            "answer": "Il treno parte a le otto meno un quarto.",
+            "category": "incorrect answer",
+            "explanation": "a + le fuses into alle — a le otto is never written as two words."
+          }
+        ]
       }
     },
     {
       "kind": "selection",
       "id": "it-time-foundation-act-rb4",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-time-concept"
       ],
@@ -16959,7 +17351,9 @@
         "vocabulary"
       ],
       "prompt": "On the platform a fellow traveler asks «Che ore sono?» It's 12:30. What do you answer?",
-      "hints": [],
+      "hints": [
+        "It's half past twelve: the hour is dodici, so the answer is Sono le dodici e mezza — only one o'clock ever takes the singular È."
+      ],
       "feedback": "Sono le dodici e mezza — with plural hours it's always Sono le. È mezzogiorno is for exactly noon.",
       "evidenceKey": "it-time-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -16992,7 +17386,7 @@
     {
       "kind": "text",
       "id": "it-a2-progetti-futuri-act-rb1",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -17009,7 +17403,9 @@
         "vocabulary"
       ],
       "prompt": "The plan is set. Write in Italian: “We intend to leave on Saturday.”",
-      "hints": [],
+      "hints": [
+        "A firm plan uses avere intenzione di + infinitive: abbiamo intenzione di partire sabato — the noi form of avere, then di, then the infinitive."
+      ],
       "feedback": "Abbiamo intenzione di partire sabato. — avere intenzione di plus infinitive: the Italian way to state a firm plan.",
       "evidenceKey": "it-a2-progetti-futuri-act-rb1",
       "assistanceAffectsEvidence": [
@@ -17022,13 +17418,29 @@
           "Abbiamo intenzione di partire di sabato."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Abbiamo intenzione di partiamo sabato.",
+            "category": "wrong conjugation",
+            "explanation": "After di the verb is the INFINITIVE: partire. Partiamo would be a second conjugated verb — abbiamo intenzione di partire sabato."
+          },
+          {
+            "answer": "Ho intenzione di partire sabato.",
+            "category": "wrong conjugation",
+            "explanation": "The plan is 'we', so the verb is abbiamo, not ho (io): Abbiamo intenzione di partire sabato."
+          },
+          {
+            "answer": "Abbiamo intenzione partire sabato.",
+            "category": "missing word",
+            "explanation": "The phrase needs di before the infinitive: abbiamo intenzione di partire."
+          }
+        ]
       }
     },
     {
       "kind": "selection",
       "id": "it-a2-progetti-futuri-act-rb2",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-progetti-futuri-concept"
       ],
@@ -17045,7 +17457,9 @@
         "vocabulary"
       ],
       "prompt": "Your friend asks what you hope to do in Rome. Choose the natural reply.",
-      "hints": [],
+      "hints": [
+        "Your hope in Rome: spero di visitare — sperare takes di before the infinitive, never a, and never che (che would need a different subject)."
+      ],
       "feedback": "Spero di visitare — sperare takes di before the infinitive, never a or che (che is for a different subject).",
       "evidenceKey": "it-a2-progetti-futuri-act-rb2",
       "assistanceAffectsEvidence": [
@@ -17078,7 +17492,7 @@
     {
       "kind": "ordering",
       "id": "it-a2-lavoro-act-rb1",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -17095,7 +17509,9 @@
         "grammar"
       ],
       "prompt": "Build the ad's headline. Say: They are looking for a colleague.",
-      "hints": [],
+      "hints": [
+        "The headline puts the verb first: cercano (they look for), then un collega."
+      ],
       "feedback": "Cercano un collega. — the headline of half the job ads in Italy.",
       "evidenceKey": "it-a2-lavoro-act-rb1",
       "assistanceAffectsEvidence": [
@@ -17127,7 +17543,7 @@
     {
       "kind": "text",
       "id": "it-a2-lavoro-act-rb2",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -17144,7 +17560,9 @@
         "vocabulary"
       ],
       "prompt": "Decision made: write in Italian “I applied for the job.”",
-      "hints": [],
+      "hints": [
+        "Applying for a job is fare domanda — in the past: ho fatto domanda per quel posto."
+      ],
       "feedback": "Ho fatto domanda per quel posto. — fare domanda, literally “to make a request”: how Italians say “apply”.",
       "evidenceKey": "it-a2-lavoro-act-rb2",
       "assistanceAffectsEvidence": [
@@ -17157,13 +17575,29 @@
           "Ho fatto domanda."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho fatto domanda per quello posto.",
+            "category": "incorrect answer",
+            "explanation": "Before a plain consonant the demonstrative is quel: quel posto, not quello."
+          },
+          {
+            "answer": "Ho fatto domanda per un posto.",
+            "category": "incorrect answer",
+            "explanation": "Un posto is 'a position' — the prompt says the specific job: quel posto."
+          },
+          {
+            "answer": "Faccio domanda per quel posto.",
+            "category": "wrong tense",
+            "explanation": "The prompt fixes the past (applied): ho fatto domanda, not faccio."
+          }
+        ]
       }
     },
     {
       "kind": "selection",
       "id": "it-a2-lavoro-act-rb3",
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "it-a2-lavoro-concept"
       ],
@@ -17180,7 +17614,9 @@
         "vocabulary"
       ],
       "prompt": "An ad says: «Si cerca un cameriere.» What does it mean?",
-      "hints": [],
+      "hints": [
+        "Si cerca means 'one seeks' — the impersonal si hides the who and states the what, so 'they are looking for a waiter'."
+      ],
       "feedback": "Si cerca — “one seeks”: the si impersonale hides the who and states the what.",
       "evidenceKey": "it-a2-lavoro-act-rb3",
       "assistanceAffectsEvidence": [
@@ -26777,7 +27213,7 @@
       "id": "it-market-run-mission",
       "unitId": "it-unit-7",
       "title": "Market mission",
-      "objective": "Run a market errand: ask the price of three items and confirm what you pay.",
+      "objective": "Run a market errand: ask the price of the fruit you need and confirm what you take.",
       "family": "mission",
       "revision": 2,
       "estimatedMinutes": 7,

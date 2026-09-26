@@ -110,6 +110,56 @@ final class PackFrenchTests: XCTestCase {
         ],
     ]
 
+    /// The seven Wave B French mission lessons (all missions outside
+    /// fr-unit-1/fr-unit-2), keyed by the path activity ids each lesson
+    /// references (graded steps only).
+    private static let batch2Lessons: [String: [String]] = [
+        "fr-food-foundation": [
+            "fr-food-foundation-meet", "fr-food-foundation-act-rb2",
+            "fr-food-foundation-order", "fr-food-foundation-cloze",
+            "fr-food-foundation-produce", "fr-food-foundation-act-rb3",
+            "fr-food-foundation-act-rb4",
+        ],
+        "fr-transport-foundation": [
+            "fr-transport-foundation-meet", "fr-transport-foundation-act-rb2",
+            "fr-transport-foundation-order", "fr-transport-foundation-cloze",
+            "fr-transport-foundation-produce", "fr-transport-foundation-act-rb3",
+            "fr-transport-foundation-act-rb4",
+        ],
+        "fr-emergency-foundation": [
+            "fr-emergency-foundation-meet", "fr-emergency-foundation-act-rb2",
+            "fr-emergency-foundation-order", "fr-emergency-foundation-cloze",
+            "fr-emergency-foundation-produce", "fr-emergency-foundation-act-rb3",
+            "fr-emergency-foundation-act-rb4",
+        ],
+        "fr-picnic-plan-mission": [
+            "fr-picnic-plan-mission-act-2", "fr-picnic-plan-mission-act-3",
+            "fr-picnic-plan-mission-act-4", "fr-picnic-plan-mission-act-5",
+            "fr-picnic-plan-mission-act-6", "fr-picnic-plan-mission-act-7",
+            "fr-picnic-plan-mission-act-8", "fr-picnic-plan-mission-act-9",
+        ],
+        "fr-city-mission": [
+            "fr-city-mission-act-2", "fr-city-mission-act-3",
+            "fr-city-mission-act-4", "fr-city-mission-act-5",
+            "fr-city-mission-act-6", "fr-city-mission-act-7",
+            "fr-city-mission-act-8", "fr-city-mission-act-9",
+            "fr-city-mission-act-10",
+        ],
+        "fr-pharmacy-mission": [
+            "fr-pharmacy-mission-act-2", "fr-pharmacy-mission-act-3",
+            "fr-pharmacy-mission-act-4", "fr-pharmacy-mission-act-5",
+            "fr-pharmacy-mission-act-6", "fr-pharmacy-mission-act-7",
+            "fr-pharmacy-mission-act-8", "fr-pharmacy-mission-act-9",
+            "fr-pharmacy-mission-act-10",
+        ],
+        "fr-a2-hotel-mission": [
+            "fr-a2-hotel-mission-act-2", "fr-a2-hotel-mission-act-3",
+            "fr-a2-hotel-mission-act-4", "fr-a2-hotel-mission-act-5",
+            "fr-a2-hotel-mission-act-6", "fr-a2-hotel-mission-act-7",
+            "fr-a2-hotel-mission-act-8", "fr-a2-hotel-mission-act-9",
+        ],
+    ]
+
     // MARK: - Pack load
 
     func testFrenchPackLoadsAndValidates() throws {
@@ -312,5 +362,177 @@ final class PackFrenchTests: XCTestCase {
         base = try XCTUnwrap(pack.activity(id: "fr-routine-foundation-cloze")?.base)
         XCTAssertTrue(base.prompt.contains("Anna’s words to Marc"),
                       "routine cloze must dictate the speaking context")
+    }
+
+    // MARK: - Wave B (missions outside fr-unit-1/fr-unit-2)
+
+    /// Every graded step in the seven Wave B mission lessons has a real
+    /// authored hint, not the runtime generic fallbacks.
+    func testBatch2GradedStepsHaveAuthoredHints() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch2Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text activity and cloze blank in the Wave B mission lessons
+    /// authors error-specific feedback.
+    func testBatch2TextActivitiesAuthorErrors() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch2Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in the Wave B missions hit their authored
+    /// category + explanation and are never accepted.
+    func testBatch2ErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try frenchPack()
+
+        // fr-food-foundation
+        var result = try gradeText("fr-food-foundation-act-rb4", in: pack, "Je prends un café.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-food-foundation-act-rb4", in: pack, "Je prends un café et une thé.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-food-foundation-act-rb4", in: pack, "Je prend un café et un thé, s'il vous plaît.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-food-foundation-cloze", blank: "b1", in: pack, "prendre")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-transport-foundation
+        result = try gradeBlank("fr-transport-foundation-cloze", blank: "b1", in: pack, "vas")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-transport-foundation-act-rb4", in: pack, "Je vais à la gare.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-transport-foundation-act-rb4", in: pack, "Je vas à Paris.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // fr-emergency-foundation
+        result = try gradeBlank("fr-emergency-foundation-cloze", blank: "b1", in: pack, "secours")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-emergency-foundation-act-rb4", in: pack, "12 rue de la Paix.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-emergency-foundation-act-rb4", in: pack, "Paris, 12 rue de la Paix.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // fr-picnic-plan-mission
+        result = try gradeBlank("fr-picnic-plan-mission-act-4", blank: "b1", in: pack, "trois")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-picnic-plan-mission-act-6", blank: "b1", in: pack, "plaisirs")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("fr-picnic-plan-mission-act-8", in: pack, "Comment ça coûte ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-picnic-plan-mission-act-8", in: pack, "Combien coûte ça ?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-picnic-plan-mission-act-9", in: pack, "Je vais le marché samedi.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("fr-picnic-plan-mission-act-9", in: pack, "Tu vas au marché samedi.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // fr-city-mission
+        result = try gradeBlank("fr-city-mission-act-6", blank: "b1", in: pack, "vais")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-city-mission-act-7", in: pack, "Où est la marché ?")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-city-mission-act-7", in: pack, "Ou est le marché ?")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("fr-city-mission-act-10", in: pack, "Je vais à la maison.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-city-mission-act-10", in: pack, "Je vais à le maison à midi.")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // fr-pharmacy-mission
+        result = try gradeBlank("fr-pharmacy-mission-act-5", blank: "b1", in: pack, "bois")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-pharmacy-mission-act-7", in: pack, "Je veux un médicament, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-pharmacy-mission-act-7", in: pack, "Je voudrais un médicament.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-pharmacy-mission-act-10", in: pack, "Je prends un comprimé.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-pharmacy-mission-act-10", in: pack, "Je bois un comprimé ce soir.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-hotel-mission
+        result = try gradeText("fr-a2-hotel-mission-act-3", in: pack, "J'ai réserver une chambre.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-hotel-mission-act-3", in: pack, "Je suis réservé une chambre.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeBlank("fr-a2-hotel-mission-act-5", blank: "b1", in: pack, "deux")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-hotel-mission-act-7", in: pack, "Avez-vous un chambre calme ?")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-a2-hotel-mission-act-7", in: pack, "Tu as une chambre calme ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-hotel-mission-act-9", in: pack, "Bonjour, j'ai réservé une chambre.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-hotel-mission-act-9", in: pack, "Bonsoir, j'ai réservé chambre.")
+        XCTAssertEqual(result.category, "missing word")
+    }
+
+    /// Natural alternative answers accepted for the Wave B missions (Wave B
+    /// alignment fixes).
+    func testBatch2AcceptsNaturalAlternatives() throws {
+        let pack = try frenchPack()
+
+        // Market price question — inverted word order is natural French.
+        var result = try gradeText("fr-picnic-plan-mission-act-8", in: pack, "Ça coûte combien ?")
+        XCTAssertTrue(result.accepted)
+
+        // Hotel — non-inverted spoken question and 'second' for the floor.
+        result = try gradeText("fr-a2-hotel-mission-act-7", in: pack, "Vous avez une chambre calme ?")
+        XCTAssertTrue(result.accepted, "'Vous avez…' without inversion must be accepted")
+        result = try gradeText("fr-a2-hotel-mission-act-7", in: pack, "Est-ce que vous avez une chambre calme ?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeBlank("fr-a2-hotel-mission-act-5", blank: "b1", in: pack, "second")
+        XCTAssertTrue(result.accepted, "'second' for the second floor must be accepted")
+    }
+
+    /// Every Wave B mission ends on a text final-response step (rubric M5,
+    /// audit final-response gap). The two lessons that previously ended on an
+    /// ordering step now close with a typed line.
+    func testBatch2MissionsEndWithTextFinalResponse() throws {
+        let pack = try frenchPack()
+        for lessonId in Self.batch2Lessons.keys.sorted() {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), lessonId)
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                guard case .text = act else {
+                    XCTFail("\(lessonId): terminal step \(step.id) must be a text activity")
+                    continue
+                }
+            }
+        }
+        // The two repaired missions close on the dictated production line.
+        let city = try XCTUnwrap(pack.lesson(id: "fr-city-mission"))
+        XCTAssertTrue(city.steps.contains { $0.id == "fr-city-mission-step-10" },
+                      "city mission must end at step-10")
+        let pharmacy = try XCTUnwrap(pack.lesson(id: "fr-pharmacy-mission"))
+        XCTAssertTrue(pharmacy.steps.contains { $0.id == "fr-pharmacy-mission-step-10" },
+                      "pharmacy mission must end at step-10")
     }
 }

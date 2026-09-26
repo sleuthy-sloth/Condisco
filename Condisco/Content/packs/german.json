@@ -6289,7 +6289,9 @@
         "vocabulary"
       ],
       "prompt": "First: ask the price of the apples. Which question does it?",
-      "hints": [],
+      "hints": [
+        "Price questions open with the question word for 'what' — Was. The subject here is plural (zwei Äpfel), so the verb is the plural kosten, not kostet. Wie asks 'how' and Wo asks 'where' — neither starts a price question."
+      ],
       "feedback": "Was kosten zwei Äpfel? — a plural subject takes kosten; Was kostet is for one thing.",
       "evidenceKey": "de-market-run-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -6335,7 +6337,9 @@
         "vocabulary"
       ],
       "prompt": "The seller says: „Zwei Euro.“ You glance at your coins and decide it is a fair price. Complete your verdict with the word from «Prices and paying».",
-      "hints": [],
+      "hints": [
+        "The word from «Prices and paying» for a price that feels fair — 'inexpensive'. It begins with g and is the opposite of teuer: Das ist günstig."
+      ],
       "feedback": "Günstig — inexpensive. The opposite verdict, teuer, would start a haggle you do not want.",
       "evidenceKey": "de-market-run-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -6365,7 +6369,18 @@
             "günstig"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "teuer",
+              "category": "incorrect answer",
+              "explanation": "teuer means 'expensive' — the opposite of your verdict. When two euros feels fair, German says Das ist günstig."
+            },
+            {
+              "answer": "billig",
+              "category": "incorrect answer",
+              "explanation": "billig also means cheap, but it carries a 'low quality' tone. The positive word for a fair price is günstig."
+            }
+          ]
         }
       }
     },
@@ -6384,7 +6399,9 @@
         "grammar"
       ],
       "prompt": "The board reads: Apfel 1 Euro, Kaffee 2 Euro. You decide the coffee is the treat and order it to take away. Which line?",
-      "hints": [],
+      "hints": [
+        "Use the same request you made at the café: ich möchte for 'I would like'. The coffee is the thing you order, so the masculine article takes the object form — einen, not ein."
+      ],
       "feedback": "Einen again — the coffee is the object of your ordering, masculine, so einen.",
       "evidenceKey": "de-market-run-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -6426,7 +6443,9 @@
         "grammar"
       ],
       "prompt": "You hold the apples and the coffee. Time to pay — but the Rechnung is feminine. Which article?",
-      "hints": [],
+      "hints": [
+        "The bill (die Rechnung) is feminine, and it stays die even when you name it as the thing you want. Capital D, because it opens the sentence."
+      ],
       "feedback": "Die Rechnung, bitte — feminine noun, so die.",
       "evidenceKey": "de-market-run-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -6456,7 +6475,23 @@
             "Die"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Der",
+              "category": "wrong gender",
+              "explanation": "Rechnung is feminine, so its article is die, not der. Say: Die Rechnung, bitte."
+            },
+            {
+              "answer": "Den",
+              "category": "wrong gender",
+              "explanation": "den is the masculine object form; Rechnung is feminine and keeps die: Die Rechnung, bitte."
+            },
+            {
+              "answer": "Eine",
+              "category": "incorrect answer",
+              "explanation": "Eine Rechnung means 'a bill'. Here you want THE bill for your purchase, so German uses the definite article: Die Rechnung, bitte."
+            }
+          ]
         }
       }
     },
@@ -6474,7 +6509,9 @@
         "vocabulary"
       ],
       "prompt": "Before the bill arrives, the shopkeeper asks if everything is all right. Answer yes and thank them, the way you learned in your very first lesson.",
-      "hints": [],
+      "hints": [
+        "Your very first lesson gave you the two-word reply: the word for 'yes', then the single word for 'thanks' — the phrase that answers 'everything all right?'"
+      ],
       "feedback": "Ja, danke. — your first German words, still doing work on the mission.",
       "evidenceKey": "de-market-run-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -6488,7 +6525,23 @@
           "Ja, danke."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ja.",
+            "category": "missing word",
+            "explanation": "You said yes, but the friendly question also deserves the thanks: Ja, danke."
+          },
+          {
+            "answer": "Ja, bitte.",
+            "category": "incorrect answer",
+            "explanation": "bitte asks for something; here you confirm and thank. The answer is Ja, danke."
+          },
+          {
+            "answer": "Danke, ja.",
+            "category": "word-order problem",
+            "explanation": "German puts yes first, then thanks: Ja, danke."
+          }
+        ]
       }
     },
     {
@@ -6505,7 +6558,9 @@
         "vocabulary"
       ],
       "prompt": "One for the road: your friend arrives and wants a coffee too. Make the short request.",
-      "hints": [],
+      "hints": [
+        "The three-word request you practiced at the café: the object form of 'a' (Einen), the drink, and bitte — in that order, exactly like your café order."
+      ],
       "feedback": "Mission complete — Einen Kaffee, bitte, and you walk off the market with everything on the list.",
       "evidenceKey": "de-market-run-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -6519,7 +6574,18 @@
           "Einen Kaffee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ein Kaffee, bitte.",
+            "category": "wrong article",
+            "explanation": "The coffee is the thing you order, so the masculine article takes the object form: einen Kaffee, not ein Kaffee."
+          },
+          {
+            "answer": "Einen Kaffee.",
+            "category": "missing word",
+            "explanation": "Add bitte — the polite 'please' — to complete the request: Einen Kaffee, bitte."
+          }
+        ]
       }
     },
     {
@@ -6901,7 +6967,9 @@
         "vocabulary"
       ],
       "prompt": "You reach the ticket counter. The clerk looks up and asks: Wohin? — Where to? What do you say?",
-      "hints": [],
+      "hints": [
+        "The clerk asked where you are going — Wohin? (Where to?). Answer with the destination: the word for 'to' that pairs with a city (nach), the city, and bitte."
+      ],
       "feedback": "Nach Hamburg, bitte. — nach means to when a city follows, and bitte softens every request. You have told them exactly where you are going.",
       "evidenceKey": "de-train-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -6946,7 +7014,9 @@
         "vocabulary"
       ],
       "prompt": "Now ask for the ticket itself. Write in German: I would like a ticket.",
-      "hints": [],
+      "hints": [
+        "The same polite opener you used for coffee — ich möchte — then the ticket. Fahrkarte is feminine, so the object-form article is eine."
+      ],
       "feedback": "Ich möchte eine Fahrkarte. — the same ich möchte you used for coffee, now buying a train ticket. The words travel with you.",
       "evidenceKey": "de-train-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -6958,7 +7028,23 @@
           "Ich möchte eine Fahrkarte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich möchte ein Fahrkarte.",
+            "category": "wrong article",
+            "explanation": "Fahrkarte is feminine, so the object-form article is eine: Ich möchte eine Fahrkarte."
+          },
+          {
+            "answer": "Ich möchte einen Fahrkarte.",
+            "category": "wrong article",
+            "explanation": "einen is the masculine object form; Fahrkarte is feminine, so eine: Ich möchte eine Fahrkarte."
+          },
+          {
+            "answer": "Ich möchte eine Karte.",
+            "category": "incorrect answer",
+            "explanation": "Karte is a card; the ticket you buy at the station is die Fahrkarte."
+          }
+        ]
       }
     },
     {
@@ -6980,7 +7066,9 @@
         "vocabulary"
       ],
       "prompt": "The clerk nods: one ticket to Hamburg. Before you pay, you need the price. What do you ask?",
-      "hints": [],
+      "hints": [
+        "You need a price, and the line for that is the question word 'what' plus the verb 'to cost' — Was kostet …? The very line you used at the market."
+      ],
       "feedback": "Was kostet das? — how much does that cost? The exact line you used at the market. Prices are prices, everywhere.",
       "evidenceKey": "de-train-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -7025,7 +7113,9 @@
         "vocabulary"
       ],
       "prompt": "The clerk answers with the price. Complete the sentence:",
-      "hints": [],
+      "hints": [
+        "The price is one of the numbers from «Numbers and quantities» — the one that means 10, written as a word."
+      ],
       "feedback": "Das kostet zehn Euro. — zehn is one of the six-through-ten numbers you learned. Say the whole sentence out loud: it sounds like a real traveler.",
       "evidenceKey": "de-train-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -7053,7 +7143,18 @@
             "zehn"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "zehn Euro",
+              "category": "extra word",
+              "explanation": "Euro is already in the sentence — the blank takes just the number: Das kostet zehn Euro."
+            },
+            {
+              "answer": "10",
+              "category": "incorrect answer",
+              "explanation": "Write the German number in letters: zehn, not the digit 10."
+            }
+          ]
         }
       }
     },
@@ -7074,7 +7175,9 @@
         "grammar"
       ],
       "prompt": "Build your full request at the counter. Say: I would like a ticket, please.",
-      "hints": [],
+      "hints": [
+        "Build the request in one breath: the polite opener Ich, the verb möchte, the ticket with its feminine article (eine Fahrkarte), and bitte closing with a comma and period."
+      ],
       "feedback": "Ich möchte eine Fahrkarte, bitte. — the whole request in one breath. The clerk is already printing your ticket.",
       "evidenceKey": "de-train-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -7124,7 +7227,9 @@
         "vocabulary"
       ],
       "prompt": "Ticket in hand. Now the platform: where is Gleis vier? What do you ask the guard?",
-      "hints": [],
+      "hints": [
+        "You are asking where the platform is — the question word wo ('where'), the platform Gleis vier, and bitte to ask politely."
+      ],
       "feedback": "Wo ist Gleis vier, bitte? — wo for where, bitte for warmth. Gleis means platform, and right now it is the most important word in the station.",
       "evidenceKey": "de-train-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -7170,7 +7275,9 @@
         "vocabulary"
       ],
       "prompt": "The guard points down the hall. Complete the directions:",
-      "hints": [],
+      "hints": [
+        "The direction that follows 'straight ahead' — the word for 'right' from your directions lesson. It is the opposite of links."
+      ],
       "feedback": "Geradeaus, dann rechts. — straight ahead, then right. The direction words you learned are doing the whole job here.",
       "evidenceKey": "de-train-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -7198,7 +7305,18 @@
             "rechts"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "links",
+              "category": "incorrect answer",
+              "explanation": "links is 'left'. The guard said straight ahead, then right: rechts."
+            },
+            {
+              "answer": "nach rechts",
+              "category": "extra word",
+              "explanation": "Just rechts after dann — nach is not needed here: geradeaus, dann rechts."
+            }
+          ]
         }
       }
     },
@@ -7217,7 +7335,9 @@
         "vocabulary"
       ],
       "prompt": "The train to Hamburg rolls in. You turn to the guard with a smile. Write it in German: Thank you!",
-      "hints": [],
+      "hints": [
+        "The one word for 'thank you' — the one you used after your coffee. Capital letter, full stop, mission done."
+      ],
       "feedback": "Danke. — and you are aboard, ticket in hand, platform found. Mission complete.",
       "evidenceKey": "de-train-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -7229,7 +7349,18 @@
           "Danke."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vielen Dank.",
+            "category": "incorrect answer",
+            "explanation": "Vielen Dank is the longer 'many thanks'. The line this step practices is the short Danke."
+          },
+          {
+            "answer": "Danke schön.",
+            "category": "incorrect answer",
+            "explanation": "Danke schön is 'thank you very much' — a real phrase, but this step asks for the plain Danke."
+          }
+        ]
       }
     },
     {
@@ -7273,7 +7404,9 @@
         "vocabulary"
       ],
       "prompt": "The door opens. Lena's parents smile at you. What leaves your mouth first?",
-      "hints": [],
+      "hints": [
+        "The greeting opens every exchange — the word you say the moment the door opens, before your name, before anything else. It is the very first German word you learned."
+      ],
       "feedback": "Hallo first — always. The greeting opens every door in Germany, literally this time.",
       "evidenceKey": "de-family-visit-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -7318,7 +7451,9 @@
         "vocabulary"
       ],
       "prompt": "Write in German: My name is Anna.",
-      "hints": [],
+      "hints": [
+        "German gives a name with the verb 'to be called' — heißen — not with sein. With ich it becomes heiße, then your name: Ich heiße Anna."
+      ],
       "feedback": "Ich heiße Anna. — ich heiße is I am called, the German way to give your name. Now say it with your own name.",
       "evidenceKey": "de-family-visit-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -7330,7 +7465,23 @@
           "Ich heiße Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich bin Anna.",
+            "category": "incorrect answer",
+            "explanation": "Ich bin Anna says 'I am Anna' with sein. The step asks for the verb 'to be called': Ich heiße Anna."
+          },
+          {
+            "answer": "Ich heißt Anna.",
+            "category": "wrong conjugation",
+            "explanation": "ich takes heiße; heißt is the du-form. Pair ich with heiße: Ich heiße Anna."
+          },
+          {
+            "answer": "Ich heiße.",
+            "category": "missing word",
+            "explanation": "The introduction names you — end with your name: Ich heiße Anna."
+          }
+        ]
       }
     },
     {
@@ -7354,7 +7505,9 @@
         "vocabulary"
       ],
       "prompt": "Lena's mother beams: Hallo Anna! You answer warmly:",
-      "hints": [],
+      "hints": [
+        "Two words answer a warm 'Hallo Anna!' — the phrase that means literally 'it pleases me'. It is the friendly reply that keeps the conversation warm."
+      ],
       "feedback": "Freut mich. — nice to meet you. Two words that make any German host smile. Directions and prices can wait for another day.",
       "evidenceKey": "de-family-visit-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -7401,7 +7554,9 @@
         "grammar"
       ],
       "prompt": "Introduce your sister. Build: My sister is called Lena.",
-      "hints": [],
+      "hints": [
+        "Order: the possessive Meine, the family word Schwester, the same verb you used for your own name (heißt), and her name at the end."
+      ],
       "feedback": "Meine Schwester heißt Lena. — meine is my, and heißt does the same job as in ich heiße. You are introducing a whole family now.",
       "evidenceKey": "de-family-visit-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -7455,7 +7610,9 @@
         "vocabulary"
       ],
       "prompt": "At the table, Lena's father asks what you enjoy doing. You want to say you like playing. What do you answer?",
-      "hints": [],
+      "hints": [
+        "To say you like doing something, German puts the verb in the ich-form and adds gern — 'with pleasure'. The other options glue a politeness word onto the verb, which changes nothing."
+      ],
       "feedback": "Ich spiele gern. — gern turns any verb into a like: ich spiele gern is I like playing. Bitte and danke are lovely words, but they are not hobbies.",
       "evidenceKey": "de-family-visit-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -7502,7 +7659,9 @@
         "grammar"
       ],
       "prompt": "Lena's mother asks about your family. Complete your answer:",
-      "hints": [],
+      "hints": [
+        "The masculine family word that means 'brother' — it pairs with Mein (masculine 'my'), while your sister would take Meine."
+      ],
       "feedback": "Mein Bruder wohnt in Hamburg. — my brother lives in Hamburg. Mein pairs with masculine words like Bruder, and wohnt is lives, right from your free-time lesson.",
       "evidenceKey": "de-family-visit-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -7530,7 +7689,18 @@
             "Bruder"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Schwester",
+              "category": "wrong gender",
+              "explanation": "Schwester is feminine and would need Meine, not Mein. The word for a brother is Bruder."
+            },
+            {
+              "answer": "Brüder",
+              "category": "wrong number",
+              "explanation": "Brüder is the plural ('brothers'), but wohnt is singular. One brother: Bruder."
+            }
+          ]
         }
       }
     },
@@ -7554,7 +7724,9 @@
         "vocabulary"
       ],
       "prompt": "It is late and you have to go. At the door, you thank the family for the evening. What do you say?",
-      "hints": [],
+      "hints": [
+        "The single word that closes a German evening — the thanks you used at the café. Not a direction, not a price: Danke."
+      ],
       "feedback": "Danke. — thank you. A small word with big warmth; it is how you close an evening in Germany.",
       "evidenceKey": "de-family-visit-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -7601,7 +7773,9 @@
         "vocabulary"
       ],
       "prompt": "The whole visit in one line. Write in German: Hello, my name is Anna.",
-      "hints": [],
+      "hints": [
+        "Two pieces from this lesson, in their order: the greeting, a comma, then the ich-heiße introduction with your name."
+      ],
       "feedback": "Hallo, ich heiße Anna. — greeting, name, warmth, exactly as you practiced. Lena's parents are smiling. Mission complete.",
       "evidenceKey": "de-family-visit-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -7613,7 +7787,18 @@
           "Hallo, ich heiße Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hallo, ich bin Anna.",
+            "category": "incorrect answer",
+            "explanation": "Introductions use the verb 'to be called', not sein: Hallo, ich heiße Anna."
+          },
+          {
+            "answer": "Ich heiße Anna. Hallo.",
+            "category": "word-order problem",
+            "explanation": "The greeting opens the line: Hallo, ich heiße Anna."
+          }
+        ]
       }
     },
     {
@@ -11443,7 +11628,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is ‘the bottle’?",
-      "hints": [],
+      "hints": [
+        "The feminine word for bottle — the one that pairs with die. Kilo and Stück are neuter (das), Markt is masculine (der)."
+      ],
       "feedback": "Flasche is feminine: die Flasche. Kilo and Stück are neuter, Markt is masculine.",
       "evidenceKey": "de-market-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11489,7 +11676,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I’ll take a kilo of apples.",
-      "hints": [],
+      "hints": [
+        "Assemble the market line: Ich nehme, the amount ein Kilo (neuter), then the plural Äpfel straight after the amount, no article."
+      ],
       "feedback": "Nehmen for take, ein Kilo for the amount, and Äpfel needs no article: Ich nehme ein Kilo Äpfel.",
       "evidenceKey": "de-market-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11503,7 +11692,23 @@
           "Ich nehme ein Kilo Äpfel."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich kaufe ein Kilo Äpfel.",
+            "category": "incorrect answer",
+            "explanation": "kaufen ('to buy') is grammatical, but the step asks for the market phrase Ich nehme — 'I'll take'."
+          },
+          {
+            "answer": "Ich nehme eine Kilo Äpfel.",
+            "category": "wrong article",
+            "explanation": "Kilo is neuter, so the article is ein: ein Kilo Äpfel, not eine."
+          },
+          {
+            "answer": "Ich nehme ein Kilo Äpfeln.",
+            "category": "wrong number",
+            "explanation": "After ein Kilo the fruit stays in the plain plural: Äpfel, not Äpfeln."
+          }
+        ]
       }
     },
     {
@@ -11520,7 +11725,9 @@
         "vocabulary"
       ],
       "prompt": "Flasche is feminine. Pick the correct sentence.",
-      "hints": [],
+      "hints": [
+        "Flasche is feminine, and as the object of nehme it takes eine — the same eine you used for eine Fahrkarte. ein is neuter, einen masculine."
+      ],
       "feedback": "Feminine Flasche takes eine. Einen is masculine accusative — wrong gender here.",
       "evidenceKey": "de-market-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11562,7 +11769,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say I’ll take a piece of cheese.",
-      "hints": [],
+      "hints": [
+        "The market formula: Ich nehme, then the amount ein Stück (neuter takes ein), then the food — Käse."
+      ],
       "feedback": "Ich nehme ein Stück Käse: Stück is neuter, so ein.",
       "evidenceKey": "de-market-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11618,7 +11827,9 @@
         "grammar"
       ],
       "prompt": "Change the amount to a bottle of water: Ich nehme ein Kilo Äpfel.",
-      "hints": [],
+      "hints": [
+        "Keep Ich nehme and swap the amount: the feminine Flasche takes eine, then the drink Wasser follows without an article."
+      ],
       "feedback": "The amount and the food both change — and Flasche brings eine: Ich nehme eine Flasche Wasser.",
       "evidenceKey": "de-market-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11632,7 +11843,23 @@
           "Ich nehme eine Flasche Wasser."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich nehme ein Flasche Wasser.",
+            "category": "wrong article",
+            "explanation": "Flasche is feminine, so the article is eine: eine Flasche, not ein."
+          },
+          {
+            "answer": "Ich nehme einen Flasche Wasser.",
+            "category": "wrong article",
+            "explanation": "einen is masculine; Flasche is feminine: eine Flasche Wasser."
+          },
+          {
+            "answer": "Ich nehme eine Flasche Wassers.",
+            "category": "incorrect answer",
+            "explanation": "After eine Flasche the drink stays plain: Wasser, not the genitive Wassers."
+          }
+        ]
       }
     },
     {
@@ -11649,7 +11876,9 @@
         "grammar"
       ],
       "prompt": "Complete with the market’s favorite verb: Ich ___ ein Kilo Äpfel.",
-      "hints": [],
+      "hints": [
+        "The market's favorite verb — the one that means 'I'll take'. With ich it drops the -n: nehme."
+      ],
       "feedback": "Ich nehme… — I’ll take — is how every market purchase starts.",
       "evidenceKey": "de-market-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11679,7 +11908,18 @@
             "nehme"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "nehmen",
+              "category": "wrong conjugation",
+              "explanation": "After ich the verb takes the ich-form: nehme, not the infinitive nehmen."
+            },
+            {
+              "answer": "kaufen",
+              "category": "incorrect answer",
+              "explanation": "kaufen means 'to buy'. The market line is Ich nehme — 'I'll take' — as taught in «At the market»."
+            }
+          ]
         }
       }
     },
@@ -11883,7 +12123,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘to need’?",
-      "hints": [],
+      "hints": [
+        "The verb that means 'to need' — the one you use to tell the pharmacist what you need. It begins with b-: brauchen."
+      ],
       "feedback": "Brauchen is to need. Kaufen is to buy, suchen is to look for, finden is to find.",
       "evidenceKey": "de-pharmacy-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11929,7 +12171,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I need a tablet.",
-      "hints": [],
+      "hints": [
+        "Build the request: Ich brauche (I need), the feminine article eine, then the pill — Tablette."
+      ],
       "feedback": "Tablette is feminine and the direct object: Ich brauche eine Tablette.",
       "evidenceKey": "de-pharmacy-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11943,7 +12187,23 @@
           "Ich brauche eine Tablette."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich brauche ein Tablette.",
+            "category": "wrong article",
+            "explanation": "Tablette is feminine, so the article is eine: eine Tablette, not ein."
+          },
+          {
+            "answer": "Ich brauche einen Tablette.",
+            "category": "wrong article",
+            "explanation": "einen is masculine; Tablette is feminine: eine Tablette."
+          },
+          {
+            "answer": "Ich brauche eine Tabletten.",
+            "category": "wrong number",
+            "explanation": "Tabletten is the plural. One tablet: eine Tablette."
+          }
+        ]
       }
     },
     {
@@ -11960,7 +12220,9 @@
         "vocabulary"
       ],
       "prompt": "Tablette is feminine. Pick the correct sentence.",
-      "hints": [],
+      "hints": [
+        "Tablette is feminine, and as the object of brauchen it takes eine — the same eine as eine Flasche. ein is neuter, einen masculine."
+      ],
       "feedback": "Feminine accusative is eine: Ich brauche eine Tablette.",
       "evidenceKey": "de-pharmacy-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12002,7 +12264,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say that is for headaches.",
-      "hints": [],
+      "hints": [
+        "Order the statement: Das ist first ('that is'), then gegen ('against'), then the ailment Kopfschmerzen at the end."
+      ],
       "feedback": "Das ist gegen Kopfschmerzen: gegen takes the ailment in the accusative.",
       "evidenceKey": "de-pharmacy-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12053,7 +12317,9 @@
         "grammar"
       ],
       "prompt": "Change the noun to the medicine: Ich brauche eine Tablette.",
-      "hints": [],
+      "hints": [
+        "Keep Ich brauche and swap the object: Medikament is neuter, so the feminine eine becomes ein before it."
+      ],
       "feedback": "Medikament is neuter, so eine becomes ein: Ich brauche ein Medikament.",
       "evidenceKey": "de-pharmacy-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12067,7 +12333,23 @@
           "Ich brauche ein Medikament."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich brauche eine Medikament.",
+            "category": "wrong article",
+            "explanation": "Medikament is neuter, so the article is ein: ein Medikament, not eine."
+          },
+          {
+            "answer": "Ich brauche einen Medikament.",
+            "category": "wrong article",
+            "explanation": "einen is masculine; Medikament is neuter: ein Medikament."
+          },
+          {
+            "answer": "Ich brauche Medikament.",
+            "category": "missing word",
+            "explanation": "Add the neuter article: Ich brauche ein Medikament."
+          }
+        ]
       }
     },
     {
@@ -12085,7 +12367,9 @@
         "grammar"
       ],
       "prompt": "Complete with the word for ‘something’: Ich brauche ___ gegen Kopfschmerzen.",
-      "hints": [],
+      "hints": [
+        "The word for 'something' — the useful, open word that keeps the request general. It starts with e-: etwas."
+      ],
       "feedback": "Etwas keeps it usefully vague: Ich brauche etwas gegen Kopfschmerzen.",
       "evidenceKey": "de-pharmacy-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12115,7 +12399,23 @@
             "etwas"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ein",
+              "category": "incorrect answer",
+              "explanation": "ein is the article 'a' and cannot stand alone here. The word for 'something' is etwas."
+            },
+            {
+              "answer": "was",
+              "category": "incorrect answer",
+              "explanation": "was is the short colloquial form of 'something'. The step asks for the full standard word: etwas."
+            },
+            {
+              "answer": "nichts",
+              "category": "incorrect answer",
+              "explanation": "nichts means 'nothing' — the opposite of what the pharmacist needs to hear. The word is etwas."
+            }
+          ]
         }
       }
     },
@@ -12132,7 +12432,9 @@
         "vocabulary"
       ],
       "prompt": "Which word calls for help?",
-      "hints": [],
+      "hints": [
+        "The word that literally calls for help — what you shout when someone is hurt: Hilfe! The other three are greetings, thanks, and good-bye."
+      ],
       "feedback": "Hilfe! is help! Hallo is hello, Danke is thanks, Tschüss is bye.",
       "evidenceKey": "de-emergency-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12177,7 +12479,9 @@
         "grammar"
       ],
       "prompt": "Predict the formal command before you write it: Call the doctor!",
-      "hints": [],
+      "hints": [
+        "The formal command: the verb rufen first, then Sie, then the doctor with the masculine object article — den Arzt."
+      ],
       "feedback": "Formal imperative: verb first, then Sie — Rufen Sie den Arzt! (Arzt is masculine accusative: den Arzt.)",
       "evidenceKey": "de-emergency-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12191,7 +12495,23 @@
           "Rufen Sie den Arzt!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Rufen Sie der Arzt!",
+            "category": "wrong article",
+            "explanation": "The doctor is the object of the command, so the masculine article takes the object form: den Arzt."
+          },
+          {
+            "answer": "Rufen Sie ein Arzt!",
+            "category": "incorrect answer",
+            "explanation": "ein Arzt would be 'a doctor'. The command targets THE doctor: den Arzt."
+          },
+          {
+            "answer": "Ruf den Arzt!",
+            "category": "incorrect answer",
+            "explanation": "Ruf is the informal du-form. The step asks for the formal command: Rufen Sie den Arzt!"
+          }
+        ]
       }
     },
     {
@@ -12207,7 +12527,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct formal command.",
-      "hints": [],
+      "hints": [
+        "A formal command puts the verb first, then Sie, then the rest: Rufen Sie den Arzt! The second option is a plain statement, not a command."
+      ],
       "feedback": "The command starts with the verb: Rufen Sie den Arzt! The second option is a plain statement.",
       "evidenceKey": "de-emergency-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12249,7 +12571,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to shout for help, politely.",
-      "hints": [],
+      "hints": [
+        "Even in an emergency: the shout first (Hilfe), then a comma, then the polite word bitte! — Hilfe, bitte!"
+      ],
       "feedback": "Hilfe, bitte!: even an emergency can keep its manners.",
       "evidenceKey": "de-emergency-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12288,7 +12612,9 @@
         "grammar"
       ],
       "prompt": "Make it informal (to a friend): Rufen Sie den Arzt!",
-      "hints": [],
+      "hints": [
+        "Make it informal: drop Sie and trim the verb — the formal Rufen loses its -en and becomes Ruf."
+      ],
       "feedback": "The du-imperative drops the -en: Ruf den Arzt!",
       "evidenceKey": "de-emergency-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12302,7 +12628,18 @@
           "Ruf den Arzt!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Rufen den Arzt!",
+            "category": "wrong conjugation",
+            "explanation": "Rufen keeps the polite -en. The informal du-command trims to Ruf: Ruf den Arzt!"
+          },
+          {
+            "answer": "Ruf Sie den Arzt!",
+            "category": "extra word",
+            "explanation": "Informal means no Sie: Ruf den Arzt!"
+          }
+        ]
       }
     },
     {
@@ -12319,7 +12656,9 @@
         "grammar"
       ],
       "prompt": "Complete the formal command: ___ Sie schnell!",
-      "hints": [],
+      "hints": [
+        "The formal command needs its verb first, before Sie — the verb that means 'to call', in the same form as Rufen Sie den Arzt!: Rufen."
+      ],
       "feedback": "Rufen Sie schnell!: verb first, Sie second.",
       "evidenceKey": "de-emergency-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12349,7 +12688,18 @@
             "Rufen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Ruf",
+              "category": "wrong conjugation",
+              "explanation": "Ruf is the informal du-form. The step asks for the formal command with Sie: Rufen."
+            },
+            {
+              "answer": "Rufe",
+              "category": "wrong conjugation",
+              "explanation": "The formal imperative keeps the full Sie-form: Rufen Sie schnell!, not Rufe."
+            }
+          ]
         }
       }
     },
@@ -16406,7 +16756,9 @@
         "vocabulary"
       ],
       "prompt": "The interviewer smiles: 'Erzählen Sie etwas über sich.' What do you say first?",
-      "hints": [],
+      "hints": [
+        "Answer the invitation to introduce yourself ('Erzählen Sie etwas über sich') with the polite wish you practiced: Ich würde gern … — 'I would like to…'. The other options sidestep the interview."
+      ],
       "feedback": "Ich würde gern hier arbeiten — polite, on-topic, in German. The goal, right away.",
       "evidenceKey": "de-a2-bewerbungsgespraech-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -16457,7 +16809,9 @@
         "grammar"
       ],
       "prompt": "Describe your experience: I worked in Berlin for three years.",
-      "hints": [],
+      "hints": [
+        "Perfekt wraps the sentence: Ich habe first, the time phrase drei Jahre, the place in Berlin, and the past participle gearbeitet last. The participle stays at the end."
+      ],
       "feedback": "Ich habe drei Jahre in Berlin gearbeitet — Perfekt for experience.",
       "evidenceKey": "de-a2-bewerbungsgespraech-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -16517,7 +16871,9 @@
         "grammar"
       ],
       "prompt": "Ask politely: Could you please repeat that?",
-      "hints": [],
+      "hints": [
+        "The infinitive that means 'to repeat' — it comes after bitte at the end of the polite question. It starts with w- and contains the word for 'again', wieder: wiederholen."
+      ],
       "feedback": "Wiederholen — 'to repeat': Könnten Sie das bitte wiederholen?",
       "evidenceKey": "de-a2-bewerbungsgespraech-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -16547,7 +16903,18 @@
             "wiederholen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "wiederholt",
+              "category": "wrong conjugation",
+              "explanation": "After Könnten Sie the main verb stays in the infinitive: wiederholen, not the participle wiederholt."
+            },
+            {
+              "answer": "wieder",
+              "category": "incorrect answer",
+              "explanation": "wieder is 'again' on its own. The verb that means 'to repeat' is wiederholen."
+            }
+          ]
         }
       }
     },
@@ -16570,7 +16937,9 @@
         "vocabulary"
       ],
       "prompt": "They ask about your plans. Which answer uses the future?",
-      "hints": [],
+      "hints": [
+        "Plans use the future: the auxiliary werden in the ich-form (werde) with the infinitive at the end. Würde expresses a wish, habe gelernt is the past, and lerne is the present."
+      ],
       "feedback": "Ich werde viel lernen — werden + infinitive is the future. Würde is a wish, habe gelernt is the past.",
       "evidenceKey": "de-a2-bewerbungsgespraech-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -16621,7 +16990,9 @@
         "vocabulary"
       ],
       "prompt": "Close the interview with thanks: Thank you for the interview.",
-      "hints": [],
+      "hints": [
+        "Build the closing thanks: a thanks phrase (Vielen Dank), then für, then the neuter noun Gespräch with its article das."
+      ],
       "feedback": "Vielen Dank für das Gespräch — and the job is practically yours.",
       "evidenceKey": "de-a2-bewerbungsgespraech-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -16636,7 +17007,18 @@
           "Danke für das Gespräch."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vielen Dank für die Gespräch.",
+            "category": "wrong article",
+            "explanation": "Gespräch is neuter, so the article is das: für das Gespräch, not die."
+          },
+          {
+            "answer": "Vielen Dank für der Gespräch.",
+            "category": "wrong article",
+            "explanation": "Gespräch is neuter, so the article is das: für das Gespräch, not der."
+          }
+        ]
       }
     },
     {
@@ -16677,7 +17059,9 @@
       "kind": "selection",
       "id": "de-market-foundation-act-rb2",
       "prompt": "The stall owner asks what you'd like. Which line says you'll take a piece of cheese?",
-      "hints": [],
+      "hints": [
+        "The market formula again: Ich nehme ein Stück Käse — the amount with its neuter article (ein Stück), then the food Käse at the end."
+      ],
       "feedback": "Stück is neuter, so ein Stück — and nehmen carries the purchase: Ich nehme ein Stück Käse.",
       "evidenceKey": "de-market-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16745,7 +17129,9 @@
       "kind": "selection",
       "id": "de-pharmacy-foundation-act-rb2",
       "prompt": "The pharmacist looks up. Which line asks for something for a headache?",
-      "hints": [],
+      "hints": [
+        "The phrase from this lesson: Ich brauche etwas gegen Kopfschmerzen — 'something for headaches'. Watch the preposition gegen and the plural Kopfschmerzen at the end."
+      ],
       "feedback": "Etwas keeps it usefully vague and gegen names the enemy: Ich brauche etwas gegen Kopfschmerzen.",
       "evidenceKey": "de-pharmacy-foundation-act-rb2",
       "assistanceAffectsEvidence": [

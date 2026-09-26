@@ -5084,7 +5084,9 @@
         "vocabulary"
       ],
       "prompt": "Three of these give a direction; the fourth is asking. Which single word is the asking one?",
-      "hints": [],
+      "hints": [
+        "The asking word carries a written accent and means 'where'. The other three — izquierda, derecha, recto — tell you a way to go, and none of them asks anything."
+      ],
       "feedback": "Dónde means where, and the written accent is there because the word is asking. Quién does the same job for a person, qué for a thing.",
       "evidenceKey": "es-directions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5129,7 +5131,9 @@
         "grammar"
       ],
       "prompt": "Put the Spanish words in order to ask where the station is.",
-      "hints": [],
+      "hints": [
+        "The question opens with the asking word ¿Dónde, then the verb está, then the article la, then the place estación — exactly the order from the exchange you read."
+      ],
       "feedback": "The question opens with ¿ and its asking word dónde, and estar supplies está. Estación is feminine, so its article is la.",
       "evidenceKey": "es-directions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -5178,7 +5182,9 @@
         "grammar"
       ],
       "prompt": "Ask in Spanish where the bathroom is. Baño is masculine.",
-      "hints": [],
+      "hints": [
+        "Keep the skeleton from the station question — ¿Dónde está + article + place. The prompt hands you the article: baño is masculine, so it takes el."
+      ],
       "feedback": "Only the noun and its article change inside ¿Dónde está?; el marks the masculine baño. The accent on dónde stays, because the word is still asking.",
       "evidenceKey": "es-directions-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -5192,7 +5198,28 @@
           "¿Dónde está el baño?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Dónde está baño?",
+            "category": "missing word",
+            "explanation": "The article el has to sit between the verb and the place: ¿Dónde está el baño?"
+          },
+          {
+            "answer": "¿Dónde es el baño?",
+            "category": "wrong conjugation",
+            "explanation": "Location takes estar, not ser — a place is where it is: ¿Dónde está el baño?"
+          },
+          {
+            "answer": "¿Dónde está la baño?",
+            "category": "wrong article",
+            "explanation": "The prompt marks baño as masculine, so its article is el, not la: ¿Dónde está el baño?"
+          },
+          {
+            "answer": "¿Dónde estás el baño?",
+            "category": "wrong conjugation",
+            "explanation": "Estás means 'you are'. The question asks where the bathroom is — third person está: ¿Dónde está el baño?"
+          }
+        ]
       }
     },
     {
@@ -5209,7 +5236,9 @@
         "grammar"
       ],
       "prompt": "Complete the directions: Todo recto, luego a la ___",
-      "hints": [],
+      "hints": [
+        "Todo recto comes first; luego means 'then'. The turn that follows is to the left: a la izquierda."
+      ],
       "feedback": "Izquierda is left. Derecha is the opposite, and a la is fixed in front of both of them.",
       "evidenceKey": "es-directions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5235,7 +5264,18 @@
             "izquierda"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "derecha",
+              "category": "incorrect answer",
+              "explanation": "Derecha is 'right'. The passerby said to turn left after going straight: a la izquierda."
+            },
+            {
+              "answer": "izquierdo",
+              "category": "wrong gender",
+              "explanation": "Direction phrases use the fixed feminine form a la izquierda; izquierdo appears with masculine nouns (el lado izquierdo)."
+            }
+          ]
         }
       }
     },
@@ -5252,7 +5292,9 @@
         "grammar"
       ],
       "prompt": "Soften the question by putting Perdone in front: ¿Dónde está la estación?",
-      "hints": [],
+      "hints": [
+        "Perdone goes ahead of the question, comma after it — the question itself stays exactly as it was, with its accent on dónde."
+      ],
       "feedback": "Perdone goes ahead of the question and a comma separates it. The accent on dónde stays, because it is still the word asking where.",
       "evidenceKey": "es-directions-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5266,7 +5308,18 @@
           "Perdone, ¿dónde está la estación?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Dónde está la estación?",
+            "category": "missing word",
+            "explanation": "The polite opener Perdone must come first — strangers get that courtesy: Perdone, ¿dónde está la estación?"
+          },
+          {
+            "answer": "Perdona, ¿dónde está la estación?",
+            "category": "wrong conjugation",
+            "explanation": "Perdona is the informal tú form. For a stranger use the formal Perdone."
+          }
+        ]
       }
     },
     {
@@ -6301,7 +6354,9 @@
         "vocabulary"
       ],
       "prompt": "You stop a passerby. Which question asks where the café is?",
-      "hints": [],
+      "hints": [
+        "Dónde asks 'where' and opens the question; your target is the café: ¿Dónde está el café? The price question ¿Cuánto cuesta? belongs to the bill, later in the mission."
+      ],
       "feedback": "Dónde asks 'where' — and it keeps its accent because it is a question.",
       "evidenceKey": "es-find-cafe-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -6349,7 +6404,9 @@
         "grammar"
       ],
       "prompt": "Complete the question.",
-      "hints": [],
+      "hints": [
+        "The blank holds the asking word for 'where' — capital D, with the accent you learned in «Asking the way»."
+      ],
       "feedback": "Dónde with the accent asks 'where' — the directions lesson used it with the station, and it works for the café too.",
       "evidenceKey": "es-find-cafe-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -6379,7 +6436,18 @@
             "Dónde"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Qué",
+              "category": "incorrect answer",
+              "explanation": "Qué means 'what' or 'that' — the place question wants the where-word: ¿Dónde está el café?"
+            },
+            {
+              "answer": "Cómo",
+              "category": "incorrect answer",
+              "explanation": "Cómo is 'how'. Asking where the café is needs dónde: ¿Dónde está el café?"
+            }
+          ]
         }
       }
     },
@@ -6399,7 +6467,9 @@
         "vocabulary"
       ],
       "prompt": "The passerby says: «A la izquierda, luego todo recto.» What do you do first?",
-      "hints": [],
+      "hints": [
+        "Luego means 'then'. The direction first on the list is the one you do first: turn left, then go straight ahead."
+      ],
       "feedback": "A la izquierda is 'to the left', and luego tells you the straight part comes second.",
       "evidenceKey": "es-find-cafe-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -6447,7 +6517,9 @@
         "grammar"
       ],
       "prompt": "The next turn is to the right. Complete the direction.",
-      "hints": [],
+      "hints": [
+        "The next turn is to the right — 'to the right' is a la derecha, the twin of a la izquierda."
+      ],
       "feedback": "A la derecha — right. The directions lesson paired it against a la izquierda.",
       "evidenceKey": "es-find-cafe-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -6477,7 +6549,18 @@
             "derecha"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "izquierda",
+              "category": "incorrect answer",
+              "explanation": "Izquierda is 'left' — the turn you already took. This one is to the right: derecha."
+            },
+            {
+              "answer": "derecho",
+              "category": "wrong gender",
+              "explanation": "The fixed direction phrase is a la derecha, with the feminine form; derecho is the masculine word used with nouns (el lado derecho)."
+            }
+          ]
         }
       }
     },
@@ -6497,7 +6580,9 @@
         "vocabulary"
       ],
       "prompt": "You found the café. Order one coffee, politely.",
-      "hints": [],
+      "hints": [
+        "The polite order goes Quisiera + un + café, and por favor closes it — the same frame you practiced at the café."
+      ],
       "feedback": "Quisiera wins again. But the server shakes her head — the coffee is finished!",
       "evidenceKey": "es-find-cafe-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -6545,7 +6630,9 @@
         "vocabulary"
       ],
       "prompt": "No coffee left. What do you order instead?",
-      "hints": [],
+      "hints": [
+        "Keep the exact polite frame and swap the drink: tea is té — Quisiera un té, por favor."
+      ],
       "feedback": "Tea saves the mission — same polite frame, and the accent on té stays.",
       "evidenceKey": "es-find-cafe-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -6591,7 +6678,9 @@
         "grammar"
       ],
       "prompt": "Mission nearly complete. Ask for the bill, the way «Prices and paying» taught you.",
-      "hints": [],
+      "hints": [
+        "The bill request from «Prices and paying»: two words plus por favor — La cuenta, por favor."
+      ],
       "feedback": "La cuenta, por favor. — mission complete: you found the café, ordered politely, and paid.",
       "evidenceKey": "es-find-cafe-mission-act-10",
       "assistanceAffectsEvidence": [
@@ -6606,7 +6695,23 @@
           "La cuenta por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La cuenta.",
+            "category": "missing word",
+            "explanation": "The polite line keeps por favor: La cuenta, por favor."
+          },
+          {
+            "answer": "Cuenta, por favor.",
+            "category": "missing word",
+            "explanation": "La belongs with cuenta — the bill is la cuenta: La cuenta, por favor."
+          },
+          {
+            "answer": "La cuenta, porfavor.",
+            "category": "incorrect answer",
+            "explanation": "Por favor is two separate words."
+          }
+        ]
       }
     },
     {
@@ -7041,7 +7146,9 @@
         "vocabulary"
       ],
       "prompt": "You stop a passerby. Which question asks where the museum is?",
-      "hints": [],
+      "hints": [
+        "Dónde opens a where-question and el museo names the target. ¿Cuánto cuesta? asks the price — you will need it at the ticket desk, not on the street."
+      ],
       "feedback": "¿Dónde? opens a where-question and el museo names your target. ¿Cuánto cuesta? asks the price — useful later, not now.",
       "evidenceKey": "es-directions-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -7086,7 +7193,9 @@
         "grammar"
       ],
       "prompt": "Complete the question. Notice the accent — it is the same word you learned in «Asking the way».",
-      "hints": [],
+      "hints": [
+        "The blank holds the asking word that means 'where' — the same accent-carrying word from «Asking the way» and the earlier mission steps."
+      ],
       "feedback": "Dónde with the accent means 'where'. Without it, donde is a different, plain word — the accent carries the meaning.",
       "evidenceKey": "es-directions-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -7116,7 +7225,18 @@
             "Dónde"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Qué",
+              "category": "incorrect answer",
+              "explanation": "Qué is 'what' — the place question needs the where-word: ¿Dónde está el museo?"
+            },
+            {
+              "answer": "Cómo",
+              "category": "incorrect answer",
+              "explanation": "Cómo is 'how'. Asking where the museum is takes dónde: ¿Dónde está el museo?"
+            }
+          ]
         }
       }
     },
@@ -7134,7 +7254,9 @@
         "vocabulary"
       ],
       "prompt": "The passerby says: «A la derecha, luego todo recto.» What do you do first?",
-      "hints": [],
+      "hints": [
+        "Derecha is 'right', and it comes before luego ('then') — you turn right first, then go straight ahead."
+      ],
       "feedback": "A la derecha comes first — you turn right, and only luego, afterwards, do you go todo recto. Order matters in directions.",
       "evidenceKey": "es-directions-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -7180,7 +7302,9 @@
         "vocabulary"
       ],
       "prompt": "You took a wrong turn. A shopkeeper points and says the museum is on the left. Complete the direction you hear.",
-      "hints": [],
+      "hints": [
+        "The shopkeeper points left — 'to the left' is a la izquierda, the twin of the derecha you just followed."
+      ],
       "feedback": "A la izquierda — left. Keep it next to its twin a la derecha and you can follow almost any direction in Spain.",
       "evidenceKey": "es-directions-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -7210,7 +7334,18 @@
             "izquierda"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "derecha",
+              "category": "incorrect answer",
+              "explanation": "Derecha is 'right' — the museum is on the left, so the word is izquierda."
+            },
+            {
+              "answer": "izquierdo",
+              "category": "wrong gender",
+              "explanation": "Direction phrases use the fixed feminine form a la izquierda; izquierdo pairs with masculine nouns (el lado izquierdo)."
+            }
+          ]
         }
       }
     },
@@ -7227,7 +7362,9 @@
         "vocabulary"
       ],
       "prompt": "You reach the ticket desk. Which question asks the price of a ticket?",
-      "hints": [],
+      "hints": [
+        "Price questions use ¿Cuánto cuesta? — 'how much does it cost?' — the phrase from «Prices and paying». La cuenta belongs to a café table, not a ticket desk."
+      ],
       "feedback": "¿Cuánto cuesta? asks 'how much does it cost?' — you learned it in «Prices and paying». La cuenta is the bill at a café, not a ticket desk.",
       "evidenceKey": "es-directions-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -7272,7 +7409,9 @@
         "vocabulary"
       ],
       "prompt": "The cashier answers «Son diez euros.» and hands you the ticket. What do you say?",
-      "hints": [],
+      "hints": [
+        "The ticket is in your hand — that is the moment for gracias. Hola was for arriving; mucho gusto is for meeting someone new."
+      ],
       "feedback": "Gracias thanks — exactly the moment it was made for. Hola greets on arrival; mucho gusto is for meeting people, not tickets.",
       "evidenceKey": "es-directions-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -7317,7 +7456,9 @@
         "grammar"
       ],
       "prompt": "Say the question to yourself, then type it: ask where the museum is.",
-      "hints": [],
+      "hints": [
+        "The question from step 2, straight from memory: ¿Dónde está el museo? — same words, same order, same accent."
+      ],
       "feedback": "¿Dónde está el museo? — the same question that started your mission. Notice how much faster it comes now.",
       "evidenceKey": "es-directions-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -7331,7 +7472,23 @@
           "¿Dónde está el museo?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Dónde está museo?",
+            "category": "missing word",
+            "explanation": "The article el sits between the verb and the museum: ¿Dónde está el museo?"
+          },
+          {
+            "answer": "¿Dónde es el museo?",
+            "category": "wrong conjugation",
+            "explanation": "Position takes estar, not ser: ¿Dónde está el museo?"
+          },
+          {
+            "answer": "¿Dónde está la museo?",
+            "category": "wrong article",
+            "explanation": "Museo is masculine — its article is el, not la: ¿Dónde está el museo?"
+          }
+        ]
       }
     },
     {
@@ -7348,7 +7505,9 @@
         "vocabulary"
       ],
       "prompt": "Mission complete — you are inside the museum. You spot a friend across the hall: greet them, and thank the passerby who helped you. Type both.",
-      "hints": [],
+      "hints": [
+        "Two one-word lines: Hola. for your friend across the hall, Gracias. for the passerby who pointed you here."
+      ],
       "feedback": "Hola greets, Gracias thanks — the two smallest words in your Spanish, and the two you will use most.",
       "evidenceKey": "es-directions-mission-act-10",
       "assistanceAffectsEvidence": [
@@ -7362,7 +7521,23 @@
           "Hola. Gracias."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hola.",
+            "category": "missing word",
+            "explanation": "Both parts of the mission close matter — the thank-you is missing: Hola. Gracias."
+          },
+          {
+            "answer": "Gracias.",
+            "category": "missing word",
+            "explanation": "The greeting is missing: greet your friend first, then thank — Hola. Gracias."
+          },
+          {
+            "answer": "Adiós. Gracias.",
+            "category": "incorrect answer",
+            "explanation": "Adiós is goodbye — you are greeting your friend, so open with Hola: Hola. Gracias."
+          }
+        ]
       }
     },
     {
@@ -7385,7 +7560,9 @@
         "vocabulary"
       ],
       "prompt": "You arrive at the door. Which word greets the host?",
-      "hints": [],
+      "hints": [
+        "You have just arrived — the universal opener is hola; adiós is what you say when you leave."
+      ],
       "feedback": "Hola opens every Spanish conversation — say it the moment you arrive, not when you leave. That is what adiós is for.",
       "evidenceKey": "es-party-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -7430,7 +7607,9 @@
         "grammar"
       ],
       "prompt": "The host asks your name. Build the answer: 'My name is Leo.'",
-      "hints": [],
+      "hints": [
+        "The answer opens with the pronoun Me, then the verb llamo, then your name: Me llamo Leo."
+      ],
       "feedback": "Me llamo Leo — literally 'I call myself Leo'. The me points back at you; that little pronoun is doing the real work.",
       "evidenceKey": "es-party-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -7474,7 +7653,9 @@
         "vocabulary"
       ],
       "prompt": "Now you want to know the guest's name. Which question do you ask?",
-      "hints": [],
+      "hints": [
+        "Flip the pronoun: me is for yourself (Me llamo), te points at the other person — ¿Cómo te llamas?"
+      ],
       "feedback": "¿Cómo te llamas? — me llamo says my name, te llamas asks yours. Never swap me and te.",
       "evidenceKey": "es-party-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -7519,7 +7700,9 @@
         "vocabulary"
       ],
       "prompt": "The guest answers, and you reply politely. Complete the phrase.",
-      "hints": [],
+      "hints": [
+        "The fixed closer that means 'much pleasure' — the missing noun is gusto."
+      ],
       "feedback": "Mucho gusto — 'much pleasure'. It is the handshake of Spanish small talk; use it with every new name.",
       "evidenceKey": "es-party-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -7549,7 +7732,18 @@
             "gusto"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "gracias",
+              "category": "incorrect answer",
+              "explanation": "Mucho gracias is not a phrase — the reply to a new name is mucho gusto ('much pleasure')."
+            },
+            {
+              "answer": "gusta",
+              "category": "wrong conjugation",
+              "explanation": "The fixed phrase uses the noun gusto ('pleasure'); gusta is a verb form — the closer is Mucho gusto."
+            }
+          ]
         }
       }
     },
@@ -7566,7 +7760,9 @@
         "grammar"
       ],
       "prompt": "Your sister Ana arrives. Introduce her — build: 'The sister is Ana.'",
-      "hints": [],
+      "hints": [
+        "Start with the feminine article La, then hermana, then es, then her name: La hermana es Ana."
+      ],
       "feedback": "La hermana es Ana — la because hermana is feminine. The article and the noun always travel together and always agree.",
       "evidenceKey": "es-party-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -7615,7 +7811,9 @@
         "grammar"
       ],
       "prompt": "Which sentence correctly says the brother is Leo?",
-      "hints": [],
+      "hints": [
+        "Hermano is masculine, so its article must agree: El hermano es Leo. La would need a sister, los a plural."
+      ],
       "feedback": "El hermano — masculine article with a masculine noun. La hermana would need a sister, and los needs a plural.",
       "evidenceKey": "es-party-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -7660,7 +7858,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence about your brother.",
-      "hints": [],
+      "hints": [
+        "The blank holds the masculine singular article that agrees with hermano — one brother, so not los."
+      ],
       "feedback": "El hermano — el marks masculine singular. Say the pair together until el hermano feels like one word.",
       "evidenceKey": "es-party-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -7686,7 +7886,18 @@
             "El"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "La",
+              "category": "wrong article",
+              "explanation": "La goes with feminine nouns (la hermana). Hermano is masculine — the article is El."
+            },
+            {
+              "answer": "Los",
+              "category": "wrong number",
+              "explanation": "Los is plural ('the brothers'). One brother takes the singular article: El hermano."
+            }
+          ]
         }
       }
     },
@@ -7703,7 +7914,9 @@
         "vocabulary"
       ],
       "prompt": "A new guest joins the party. Type the polite reply you give after hearing their name.",
-      "hints": [],
+      "hints": [
+        "The two-word closer from step 5, typed from memory: Mucho gusto."
+      ],
       "feedback": "Mucho gusto. — two words, and you already own them.",
       "evidenceKey": "es-party-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -7717,7 +7930,18 @@
           "Mucho gusto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mucho gusta.",
+            "category": "wrong conjugation",
+            "explanation": "The phrase uses the noun gusto — gusta is a verb form. Say Mucho gusto."
+          },
+          {
+            "answer": "Mucho gracias.",
+            "category": "incorrect answer",
+            "explanation": "Gracias thanks someone; the closer for a new name is mucho gusto."
+          }
+        ]
       }
     },
     {
@@ -7734,7 +7958,9 @@
         "vocabulary"
       ],
       "prompt": "Mission complete — the party is in full swing. One last guest arrives and asks your name. Introduce yourself from memory.",
-      "hints": [],
+      "hints": [
+        "Either form you practiced works from memory: Me llamo Leo. or Soy Leo. — the pronoun version is the one this mission built."
+      ],
       "feedback": "Me llamo Leo or Soy Leo — either opens the door. Notice which one your mouth reaches for first; that is the one you truly know.",
       "evidenceKey": "es-party-mission-act-10",
       "assistanceAffectsEvidence": [
@@ -7749,7 +7975,18 @@
           "Soy Leo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Llamo Leo.",
+            "category": "missing word",
+            "explanation": "The reflexive verb needs its pronoun me — without it, the verb belongs to nobody: Me llamo Leo."
+          },
+          {
+            "answer": "Me llama Leo.",
+            "category": "wrong conjugation",
+            "explanation": "Llamo is the I-form; llama means he/she says. Talking about yourself, use Me llamo Leo."
+          }
+        ]
       }
     },
     {
@@ -11146,7 +11383,9 @@
         "vocabulary"
       ],
       "prompt": "Which line correctly asks for half a kilo of cheese?",
-      "hints": [],
+      "hints": [
+        "The quantity medio kilo is joined to the food with de, and nothing else gets added — no un, no el: Medio kilo de queso, por favor."
+      ],
       "feedback": "Medio kilo is already the quantity, and it needs de: Medio kilo de queso, por favor.",
       "evidenceKey": "es-market-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11191,7 +11430,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: a bottle of water, please.",
-      "hints": [],
+      "hints": [
+        "You met this buy in the earlier steps: feminine Una + botella + de + agua, closed with por favor."
+      ],
       "feedback": "Botella is feminine — una — and the water follows de: Una botella de agua, por favor.",
       "evidenceKey": "es-market-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11205,7 +11446,23 @@
           "Una botella de agua, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Un botella de agua, por favor.",
+            "category": "wrong article",
+            "explanation": "Botella is feminine — it takes una, not un: Una botella de agua, por favor."
+          },
+          {
+            "answer": "Una botella de agua.",
+            "category": "missing word",
+            "explanation": "The courteous closer por favor belongs on the request: Una botella de agua, por favor."
+          },
+          {
+            "answer": "Una botella agua, por favor.",
+            "category": "missing word",
+            "explanation": "The de links the container to its content: botella de agua."
+          }
+        ]
       }
     },
     {
@@ -11222,7 +11479,9 @@
         "vocabulary"
       ],
       "prompt": "Pan is masculine. Choose the correct pointer.",
-      "hints": [],
+      "hints": [
+        "Masculine nouns point with este. Pan is masculine, so the pointer is Este — not Esta (feminine), not Esto (neuter)."
+      ],
       "feedback": "Masculine nouns point with este: Este pan está fresco.",
       "evidenceKey": "es-market-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11267,7 +11526,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I want a kilo of apples.",
-      "hints": [],
+      "hints": [
+        "Lead with Quiero, then the quantity un kilo, then the linker de, then the fruit manzanas."
+      ],
       "feedback": "Quiero, then the quantity with its de: Quiero un kilo de manzanas.",
       "evidenceKey": "es-market-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11322,7 +11583,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: This bread is fresh.",
-      "hints": [],
+      "hints": [
+        "Este for masculine pan; being fresh right now is a state, so the verb is estar: Este pan está fresco."
+      ],
       "feedback": "Este for the masculine pan, and fresh is a state — estar: Este pan está fresco.",
       "evidenceKey": "es-market-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11336,7 +11599,23 @@
           "Este pan está fresco."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Esta pan está fresco.",
+            "category": "wrong article",
+            "explanation": "Pan is masculine, so the pointer is este, not esta: Este pan está fresco."
+          },
+          {
+            "answer": "Este pan es fresco.",
+            "category": "wrong conjugation",
+            "explanation": "Es says what something is; for how the bread is right now (fresh), Spanish uses estar: Este pan está fresco."
+          },
+          {
+            "answer": "Esto pan está fresco.",
+            "category": "wrong article",
+            "explanation": "Esto is the neuter form and stands alone; pointing at a noun (pan) takes the masculine Este pan."
+          }
+        ]
       }
     },
     {
@@ -11352,7 +11631,9 @@
         "grammar"
       ],
       "prompt": "You want a bottle. Fill the gap: Una ___ de agua, por favor.",
-      "hints": [],
+      "hints": [
+        "The gap is the market container for water — 'a ___ of water': the feminine noun botella."
+      ],
       "feedback": "The bottle word is botella: Una botella de agua, por favor.",
       "evidenceKey": "es-market-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11382,7 +11663,18 @@
             "botella"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bottle",
+              "category": "incorrect answer",
+              "explanation": "The Spanish word for bottle is botella: Una botella de agua, por favor."
+            },
+            {
+              "answer": "bolsa",
+              "category": "incorrect answer",
+              "explanation": "Bolsa is a bag — the market container for water is una botella."
+            }
+          ]
         }
       }
     },
@@ -11605,7 +11897,9 @@
         "vocabulary"
       ],
       "prompt": "Which line correctly asks for something for a headache?",
-      "hints": [],
+      "hints": [
+        "Ask with Tiene (the formal you), then algo, then para for 'for', then el dolor de cabeza. The traps swap para for por or drop the article."
+      ],
       "feedback": "Para marks purpose, and de cabeza completes the phrase: ¿Tiene algo para el dolor de cabeza?",
       "evidenceKey": "es-pharmacy-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11651,7 +11945,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I need these pills.",
-      "hints": [],
+      "hints": [
+        "State the need in one line: Necesito + the feminine plural pointer estas + pastillas."
+      ],
       "feedback": "Necesito plus the noun: Necesito estas pastillas.",
       "evidenceKey": "es-pharmacy-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11665,7 +11961,23 @@
           "Necesito estas pastillas."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Necesito esta pastillas.",
+            "category": "wrong number",
+            "explanation": "Pastillas is plural, so the pointer must agree: estas pastillas."
+          },
+          {
+            "answer": "Necesito estos pastillas.",
+            "category": "wrong article",
+            "explanation": "Pastillas is feminine — the plural pointer is estas, not estos."
+          },
+          {
+            "answer": "Necesito pastillas.",
+            "category": "missing word",
+            "explanation": "The pointer estas ('these') points at the pills you need: Necesito estas pastillas."
+          }
+        ]
       }
     },
     {
@@ -11681,7 +11993,9 @@
         "vocabulary"
       ],
       "prompt": "Purpose takes para. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "Only the purpose word decides this one: para marks 'for the purpose of' — not por, not de, not a."
+      ],
       "feedback": "Para means for the purpose of: Algo para la fiebre, por favor.",
       "evidenceKey": "es-pharmacy-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11726,7 +12040,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: do you have something for the pain? (formal)",
-      "hints": [],
+      "hints": [
+        "Open with ¿Tiene, then algo, then the purpose linker para, then el dolor."
+      ],
       "feedback": "¿Tiene algo para el dolor? — tiene for the formal you, para for purpose.",
       "evidenceKey": "es-pharmacy-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11781,7 +12097,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I need a prescription.",
-      "hints": [],
+      "hints": [
+        "Necesito + una + receta — receta is feminine, so the article is una."
+      ],
       "feedback": "Necesito plus the noun: Necesito una receta.",
       "evidenceKey": "es-pharmacy-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11795,7 +12113,18 @@
           "Necesito una receta."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Necesito un receta.",
+            "category": "wrong article",
+            "explanation": "Receta is feminine — it takes una, not un: Necesito una receta."
+          },
+          {
+            "answer": "Necesito receta.",
+            "category": "missing word",
+            "explanation": "The article una belongs in front of receta: Necesito una receta."
+          }
+        ]
       }
     },
     {
@@ -11811,7 +12140,9 @@
         "grammar"
       ],
       "prompt": "The pharmacy is close by. Fill the gap: La farmacia está ___.",
-      "hints": [],
+      "hints": [
+        "'The pharmacy is ___' — the gap word means 'nearby'; you are almost there."
+      ],
       "feedback": "Cerca means nearby: La farmacia está cerca.",
       "evidenceKey": "es-pharmacy-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11841,7 +12172,18 @@
             "cerca"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "lejos",
+              "category": "incorrect answer",
+              "explanation": "Lejos means 'far' — the pharmacy is close by, which is cerca."
+            },
+            {
+              "answer": "cercano",
+              "category": "incorrect answer",
+              "explanation": "Cercano is an adjective that describes a noun; after está you need the adverb cerca ('nearby')."
+            }
+          ]
         }
       }
     },
@@ -15375,7 +15717,9 @@
         "vocabulary"
       ],
       "prompt": "You walk up to the reception desk. What do you say first?",
-      "hints": [],
+      "hints": [
+        "Check-in opens with a greeting: Hola plus the evening greeting buenas tardes. Adiós and me voy belong to the end of the stay."
+      ],
       "feedback": "Hola, buenas tardes opens every interaction. Adiós closes it, gracias thanks for something, and me voy leaves — greet first.",
       "evidenceKey": "es-a2-hotel-mission-act-2",
       "assistanceAffectsEvidence": [
@@ -15420,7 +15764,9 @@
         "grammar"
       ],
       "prompt": "The receptionist asks for your name. Say: I have a reservation under García.",
-      "hints": [],
+      "hints": [
+        "Say what you have, then the fixed booking phrase: Tengo + una reserva + a nombre de + your surname — a nombre de never changes."
+      ],
       "feedback": "Tengo una reserva a nombre de… — have + reservation + under + name. A nombre de is the fixed phrase; don't improvise it.",
       "evidenceKey": "es-a2-hotel-mission-act-3",
       "assistanceAffectsEvidence": [
@@ -15434,7 +15780,23 @@
           "Tengo una reserva a nombre de García."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tengo una reserva con nombre de García.",
+            "category": "wrong preposition",
+            "explanation": "The fixed phrase is a nombre de ('under the name of'), not con: Tengo una reserva a nombre de García."
+          },
+          {
+            "answer": "Tengo una reserva nombre de García.",
+            "category": "missing word",
+            "explanation": "The a in a nombre de is part of the fixed phrase: a nombre de García."
+          },
+          {
+            "answer": "Tengo reserva a nombre de García.",
+            "category": "missing word",
+            "explanation": "Una belongs with reserva: Tengo una reserva."
+          }
+        ]
       }
     },
     {
@@ -15450,7 +15812,9 @@
         "grammar"
       ],
       "prompt": "Build the question: What time is breakfast?",
-      "hints": [],
+      "hints": [
+        "The time question leads with ¿A qué hora, then the verb es, then el desayuno — one line."
+      ],
       "feedback": "¿A qué hora es el desayuno? — the a belongs to the question word; el desayuno is what you're asking about.",
       "evidenceKey": "es-a2-hotel-mission-act-4",
       "assistanceAffectsEvidence": [
@@ -15507,7 +15871,9 @@
         "vocabulary"
       ],
       "prompt": "The shower runs cold. Which complaint fits?",
-      "hints": [],
+      "hints": [
+        "Your complaint must name what is missing: hot water is agua caliente. Only one line does that — no hay agua caliente."
+      ],
       "feedback": "No hay agua caliente names the missing thing. The others complain about breakfast, the key, the desk — not your shower.",
       "evidenceKey": "es-a2-hotel-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -15550,7 +15916,9 @@
         "grammar"
       ],
       "prompt": "Complete the complaint about the room.",
-      "hints": [],
+      "hints": [
+        "'The room has no ___ caliente' — the missing noun is the water itself: agua caliente."
+      ],
       "feedback": "No hay agua caliente / no tiene agua caliente — name what's missing and the desk fixes it. Report, don't apologize.",
       "evidenceKey": "es-a2-hotel-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -15580,7 +15948,18 @@
             "agua"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "caliente",
+              "category": "incorrect answer",
+              "explanation": "Caliente ('hot') is already at the end of the sentence — the missing word is the water itself: agua."
+            },
+            {
+              "answer": "agua caliente",
+              "category": "extra word",
+              "explanation": "Caliente comes after the blank; write only the noun agua: no tiene agua caliente."
+            }
+          ]
         }
       }
     },
@@ -15597,7 +15976,9 @@
         "grammar"
       ],
       "prompt": "Build: Can you give me another key, please?",
-      "hints": [],
+      "hints": [
+        "The polite ask opens ¿Me puede dar, then the object otra llave, then por favor."
+      ],
       "feedback": "¿Me puede dar otra llave, por favor? — can-you-give-me, then what, then por favor softens the landing.",
       "evidenceKey": "es-a2-hotel-mission-act-7",
       "assistanceAffectsEvidence": [
@@ -15661,7 +16042,9 @@
         "grammar"
       ],
       "prompt": "Checkout is easy: tell them the room is very good.",
-      "hints": [],
+      "hints": [
+        "How the room is right now takes estar: La habitación + está muy bien."
+      ],
       "feedback": "Está, not es — how the room is right now wears estar. Muy bien does the praising.",
       "evidenceKey": "es-a2-hotel-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -15675,7 +16058,23 @@
           "La habitación está muy bien."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La habitación es muy bien.",
+            "category": "wrong conjugation",
+            "explanation": "How the room is right now takes estar, not ser: La habitación está muy bien."
+          },
+          {
+            "answer": "La habitación está muy bueno.",
+            "category": "incorrect answer",
+            "explanation": "Bien is the adverb that goes with está ('is well'); bueno is an adjective that describes a noun: está muy bien."
+          },
+          {
+            "answer": "Habitación está muy bien.",
+            "category": "missing word",
+            "explanation": "The article la opens the sentence: La habitación está muy bien."
+          }
+        ]
       }
     },
     {
@@ -15691,7 +16090,9 @@
         "grammar"
       ],
       "prompt": "Morning, and you're hungry. From memory now: ask about breakfast.",
-      "hints": [],
+      "hints": [
+        "The breakfast question you built in step 4 — now from memory: ¿A qué hora es el desayuno?"
+      ],
       "feedback": "¿A qué hora es el desayuno? — you built it in step 4; now it comes from memory. That is the mission working.",
       "evidenceKey": "es-a2-hotel-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -15705,7 +16106,23 @@
           "¿A qué hora es el desayuno?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿A qué hora está el desayuno?",
+            "category": "wrong conjugation",
+            "explanation": "Event times use es, not está: ¿A qué hora es el desayuno?"
+          },
+          {
+            "answer": "¿Qué hora es el desayuno?",
+            "category": "missing word",
+            "explanation": "The a is part of the question-word group: ¿A qué hora…?"
+          },
+          {
+            "answer": "¿A qué hora es desayuno?",
+            "category": "missing word",
+            "explanation": "The article el sits before desayuno: el desayuno."
+          }
+        ]
       }
     },
     {
@@ -16014,7 +16431,9 @@
         "vocabulary"
       ],
       "prompt": "You stop a passerby. Which question asks where the museum is?",
-      "hints": [],
+      "hints": [
+        "A where-question leads with the asking word ¿Dónde, then the verb está, then the place — the museum line does all three: ¿Dónde está el museo?"
+      ],
       "feedback": "¿Dónde está el museo? — the asking word first, then está, then the place. The accent on dónde is there because the word is asking.",
       "evidenceKey": "es-directions-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16062,7 +16481,9 @@
         "vocabulary"
       ],
       "prompt": "The passerby answers: «Todo recto, luego a la izquierda.» What do you do?",
-      "hints": [],
+      "hints": [
+        "Luego means 'then' — the direction you hear first is the one you do first: straight ahead, and only afterwards the left turn."
+      ],
       "feedback": "Todo recto first, then — luego — a la izquierda. Follow the order the words give you.",
       "evidenceKey": "es-directions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -16118,7 +16539,9 @@
         "vocabulary"
       ],
       "prompt": "You point at the apples and want a kilo. Which line is right?",
-      "hints": [],
+      "hints": [
+        "Apples are feminine and plural, so the pointer is Estas — and the quantity keeps its de: un kilo de manzanas."
+      ],
       "feedback": "Manzanas is feminine and plural, so the pointer is estas. The quantity keeps its de: un kilo de manzanas.",
       "evidenceKey": "es-market-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -16174,7 +16597,9 @@
         "vocabulary"
       ],
       "prompt": "The pharmacist asks «¿Necesita algo más?» You need nothing else. Which reply fits?",
-      "hints": [],
+      "hints": [
+        "You have what you need, so refuse politely — No, gracias. Sí would invite more."
+      ],
       "feedback": "No, gracias — the clean no. Sí would ask for more; por favor belongs on a request, not a refusal.",
       "evidenceKey": "es-pharmacy-foundation-act-rb2",
       "assistanceAffectsEvidence": [

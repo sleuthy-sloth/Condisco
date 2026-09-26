@@ -64,6 +64,53 @@ final class PackPortugueseTests: XCTestCase {
         ],
     ]
 
+    /// The seven Wave B mission lessons (units 3–17, outside pt-unit-1/2),
+    /// keyed by the graded path activity ids each lesson references.
+    /// NOTE: pt-transport/pt-market/pt-emergency foundations are family
+    /// == "mission" per the pack and are part of the Wave B editorial lane.
+    private static let batch2Lessons: [String: [String]] = [
+        "pt-market-trip-mission": [
+            "pt-market-trip-mission-act-2", "pt-market-trip-mission-act-3",
+            "pt-market-trip-mission-act-4", "pt-market-trip-mission-act-5",
+            "pt-market-trip-mission-act-6", "pt-market-trip-mission-act-7",
+            "pt-market-trip-mission-act-8", "pt-market-trip-mission-act-9",
+        ],
+        "pt-station-mission": [
+            "pt-station-mission-act-2", "pt-station-mission-act-3",
+            "pt-station-mission-act-4", "pt-station-mission-act-5",
+            "pt-station-mission-act-6", "pt-station-mission-act-7",
+            "pt-station-mission-act-8", "pt-station-mission-act-9",
+        ],
+        "pt-hotel-mission": [
+            "pt-hotel-mission-act-2", "pt-hotel-mission-act-3",
+            "pt-hotel-mission-act-4", "pt-hotel-mission-act-5",
+            "pt-hotel-mission-act-6", "pt-hotel-mission-act-7",
+            "pt-hotel-mission-act-8",
+        ],
+        "pt-transport-foundation": [
+            "pt-transport-foundation-meet", "pt-transport-foundation-notice",
+            "pt-transport-foundation-build", "pt-transport-foundation-cloze",
+            "pt-transport-foundation-think", "pt-transport-foundation-vary",
+        ],
+        "pt-market-foundation": [
+            "pt-market-foundation-meet", "pt-market-foundation-notice",
+            "pt-market-foundation-build", "pt-market-foundation-cloze",
+            "pt-market-foundation-think", "pt-market-foundation-vary",
+        ],
+        "pt-emergency-foundation": [
+            "pt-emergency-foundation-meet", "pt-emergency-foundation-notice",
+            "pt-emergency-foundation-build", "pt-emergency-foundation-cloze",
+            "pt-emergency-foundation-think", "pt-emergency-foundation-act-rb1",
+            "pt-emergency-foundation-vary",
+        ],
+        "pt-a2-no-hotel": [
+            "pt-a2-no-hotel-act-2", "pt-a2-no-hotel-act-3",
+            "pt-a2-no-hotel-act-4", "pt-a2-no-hotel-act-5",
+            "pt-a2-no-hotel-act-6", "pt-a2-no-hotel-act-7",
+            "pt-a2-no-hotel-act-8", "pt-a2-no-hotel-act-9",
+        ],
+    ]
+
     // MARK: - Pack load
 
     func testPortuguesePackLoadsAndValidates() throws {
@@ -211,6 +258,230 @@ final class PackPortugueseTests: XCTestCase {
         // English meaning — the contracted form is already accepted.
         result = try gradeText("pt-cafe-requests-foundation-meaning", in: pack, "I'd like a coffee, please.")
         XCTAssertTrue(result.accepted, "'I'd like a coffee, please.' must be accepted")
+    }
+
+    // MARK: - Wave B hints (rubric H4)
+
+    /// Every graded step in Wave B lessons has a real authored hint, not the
+    /// runtime generic fallbacks (audit_editorial hint-gap must stay 0).
+    func testWaveBGradedStepsHaveAuthoredHints() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch2Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    // MARK: - Wave B error feedback (rubric H3)
+
+    /// Every text/cloze surface in Wave B lessons authors error-specific
+    /// feedback (audit_editorial error-feedback gap must stay 0 for these).
+    func testWaveBTextActivitiesAuthorErrors() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch2Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Grade one cloze blank against its authored AnswerSpec.
+    private func gradeClozeBlank(_ id: String, blank: String, in pack: CoursePack,
+                                 _ response: String) throws -> AnswerEvaluation {
+        let act = try activity(id, in: pack)
+        guard case .cloze(let spec) = act else {
+            throw XCTSkip("expected a cloze activity for \(id)")
+        }
+        let blankSpec = try XCTUnwrap(spec.blanks[blank], "\(id)#\(blank) missing")
+        return AnswerEngine.evaluate(response: response, spec: blankSpec)
+    }
+
+    /// Ordering accepted orders must assemble the exact taught sentence.
+    func testWaveBOrderingBuildsTheTaughtSentence() throws {
+        let pack = try portuguesePack()
+
+        // pt-station-mission act-3: Onde fica a estação? (was wrongly 'Onde a fica estação?')
+        var act = try activity("pt-station-mission-act-3", in: pack)
+        guard case .ordering(let spec) = act else {
+            throw XCTSkip("expected ordering for pt-station-mission-act-3")
+        }
+        var text = spec.acceptedOrders[0].map { id in
+            spec.tokens.first { $0.id == id }!.text
+        }.joined(separator: " ")
+        XCTAssertEqual(text, "Onde fica a estação?")
+        var evaluation = ActivityEvaluation.evaluate(activity: act, response: .ordering(ids: spec.acceptedOrders[0]), assistance: [])
+        XCTAssertEqual(evaluation.outcome, .correct)
+
+        // pt-a2-no-hotel act-4: A que horas é o pequeno-almoço?
+        act = try activity("pt-a2-no-hotel-act-4", in: pack)
+        guard case .ordering(let a2Spec) = act else {
+            throw XCTSkip("expected ordering for pt-a2-no-hotel-act-4")
+        }
+        text = a2Spec.acceptedOrders[0].map { id in
+            a2Spec.tokens.first { $0.id == id }!.text
+        }.joined(separator: " ")
+        XCTAssertEqual(text, "A que horas é o pequeno-almoço?")
+        evaluation = ActivityEvaluation.evaluate(activity: act, response: .ordering(ids: a2Spec.acceptedOrders[0]), assistance: [])
+        XCTAssertEqual(evaluation.outcome, .correct)
+    }
+
+    /// Plausible wrong answers hit their authored category + explanation.
+    func testWaveBAuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try portuguesePack()
+
+        // pt-market-trip-mission
+        var result = try gradeClozeBlank("pt-market-trip-mission-act-4", blank: "b1", in: pack, "Quanta")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("pt-market-trip-mission-act-6", in: pack, "É caro.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-market-trip-mission-act-8", in: pack, "Custa quanto um café?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("pt-market-trip-mission-act-9", in: pack, "O conta, por favor.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // pt-station-mission
+        result = try gradeText("pt-station-mission-act-8", in: pack, "Gracias")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-station-mission-act-9", in: pack, "Onde fica a estação? Olá. Obrigado.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // pt-hotel-mission
+        result = try gradeText("pt-hotel-mission-act-5", in: pack, "seis")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-hotel-mission-act-8", in: pack, "Olá. Meu nome é Ana. A conta, por favor.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // pt-transport-foundation
+        result = try gradeClozeBlank("pt-transport-foundation-cloze", blank: "b1", in: pack, "no")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("pt-transport-foundation-think", in: pack, "Vou ao centro com metro.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-transport-foundation-vary", in: pack, "Vou a metro.")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // pt-market-foundation
+        result = try gradeClozeBlank("pt-market-foundation-cloze", blank: "b1", in: pack, "fresca")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("pt-market-foundation-think", in: pack, "Queria um quilo maçãs.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("pt-market-foundation-vary", in: pack, "Meia quilo de queijo.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // pt-emergency-foundation
+        result = try gradeText("pt-emergency-foundation-think", in: pack, "Chama uma ambulância!")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-emergency-foundation-vary", in: pack, "Chame a ambulância!")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-a2-no-hotel
+        result = try gradeText("pt-a2-no-hotel-act-3", in: pack, "Tenho uma reserva para Silva.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("pt-a2-no-hotel-act-7", in: pack, "A que horas e o pequeno-almoço?")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("pt-a2-no-hotel-act-9", in: pack, "Quero fazer o check-in.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    // MARK: - Wave B accepted answers (prompt ↔ answers alignment)
+
+    /// Natural full/alternative lines are accepted where the learner would
+    /// not be wrong to give them; the wrong-but-taught lines are rejected.
+    func testWaveBAcceptsNaturalAlternatives() throws {
+        let pack = try portuguesePack()
+
+        // Thanks with the feminine speaker form and the fuller help-phrase.
+        var result = try gradeText("pt-station-mission-act-8", in: pack, "Obrigada")
+        XCTAssertTrue(result.accepted, "Obrigada must be accepted for a woman speaking")
+        result = try gradeText("pt-station-mission-act-8", in: pack, "Obrigado pela ajuda.")
+        XCTAssertTrue(result.accepted, "Obrigado pela ajuda. must be accepted")
+
+        // The recap accepts the female-speaker thanks form too.
+        result = try gradeText("pt-station-mission-act-9", in: pack, "Olá. Onde fica a estação? Obrigada.")
+        XCTAssertTrue(result.accepted, "female thanks form must be accepted in the recap")
+
+        // Both natural word orders of the metro sentence are fine pt-PT.
+        result = try gradeText("pt-transport-foundation-think", in: pack, "Vou de metro ao centro.")
+        XCTAssertTrue(result.accepted, "Vou de metro ao centro. must be accepted")
+
+        // Wrong lines still fail.
+        result = try gradeText("pt-transport-foundation-think", in: pack, "Vou a pé.")
+        XCTAssertFalse(result.accepted, "changing the transport must not pass")
+    }
+
+    /// The hotel mission keeps the European possessive (article o) that Wave
+    /// A established in unit-1 — in the phrase strip, the ordering tiles, and
+    /// the final recap — and the articleless Brazilian form must not pass.
+    func testHotelMissionEuropeanPossessive() throws {
+        let pack = try portuguesePack()
+        let stim = try XCTUnwrap(pack.stimuli.first { $0.id == "pt-hotel-mission-stim-1" })
+        guard case .examples(_, let pairs) = stim else {
+            throw XCTSkip("expected example pairs in pt-hotel-mission-stim-1")
+        }
+        XCTAssertTrue(
+            pairs.contains { $0.target == "O meu nome é Ana." },
+            "hotel phrase strip must carry the European form: \(pairs.map(\.target))")
+
+        var act = try activity("pt-hotel-mission-act-3", in: pack)
+        guard case .ordering(let spec) = act else {
+            throw XCTSkip("expected ordering for pt-hotel-mission-act-3")
+        }
+        let sentence = spec.acceptedOrders[0].map { id in
+            spec.tokens.first { $0.id == id }!.text
+        }.joined(separator: " ")
+        XCTAssertEqual(sentence, "O meu nome é Ana.")
+        let evaluation = ActivityEvaluation.evaluate(activity: act, response: .ordering(ids: spec.acceptedOrders[0]), assistance: [])
+        XCTAssertEqual(evaluation.outcome, .correct)
+
+        var result = try gradeText("pt-hotel-mission-act-8", in: pack, "Olá. O meu nome é Ana. A conta, por favor.")
+        XCTAssertTrue(result.accepted, "European recap must be accepted")
+        result = try gradeText("pt-hotel-mission-act-8", in: pack, "Olá. Meu nome é Ana. A conta, por favor.")
+        XCTAssertFalse(result.accepted, "articleless Brazilian-style form must not pass")
+        XCTAssertEqual(result.category, "missing word")
+    }
+
+    // MARK: - Wave B mission final response (rubric M5)
+
+    /// The two missions that ended on a closing information epilogue now end
+    /// with a graded text final response (the audit's final-response check).
+    func testWaveBFinalStepsAreTextResponses() throws {
+        let pack = try portuguesePack()
+        let cases: [String: String] = [
+            "pt-station-mission": "pt-station-mission-step-9",
+            "pt-hotel-mission": "pt-hotel-mission-step-8",
+        ]
+        for (lessonId, terminalStepId) in cases {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+            let terminal = try XCTUnwrap(
+                lesson.steps.first { $0.nextStepId == nil && $0.branches.isEmpty })
+            XCTAssertEqual(terminal.id, terminalStepId, "terminal step moved for \(lessonId)")
+            let act = try activity(terminal.activityId, in: pack)
+            guard case .text = act else {
+                XCTFail("\(lessonId) terminal \(terminal.id) must be a text activity")
+                continue
+            }
+            XCTAssertFalse(
+                try XCTUnwrap(act.base).hints.allSatisfy { Self.genericHints.contains($0) },
+                "\(lessonId) final response must have an authored hint")
+        }
     }
 
     // MARK: - Retained v1 legacy exercises stay in sync

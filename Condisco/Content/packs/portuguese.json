@@ -2795,7 +2795,7 @@
           "meaning": "Hello."
         },
         {
-          "target": "Meu nome é Ana.",
+          "target": "O meu nome é Ana.",
           "meaning": "My name is Ana."
         },
         {
@@ -6159,7 +6159,9 @@
         "vocabulary"
       ],
       "prompt": "You stop at the first stall. Which line gets a price out of the stallholder?",
-      "hints": [],
+      "hints": [
+        "You want the line that asks 'how much?' — it begins with Quanto. É caro judges a price, A conta asks for the bill, and Duas maçãs names goods."
+      ],
       "feedback": "Quanto custa? is the price question — it opens every purchase before you commit to anything.",
       "options": [
         {
@@ -6209,7 +6211,9 @@
         "grammar"
       ],
       "prompt": "Ask the price of one coffee, in the right order.",
-      "hints": [],
+      "hints": [
+        "The question from «Numbers and quantities»: Quanto + custa + um + café? — question word first, then the verb, then the thing."
+      ],
       "feedback": "Quanto custa um café? — the question you practised in «Numbers and quantities», now doing real work.",
       "tokens": [
         {
@@ -6263,7 +6267,9 @@
         "grammar"
       ],
       "prompt": "Next stall, the tea. Complete the question you would put to the seller.",
-      "hints": [],
+      "hints": [
+        "The blank opens the price question — the same word that started the first stall: Quanto, with custa following."
+      ],
       "feedback": "Quanto opens the price question; custa stays singular while a single thing is being named.",
       "segments": [
         {
@@ -6282,7 +6288,23 @@
             "Quanto"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Quanta",
+              "category": "wrong gender",
+              "explanation": "Quanto never changes when asking a price — it stays Quanto: Quanto custa o chá?"
+            },
+            {
+              "answer": "Custa",
+              "category": "word-order problem",
+              "explanation": "The price question opens with Quanto; custa comes after it: Quanto custa o chá?"
+            },
+            {
+              "answer": "Onde",
+              "category": "incorrect answer",
+              "explanation": "Onde asks where — a price question uses Quanto: Quanto custa o chá?"
+            }
+          ]
         }
       },
       "evidenceKey": "pt-market-trip-mission-act-4",
@@ -6311,7 +6333,9 @@
         "vocabulary"
       ],
       "prompt": "The apples cost a fortune. Which line calls them expensive?",
-      "hints": [],
+      "hints": [
+        "The stallholder named a fortune — pick the line that calls the price high: É caro. Barato says the opposite, and Não é caro denies expensive, which contradicts the fortune."
+      ],
       "feedback": "É caro calls the price high. Knowing the word for expensive is half of deciding whether to buy.",
       "options": [
         {
@@ -6361,14 +6385,37 @@
         "grammar"
       ],
       "prompt": "The next price is fair. Say it is not expensive.",
-      "hints": [],
+      "hints": [
+        "The price is fair, so you deny the expensive judgement: Não + é + caro. Keep the accent on é so it stays 'is'."
+      ],
       "feedback": "Não flips the judgment: the price is fair, so you say what it is not.",
       "answer": {
         "answers": [
           "Não é caro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "É caro.",
+            "category": "incorrect answer",
+            "explanation": "É caro says it IS expensive — the price is fair, so flip it: Não é caro."
+          },
+          {
+            "answer": "Não e caro.",
+            "category": "accent/diacritic issue",
+            "explanation": "é means 'is'; without its accent it becomes e, 'and' — keep the accent: Não é caro."
+          },
+          {
+            "answer": "Não caro.",
+            "category": "missing word",
+            "explanation": "The judgement needs its verb: Não é caro — não, then é, then caro."
+          },
+          {
+            "answer": "É barato.",
+            "category": "incorrect answer",
+            "explanation": "Barato claims 'cheap' — the fair price needs only the denial: Não é caro."
+          }
+        ]
       },
       "evidenceKey": "pt-market-trip-mission-act-6",
       "assistanceAffectsEvidence": [
@@ -6396,7 +6443,9 @@
         "grammar"
       ],
       "prompt": "You will take the apples. Order two of them politely.",
-      "hints": [],
+      "hints": [
+        "The polite order: Duas + maçãs, + por + favor. Duas is the feminine form — maçãs is a feminine noun."
+      ],
       "feedback": "Duas maçãs, por favor — the number carries the feminine gender of maçãs, exactly as «Numbers and quantities» taught.",
       "tokens": [
         {
@@ -6450,7 +6499,9 @@
         "grammar"
       ],
       "prompt": "One thing left on the list: the coffee. Ask its price with the full question.",
-      "hints": [],
+      "hints": [
+        "The price question again: Quanto custa + the coffee. The list said um café (a coffee); o café (the coffee) works here too."
+      ],
       "feedback": "Same frame as the first stall. By now the question should come without thinking about the blocks.",
       "answer": {
         "answers": [
@@ -6458,7 +6509,28 @@
           "Quanto custa o café?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto custa café?",
+            "category": "missing word",
+            "explanation": "Name the thing being priced: um café. Quanto custa um café?"
+          },
+          {
+            "answer": "Quanto custa uma café?",
+            "category": "wrong gender",
+            "explanation": "Café is masculine — it takes um, not uma: Quanto custa um café?"
+          },
+          {
+            "answer": "Custa quanto um café?",
+            "category": "word-order problem",
+            "explanation": "The Portuguese question leads with Quanto: Quanto custa um café? (Custa quanto is the Brazilian ordering.)"
+          },
+          {
+            "answer": "Quanto é um café?",
+            "category": "incorrect answer",
+            "explanation": "É means 'is'; to ask a price use custa: Quanto custa um café?"
+          }
+        ]
       },
       "evidenceKey": "pt-market-trip-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -6486,7 +6558,9 @@
         "grammar"
       ],
       "prompt": "Mission complete: the bag is full. Ask for the bill.",
-      "hints": [],
+      "hints": [
+        "The bill is a conta (feminine — a conta) and it asks politely with por favor: A conta, por favor."
+      ],
       "feedback": "A conta, por favor closes the mission — you asked, you chose, you bought, you paid.",
       "answer": {
         "answers": [
@@ -6494,7 +6568,23 @@
           "A conta por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A conta.",
+            "category": "missing word",
+            "explanation": "Round the request with por favor — the polite closer for every order: A conta, por favor."
+          },
+          {
+            "answer": "O conta, por favor.",
+            "category": "wrong gender",
+            "explanation": "Conta is feminine, so the article is A: A conta, por favor."
+          },
+          {
+            "answer": "A conta, obrigado.",
+            "category": "incorrect answer",
+            "explanation": "Obrigado thanks after paying; to call for the bill use the polite closer: A conta, por favor."
+          }
+        ]
       },
       "evidenceKey": "pt-market-trip-mission-act-9",
       "assistanceAffectsEvidence": [
@@ -7011,7 +7101,9 @@
         "vocabulary"
       ],
       "prompt": "A passerby walks toward you. Which question asks where the station is?",
-      "hints": [],
+      "hints": [
+        "Ask where the station is: the question begins with Onde. Quanto asks a price, and the other lines thank or order the station like a coffee."
+      ],
       "feedback": "Onde fica a estação? — onde asks where, fica is the verb, estação is the place. Questions about places start with onde.",
       "options": [
         {
@@ -7056,7 +7148,9 @@
         "grammar"
       ],
       "prompt": "The blocks are out of order. Build the question you will ask the passerby.",
-      "hints": [],
+      "hints": [
+        "The blocks build: Onde + fica + a + estação? — where first, then the verb, then the place with its article."
+      ],
       "feedback": "Onde opens the question, fica is the verb, and the sentence lands on the place — question word, verb, place.",
       "tokens": [
         {
@@ -7079,8 +7173,8 @@
       "acceptedOrders": [
         [
           "t3",
-          "t4",
           "t1",
+          "t4",
           "t2"
         ]
       ],
@@ -7106,7 +7200,9 @@
         "vocabulary"
       ],
       "prompt": "The passerby points uphill: — Em frente, depois à esquerda. What do you do first?",
-      "hints": [],
+      "hints": [
+        "The direction names the order: em frente first, depois à esquerda after. Pick the reading that keeps straight-ahead before the left turn."
+      ],
       "feedback": "Em frente comes first — straight ahead — and depois sequences what happens after: the left turn. Order matters in directions.",
       "stimulusId": "pt-station-mission-stim-1",
       "options": [
@@ -7153,7 +7249,9 @@
         "grammar"
       ],
       "prompt": "The words are out of order. Rebuild the direction you just heard.",
-      "hints": [],
+      "hints": [
+        "Rebuild what you heard: Em frente (a fixed pair — never the reverse), depois, then à esquerda."
+      ],
       "feedback": "Em frente is a fixed pair — never frente em — and depois à esquerda sequences the turn after the straight stretch.",
       "tokens": [
         {
@@ -7207,7 +7305,9 @@
         "vocabulary"
       ],
       "prompt": "At the corner, a second local waves you on: — Depois à direita. Which move is that?",
-      "hints": [],
+      "hints": [
+        "Direita is right — and depois puts the turn after the last move: turn right now."
+      ],
       "feedback": "À direita mirrors à esquerda — direita is right, and depois tells you it comes after the last move.",
       "options": [
         {
@@ -7248,7 +7348,9 @@
         "grammar"
       ],
       "prompt": "Say the direction back to confirm you understood — build it from the blocks.",
-      "hints": [],
+      "hints": [
+        "The confirmation repeats the direction you heard: Depois + à + direita."
+      ],
       "feedback": "Saying directions back is a traveler trick: it confirms you heard right before you commit your feet.",
       "tokens": [
         {
@@ -7292,15 +7394,42 @@
         "vocabulary"
       ],
       "prompt": "The directions saved your train. Thank the local — type it in Portuguese.",
-      "hints": [],
+      "hints": [
+        "Thank with Obrigado — or Obrigada if you are a woman. 'Obliged' is the small debt the word pays."
+      ],
       "feedback": "Obrigado literally means “obliged” — thanks as a small debt, which is why it closes conversations everywhere in Portugal.",
       "answer": {
         "answers": [
           "Obrigado",
-          "Obrigado."
+          "Obrigado.",
+          "Obrigada",
+          "Obrigada.",
+          "Obrigado pela ajuda.",
+          "Obrigada pela ajuda."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gracias",
+            "category": "incorrect answer",
+            "explanation": "That is Spanish — in Portuguese the thanks is Obrigado (or Obrigada for a woman speaking)."
+          },
+          {
+            "answer": "Merci",
+            "category": "incorrect answer",
+            "explanation": "That is French — in Portuguese the thanks is Obrigado (or Obrigada for a woman speaking)."
+          },
+          {
+            "answer": "Brigado",
+            "category": "missing word",
+            "explanation": "The thanks begins with O: Obrigado — the full word."
+          },
+          {
+            "answer": "Obrigado pela estação.",
+            "category": "incorrect answer",
+            "explanation": "You thank the person, not the station: Obrigado (or Obrigado pela ajuda)."
+          }
+        ]
       },
       "evidenceKey": "pt-station-mission-act-8",
       "assistanceAffectsEvidence": [
@@ -7309,10 +7438,63 @@
       ]
     },
     {
-      "kind": "information",
+      "kind": "text",
       "id": "pt-station-mission-act-9",
       "revision": 1,
-      "body": "You turn the last corner and the station sign rises above the rooftops — ESTAÇÃO. Forty minutes to spare, and you have not spoken a word of English since the hill. Missão cumprida: you asked, you listened, you arrived — entirely in Portuguese."
+      "conceptIds": [
+        "pt-directions-concept",
+        "pt-first-words-concept"
+      ],
+      "vocabulary": [
+        "pt-directions-word-1",
+        "pt-directions-word-2",
+        "pt-directions-word-3",
+        "pt-directions-word-4",
+        "pt-first-words-word-2"
+      ],
+      "skills": [
+        "writing",
+        "speaking"
+      ],
+      "prompt": "The station sign is in sight — ESTAÇÃO. Mission complete: recap the exchange that got you here — greet the local, ask where the station is, and thank them.",
+      "hints": [
+        "Run the mission in one breath: the greeting (Olá), the question (Onde fica a estação?), the thanks (Obrigado — or Obrigada if you are a woman)."
+      ],
+      "feedback": "You greeted, asked, and thanked — the whole mission in one line.",
+      "evidenceKey": "pt-station-mission-act-9",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "model"
+      ],
+      "answer": {
+        "answers": [
+          "Olá. Onde fica a estação? Obrigado.",
+          "Olá. Onde fica a estação? Obrigada."
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Onde fica a estação? Olá. Obrigado.",
+            "category": "word-order problem",
+            "explanation": "The greeting opens the exchange: Olá first, then the question, then the thanks."
+          },
+          {
+            "answer": "Olá. Onde fica a estação?",
+            "category": "missing word",
+            "explanation": "The exchange is not finished — it closes with thanks: Obrigado (or Obrigada)."
+          },
+          {
+            "answer": "Obrigado",
+            "category": "missing word",
+            "explanation": "Obrigado is the thanks — the recap also needs the greeting and the question: Olá. Onde fica a estação? Obrigado."
+          },
+          {
+            "answer": "Olá. Quanto custa a estação?",
+            "category": "incorrect answer",
+            "explanation": "Quanto asks a price — to find the station the question is Onde fica a estação?, closed with Obrigado."
+          }
+        ]
+      }
     },
     {
       "kind": "information",
@@ -7336,7 +7518,9 @@
         "vocabulary"
       ],
       "prompt": "The receptionist looks up from the desk. Open the conversation the right way.",
-      "hints": [],
+      "hints": [
+        "Open with the greeting — Olá. The night's business (names, prices, bills) comes after hello, never before."
+      ],
       "feedback": "Olá opens every conversation — the business of the night comes after the greeting, never before.",
       "options": [
         {
@@ -7381,8 +7565,10 @@
         "grammar"
       ],
       "prompt": "Now give your name to check in — build it from the blocks.",
-      "hints": [],
-      "feedback": "Meu nome é is the full, polite form — meu (my) hugs nome (name), and é (is) introduces Ana.",
+      "hints": [
+        "The blocks spell the introduction you practised: O + meu + nome + é + Ana — article first, then the possessive, the noun, é, and the name."
+      ],
+      "feedback": "O meu nome é Ana — European Portuguese keeps the article O before meu, and é keeps its accent so it stays 'is'.",
       "tokens": [
         {
           "id": "t1",
@@ -7394,19 +7580,24 @@
         },
         {
           "id": "t3",
-          "text": "Meu"
+          "text": "O"
         },
         {
           "id": "t4",
+          "text": "meu"
+        },
+        {
+          "id": "t5",
           "text": "Ana."
         }
       ],
       "acceptedOrders": [
         [
           "t3",
+          "t4",
           "t1",
           "t2",
-          "t4"
+          "t5"
         ]
       ],
       "evidenceKey": "pt-hotel-mission-act-3",
@@ -7432,7 +7623,9 @@
         "vocabulary"
       ],
       "prompt": "The receptionist mentions a price — you did not catch the number. Which line asks the price?",
-      "hints": [],
+      "hints": [
+        "You missed the number — pull the price question back out: Quanto custa? Onde fica? asks where, and A conta asks for the bill."
+      ],
       "feedback": "Quanto custa? opens every purchase before you commit to anything — ask it early, ask it often.",
       "options": [
         {
@@ -7477,7 +7670,9 @@
         "vocabulary"
       ],
       "prompt": "The receptionist holds up five fingers and says: cinco. Five for a Lisbon night — you decide to stay. Type the price you heard, in Portuguese.",
-      "hints": [],
+      "hints": [
+        "Five fingers, the number you count coffees with: cinco — c-i-n-c-o."
+      ],
       "feedback": "Cinco is five — the numbers you learned for apples and coffees just paid for your room.",
       "answer": {
         "answers": [
@@ -7486,7 +7681,23 @@
           "Cinco."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "seis",
+            "category": "incorrect answer",
+            "explanation": "Seis is six — the receptionist held up five fingers and said cinco."
+          },
+          {
+            "answer": "sinko",
+            "category": "incorrect answer",
+            "explanation": "Portuguese spells it with c, not k: cinco."
+          },
+          {
+            "answer": "quatro",
+            "category": "incorrect answer",
+            "explanation": "Quatro is four — five is cinco."
+          }
+        ]
       },
       "evidenceKey": "pt-hotel-mission-act-5",
       "assistanceAffectsEvidence": [
@@ -7510,7 +7721,9 @@
         "vocabulary"
       ],
       "prompt": "Five for a night in Lisbon — that is a steal. Which word fits the price?",
-      "hints": [],
+      "hints": [
+        "A steal means the price is low — barato. Caro is its opposite, and obrigado thanks instead of judging a price."
+      ],
       "feedback": "Barato is inexpensive, caro is expensive — the pair you use to judge every price in the country.",
       "options": [
         {
@@ -7553,7 +7766,9 @@
         "grammar"
       ],
       "prompt": "Morning comes and you pay at the desk. Build the line that asks for the bill.",
-      "hints": [],
+      "hints": [
+        "The bill line from the café: A + conta, + por + favor — article, noun, then the polite pair."
+      ],
       "feedback": "A conta names the bill, por favor makes it polite — the same polite ending you learned at the café.",
       "tokens": [
         {
@@ -7588,10 +7803,75 @@
       ]
     },
     {
-      "kind": "information",
+      "kind": "text",
       "id": "pt-hotel-mission-act-8",
       "revision": 1,
-      "body": "The receptionist slides a heavy brass key across the desk with a smile. Upstairs the room is small, the sheets are cool, and the window opens onto Lisbon rooftops. Missão cumprida: greeting, name, price, payment — you checked in entirely in Portuguese."
+      "conceptIds": [
+        "pt-first-words-concept",
+        "pt-introductions-concept",
+        "pt-cafe-requests-concept",
+        "pt-numbers-quantities-concept",
+        "pt-shopping-concept"
+      ],
+      "vocabulary": [
+        "pt-first-words-word-1",
+        "pt-first-words-word-2",
+        "pt-introductions-word-1",
+        "pt-cafe-requests-word-4",
+        "pt-numbers-quantities-word-1",
+        "pt-numbers-quantities-word-3",
+        "pt-shopping-word-1",
+        "pt-shopping-word-2",
+        "pt-shopping-word-3",
+        "pt-shopping-word-4"
+      ],
+      "skills": [
+        "writing",
+        "speaking"
+      ],
+      "prompt": "The key is in your hand. Mission complete: recap your side of the check-in — greet the receptionist, give your name, and close by asking for the bill.",
+      "hints": [
+        "The check-in in one breath: Olá (greet), O meu nome é Ana (your name), A conta, por favor (the bill)."
+      ],
+      "feedback": "You greeted, gave your name, and asked for the bill — the whole check-in in one line.",
+      "evidenceKey": "pt-hotel-mission-act-8",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "model"
+      ],
+      "answer": {
+        "answers": [
+          "Olá. O meu nome é Ana. A conta, por favor."
+        ],
+        "allowTypo": true,
+        "errors": [
+          {
+            "answer": "Olá. Meu nome é Ana. A conta, por favor.",
+            "category": "missing word",
+            "explanation": "European Portuguese keeps the article o before meu: Olá. O meu nome é Ana. A conta, por favor."
+          },
+          {
+            "answer": "Olá. O meu nome e Ana. A conta, por favor.",
+            "category": "accent/diacritic issue",
+            "explanation": "é means 'is' — without the accent e becomes 'and': O meu nome e Ana would read 'my name and Ana'."
+          },
+          {
+            "answer": "A conta, por favor. Olá. O meu nome é Ana.",
+            "category": "word-order problem",
+            "explanation": "The greeting opens the check-in: Olá first, then your name, then the bill — A conta, por favor."
+          },
+          {
+            "answer": "Olá. O meu nome é Ana.",
+            "category": "missing word",
+            "explanation": "The mission ends with payment — close the recap by asking for the bill: A conta, por favor."
+          },
+          {
+            "answer": "Olá. O meu nome é Ana. O conta, por favor.",
+            "category": "wrong gender",
+            "explanation": "Conta is feminine — the bill is a conta, so the article is A: A conta, por favor."
+          }
+        ]
+      }
     },
     {
       "kind": "information",
@@ -10104,7 +10384,9 @@
         "vocabulary"
       ],
       "prompt": "Which phrase means on foot?",
-      "hints": [],
+      "hints": [
+        "On foot is the odd one out — a pé, the one transport without de. The other options all travel by something."
+      ],
       "feedback": "A pé is on foot — the one transport without de.",
       "evidenceKey": "pt-transport-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10150,7 +10432,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I go downtown by metro. (Ir: eu vou.)",
-      "hints": [],
+      "hints": [
+        "Vou (I go) + ao centro (to downtown — a + o fused) + de metro (by metro): Vou ao centro de metro."
+      ],
       "feedback": "Vou ao centro de metro — vou for I go, de metro for how.",
       "evidenceKey": "pt-transport-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10161,10 +10445,32 @@
       "id": "pt-transport-foundation-think",
       "answer": {
         "answers": [
-          "Vou ao centro de metro."
+          "Vou ao centro de metro.",
+          "Vou de metro ao centro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vou a centro de metro.",
+            "category": "missing word",
+            "explanation": "Centro takes the article: a + o fuse into ao — Vou ao centro de metro."
+          },
+          {
+            "answer": "Vou ao centro metro.",
+            "category": "missing word",
+            "explanation": "By metro needs de: Vou ao centro de metro."
+          },
+          {
+            "answer": "Vou ao centro com metro.",
+            "category": "incorrect answer",
+            "explanation": "Com means 'with' — travel by metro is de metro: Vou ao centro de metro."
+          },
+          {
+            "answer": "Vou ao centro de carro.",
+            "category": "incorrect answer",
+            "explanation": "De carro is by car — this trip travels by metro: Vou ao centro de metro."
+          }
+        ]
       }
     },
     {
@@ -10180,7 +10486,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Feet refuse de: the verb vou + a + pé. Only one option pairs vou with a."
+      ],
       "feedback": "Feet take a, not de: Vou a pé.",
       "evidenceKey": "pt-transport-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10226,7 +10534,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: She goes to work on foot.",
-      "hints": [],
+      "hints": [
+        "The sentence: Ela + vai + para + o + trabalho + a + pé — she goes (vai) to work (para o trabalho) on foot (a pé)."
+      ],
       "feedback": "Ela vai para o trabalho a pé — destination with para, feet with a.",
       "evidenceKey": "pt-transport-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10291,7 +10601,9 @@
         "grammar"
       ],
       "prompt": "Change how: Vou de carro. → I go by metro.",
-      "hints": [],
+      "hints": [
+        "Swap the transport: replace de carro with de metro — the frame Vou de … stays."
+      ],
       "feedback": "Swap the transport: Vou de metro.",
       "evidenceKey": "pt-transport-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10305,7 +10617,28 @@
           "Vou de metro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vou de carro.",
+            "category": "incorrect answer",
+            "explanation": "That is still the starting line — the change is to metro: Vou de metro."
+          },
+          {
+            "answer": "Vou a metro.",
+            "category": "wrong preposition",
+            "explanation": "Metro travels with de, like the other vehicles: Vou de metro. (A pé is the one exception.)"
+          },
+          {
+            "answer": "Vou ao metro.",
+            "category": "wrong preposition",
+            "explanation": "Ao means 'to the' — to say how you travel, use de: Vou de metro."
+          },
+          {
+            "answer": "I go by metro.",
+            "category": "incorrect answer",
+            "explanation": "Write the line in Portuguese: Vou de metro."
+          }
+        ]
       }
     },
     {
@@ -10321,7 +10654,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Vou ___ centro. (to the — a + o)",
-      "hints": [],
+      "hints": [
+        "To + the fuses into one word: ao — Vou ao centro."
+      ],
       "feedback": "A + o fuses into ao: Vou ao centro.",
       "evidenceKey": "pt-transport-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10351,7 +10686,28 @@
             "ao"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "a",
+              "category": "wrong article",
+              "explanation": "Centro is masculine and takes its article: a + o fuse into ao — Vou ao centro."
+            },
+            {
+              "answer": "o",
+              "category": "wrong article",
+              "explanation": "O alone means 'the', not 'to the' — the direction needs the fused form: Vou ao centro."
+            },
+            {
+              "answer": "a o",
+              "category": "word-order problem",
+              "explanation": "a + o fuse into the single word ao: Vou ao centro."
+            },
+            {
+              "answer": "no",
+              "category": "wrong preposition",
+              "explanation": "No means 'in the' — direction 'to' is ao: Vou ao centro."
+            }
+          ]
         }
       }
     },
@@ -11849,7 +12205,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'a dozen'?",
-      "hints": [],
+      "hints": [
+        "A dozen is twelve of something — uma dúzia. Quilo and garrafa are other amounts, and meio quilo is half a kilo."
+      ],
       "feedback": "Uma dúzia de ovos — a dozen eggs.",
       "evidenceKey": "pt-market-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11894,7 +12252,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I'd like a kilo of apples. (Amount + de + goods.)",
-      "hints": [],
+      "hints": [
+        "Queria + um quilo + de + maçãs — the amount first, then the bridge de, then the goods."
+      ],
       "feedback": "Queria um quilo de maçãs — don't skip the de.",
       "evidenceKey": "pt-market-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11908,7 +12268,28 @@
           "Queria um quilo de maçãs."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Queria um quilo maçãs.",
+            "category": "missing word",
+            "explanation": "Don't skip the bridge: um quilo de maçãs."
+          },
+          {
+            "answer": "Queria um quilo das maçãs.",
+            "category": "wrong article",
+            "explanation": "Das introduces 'of the' — plain amounts take plain de: um quilo de maçãs."
+          },
+          {
+            "answer": "Quero um quilo de maçãs.",
+            "category": "incorrect answer",
+            "explanation": "Quero is 'I want' — the market preference is the softer Queria: Queria um quilo de maçãs."
+          },
+          {
+            "answer": "Queria um quilo de maças.",
+            "category": "accent/diacritic issue",
+            "explanation": "Maçãs keeps its tilde: um quilo de maçãs."
+          }
+        ]
       }
     },
     {
@@ -11924,7 +12305,9 @@
         "grammar"
       ],
       "prompt": "Which is correct?",
-      "hints": [],
+      "hints": [
+        "The bridge word between amount and goods is de: um quilo de maçãs. Only one option carries it."
+      ],
       "feedback": "De bridges amount and goods: um quilo de maçãs.",
       "evidenceKey": "pt-market-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11969,7 +12352,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: A bottle of water, please.",
-      "hints": [],
+      "hints": [
+        "Uma + garrafa + de + água, + por + favor — amount, bridge, goods, then the polite closer."
+      ],
       "feedback": "Uma garrafa de água, por favor.",
       "evidenceKey": "pt-market-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12029,7 +12414,9 @@
         "grammar"
       ],
       "prompt": "Change the amount: Um quilo de maçãs. → Half a kilo of cheese.",
-      "hints": [],
+      "hints": [
+        "Half a kilo is meio quilo, cheese is queijo: Meio quilo de queijo."
+      ],
       "feedback": "Meio quilo de queijo.",
       "evidenceKey": "pt-market-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12043,7 +12430,28 @@
           "Meio quilo de queijo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Um quilo de maçãs.",
+            "category": "incorrect answer",
+            "explanation": "That is the starting line — the change is to half a kilo of cheese: Meio quilo de queijo."
+          },
+          {
+            "answer": "Meio quilo queijo.",
+            "category": "missing word",
+            "explanation": "The bridge de stays: Meio quilo de queijo."
+          },
+          {
+            "answer": "Meio quilo de maçãs.",
+            "category": "incorrect answer",
+            "explanation": "The goods changed too — half a kilo of cheese: Meio quilo de queijo."
+          },
+          {
+            "answer": "Meia quilo de queijo.",
+            "category": "wrong gender",
+            "explanation": "Quilo is masculine, so the half is meio: meio quilo de queijo."
+          }
+        ]
       }
     },
     {
@@ -12059,7 +12467,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: O peixe é ___? (fresh)",
-      "hints": [],
+      "hints": [
+        "The quality check for fish is the word for fresh: fresco. O peixe é fresco?"
+      ],
       "feedback": "É fresco? — the market's quality check.",
       "evidenceKey": "pt-market-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12089,7 +12499,23 @@
             "fresco"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "fresca",
+              "category": "wrong gender",
+              "explanation": "Peixe is masculine, so the adjective is fresco: O peixe é fresco?"
+            },
+            {
+              "answer": "quente",
+              "category": "incorrect answer",
+              "explanation": "Quente means hot — the freshness question uses fresco: O peixe é fresco?"
+            },
+            {
+              "answer": "caro",
+              "category": "incorrect answer",
+              "explanation": "Caro is expensive — for freshness the word is fresco: O peixe é fresco?"
+            }
+          ]
         }
       }
     },
@@ -12769,7 +13195,9 @@
         "vocabulary"
       ],
       "prompt": "Which word cries for help?",
-      "hints": [],
+      "hints": [
+        "The cry for help — Socorro! — is the one word with no grammar. The other options thank, excuse, and toast."
+      ],
       "feedback": "Socorro! — the word that needs no grammar.",
       "evidenceKey": "pt-emergency-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12814,7 +13242,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: Call an ambulance! (Imperative: Chame…)",
-      "hints": [],
+      "hints": [
+        "The polite command to a stranger: Chame + uma ambulância! — the -e ending does the politeness."
+      ],
       "feedback": "Chame uma ambulância! — the -e ending for strangers.",
       "evidenceKey": "pt-emergency-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12828,7 +13258,28 @@
           "Chame uma ambulância!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Chama uma ambulância!",
+            "category": "incorrect answer",
+            "explanation": "Chama (without e) is for friends — address the responder with the -e form: Chame uma ambulância!"
+          },
+          {
+            "answer": "Chamar uma ambulância!",
+            "category": "wrong conjugation",
+            "explanation": "Chamar is the dictionary form, 'to call' — the command is Chame: Chame uma ambulância!"
+          },
+          {
+            "answer": "Chamo uma ambulância!",
+            "category": "wrong conjugation",
+            "explanation": "Chamo is 'I call' — the command to another person is Chame: Chame uma ambulância!"
+          },
+          {
+            "answer": "Chame um ambulância!",
+            "category": "wrong gender",
+            "explanation": "Ambulância is feminine — it takes uma: Chame uma ambulância!"
+          }
+        ]
       }
     },
     {
@@ -12844,7 +13295,9 @@
         "grammar"
       ],
       "prompt": "Which is the correct emergency command?",
-      "hints": [],
+      "hints": [
+        "The safe address to a stranger is the -e form: Chame. Chama is for friends, chamar is the dictionary form, and chamo means 'I call'."
+      ],
       "feedback": "Chame with -e addresses strangers — the safe default.",
       "evidenceKey": "pt-emergency-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12889,7 +13342,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Where is the hospital?",
-      "hints": [],
+      "hints": [
+        "Onde + fica + o + hospital? — where, then the verb, then the place with its article."
+      ],
       "feedback": "Onde fica o hospital?",
       "evidenceKey": "pt-emergency-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12939,7 +13394,9 @@
         "grammar"
       ],
       "prompt": "Change who to call: Chame uma ambulância! → Call the police!",
-      "hints": [],
+      "hints": [
+        "Same command frame — swap the target: Chame + a polícia!"
+      ],
       "feedback": "Chame a polícia!",
       "evidenceKey": "pt-emergency-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12953,7 +13410,23 @@
           "Chame a polícia!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Chame uma ambulância!",
+            "category": "incorrect answer",
+            "explanation": "That is the starting line — the change is to the police: Chame a polícia!"
+          },
+          {
+            "answer": "Chame a ambulância!",
+            "category": "incorrect answer",
+            "explanation": "The mission now calls the police, not the ambulance: Chame a polícia!"
+          },
+          {
+            "answer": "Chama a polícia!",
+            "category": "incorrect answer",
+            "explanation": "Keep the polite -e form for the stranger: Chame a polícia!"
+          }
+        ]
       }
     },
     {
@@ -12969,7 +13442,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: É ___! (urgent)",
-      "hints": [],
+      "hints": [
+        "The word that tells the world to hurry: urgente. É urgente!"
+      ],
       "feedback": "É urgente! — when seconds matter.",
       "evidenceKey": "pt-emergency-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12999,7 +13474,18 @@
             "urgente"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "importante",
+              "category": "incorrect answer",
+              "explanation": "Importante is 'important' — the emergency marker is urgente: É urgente!"
+            },
+            {
+              "answer": "rápido",
+              "category": "incorrect answer",
+              "explanation": "Rápido is 'fast' — the urgency word is urgente: É urgente!"
+            }
+          ]
         }
       }
     },
@@ -16731,7 +17217,9 @@
         "vocabulary"
       ],
       "prompt": "You reach the desk. Which opens the check-in?",
-      "hints": [],
+      "hints": [
+        "The soft opening line: Queria fazer o check-in, por favor. Quero o quarto demands a room, Dá-me a chave! orders, and Onde é o quarto? asks where your room is."
+      ],
       "feedback": "Queria fazer o check-in, por favor — queria softens the request; the other options skip the check-in entirely or are blunt.",
       "evidenceKey": "pt-a2-no-hotel-act-2",
       "assistanceAffectsEvidence": [
@@ -16776,7 +17264,9 @@
         "grammar"
       ],
       "prompt": "State your reservation: 'I have a reservation under the name Silva.'",
-      "hints": [],
+      "hints": [
+        "Tenho (I have) + uma reserva (a reservation) + em nome de Silva (under the name Silva)."
+      ],
       "feedback": "Tenho uma reserva em nome de Silva — em nome de = under the name of.",
       "evidenceKey": "pt-a2-no-hotel-act-3",
       "assistanceAffectsEvidence": [
@@ -16790,7 +17280,23 @@
           "Tenho uma reserva em nome de Silva."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tenho uma reserva nome de Silva.",
+            "category": "missing word",
+            "explanation": "Under the name of is em nome de: Tenho uma reserva em nome de Silva."
+          },
+          {
+            "answer": "Tenho uma reserva para Silva.",
+            "category": "wrong preposition",
+            "explanation": "Para means 'for' — the reservation is em nome de (under the name of): Tenho uma reserva em nome de Silva."
+          },
+          {
+            "answer": "Tenho uma reserva em nome Silva.",
+            "category": "missing word",
+            "explanation": "Keep the de: em nome de Silva."
+          }
+        ]
       }
     },
     {
@@ -16806,7 +17312,9 @@
         "grammar"
       ],
       "prompt": "Ask the key question: what time is breakfast?",
-      "hints": [],
+      "hints": [
+        "The time question: A + que + horas + é + o + pequeno-almoço? — 'at what time is the breakfast?', with the article o before pequeno-almoço."
+      ],
       "feedback": "A que horas é o pequeno-almoço? — a que horas asks for a time.",
       "evidenceKey": "pt-a2-no-hotel-act-4",
       "assistanceAffectsEvidence": [
@@ -16847,8 +17355,8 @@
           "t4",
           "t1",
           "t6",
-          "t3",
-          "t5"
+          "t5",
+          "t3"
         ]
       ]
     },
@@ -16865,7 +17373,9 @@
         "grammar"
       ],
       "prompt": "The receptionist asks for your booking. Complete: 'Tenho uma ___ em nome de Silva.'",
-      "hints": [],
+      "hints": [
+        "The booking word from act-3: reserva. Tenho uma reserva em nome de Silva."
+      ],
       "feedback": "Reserva — a reserva, the reservation.",
       "evidenceKey": "pt-a2-no-hotel-act-5",
       "assistanceAffectsEvidence": [
@@ -16895,7 +17405,23 @@
             "reserva"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "chave",
+              "category": "incorrect answer",
+              "explanation": "Chave is the key — the booking is a reserva: Tenho uma reserva em nome de Silva."
+            },
+            {
+              "answer": "quarto",
+              "category": "incorrect answer",
+              "explanation": "Quarto is the room — the booking is a reserva: Tenho uma reserva em nome de Silva."
+            },
+            {
+              "answer": "check-in",
+              "category": "incorrect answer",
+              "explanation": "The check-in is the action you asked for; the booking itself is a reserva: Tenho uma reserva em nome de Silva."
+            }
+          ]
         }
       }
     },
@@ -16912,7 +17438,9 @@
         "vocabulary"
       ],
       "prompt": "She hands you something and says 'Aqui está a chave.' What do you get?",
-      "hints": [],
+      "hints": [
+        "Aqui está a chave — the key. Chave is what she hands you; quarto is the room, reserva the booking."
+      ],
       "feedback": "A chave — the room key. O quarto is the room itself, a reserva the booking.",
       "evidenceKey": "pt-a2-no-hotel-act-6",
       "assistanceAffectsEvidence": [
@@ -16957,7 +17485,9 @@
         "grammar"
       ],
       "prompt": "Predict before you ask: what time is breakfast?",
-      "hints": [],
+      "hints": [
+        "The breakfast question: A + que + horas + é + o + pequeno-almoço? — and keep the accent on é so it stays 'is'."
+      ],
       "feedback": "A que horas é o pequeno-almoço? — say it before you need it.",
       "evidenceKey": "pt-a2-no-hotel-act-7",
       "assistanceAffectsEvidence": [
@@ -16971,7 +17501,28 @@
           "A que horas é o pequeno-almoço?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A que hora é o pequeno-almoço?",
+            "category": "wrong number",
+            "explanation": "The time question uses the plural horas: A que horas é o pequeno-almoço?"
+          },
+          {
+            "answer": "A que horas e o pequeno-almoço?",
+            "category": "accent/diacritic issue",
+            "explanation": "é means 'is' — without the accent e becomes 'and': A que horas é o pequeno-almoço?"
+          },
+          {
+            "answer": "A que horas é pequeno-almoço?",
+            "category": "missing word",
+            "explanation": "Keep the article o before the noun: A que horas é o pequeno-almoço?"
+          },
+          {
+            "answer": "Que horas é o pequeno-almoço?",
+            "category": "missing word",
+            "explanation": "The question opens with A: A que horas é o pequeno-almoço?"
+          }
+        ]
       }
     },
     {
@@ -16989,7 +17540,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check — match each line to its meaning.",
-      "hints": [],
+      "hints": [
+        "Match each Portuguese line to its English meaning — the check-in request, the breakfast-time question, and the reception question."
+      ],
       "feedback": "Four for four. You're ready for the desk.",
       "evidenceKey": "pt-a2-no-hotel-act-8",
       "assistanceAffectsEvidence": [
@@ -17054,7 +17607,9 @@
         "grammar"
       ],
       "prompt": "Final run-through. Say it all: 'I'd like to check in, please.'",
-      "hints": [],
+      "hints": [
+        "Queria (would like) + fazer o check-in + por favor — the polite request from the desk."
+      ],
       "feedback": "Queria fazer o check-in, por favor — the whole mission in one sentence.",
       "evidenceKey": "pt-a2-no-hotel-act-9",
       "assistanceAffectsEvidence": [
@@ -17068,7 +17623,23 @@
           "Queria fazer o check-in, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quero fazer o check-in.",
+            "category": "incorrect answer",
+            "explanation": "Quero is 'I want' — the polite check-in softens with Queria: Queria fazer o check-in, por favor."
+          },
+          {
+            "answer": "Queria fazer o check-in.",
+            "category": "missing word",
+            "explanation": "Round the request with por favor: Queria fazer o check-in, por favor."
+          },
+          {
+            "answer": "Queria fazer check-in, por favor.",
+            "category": "missing word",
+            "explanation": "The check-in keeps its article: fazer o check-in."
+          }
+        ]
       }
     },
     {
@@ -17519,7 +18090,9 @@
         "vocabulary"
       ],
       "prompt": "The operator asks where you are. You need the word for ‘hospital’, fast. Which is it?",
-      "hints": [],
+      "hints": [
+        "The hospital is where you are headed — o hospital. The other options name the police, the ambulance, and the doctor."
+      ],
       "feedback": "O hospital — name the place first, then the street.",
       "evidenceKey": "pt-emergency-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -23563,7 +24136,8 @@
         },
         {
           "answers": [
-            "Vou ao centro de metro."
+            "Vou ao centro de metro.",
+            "Vou de metro ao centro."
           ],
           "allowTypo": true,
           "errors": [],

@@ -6140,7 +6140,9 @@
         "grammar"
       ],
       "prompt": "Build the polite request for one coffee, starting with the softened verb.",
-      "hints": [],
+      "hints": [
+        "The frame never changes: the softened verb Quisiera opens, then un + the drink, and por favor closes. Start with Quisiera and the rest falls into place."
+      ],
       "feedback": "Quisiera opens, un café names the drink, and por favor closes — that order never changes.",
       "evidenceKey": "es-cafe-order-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -6197,7 +6199,9 @@
         "grammar"
       ],
       "prompt": "Build the polite request for one tea.",
-      "hints": [],
+      "hints": [
+        "Same frame as the coffee: Quisiera opens, then un té — té with its accent — and por favor closes the request."
+      ],
       "feedback": "Same frame, new drink — and the accent on té stays.",
       "evidenceKey": "es-cafe-order-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -6254,7 +6258,9 @@
         "grammar"
       ],
       "prompt": "The verb is missing. Complete the polite request.",
-      "hints": [],
+      "hints": [
+        "The blank is the softened opener that sits alone before un café — the quisiera form, not the blunt quiero."
+      ],
       "feedback": "Quisiera is the softened form of quiero — the polite opener.",
       "evidenceKey": "es-cafe-order-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -6284,7 +6290,23 @@
             "Quisiera"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Quiero",
+              "category": "wrong conjugation",
+              "explanation": "Quiero states the wish bluntly; the polite frame softens it to Quisiera — the quisiera form, not quiero."
+            },
+            {
+              "answer": "Quisieras",
+              "category": "wrong conjugation",
+              "explanation": "Quisieras adds the -s for tú (you); the request about yourself takes the I-form Quisiera."
+            },
+            {
+              "answer": "quería",
+              "category": "wrong tense",
+              "explanation": "Quería is a past 'I wanted'; the polite opener here is the conditional Quisiera."
+            }
+          ]
         }
       }
     },
@@ -6304,7 +6326,9 @@
         "vocabulary"
       ],
       "prompt": "Which of these is the polite way to ask for coffee?",
-      "hints": [],
+      "hints": [
+        "The polite coffee request needs BOTH the softened verb and the right drink: Quisiera opens, café follows un, por favor closes. One decoy swaps in tea and another moves the verb after the drink."
+      ],
       "feedback": "Quisiera softens the verb, quiero is blunt, and word order matters.",
       "evidenceKey": "es-cafe-order-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -6352,7 +6376,9 @@
         "grammar"
       ],
       "prompt": "Build the short polite request — no verb, just the drink.",
-      "hints": [],
+      "hints": [
+        "No verb today: Un + the drink comes first, and por favor still closes the phrase — Un café, por favor."
+      ],
       "feedback": "Drop the verb and the request still works: Un café, por favor.",
       "evidenceKey": "es-cafe-order-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -6404,7 +6430,9 @@
         "grammar"
       ],
       "prompt": "Type the polite request for one tea.",
-      "hints": [],
+      "hints": [
+        "Type the full frame from the tiles: Quisiera opens, then un té — the accent on é is part of the word — then por favor."
+      ],
       "feedback": "Quisiera un té, por favor. — the accent on té is part of the spelling.",
       "evidenceKey": "es-cafe-order-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -6418,7 +6446,28 @@
           "Quisiera un té, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quisiera un te por favor",
+            "category": "accent/diacritic issue",
+            "explanation": "Te without the accent is the pronoun 'you'; tea is té, and that accent is part of the word."
+          },
+          {
+            "answer": "Quiero un té por favor",
+            "category": "wrong conjugation",
+            "explanation": "Quiero is the blunt form; the polite request softens the verb — Quisiera un té, por favor."
+          },
+          {
+            "answer": "Quisiera te un por favor",
+            "category": "word-order problem",
+            "explanation": "The frame order is fixed: Quisiera, then un té, then por favor — and té keeps its accent."
+          },
+          {
+            "answer": "Quisiera un café por favor",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for tea, not coffee: un té. Keep the frame, change the drink."
+          }
+        ]
       }
     },
     {
@@ -6437,7 +6486,9 @@
         "grammar"
       ],
       "prompt": "Fill the blank, and mind the accent — the drink is tea.",
-      "hints": [],
+      "hints": [
+        "The drink is tea — té with the accent. Te without it is a different word (the pronoun 'you')."
+      ],
       "feedback": "Té keeps its accent. Without it, te means something else entirely.",
       "evidenceKey": "es-cafe-order-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -6467,7 +6518,18 @@
             "té"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "te",
+              "category": "accent/diacritic issue",
+              "explanation": "Te without the accent means 'you'; tea is té — keep the accent on the é."
+            },
+            {
+              "answer": "café",
+              "category": "incorrect answer",
+              "explanation": "The prompt says the drink is tea — té. Café was the earlier step's drink."
+            }
+          ]
         }
       }
     },
@@ -6487,7 +6549,9 @@
         "grammar"
       ],
       "prompt": "A friend joins you and wants tea too. Build the polite request for one tea — from memory.",
-      "hints": [],
+      "hints": [
+        "From memory: the softened verb Quisiera, then un té (accented), then por favor — the same three blocks you used with coffee, tea swapped in."
+      ],
       "feedback": "You built it without the frame in front of you. That is the point of today.",
       "evidenceKey": "es-cafe-order-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -6934,7 +6998,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «First words». How do you say 'thank you'?",
-      "hints": [],
+      "hints": [
+        "The thanks word from «First words» is Gracias. Por favor is the asking-politely word."
+      ],
       "feedback": "Gracias — one of your very first Spanish words, and still the most useful.",
       "evidenceKey": "es-basics-recall-act-2",
       "assistanceAffectsEvidence": [
@@ -6982,7 +7048,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Introducing yourself». Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The introduction frame starts with the me that means 'myself': Me llamo."
+      ],
       "feedback": "Me llamo — literally 'I call myself', the way Spanish introduces a name.",
       "evidenceKey": "es-basics-recall-act-3",
       "assistanceAffectsEvidence": [
@@ -7012,7 +7080,18 @@
             "Me"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Mi",
+              "category": "incorrect answer",
+              "explanation": "Mi is 'my'; the introduction needs the reflexive Me: Me llamo Ana."
+            },
+            {
+              "answer": "Yo",
+              "category": "incorrect answer",
+              "explanation": "Yo would be an explicit subject; the name frame uses Me llamo — the me is part of the verb phrase."
+            }
+          ]
         }
       }
     },
@@ -7032,7 +7111,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Introducing yourself». Someone asks «¿Cómo te llamas?» — answer that your name is Ana.",
-      "hints": [],
+      "hints": [
+        "The full frame: Me llamo + the name. Me and the verb are a fixed pair."
+      ],
       "feedback": "Me llamo Ana. — the full introduction, rebuilt from memory.",
       "evidenceKey": "es-basics-recall-act-4",
       "assistanceAffectsEvidence": [
@@ -7046,7 +7127,28 @@
           "Me llamo Ana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me llama Ana",
+            "category": "wrong conjugation",
+            "explanation": "Llamo is the I-form that pairs with me; llama is the he/she form."
+          },
+          {
+            "answer": "Soy Ana",
+            "category": "incorrect answer",
+            "explanation": "Soy Ana is a valid introduction, but the question asks for the ¿Cómo te llamas? reply — Me llamo Ana."
+          },
+          {
+            "answer": "Mi nombre es Ana",
+            "category": "incorrect answer",
+            "explanation": "That is a valid but bookish alternative; the lesson's frame for the question is Me llamo Ana."
+          },
+          {
+            "answer": "Yo me llamo Ana",
+            "category": "extra word",
+            "explanation": "Yo is optional and not part of the frame — Me llamo Ana stands alone."
+          }
+        ]
       }
     },
     {
@@ -7065,7 +7167,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Days and times». Which word means 'tomorrow'?",
-      "hints": [],
+      "hints": [
+        "Tomorrow is mañana — the one with the ñ. Hoy is today; el lunes is Monday."
+      ],
       "feedback": "Mañana — and mind the ñ, it is not a plain n.",
       "evidenceKey": "es-basics-recall-act-5",
       "assistanceAffectsEvidence": [
@@ -7113,7 +7217,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Family and people». Complete the phrase — it means 'the parents'.",
-      "hints": [],
+      "hints": [
+        "Padres is plural and masculine — the article is los. La would be singular feminine."
+      ],
       "feedback": "Los padres — los for the plural, the way «Family and people» taught it.",
       "evidenceKey": "es-basics-recall-act-6",
       "assistanceAffectsEvidence": [
@@ -7143,7 +7249,23 @@
             "los"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "el",
+              "category": "wrong number",
+              "explanation": "Padres is plural — more than one parent — so the article is los."
+            },
+            {
+              "answer": "la",
+              "category": "wrong number",
+              "explanation": "Padres is plural, so the article must be plural too: los padres."
+            },
+            {
+              "answer": "unos",
+              "category": "wrong article",
+              "explanation": "Unos would mean 'some parents'; the phrase means THE parents — los padres."
+            }
+          ]
         }
       }
     },
@@ -7163,7 +7285,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Introducing yourself». Put the words in order to ask someone's name.",
-      "hints": [],
+      "hints": [
+        "The question opens with ¿Cómo, te comes next, and llamas closes it: ¿Cómo te llamas?"
+      ],
       "feedback": "¿Cómo te llamas? — exactly as the lesson taught it.",
       "evidenceKey": "es-basics-recall-act-7",
       "assistanceAffectsEvidence": [
@@ -7210,7 +7334,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Introducing yourself». Which of these means 'nice to meet you'?",
-      "hints": [],
+      "hints": [
+        "The meeting-pleasure phrase is Mucho gusto. The other options are introductions or questions."
+      ],
       "feedback": "Mucho gusto — literally 'much pleasure', the standard reply after an introduction.",
       "evidenceKey": "es-basics-recall-act-8",
       "assistanceAffectsEvidence": [
@@ -7258,7 +7384,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «First words». Say 'yes, thank you'.",
-      "hints": [],
+      "hints": [
+        "Two words from «First words» in order: Sí for yes, then gracias for thanks."
+      ],
       "feedback": "Sí, gracias. — two of your very first Spanish words, still together.",
       "evidenceKey": "es-basics-recall-act-9",
       "assistanceAffectsEvidence": [
@@ -7272,7 +7400,18 @@
           "Sí, gracias."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gracias, sí",
+            "category": "word-order problem",
+            "explanation": "The pair runs emphatic-first: Sí, gracias — the yes comes before the thanks."
+          },
+          {
+            "answer": "Si gracias",
+            "category": "accent/diacritic issue",
+            "explanation": "Yes needs its accent: Sí. Si without it means 'if'."
+          }
+        ]
       }
     },
     {
@@ -7291,7 +7430,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Family and people». Which means 'the sister'?",
-      "hints": [],
+      "hints": [
+        "Sister is feminine — la hermana. El hermano is the brother; los padres are the parents."
+      ],
       "feedback": "La hermana — la for feminine, hermana for sister. Four lessons revisited, nothing new added.",
       "evidenceKey": "es-basics-recall-act-10",
       "assistanceAffectsEvidence": [
@@ -8206,7 +8347,9 @@
         "grammar"
       ],
       "prompt": "Build the introduction: 'My name is Ana.'",
-      "hints": [],
+      "hints": [
+        "Me llamo is a fixed pair: Me first, then llamo, then the name last. The me never moves."
+      ],
       "feedback": "Me llamo Ana — me, then llamo, then the name. That order never changes.",
       "evidenceKey": "es-family-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -8252,7 +8395,9 @@
         "grammar"
       ],
       "prompt": "Now build: 'I am the brother.'",
-      "hints": [],
+      "hints": [
+        "Soy opens, then the article-noun pair travels as a unit: el hermano."
+      ],
       "feedback": "Soy el hermano — soy first, then the article-noun pair. El hermano travels as a unit.",
       "evidenceKey": "es-family-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -8296,7 +8441,9 @@
         "vocabulary"
       ],
       "prompt": "The noun is missing. Complete the sentence about the sister.",
-      "hints": [],
+      "hints": [
+        "The article La tells you the noun is feminine — hermana, not hermano. The article is a clue."
+      ],
       "feedback": "La hermana — la told you the noun was feminine before you even read it. Articles are clues, not decoration.",
       "evidenceKey": "es-family-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -8326,7 +8473,18 @@
             "hermana"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "hermano",
+              "category": "wrong gender",
+              "explanation": "La demands a feminine noun: hermana. Hermano is masculine and takes el."
+            },
+            {
+              "answer": "hermanas",
+              "category": "wrong number",
+              "explanation": "Es Ana is singular and the article La is singular — hermana with no final -s."
+            }
+          ]
         }
       }
     },
@@ -8343,7 +8501,9 @@
         "grammar"
       ],
       "prompt": "Which article belongs with 'hermano'?",
-      "hints": [],
+      "hints": [
+        "Hermano is masculine and singular — that is el's job. Los is plural, la is feminine, and una is an indefinite article."
+      ],
       "feedback": "El hermano — masculine singular takes el. Los is plural, la is feminine, and una is the wrong job entirely.",
       "evidenceKey": "es-family-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -8388,7 +8548,9 @@
         "grammar"
       ],
       "prompt": "Build the full sentence: 'The brother is Leo.'",
-      "hints": [],
+      "hints": [
+        "Subject first: El hermano as one unit, then es as the link, then the name Leo last."
+      ],
       "feedback": "El hermano es Leo — subject first, es in the middle, the name last. Spanish links with es the way English links with 'is'.",
       "evidenceKey": "es-family-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -8437,7 +8599,9 @@
         "grammar"
       ],
       "prompt": "Type the introduction from memory: 'My name is Ana.'",
-      "hints": [],
+      "hints": [
+        "The order stays fixed when typing: Me, then llamo, then Ana — exactly three words, nothing extra."
+      ],
       "feedback": "Me llamo Ana. — from tiles to typing; the sentence is yours now.",
       "evidenceKey": "es-family-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -8451,7 +8615,23 @@
           "Me llamo Ana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me llama Ana",
+            "category": "wrong conjugation",
+            "explanation": "Llamo is the I-form that pairs with me; llama is the he/she form. It is always me llamo."
+          },
+          {
+            "answer": "Yo me llamo Ana",
+            "category": "extra word",
+            "explanation": "Yo is optional and the model frame omits it — Me llamo Ana is the complete introduction."
+          },
+          {
+            "answer": "Llamo me Ana",
+            "category": "word-order problem",
+            "explanation": "The pair stays in order: me llamo — me first, then llamo, then the name."
+          }
+        ]
       }
     },
     {
@@ -8469,7 +8649,9 @@
         "grammar"
       ],
       "prompt": "The article is missing. Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "Even after soy the article stays — hermano is masculine singular, so it keeps el."
+      ],
       "feedback": "Soy el hermano — even after soy, the article stays. Spanish never drops it the way English drops 'the' in 'I am brother'.",
       "evidenceKey": "es-family-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -8499,7 +8681,23 @@
             "el"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "la",
+              "category": "wrong gender",
+              "explanation": "Hermano is masculine, so the article is el; la belongs with feminine nouns like hermana."
+            },
+            {
+              "answer": "los",
+              "category": "wrong number",
+              "explanation": "Hermano is singular — el. Los would make it plural: los hermanos."
+            },
+            {
+              "answer": "un",
+              "category": "wrong article",
+              "explanation": "Un would mean 'a brother'; the sentence needs the definite article — el hermano."
+            }
+          ]
         }
       }
     },
@@ -8517,7 +8715,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Article and noun must agree in gender and number: el with hermano, la with hermana — and es needs a singular subject."
+      ],
       "feedback": "El hermano es Leo — every article agrees with its noun. In the wrong answers the article and the noun disagree, and Spanish ears catch it instantly.",
       "evidenceKey": "es-family-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -8562,7 +8762,9 @@
         "grammar"
       ],
       "prompt": "From memory: build 'Ana is the sister.'",
-      "hints": [],
+      "hints": [
+        "Same machine as before, from memory: Ana, then es, then the agreeing article-noun pair — la hermana."
+      ],
       "feedback": "Ana es la hermana — name, es, article, noun. Four pieces, one pattern, and it works for your whole family.",
       "evidenceKey": "es-family-construction-act-10",
       "assistanceAffectsEvidence": [
@@ -9251,7 +9453,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the correct plural of la flor?",
-      "hints": [],
+      "hints": [
+        "Flor ends in a consonant, so the plural takes -es — flores — and the feminine article stays las."
+      ],
       "feedback": "Flor ends in a consonant, so it takes -es: las flores. Los would be masculine, which flor is not.",
       "evidenceKey": "es-plural-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9296,7 +9500,9 @@
         "grammar"
       ],
       "prompt": "Predict the phrase before you write it: two tables.",
-      "hints": [],
+      "hints": [
+        "Dos says two, mesa ends in a vowel, so the plural is mesas — no other ending needed."
+      ],
       "feedback": "Mesa ends in a vowel, so the plural just adds -s: dos mesas.",
       "evidenceKey": "es-plural-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9310,7 +9516,23 @@
           "dos mesas"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "dos mesa",
+            "category": "wrong number",
+            "explanation": "Dos demands the plural: dos mesas. The -s carries the 'two'."
+          },
+          {
+            "answer": "dos mesas grandes",
+            "category": "extra word",
+            "explanation": "The prompt asks for 'two tables' only — dos mesas. Grandes would say 'big tables'."
+          },
+          {
+            "answer": "las dos mesas",
+            "category": "extra word",
+            "explanation": "The prompt wants just 'two tables' — dos mesas; the article las is not asked for."
+          }
+        ]
       }
     },
     {
@@ -9326,7 +9548,9 @@
         "vocabulary"
       ],
       "prompt": "Lápiz ends in z. Choose the correct plural line.",
-      "hints": [],
+      "hints": [
+        "Check all three agreements at once: the spelling change (lápices, not lápizs), the plural article los, and the plural adjective nuevos."
+      ],
       "feedback": "The z becomes c before the -es ending, and the accent stays: los lápices.",
       "evidenceKey": "es-plural-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9371,7 +9595,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: the flowers are pretty.",
-      "hints": [],
+      "hints": [
+        "Las flores is the plural subject (flor takes -es), son is the link, and the adjective agrees in number: bonitas."
+      ],
       "feedback": "Flores is feminine plural, so the adjective follows: Las flores son bonitas.",
       "evidenceKey": "es-plural-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9420,7 +9646,9 @@
         "grammar"
       ],
       "prompt": "The colour tells you these are pencils. Fill the gap: Tres ___ rojos.",
-      "hints": [],
+      "hints": [
+        "Lápiz ends in z, so the z becomes c before the plural -es: lápices. The accent on the á stays."
+      ],
       "feedback": "The z changes to c before -es: Tres lápices rojos.",
       "evidenceKey": "es-plural-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -9450,7 +9678,23 @@
             "lápices"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "lápizs",
+              "category": "wrong number",
+              "explanation": "A -z noun does not take plain -s; the spelling changes first: lápiz → lápices."
+            },
+            {
+              "answer": "lapices",
+              "category": "accent/diacritic issue",
+              "explanation": "The accent stays on the á even in the plural: lápices."
+            },
+            {
+              "answer": "lápiz",
+              "category": "wrong number",
+              "explanation": "Tres means three — more than one pencil — so the plural lápices is needed."
+            }
+          ]
         }
       }
     },
@@ -9742,7 +9986,9 @@
         "vocabulary"
       ],
       "prompt": "Which line correctly says I don't work?",
-      "hints": [],
+      "hints": [
+        "No needs a conjugated verb, not an infinitive, and it stands BEFORE the verb — No trabajo is the only line that does both."
+      ],
       "feedback": "No stands before the conjugated verb: No trabajo.",
       "evidenceKey": "es-negation-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9787,7 +10033,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: she doesn't study.",
-      "hints": [],
+      "hints": [
+        "No goes directly before the verb — No estudia. No ella needed; the verb carries the subject."
+      ],
       "feedback": "No goes before estudia: No estudia.",
       "evidenceKey": "es-negation-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9801,7 +10049,23 @@
           "No estudia."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "No estudiar",
+            "category": "wrong conjugation",
+            "explanation": "Estudiar is the infinitive; after no, the conjugated form is needed — No estudia."
+          },
+          {
+            "answer": "Ella no estudia",
+            "category": "extra word",
+            "explanation": "Ella is optional — the verb already says she. The model frame is exactly No estudia."
+          },
+          {
+            "answer": "No estudie",
+            "category": "wrong conjugation",
+            "explanation": "Estudie is the formal/subjunctive form; the plain present she-form is estudia."
+          }
+        ]
       }
     },
     {
@@ -9817,7 +10081,9 @@
         "vocabulary"
       ],
       "prompt": "Choose the correct negative line.",
-      "hints": [],
+      "hints": [
+        "Spanish doubles the negative happily: no before the verb, nada after it. Algo is the positive 'something' — the wrong partner for no."
+      ],
       "feedback": "No and nada team up happily in Spanish: No como nada.",
       "evidenceKey": "es-negation-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9862,7 +10128,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I don't work at night.",
-      "hints": [],
+      "hints": [
+        "No leads the sentence and sticks right before the verb: No trabajo, then por la noche."
+      ],
       "feedback": "No leads, right before the verb: No trabajo por la noche.",
       "evidenceKey": "es-negation-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9916,7 +10184,9 @@
         "grammar"
       ],
       "prompt": "Nobody is the subject, and it takes a singular verb. Fill the gap: ___ habla español en mi casa.",
-      "hints": [],
+      "hints": [
+        "The nobody word is nadie, and it keeps the singular verb habla. Nada is 'nothing' — it doesn't speak."
+      ],
       "feedback": "Nadie is the nobody word, and it takes a singular verb: Nadie habla español.",
       "evidenceKey": "es-negation-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -9946,7 +10216,18 @@
             "Nadie"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Nada",
+              "category": "incorrect answer",
+              "explanation": "Nada means 'nothing' and wouldn't speak; the nobody who speaks is nadie."
+            },
+            {
+              "answer": "Ninguno",
+              "category": "incorrect answer",
+              "explanation": "Ninguno is 'none (of)' and needs a noun after it; the subject standing alone is nadie."
+            }
+          ]
         }
       }
     },
@@ -10482,7 +10763,9 @@
         "vocabulary"
       ],
       "prompt": "Which line says your book using the informal tu?",
-      "hints": [],
+      "hints": [
+        "Libro is singular, so tu stays singular — no -s on the possessive — and it must be tu (your), not mi (my)."
+      ],
       "feedback": "Libro is singular, so tu stays singular too: Tu libro es nuevo.",
       "evidenceKey": "es-possession-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10527,7 +10810,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: my friends live here.",
-      "hints": [],
+      "hints": [
+        "Amigos is plural: Mis amigos, then the plural verb viven, then aquí."
+      ],
       "feedback": "Amigos is plural, so mi becomes mis: Mis amigos viven aquí.",
       "evidenceKey": "es-possession-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10541,7 +10826,23 @@
           "Mis amigos viven aquí."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mi amigos viven aquí",
+            "category": "wrong number",
+            "explanation": "Amigos is plural, so the possessive joins it: Mis amigos."
+          },
+          {
+            "answer": "Mis amigos vive aquí",
+            "category": "wrong conjugation",
+            "explanation": "Viven is the they-form; vive is for one person — Mis amigos viven."
+          },
+          {
+            "answer": "Mis amigo viven aquí",
+            "category": "wrong number",
+            "explanation": "The noun carries the plural too — Mis amigos, not Mis amigo."
+          }
+        ]
       }
     },
     {
@@ -10557,7 +10858,9 @@
         "vocabulary"
       ],
       "prompt": "The noun is plural. Choose the possessive that matches: ___ casas son grandes.",
-      "hints": [],
+      "hints": [
+        "Casas is plural, so the possessive takes the -s: Mis. Mi, Mies and a singular noun are all wrong partners."
+      ],
       "feedback": "Casas is plural, so the possessive takes -s: Mis casas son grandes.",
       "evidenceKey": "es-possession-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10602,7 +10905,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: your table is in the kitchen.",
-      "hints": [],
+      "hints": [
+        "The possessive comes before the noun: Tu mesa, then está, then en la cocina. No article joins tu."
+      ],
       "feedback": "Possessive first, then the noun: Tu mesa está en la cocina.",
       "evidenceKey": "es-possession-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10661,7 +10966,9 @@
         "grammar"
       ],
       "prompt": "Amigos is plural, so the possessive needs its -s. Fill the gap: ___ amigos son simpáticos.",
-      "hints": [],
+      "hints": [
+        "Amigos is plural, so the possessive needs its plural -s too: Mis amigos."
+      ],
       "feedback": "Amigos is plural, so my becomes mis: Mis amigos son simpáticos.",
       "evidenceKey": "es-possession-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -10691,7 +10998,23 @@
             "Mis"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Mi",
+              "category": "wrong number",
+              "explanation": "Amigos is plural, so the possessive must agree: Mis. Mi pairs with a singular noun."
+            },
+            {
+              "answer": "Tus",
+              "category": "incorrect answer",
+              "explanation": "Tus is 'your'; the sentence is about my friends — Mis amigos son simpáticos."
+            },
+            {
+              "answer": "Mís",
+              "category": "accent/diacritic issue",
+              "explanation": "The possessive mis has no accent — Mís is not a word."
+            }
+          ]
         }
       }
     },
@@ -15935,7 +16258,9 @@
         "vocabulary"
       ],
       "prompt": "La persona con quien hablé. Why quien and not que?",
-      "hints": [],
+      "hints": [
+        "The trigger is the preposition con before the person — after a preposition, people take quien. Que has no preposition here."
+      ],
       "feedback": "a person after a preposition — con + person demands quien. Without the preposition, que would do: la persona que vi.",
       "evidenceKey": "es-a2-relativos-meet",
       "assistanceAffectsEvidence": [
@@ -15980,7 +16305,9 @@
         "grammar"
       ],
       "prompt": "Predict: the city where I live → la ciudad ___ vivo.",
-      "hints": [],
+      "hints": [
+        "Places take donde: la ciudad donde vivo. Quien is for people; que is the all-purpose glue."
+      ],
       "feedback": "donde — places take donde. La ciudad donde vivo: the noun, the glue, the clause.",
       "evidenceKey": "es-a2-relativos-think",
       "assistanceAffectsEvidence": [
@@ -15994,7 +16321,23 @@
           "donde"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "que",
+            "category": "incorrect answer",
+            "explanation": "Que could glue the clauses, but for a place the natural relative is donde: la ciudad donde vivo."
+          },
+          {
+            "answer": "dondé",
+            "category": "accent/diacritic issue",
+            "explanation": "Donde as a relative takes no accent — the accented dónde is the question form."
+          },
+          {
+            "answer": "adonde",
+            "category": "incorrect answer",
+            "explanation": "Adonde implies movement toward; for living in a place, plain donde: la ciudad donde vivo."
+          }
+        ]
       }
     },
     {
@@ -16010,7 +16353,9 @@
         "vocabulary"
       ],
       "prompt": "Lo que dices es verdad. Lo que means…",
-      "hints": [],
+      "hints": [
+        "Lo que wraps a whole idea — 'what you say'. Who, where and when each need their own relative word."
+      ],
       "feedback": "what — lo que wraps a whole idea: what you say. Who/when/where need their own words.",
       "evidenceKey": "es-a2-relativos-notice",
       "assistanceAffectsEvidence": [
@@ -16055,7 +16400,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The book I read is great.",
-      "hints": [],
+      "hints": [
+        "El libro first, then que as the glue, the clause leí, then the main verb es genial to close it."
+      ],
       "feedback": "El libro que leí es genial — noun, glue, clause, then the main verb. One sentence, two ideas.",
       "evidenceKey": "es-a2-relativos-build",
       "assistanceAffectsEvidence": [
@@ -16114,7 +16461,9 @@
         "grammar"
       ],
       "prompt": "La persona con ___ hablé fue amable.",
-      "hints": [],
+      "hints": [
+        "Person plus preposition con demands quien. Que would fit without the preposition, not with it."
+      ],
       "feedback": "con quien — person plus preposition. Que would work without con; with it, only quien.",
       "evidenceKey": "es-a2-relativos-fill",
       "assistanceAffectsEvidence": [
@@ -16144,7 +16493,23 @@
             "quien"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "que",
+              "category": "incorrect answer",
+              "explanation": "Que is the all-purpose glue, but after the preposition con a person takes quien: con quien hablé."
+            },
+            {
+              "answer": "quién",
+              "category": "accent/diacritic issue",
+              "explanation": "Quien here is a relative pronoun, not the question word — no accent: con quien hablé."
+            },
+            {
+              "answer": "dónde",
+              "category": "incorrect answer",
+              "explanation": "Donde is for places; the person you spoke with takes quien."
+            }
+          ]
         }
       }
     },
@@ -16550,7 +16915,9 @@
         "vocabulary"
       ],
       "prompt": "Lo veo. What does lo replace?",
-      "hints": [],
+      "hints": [
+        "Lo answers 'what do I see?' — the direct object. The subject is the hidden yo, and lo is never the doer."
+      ],
       "feedback": "the direct object — lo stands in for what you see. The subject is the hidden yo; lo is never the doer.",
       "evidenceKey": "es-a2-pronombres-od-oi-meet",
       "assistanceAffectsEvidence": [
@@ -16595,7 +16962,9 @@
         "grammar"
       ],
       "prompt": "Predict: I gave it to him → se ___.",
-      "hints": [],
+      "hints": [
+        "Le + lo collides into se, and the direct object stays lo: se lo. Never *le lo."
+      ],
       "feedback": "se lo — the diplomat se plus lo. Never *le lo: Spanish melts that collision into se.",
       "evidenceKey": "es-a2-pronombres-od-oi-think",
       "assistanceAffectsEvidence": [
@@ -16609,7 +16978,23 @@
           "lo"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "le lo",
+            "category": "incorrect answer",
+            "explanation": "Le lo never survives in Spanish — the pair melts into se lo. The blank after se holds lo alone."
+          },
+          {
+            "answer": "le",
+            "category": "incorrect answer",
+            "explanation": "The direct object is missing — I gave IT. The full pair is se lo; the blank holds lo."
+          },
+          {
+            "answer": "la",
+            "category": "wrong gender",
+            "explanation": "La would be a feminine direct object; the neutral 'it' takes lo: se lo di."
+          }
+        ]
       }
     },
     {
@@ -16625,7 +17010,9 @@
         "vocabulary"
       ],
       "prompt": "Le di el libro a María. Le is…",
-      "hints": [],
+      "hints": [
+        "Le points to the receiver — to María. The book is what was given (direct); le is who received it (indirect)."
+      ],
       "feedback": "indirect — le = to her, the receiver. El libro is the direct object (what was given).",
       "evidenceKey": "es-a2-pronombres-od-oi-notice",
       "assistanceAffectsEvidence": [
@@ -16670,7 +17057,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: He gave it to me yesterday.",
-      "hints": [],
+      "hints": [
+        "Indirect first, direct second, verb third: Me lo dio, then ayer. The pronouns hug the verb."
+      ],
       "feedback": "Me lo dio ayer — indirect, direct, verb, when. Both pronouns hug the verb, in that order.",
       "evidenceKey": "es-a2-pronombres-od-oi-build",
       "assistanceAffectsEvidence": [
@@ -16719,7 +17108,9 @@
         "grammar"
       ],
       "prompt": "___ di el libro. (to him: I gave…)",
-      "hints": [],
+      "hints": [
+        "'To him' is the receiver — the indirect object le. The direct object would be lo (the book)."
+      ],
       "feedback": "Le di — to him. Even with a María named later, le marks the receiver up front.",
       "evidenceKey": "es-a2-pronombres-od-oi-fill",
       "assistanceAffectsEvidence": [
@@ -16749,7 +17140,23 @@
             "Le"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Lo",
+              "category": "incorrect answer",
+              "explanation": "Lo is the direct object (the book); the receiver 'to him' needs the indirect le: Le di el libro."
+            },
+            {
+              "answer": "Les",
+              "category": "wrong number",
+              "explanation": "Les is for several receivers; here it is one person — le."
+            },
+            {
+              "answer": "Se",
+              "category": "incorrect answer",
+              "explanation": "Se appears when le and lo/la collide; with a single pronoun ahead of di, it is Le di."
+            }
+          ]
         }
       }
     },
@@ -19237,7 +19644,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: my books are on the table.",
-      "hints": [],
+      "hints": [
+        "Books are plural, so mi gains the -s: Mis libros first, then están en la mesa."
+      ],
       "feedback": "Mis libros están en la mesa — plural noun, so mi becomes mis; the rest is furniture.",
       "evidenceKey": "es-possession-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19300,7 +19709,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: the tables are big.",
-      "hints": [],
+      "hints": [
+        "Mesa ends in a vowel, so the plural is just mesas — and the article turns feminine plural: Las mesas son grandes."
+      ],
       "feedback": "Las mesas son grandes — vowel ending takes -s, and the article turns feminine plural: las.",
       "evidenceKey": "es-plural-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19353,7 +19764,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: she never eats meat.",
-      "hints": [],
+      "hints": [
+        "Ella first, nunca next, then the verb come, and the object carne last — nunca rides before the verb."
+      ],
       "feedback": "Ella nunca come carne — nunca can open or follow; the no stays glued before the verb it denies.",
       "evidenceKey": "es-negation-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19407,7 +19820,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: the house where I was born is old.",
-      "hints": [],
+      "hints": [
+        "La casa, then donde for the place, the clause nací, then es vieja — donde glues the place to its clause."
+      ],
       "feedback": "La casa donde nací es vieja — donde glues the place to its clause; one sentence, two ideas.",
       "evidenceKey": "es-a2-relativos-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19471,7 +19886,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: she gave it to me this morning.",
-      "hints": [],
+      "hints": [
+        "Same cluster as the last step — Me lo dio — then the time phrase esta mañana."
+      ],
       "feedback": "Me lo dio esta mañana — indirect, direct, verb, when. Both pronouns hug the verb, in that order.",
       "evidenceKey": "es-a2-pronombres-od-oi-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20060,7 +20477,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Which word means ‘the subway’?",
-      "hints": [],
+      "hints": [
+        "The subway is el metro; the car is el coche and the bus el autobús."
+      ],
       "feedback": "El metro is the subway; el coche is the car and el autobús the bus.",
       "evidenceKey": "es-plans-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20105,7 +20524,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Complete the sentence: Voy ___ metro.",
-      "hints": [],
+      "hints": [
+        "Vehicles ride with en: Voy en metro. A pie is the exception for walking."
+      ],
       "feedback": "En metro — the vehicle always rides with en: en metro, en coche, en autobús.",
       "evidenceKey": "es-plans-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20135,7 +20556,23 @@
             "en"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "al",
+              "category": "wrong preposition",
+              "explanation": "Al means 'to the'; the riding frame is Voy en metro, not al metro."
+            },
+            {
+              "answer": "a",
+              "category": "wrong preposition",
+              "explanation": "A doesn't carry vehicles; the riding preposition is en: Voy en metro."
+            },
+            {
+              "answer": "con",
+              "category": "wrong preposition",
+              "explanation": "Con means 'with'; travelling by vehicle takes en — Voy en metro."
+            }
+          ]
         }
       }
     },
@@ -20152,7 +20589,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Say ‘I go on foot’.",
-      "hints": [],
+      "hints": [
+        "On foot is its own fixed phrase — a pie: Voy a pie. No vehicle word joins it."
+      ],
       "feedback": "Voy a pie — ir for the going, a pie for your own two feet.",
       "evidenceKey": "es-plans-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20166,7 +20605,23 @@
           "Voy a pie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voy en pie",
+            "category": "wrong preposition",
+            "explanation": "En goes with vehicles; on foot is the fixed phrase a pie — Voy a pie."
+          },
+          {
+            "answer": "Voy a los pies",
+            "category": "incorrect answer",
+            "explanation": "A los pies means 'at the feet'; the on-foot phrase is a pie — Voy a pie."
+          },
+          {
+            "answer": "Voy andando",
+            "category": "incorrect answer",
+            "explanation": "Andar is valid Spanish, but this lesson's taught phrase is Voy a pie."
+          }
+        ]
       }
     },
     {
@@ -20182,7 +20637,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Which means ‘the bus’?",
-      "hints": [],
+      "hints": [
+        "The bus is el autobús — accent on the o. Coche is car; tren is train."
+      ],
       "feedback": "El autobús is the bus. El tren and el avión were never in this lesson.",
       "evidenceKey": "es-plans-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -20227,7 +20684,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Complete it: ___ al centro. (I go)",
-      "hints": [],
+      "hints": [
+        "The I-form of ir is Voy. Vas is you, va is he/she — the hint (I go) locks it to voy."
+      ],
       "feedback": "Voy — the I form of ir. Vas is you, va is he or she.",
       "evidenceKey": "es-plans-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20257,7 +20716,23 @@
             "Voy"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Vas",
+              "category": "wrong conjugation",
+              "explanation": "Vas is 'you go'; the prompt says I go — Voy al centro."
+            },
+            {
+              "answer": "Va",
+              "category": "wrong conjugation",
+              "explanation": "Va is he/she goes; the speaker is the I — Voy."
+            },
+            {
+              "answer": "Vamos",
+              "category": "wrong conjugation",
+              "explanation": "Vamos is 'we go'; one person going takes Voy."
+            }
+          ]
         }
       }
     },
@@ -20275,7 +20750,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Getting around». Say ‘we go by car’.",
-      "hints": [],
+      "hints": [
+        "We-go is Vamos (from ir), and the car rides with en: Vamos en coche."
+      ],
       "feedback": "Vamos en coche — we-go, and the car takes en.",
       "evidenceKey": "es-plans-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20289,7 +20766,23 @@
           "Vamos en coche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vamos a coche",
+            "category": "wrong preposition",
+            "explanation": "Vehicles take en, not a: Vamos en coche."
+          },
+          {
+            "answer": "Voy en coche",
+            "category": "wrong conjugation",
+            "explanation": "Voy is one person; 'we go' is Vamos en coche."
+          },
+          {
+            "answer": "Vamos el coche",
+            "category": "incorrect answer",
+            "explanation": "El coche needs its riding preposition en: Vamos en coche."
+          }
+        ]
       }
     },
     {
@@ -20306,7 +20799,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Getting around». Which line says ‘he goes on foot’?",
-      "hints": [],
+      "hints": [
+        "He/she goes is Va — the third person. Voy, vas and van are the wrong persons."
+      ],
       "feedback": "Va a pie — va is he/she goes. Voy is I, vas is you, van is they.",
       "evidenceKey": "es-plans-foundation-act-rb8",
       "assistanceAffectsEvidence": [
@@ -20358,7 +20853,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Which means ‘seven’?",
-      "hints": [],
+      "hints": [
+        "Seven is siete — in the run seis, siete, ocho, nueve, diez."
+      ],
       "feedback": "Siete is seven — the second group: seis, siete, ocho, nueve, diez.",
       "evidenceKey": "es-time-telling-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20403,7 +20900,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Complete the count: uno, dos, ___, cuatro.",
-      "hints": [],
+      "hints": [
+        "The count runs uno, dos, tres, cuatro — the blank is the third number."
+      ],
       "feedback": "Tres — uno, dos, tres, cuatro, cinco.",
       "evidenceKey": "es-time-telling-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20433,7 +20932,18 @@
             "tres"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "cuatro",
+              "category": "incorrect answer",
+              "explanation": "Cuatro is already given at the end of the count; the missing middle number is tres."
+            },
+            {
+              "answer": "cino",
+              "category": "incorrect answer",
+              "explanation": "Cinco follows cuatro; the blank between dos and cuatro is tres."
+            }
+          ]
         }
       }
     },
@@ -20450,7 +20960,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Say ‘eight’ in Spanish.",
-      "hints": [],
+      "hints": [
+        "Eight is ocho — in the run seis, siete, ocho, nueve, diez."
+      ],
       "feedback": "Ocho — six through ten: seis, siete, ocho, nueve, diez.",
       "evidenceKey": "es-time-telling-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20464,7 +20976,18 @@
           "ocho"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "seis",
+            "category": "incorrect answer",
+            "explanation": "Seis is six; the prompt asks for eight — ocho."
+          },
+          {
+            "answer": "hocho",
+            "category": "incorrect answer",
+            "explanation": "Spanish eight is spelled with a leading o: ocho, not hocho."
+          }
+        ]
       }
     },
     {
@@ -20480,7 +21003,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Which line asks ‘how much does it cost’?",
-      "hints": [],
+      "hints": [
+        "The price question is cuánto + cuesta: ¿Cuánto cuesta? Qué changes the meaning, and the word order never flips."
+      ],
       "feedback": "¿Cuánto cuesta? — the fixed frame, with both question marks.",
       "evidenceKey": "es-time-telling-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -20525,7 +21050,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Complete it: Una ___, por favor. (apple)",
-      "hints": [],
+      "hints": [
+        "Una pairs with a feminine noun — the apple is manzana."
+      ],
       "feedback": "Una manzana — feminine, so una; the classic first-quantity example.",
       "evidenceKey": "es-time-telling-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20555,7 +21082,23 @@
             "manzana"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "manzanas",
+              "category": "wrong number",
+              "explanation": "Una is singular — one apple: manzana, no -s."
+            },
+            {
+              "answer": "manzano",
+              "category": "wrong gender",
+              "explanation": "Manzano is a masculine tree; the fruit that takes una is manzana."
+            },
+            {
+              "answer": "naranja",
+              "category": "incorrect answer",
+              "explanation": "Naranja is an orange; the example fruit in this lesson is the apple — manzana."
+            }
+          ]
         }
       }
     },
@@ -20572,7 +21115,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Numbers and quantities». Say ‘ten’ in Spanish.",
-      "hints": [],
+      "hints": [
+        "Ten is diez — the round end of the first ten."
+      ],
       "feedback": "Diez — the end of the first ten.",
       "evidenceKey": "es-time-telling-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20586,7 +21131,23 @@
           "diez"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "dieciséis",
+            "category": "incorrect answer",
+            "explanation": "Dieciséis is sixteen; plain ten is diez."
+          },
+          {
+            "answer": "dies",
+            "category": "incorrect answer",
+            "explanation": "Ten ends in z — diez, spelled d-i-e-z, not dies."
+          },
+          {
+            "answer": "nueve",
+            "category": "incorrect answer",
+            "explanation": "Nueve is nine; the prompt asks for ten — diez."
+          }
+        ]
       }
     },
     {
@@ -20602,7 +21163,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Numbers and quantities». Which means ‘five’?",
-      "hints": [],
+      "hints": [
+        "Five is cinco. Quince is fifteen — a tempting near-twin, but a different number."
+      ],
       "feedback": "Cinco is five. Quince is fifteen — a different lesson entirely.",
       "evidenceKey": "es-time-telling-foundation-act-rb8",
       "assistanceAffectsEvidence": [
@@ -20654,7 +21217,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Which means ‘the bread’?",
-      "hints": [],
+      "hints": [
+        "El pan is bread; queso is cheese and fruta is fruit — the bread is pan."
+      ],
       "feedback": "El pan is the bread; el queso is the cheese.",
       "evidenceKey": "es-free-time-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20699,7 +21264,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Complete it: Me gusta ___ café. (the)",
-      "hints": [],
+      "hints": [
+        "Café is masculine, and 'the' here is the article el: Me gusta el café."
+      ],
       "feedback": "El café — coffee is masculine, and liking stays backwards: it pleases me.",
       "evidenceKey": "es-free-time-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20729,7 +21296,23 @@
             "el"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "la",
+              "category": "wrong gender",
+              "explanation": "Café is masculine — the article is el: Me gusta el café."
+            },
+            {
+              "answer": "un",
+              "category": "wrong article",
+              "explanation": "Un would say 'a coffee'; the hint (the) asks for the definite article el."
+            },
+            {
+              "answer": "los",
+              "category": "wrong number",
+              "explanation": "Café here is singular — el. Los would need plural coffees."
+            }
+          ]
         }
       }
     },
@@ -20747,7 +21330,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Say ‘I like the fruit’.",
-      "hints": [],
+      "hints": [
+        "The liking runs backwards: Me gusta, then the liked thing — la fruta."
+      ],
       "feedback": "Me gusta la fruta — the fruit pleases me.",
       "evidenceKey": "es-free-time-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20761,7 +21346,23 @@
           "Me gusta la fruta."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me gusta el fruta",
+            "category": "wrong gender",
+            "explanation": "Fruta is feminine — la fruta, not el."
+          },
+          {
+            "answer": "Yo gusto la fruta",
+            "category": "wrong conjugation",
+            "explanation": "Gustar works backwards: the fruit pleases me — Me gusta la fruta. Yo gusto isn't the frame."
+          },
+          {
+            "answer": "Me gustan la fruta",
+            "category": "wrong number",
+            "explanation": "Gustan is for plural things; one fruit takes gusta: Me gusta la fruta."
+          }
+        ]
       }
     },
     {
@@ -20777,7 +21378,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Which means ‘the water’?",
-      "hints": [],
+      "hints": [
+        "Agua is a feminine noun that borrows el in the singular: el agua. La agua is the classic trap."
+      ],
       "feedback": "El agua — feminine noun, but it borrows el in the singular. La agua is the classic mistake.",
       "evidenceKey": "es-free-time-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -20822,7 +21425,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Complete it: Bebo ___. (water)",
-      "hints": [],
+      "hints": [
+        "The drinking verb is bebo, and water is agua — no article needed after the verb."
+      ],
       "feedback": "Bebo agua — I drink water. Beber is the drinking verb.",
       "evidenceKey": "es-free-time-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20852,7 +21457,23 @@
             "agua"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "el agua",
+              "category": "extra word",
+              "explanation": "Bebo already carries the action; the blank wants just the water — agua, no article."
+            },
+            {
+              "answer": "aguas",
+              "category": "wrong number",
+              "explanation": "The water here is singular — agua, not aguas."
+            },
+            {
+              "answer": "leche",
+              "category": "incorrect answer",
+              "explanation": "Leche is milk; the hint says water — agua."
+            }
+          ]
         }
       }
     },
@@ -20869,7 +21490,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Food and drink». Say ‘the cheese’.",
-      "hints": [],
+      "hints": [
+        "Cheese is queso, masculine — with its article: el queso."
+      ],
       "feedback": "El queso — masculine, with its article.",
       "evidenceKey": "es-free-time-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20883,7 +21506,23 @@
           "el queso"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "la queso",
+            "category": "wrong gender",
+            "explanation": "Queso is masculine: el queso."
+          },
+          {
+            "answer": "quesos",
+            "category": "wrong number",
+            "explanation": "The prompt says 'the cheese' — singular el queso."
+          },
+          {
+            "answer": "el pan",
+            "category": "incorrect answer",
+            "explanation": "Pan is bread; the prompt asks for the cheese — el queso."
+          }
+        ]
       }
     },
     {
@@ -20899,7 +21538,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Food and drink». Which means ‘the meal’?",
-      "hints": [],
+      "hints": [
+        "Food/meal is la comida. La cena is dinner — a word this lesson never taught."
+      ],
       "feedback": "La comida is the food, the meal. La cena (dinner) was never taught here.",
       "evidenceKey": "es-free-time-foundation-act-rb8",
       "assistanceAffectsEvidence": [
@@ -20951,7 +21592,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday: a first look at the past». Which means ‘I spoke’?",
-      "hints": [],
+      "hints": [
+        "The -é ending marks the past I-form of an -ar verb: hablé. Hablo is the present."
+      ],
       "feedback": "Hablé — the -é ending is the past shouting I. Hablo is now.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20996,7 +21639,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday». Complete it: ___ trabajé. (yesterday)",
-      "hints": [],
+      "hints": [
+        "The yesterday word anchors the sentence at the front: Ayer trabajé."
+      ],
       "feedback": "Ayer trabajé — yesterday anchors the past tense.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb3",
       "assistanceAffectsEvidence": [
@@ -21026,7 +21671,23 @@
             "Ayer"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Anoche",
+              "category": "incorrect answer",
+              "explanation": "Anoche is 'last night'; the hint says yesterday — ayer."
+            },
+            {
+              "answer": "Hoy",
+              "category": "incorrect answer",
+              "explanation": "Hoy is today; the past sentence needs its yesterday anchor — ayer."
+            },
+            {
+              "answer": "Ayer yo trabajé",
+              "category": "extra word",
+              "explanation": "The frame is exactly Ayer trabajé — the yo is optional and not part of the model."
+            }
+          ]
         }
       }
     },
@@ -21043,7 +21704,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday». Say ‘I ate’ (past).",
-      "hints": [],
+      "hints": [
+        "The past I-form of an -er verb ends in -í: comí."
+      ],
       "feedback": "Comí — the -í ending for -er verbs in the past.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21057,7 +21720,23 @@
           "comí"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "como",
+            "category": "wrong tense",
+            "explanation": "Como is present 'I eat'; the prompt asks for the past — comí."
+          },
+          {
+            "answer": "comé",
+            "category": "accent/diacritic issue",
+            "explanation": "Comé is a voseo form; the standard past I-form is comí with the accent on the i."
+          },
+          {
+            "answer": "comí ayer",
+            "category": "extra word",
+            "explanation": "The prompt asks for just 'I ate' — comí; ayer wasn't requested here."
+          }
+        ]
       }
     },
     {
@@ -21073,7 +21752,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday». Which means ‘last night’?",
-      "hints": [],
+      "hints": [
+        "Last night is anoche; ayer is yesterday and mañana is tomorrow."
+      ],
       "feedback": "Anoche is last night; ayer is yesterday and mañana is tomorrow.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21118,7 +21799,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday». Complete it: La fiesta ___ buena. (it was)",
-      "hints": [],
+      "hints": [
+        "The all-purpose past was is fue: La fiesta fue buena."
+      ],
       "feedback": "Fue — the mighty fue: it was, he went, she went.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21148,7 +21831,23 @@
             "fue"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "era",
+              "category": "wrong tense",
+              "explanation": "Era paints an ongoing scene; one finished party last night takes fue."
+            },
+            {
+              "answer": "es",
+              "category": "wrong tense",
+              "explanation": "Es is present 'is'; the party was good — past — fue."
+            },
+            {
+              "answer": "fue muy",
+              "category": "extra word",
+              "explanation": "The blank holds just the verb fue; muy ('very') was not requested."
+            }
+          ]
         }
       }
     },
@@ -21165,7 +21864,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Yesterday». Say ‘yesterday’.",
-      "hints": [],
+      "hints": [
+        "The past's favourite adverb: ayer."
+      ],
       "feedback": "Ayer — the past’s favourite adverb.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21179,7 +21880,23 @@
           "ayer"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "anoche",
+            "category": "incorrect answer",
+            "explanation": "Anoche is last night; yesterday is ayer."
+          },
+          {
+            "answer": "hoy",
+            "category": "incorrect answer",
+            "explanation": "Hoy is today; the prompt asks for yesterday — ayer."
+          },
+          {
+            "answer": "ayer noche",
+            "category": "incorrect answer",
+            "explanation": "Last night is one word — anoche; plain yesterday is ayer alone."
+          }
+        ]
       }
     },
     {
@@ -21195,7 +21912,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Yesterday». Which means ‘I ate’?",
-      "hints": [],
+      "hints": [
+        "Past 'I ate' is comí. Como is now, comeré tomorrow, comía used-to."
+      ],
       "feedback": "Comí — past. Como is now, comeré is tomorrow, comía is used-to.",
       "evidenceKey": "es-a2-fin-de-semana-act-rb8",
       "assistanceAffectsEvidence": [
@@ -21247,7 +21966,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Formar el pretérito». Which means ‘I worked’?",
-      "hints": [],
+      "hints": [
+        "The past I-form of an -ar verb ends in -é: trabajé. Trabajaba is the ongoing used-to form."
+      ],
       "feedback": "Trabajé — full -ar ending. Trabajaba would be the imperfecto: used to work.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21292,7 +22013,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «El imperfecto». Complete it: De niño, ___ al fútbol. (I used to play)",
-      "hints": [],
+      "hints": [
+        "De niño sets the habit; the imperfecto I-form jugaba keeps the repeated past running."
+      ],
       "feedback": "Jugaba — the imperfecto keeps the habit running.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb3",
       "assistanceAffectsEvidence": [
@@ -21322,7 +22045,23 @@
             "jugaba"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "jugué",
+              "category": "wrong tense",
+              "explanation": "Jugué is the finished one-time event; de niño describes a habit, so the imperfecto jugaba fits."
+            },
+            {
+              "answer": "juego",
+              "category": "wrong tense",
+              "explanation": "Juego is present 'I play'; the childhood habit takes jugaba."
+            },
+            {
+              "answer": "jugara",
+              "category": "wrong conjugation",
+              "explanation": "Jugara is the subjunctive; the descriptive past form is jugaba."
+            }
+          ]
         }
       }
     },
@@ -21339,7 +22078,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Formar el pretérito». Say ‘we ate’.",
-      "hints": [],
+      "hints": [
+        "We-form of comer in the past: comimos — one clean -imos ending."
+      ],
       "feedback": "Comimos — we-ate, one clean ending.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21353,7 +22094,23 @@
           "comimos"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "comemos",
+            "category": "wrong tense",
+            "explanation": "Comemos is present 'we eat'; the past is comimos."
+          },
+          {
+            "answer": "comí",
+            "category": "wrong number",
+            "explanation": "Comí is 'I ate'; 'we ate' needs the -mos ending: comimos."
+          },
+          {
+            "answer": "comimos ayer",
+            "category": "extra word",
+            "explanation": "The prompt asks for just 'we ate' — comimos; ayer wasn't requested."
+          }
+        ]
       }
     },
     {
@@ -21369,7 +22126,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «El imperfecto». Which sets the scene (‘it was’)?",
-      "hints": [],
+      "hints": [
+        "Background 'it was' is era — the imperfecto scene-setter. Fue snaps a finished event."
+      ],
       "feedback": "Era — the scene-setter. Fue snaps a finished event.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21414,7 +22173,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Formar el pretérito». Complete it: ___ un problema ayer. (I had)",
-      "hints": [],
+      "hints": [
+        "The irregular past of tener for I is tuve — one of the big past irregulars, no written accent."
+      ],
       "feedback": "Tuve — one of the big irregulars: tener → tuve.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21444,7 +22205,23 @@
             "Tuve"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Tenía",
+              "category": "wrong tense",
+              "explanation": "Tenía is the imperfecto 'I used to have'; ayer with a single event takes the pretérito tuve."
+            },
+            {
+              "answer": "Tengo",
+              "category": "wrong tense",
+              "explanation": "Tengo is present 'I have'; the ayer pushes the sentence into the past — tuve."
+            },
+            {
+              "answer": "Tuvé",
+              "category": "accent/diacritic issue",
+              "explanation": "Tuve takes no written accent — tuvé is a misspelling."
+            }
+          ]
         }
       }
     },
@@ -21461,7 +22238,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «El imperfecto». Say ‘there were many people’.",
-      "hints": [],
+      "hints": [
+        "The background 'there was/were' is había, and people is the singular-looking mucha gente: Había mucha gente."
+      ],
       "feedback": "Había mucha gente — the background verb.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21476,7 +22255,23 @@
           "Había mucha gente."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hubo mucha gente",
+            "category": "wrong tense",
+            "explanation": "Hubo reports a completed event; painting the scene takes the imperfecto había."
+          },
+          {
+            "answer": "Habían mucha gente",
+            "category": "wrong conjugation",
+            "explanation": "Había stays singular for scenes — había mucha gente, no -n."
+          },
+          {
+            "answer": "Había muchas gentes",
+            "category": "wrong number",
+            "explanation": "Gente is singular and takes singular agreement: mucha gente."
+          }
+        ]
       }
     },
     {
@@ -21492,7 +22287,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Formar el pretérito». Which means ‘he/she said’?",
-      "hints": [],
+      "hints": [
+        "The irregular past of decir is dijo. Dice is the present; decía the used-to."
+      ],
       "feedback": "Dijo — the irregular past of decir. Dice is now.",
       "evidenceKey": "es-a2-preterito-imperfecto-act-rb8",
       "assistanceAffectsEvidence": [
@@ -21544,7 +22341,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Which is the polite ‘I would like’?",
-      "hints": [],
+      "hints": [
+        "The polite would-like is querría — the conditional of querer. Quiero is blunt; quería is past."
+      ],
       "feedback": "Querría — the conditional in its best clothes. Quiero is blunt.",
       "evidenceKey": "es-a2-me-gustaria-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21589,7 +22388,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Complete it: ___ ir mañana. (I can)",
-      "hints": [],
+      "hints": [
+        "The I-form of poder is puedo, and it feeds the infinitive: Puedo ir."
+      ],
       "feedback": "Puedo — poder takes the infinitive: puedo ir.",
       "evidenceKey": "es-a2-me-gustaria-act-rb3",
       "assistanceAffectsEvidence": [
@@ -21619,7 +22420,23 @@
             "Puedo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Puede",
+              "category": "wrong conjugation",
+              "explanation": "Puede is he/she can; the hint (I can) needs puedo."
+            },
+            {
+              "answer": "Puedes",
+              "category": "wrong conjugation",
+              "explanation": "Puedes is 'you can'; the speaker is the I — puedo ir."
+            },
+            {
+              "answer": "Pudo",
+              "category": "wrong tense",
+              "explanation": "Pudo is the past 'could'; the sentence is present — Puedo ir mañana."
+            }
+          ]
         }
       }
     },
@@ -21636,7 +22453,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Say ‘I want a coffee’.",
-      "hints": [],
+      "hints": [
+        "Quiero + un + the noun: Quiero un café. The verb carries the I."
+      ],
       "feedback": "Quiero un café — querer plus the noun, direct and honest.",
       "evidenceKey": "es-a2-me-gustaria-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21650,7 +22469,28 @@
           "Quiero un café."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quiero café",
+            "category": "missing word",
+            "explanation": "The coffee takes its article: Quiero un café."
+          },
+          {
+            "answer": "Yo quiero un café",
+            "category": "extra word",
+            "explanation": "Yo is optional and drops out of the model frame: Quiero un café."
+          },
+          {
+            "answer": "Querio un café",
+            "category": "wrong conjugation",
+            "explanation": "Querio is a misspelling — the I-form is quiero: querer → quiero."
+          },
+          {
+            "answer": "Quisiera un café",
+            "category": "wrong tense",
+            "explanation": "Quisiera is the softened polite form; this prompt targets the plain 'I want' — Quiero un café."
+          }
+        ]
       }
     },
     {
@@ -21666,7 +22506,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Which means ‘the help’?",
-      "hints": [],
+      "hints": [
+        "Help is la ayuda; favor is el favor and cuenta is the bill."
+      ],
       "feedback": "La ayuda is the help; el favor is the favour.",
       "evidenceKey": "es-a2-me-gustaria-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21711,7 +22553,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Complete it: ¿Me haces un ___? (favour)",
-      "hints": [],
+      "hints": [
+        "The favour word is favor: ¿Me haces un favor?"
+      ],
       "feedback": "¿Me haces un favor? — the favour you ask with querer’s help.",
       "evidenceKey": "es-a2-me-gustaria-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21741,7 +22585,23 @@
             "favor"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "favore",
+              "category": "incorrect answer",
+              "explanation": "Favor is the noun with no final e: un favor."
+            },
+            {
+              "answer": "ayuda",
+              "category": "incorrect answer",
+              "explanation": "Ayuda is help; the prompt asks for a favour — un favor."
+            },
+            {
+              "answer": "me haces un favor",
+              "category": "extra word",
+              "explanation": "The blank is only the favour word — favor; the surrounding ¿Me haces un …? is already given."
+            }
+          ]
         }
       }
     },
@@ -21758,7 +22618,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Polite requests». Say ‘I would like the bill, please’.",
-      "hints": [],
+      "hints": [
+        "The polite conditional Querría, then la cuenta, then por favor — the politest frame of the lesson."
+      ],
       "feedback": "Querría la cuenta, por favor — the politest sentence in the lesson.",
       "evidenceKey": "es-a2-me-gustaria-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21772,7 +22634,28 @@
           "Querría la cuenta, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quiero la cuenta por favor",
+            "category": "wrong conjugation",
+            "explanation": "Quiero is blunt; the politest request softens it — Querría la cuenta, por favor."
+          },
+          {
+            "answer": "Querría el cuenta por favor",
+            "category": "wrong gender",
+            "explanation": "La cuenta is the bill — feminine, la."
+          },
+          {
+            "answer": "Querría la cuenta",
+            "category": "missing word",
+            "explanation": "The frame closes with its manners: Querría la cuenta, por favor."
+          },
+          {
+            "answer": "Querría la cuenta, favor",
+            "category": "missing word",
+            "explanation": "Por favor is the two-word closer — por favor, not favor alone."
+          }
+        ]
       }
     },
     {
@@ -21788,7 +22671,9 @@
         "vocabulary"
       ],
       "prompt": "Last one, from «Polite requests». Which means ‘to want’?",
-      "hints": [],
+      "hints": [
+        "To want is querer; poder is to be able to, pedir is to ask for."
+      ],
       "feedback": "Querer is to want; poder is to be able to.",
       "evidenceKey": "es-a2-me-gustaria-act-rb8",
       "assistanceAffectsEvidence": [

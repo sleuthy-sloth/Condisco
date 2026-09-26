@@ -6060,7 +6060,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I work”?",
-      "hints": [],
+      "hints": [
+        "The work verb in the je form — the option that is a complete positive statement."
+      ],
       "feedback": "In careful written French, put ne before the verb and pas after it. Ne becomes n’ before a vowel: je n’étudie pas. Spoken French often omits ne, but this lesson practises the complete written form.",
       "evidenceKey": "fr-negation-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6108,7 +6110,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: I do not study at home.",
-      "hints": [],
+      "hints": [
+        "The sandwich: ne/n’ before the verb, pas after it; à la maison closes the sentence."
+      ],
       "feedback": "In careful written French, put ne before the verb and pas after it. Ne becomes n’ before a vowel: je n’étudie pas. Spoken French often omits ne, but this lesson practises the complete written form.",
       "evidenceKey": "fr-negation-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6170,7 +6174,9 @@
         "grammar"
       ],
       "prompt": "Complete: Je ne travaille ___.",
-      "hints": [],
+      "hints": [
+        "The second half of the sandwich, after the verb."
+      ],
       "feedback": "In careful written French, put ne before the verb and pas after it. Ne becomes n’ before a vowel: je n’étudie pas. Spoken French often omits ne, but this lesson practises the complete written form.",
       "evidenceKey": "fr-negation-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6200,7 +6206,18 @@
             "pas"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ne",
+              "category": "wrong conjugation",
+              "explanation": "ne is the first half — it goes before the verb. The blank after it needs pas."
+            },
+            {
+              "answer": "non",
+              "category": "incorrect answer",
+              "explanation": "non is the standalone “no”. Inside the frame the second half is pas."
+            }
+          ]
         }
       }
     },
@@ -6220,7 +6237,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I do not work.",
-      "hints": [],
+      "hints": [
+        "Both halves of the written form: ne before the verb, pas after."
+      ],
       "feedback": "In careful written French, put ne before the verb and pas after it. Ne becomes n’ before a vowel: je n’étudie pas. Spoken French often omits ne, but this lesson practises the complete written form.",
       "evidenceKey": "fr-negation-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6237,8 +6256,18 @@
         "errors": [
           {
             "answer": "Je ne pas travaille.",
-            "category": "incorrect answer",
+            "category": "word-order problem",
             "explanation": "Put the finite verb between ne and pas: Je ne travaille pas."
+          },
+          {
+            "answer": "Je ne travaille.",
+            "category": "missing word",
+            "explanation": "Half a negation. The written form needs both halves: Je ne travaille pas."
+          },
+          {
+            "answer": "Je travaille pas.",
+            "category": "incorrect answer",
+            "explanation": "Common in spoken French, but this lesson practises the complete written form: Je ne travaille pas."
           }
         ]
       }
@@ -6259,7 +6288,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “yes/no question opening”?",
-      "hints": [],
+      "hints": [
+        "The two-word yes/no opener the lesson builds with: est-ce que."
+      ],
       "feedback": "Est-ce que introduces a yes/no question without changing subject-verb order: Est-ce que tu travailles ? You can also ask Tu travailles ? with rising intonation. Qui asks who. This lesson uses the est-ce que frame.",
       "evidenceKey": "fr-questions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6307,7 +6338,9 @@
         "grammar"
       ],
       "prompt": "Write in French: Do you work?",
-      "hints": [],
+      "hints": [
+        "Est-ce que opens the question, then the sentence keeps its order."
+      ],
       "feedback": "Est-ce que introduces a yes/no question without changing subject-verb order: Est-ce que tu travailles ? You can also ask Tu travailles ? with rising intonation. Qui asks who. This lesson uses the est-ce que frame.",
       "evidenceKey": "fr-questions-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6318,14 +6351,25 @@
       "id": "fr-questions-foundation-produce",
       "answer": {
         "answers": [
-          "Est-ce que tu travailles ?"
+          "Est-ce que tu travailles ?",
+          "Tu travailles ?"
         ],
         "allowTypo": true,
         "errors": [
           {
             "answer": "Est-ce que tu travaille ?",
-            "category": "incorrect answer",
+            "category": "wrong conjugation",
             "explanation": "Keep the tu ending -es: tu travailles."
+          },
+          {
+            "answer": "Est-ce que vous travaillez ?",
+            "category": "incorrect answer",
+            "explanation": "Grammatical — but the dictated line uses the informal tu form."
+          },
+          {
+            "answer": "Est-ce tu travailles ?",
+            "category": "missing word",
+            "explanation": "The frame is Est-ce QUE: Est-ce que tu travailles ?"
           }
         ]
       }
@@ -6346,7 +6390,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Do you study at home?",
-      "hints": [],
+      "hints": [
+        "Est-ce que opens the yes/no question; the sentence keeps its order afterwards."
+      ],
       "feedback": "Est-ce que introduces a yes/no question without changing subject-verb order: Est-ce que tu travailles ? You can also ask Tu travailles ? with rising intonation. Qui asks who. This lesson uses the est-ce que frame.",
       "evidenceKey": "fr-questions-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6412,8 +6458,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Est-ce que tu ___ ?",
-      "hints": [],
+      "prompt": "Complete: Est-ce que tu ___ ? (work)",
+      "hints": [
+        "The tu form of travailler keeps its -es: tu travailles."
+      ],
       "feedback": "Est-ce que introduces a yes/no question without changing subject-verb order: Est-ce que tu travailles ? You can also ask Tu travailles ? with rising intonation. Qui asks who. This lesson uses the est-ce que frame.",
       "evidenceKey": "fr-questions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6443,7 +6491,23 @@
             "travailles"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "travaille",
+              "category": "wrong conjugation",
+              "explanation": "The tu form keeps its -es: tu travailles."
+            },
+            {
+              "answer": "travailler",
+              "category": "wrong conjugation",
+              "explanation": "After tu the verb is conjugated, not the infinitive: tu travailles."
+            },
+            {
+              "answer": "travaillent",
+              "category": "wrong conjugation",
+              "explanation": "travaillent is ils/elles. With tu it is travailles."
+            }
+          ]
         }
       }
     },
@@ -6671,7 +6735,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “my (masculine singular)”?",
-      "hints": [],
+      "hints": [
+        "The masculine singular my — the one that pairs with livre."
+      ],
       "feedback": "Mon and ma mean my; they agree with the thing owned, not the owner. Use mon livre and ma maison. French does not put le or la before these possessives. Mes is plural for either gender.",
       "evidenceKey": "fr-possession-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6719,7 +6785,9 @@
         "grammar"
       ],
       "prompt": "Write in French: My house is white.",
-      "hints": [],
+      "hints": [
+        "The possessive agrees with the thing owned: maison is feminine, so ma…blanche."
+      ],
       "feedback": "Mon and ma mean my; they agree with the thing owned, not the owner. Use mon livre and ma maison. French does not put le or la before these possessives. Mes is plural for either gender.",
       "evidenceKey": "fr-possession-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6736,8 +6804,18 @@
         "errors": [
           {
             "answer": "Mon maison est blanche.",
-            "category": "incorrect answer",
+            "category": "wrong gender",
             "explanation": "Maison is feminine and begins with a consonant: ma maison."
+          },
+          {
+            "answer": "Ma maison est blanc.",
+            "category": "wrong gender",
+            "explanation": "The adjective agrees with the feminine noun: blanche."
+          },
+          {
+            "answer": "La maison est blanche.",
+            "category": "missing word",
+            "explanation": "The dictation says MY house — the possessive is needed: Ma maison est blanche."
           }
         ]
       }
@@ -6758,7 +6836,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: My book is white.",
-      "hints": [],
+      "hints": [
+        "Livre is masculine: mon livre, and blanc stays bare."
+      ],
       "feedback": "Mon and ma mean my; they agree with the thing owned, not the owner. Use mon livre and ma maison. French does not put le or la before these possessives. Mes is plural for either gender.",
       "evidenceKey": "fr-possession-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6809,8 +6889,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: ___ maison est blanche.",
-      "hints": [],
+      "prompt": "Complete: ___ maison est blanche. (My house is white.)",
+      "hints": [
+        "The noun is feminine — the feminine my is ma, and the adjective agrees."
+      ],
       "feedback": "Mon and ma mean my; they agree with the thing owned, not the owner. Use mon livre and ma maison. French does not put le or la before these possessives. Mes is plural for either gender.",
       "evidenceKey": "fr-possession-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6836,7 +6918,18 @@
             "Ma"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Mon",
+              "category": "wrong gender",
+              "explanation": "Maison is feminine: ma maison."
+            },
+            {
+              "answer": "Mes",
+              "category": "wrong number",
+              "explanation": "mes is the plural my. The house is singular: ma."
+            }
+          ]
         }
       }
     },
@@ -7457,7 +7550,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “Monday”?",
-      "hints": [],
+      "hints": [
+        "French days are written lowercase — the Monday word starts with l."
+      ],
       "feedback": "French days and months are masculine and written lowercase: lundi, mai. Give the date with le, the number and the month: le trois mai. Aujourd’hui, demain and hier frame any plan.",
       "evidenceKey": "fr-days-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7505,7 +7600,9 @@
         "vocabulary"
       ],
       "prompt": "When is Anna’s birthday? Answer with the French date. (Reading 17)",
-      "hints": [],
+      "hints": [
+        "The passage gives the date in the last sentence: le + number + month."
+      ],
       "feedback": "French days and months are masculine and written lowercase: lundi, mai. Give the date with le, the number and the month: le trois mai. Aujourd’hui, demain and hier frame any plan.",
       "evidenceKey": "fr-days-foundation-read",
       "assistanceAffectsEvidence": [
@@ -7520,7 +7617,23 @@
           "le trois mai"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "trois mai",
+            "category": "missing word",
+            "explanation": "The date needs its article: le trois mai."
+          },
+          {
+            "answer": "le trois",
+            "category": "missing word",
+            "explanation": "The date names the month too: le trois mai."
+          },
+          {
+            "answer": "le mai trois",
+            "category": "word-order problem",
+            "explanation": "French dates put the number before the month: le trois mai."
+          }
+        ]
       }
     },
     {
@@ -7538,8 +7651,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete the date: L’anniversaire est le ___ mai.",
-      "hints": [],
+      "prompt": "Complete the date: L’anniversaire est le ___ mai. (3)",
+      "hints": [
+        "Anna’s birthday is the third of May — the same date word as in the first cloze."
+      ],
       "feedback": "French days and months are masculine and written lowercase: lundi, mai. Give the date with le, the number and the month: le trois mai. Aujourd’hui, demain and hier frame any plan.",
       "evidenceKey": "fr-days-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7569,7 +7684,18 @@
             "trois"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "deux",
+              "category": "wrong number",
+              "explanation": "The dictation says 3: le trois mai."
+            },
+            {
+              "answer": "trente",
+              "category": "wrong number",
+              "explanation": "trente is thirty. The birthday is the third: trois."
+            }
+          ]
         }
       }
     },
@@ -7589,7 +7715,9 @@
         "grammar"
       ],
       "prompt": "Write in French: Today is Monday.",
-      "hints": [],
+      "hints": [
+        "Today is aujourd’hui; the day-frame is c’est: Aujourd’hui, c’est lundi."
+      ],
       "feedback": "French days and months are masculine and written lowercase: lundi, mai. Give the date with le, the number and the month: le trois mai. Aujourd’hui, demain and hier frame any plan.",
       "evidenceKey": "fr-days-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7600,7 +7728,8 @@
       "id": "fr-days-foundation-produce",
       "answer": {
         "answers": [
-          "Aujourd’hui, c’est lundi."
+          "Aujourd’hui, c’est lundi.",
+          "C’est lundi aujourd’hui."
         ],
         "allowTypo": true,
         "errors": [
@@ -7608,6 +7737,11 @@
             "answer": "Aujourd’hui, il est lundi.",
             "category": "incorrect answer",
             "explanation": "Days use c’est: Aujourd’hui, c’est lundi."
+          },
+          {
+            "answer": "Aujourd’hui est lundi.",
+            "category": "incorrect answer",
+            "explanation": "The lesson’s day-frame is c’est: Aujourd’hui, c’est lundi."
           }
         ]
       }
@@ -7628,7 +7762,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “hour”?",
-      "hints": [],
+      "hints": [
+        "The word for a single hour on the clock — it also names the “h” sound in “hour”: heure."
+      ],
       "feedback": "Ask the time with Quelle heure est-il ? Answer Il est une heure for one o’clock and Il est plus the number plus heures otherwise: Il est trois heures. Add et demie for half past, et quart for quarter past and moins le quart for quarter to.",
       "evidenceKey": "fr-time-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7676,7 +7812,9 @@
         "grammar"
       ],
       "prompt": "Write in French: It is half past three.",
-      "hints": [],
+      "hints": [
+        "The clock takes il est; half past is et demie: Il est trois heures et demie."
+      ],
       "feedback": "Ask the time with Quelle heure est-il ? Answer Il est une heure for one o’clock and Il est plus the number plus heures otherwise: Il est trois heures. Add et demie for half past, et quart for quarter past and moins le quart for quarter to.",
       "evidenceKey": "fr-time-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7695,6 +7833,16 @@
             "answer": "Ils sont trois heures et demie.",
             "category": "incorrect answer",
             "explanation": "The clock takes il est: Il est trois heures et demie."
+          },
+          {
+            "answer": "Il est trois heures et demi.",
+            "category": "wrong gender",
+            "explanation": "With heure (feminine) the half is demie."
+          },
+          {
+            "answer": "Il est trois heures demi.",
+            "category": "missing word",
+            "explanation": "Half past is et demie: Il est trois heures et demie."
           }
         ]
       }
@@ -7715,7 +7863,9 @@
         "grammar"
       ],
       "prompt": "Complete the time: ___ est une heure.",
-      "hints": [],
+      "hints": [
+        "The clock’s dummy subject is always il: Il est une heure."
+      ],
       "feedback": "Ask the time with Quelle heure est-il ? Answer Il est une heure for one o’clock and Il est plus the number plus heures otherwise: Il est trois heures. Add et demie for half past, et quart for quarter past and moins le quart for quarter to.",
       "evidenceKey": "fr-time-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7745,7 +7895,18 @@
             "Il"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Elle",
+              "category": "incorrect answer",
+              "explanation": "heure is feminine, but the clock’s dummy subject is always il: Il est une heure."
+            },
+            {
+              "answer": "On",
+              "category": "incorrect answer",
+              "explanation": "Spoken French says on est — but this lesson’s model is the written form: Il est une heure."
+            }
+          ]
         }
       }
     },
@@ -7765,7 +7926,9 @@
         "vocabulary"
       ],
       "prompt": "When does the train leave? Answer in French. (Reading 18)",
-      "hints": [],
+      "hints": [
+        "Find the departure sentence: “Le train part à…” and give that time in French."
+      ],
       "feedback": "Ask the time with Quelle heure est-il ? Answer Il est une heure for one o’clock and Il est plus the number plus heures otherwise: Il est trois heures. Add et demie for half past, et quart for quarter past and moins le quart for quarter to.",
       "evidenceKey": "fr-time-foundation-read",
       "assistanceAffectsEvidence": [
@@ -7777,10 +7940,28 @@
       "stimulusId": "fr-time-foundation-read-passage",
       "answer": {
         "answers": [
-          "à huit heures et demie"
+          "à huit heures et demie",
+          "huit heures et demie",
+          "Le train part à huit heures et demie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "à huit heures",
+            "category": "missing word",
+            "explanation": "The departure is at half past eight: à huit heures et demie."
+          },
+          {
+            "answer": "à huit heure",
+            "category": "wrong number",
+            "explanation": "The plural is heures: à huit heures et demie."
+          },
+          {
+            "answer": "midi",
+            "category": "incorrect answer",
+            "explanation": "midi is when the train ARRIVES. The departure is à huit heures et demie."
+          }
+        ]
       }
     },
     {
@@ -9370,7 +9551,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: I would like a coffee, please.",
-      "hints": [],
+      "hints": [
+        "The polite opener is je voudrais; the softener closes the sentence: Je voudrais un café, s’il vous plaît."
+      ],
       "feedback": "Je voudrais opens a polite request, and s’il vous plaît softens it. Word order stays subject–verb–object: Je voudrais un café, s’il vous plaît.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9425,7 +9608,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: Are you having a tea?",
-      "hints": [],
+      "hints": [
+        "Tu + prends asks what the other person is having; the question mark closes it."
+      ],
       "feedback": "Prendre does the work of ordering: tu prends means you take, you are having. A question just adds the rising ? at the end: Tu prends un thé ?",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9479,7 +9664,9 @@
         "grammar"
       ],
       "prompt": "Complete the request: Je ___ un café, s’il vous plaît.",
-      "hints": [],
+      "hints": [
+        "The polite would-like form from the model sentence: Je voudrais un café."
+      ],
       "feedback": "Voudrais is the polite would-like form from «Au café : commander et payer»: Je voudrais un café, s’il vous plaît.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9509,7 +9696,23 @@
             "voudrais"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "veux",
+              "category": "incorrect answer",
+              "explanation": "je veux is a blunt demand. The polite would-like form the step dictates is voudrais."
+            },
+            {
+              "answer": "vais",
+              "category": "wrong conjugation",
+              "explanation": "vais needs an infinitive after it — and the model verb here is the polite voudrais."
+            },
+            {
+              "answer": "voudrai",
+              "category": "wrong tense",
+              "explanation": "voudrai is the plain future (“I will want”). Politeness lives in voudrais."
+            }
+          ]
         }
       }
     },
@@ -9528,7 +9731,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: Can I have a coffee? (polite, with Est-ce que)",
-      "hints": [],
+      "hints": [
+        "Est-ce que opens the question, then je peux + infinitive: Est-ce que je peux prendre un café ?"
+      ],
       "feedback": "Est-ce que je peux plus an infinitive is the polite can-I frame: Est-ce que je peux prendre un café ? Nothing else moves — tu stays in front of the verb, as you learned in «Asking simple questions».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9598,7 +9803,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I take a coffee.",
-      "hints": [],
+      "hints": [
+        "The ordering verb prendre in its je form keeps its s: je prends."
+      ],
       "feedback": "Je prends un café: prends is the je-form of prendre, the ordering verb from «Ordering and prendre».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9612,7 +9819,23 @@
           "Je prends un café."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je prend un café.",
+            "category": "wrong conjugation",
+            "explanation": "prend is the il/elle form. With je it keeps its s: je prends."
+          },
+          {
+            "answer": "Je prends le café.",
+            "category": "wrong article",
+            "explanation": "The dictation says a coffee, not the coffee: un café."
+          },
+          {
+            "answer": "Je vais prendre un café.",
+            "category": "wrong tense",
+            "explanation": "Also good French — but the step dictates the simple present: Je prends un café."
+          }
+        ]
       }
     },
     {
@@ -9628,7 +9851,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence asks the price?",
-      "hints": [],
+      "hints": [
+        "The price question starts with combien."
+      ],
       "feedback": "Combien ça coûte ? asks how much it costs. L’addition, s’il vous plaît asks for the bill — the step after the price.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9673,7 +9898,9 @@
         "grammar"
       ],
       "prompt": "Complete the question: ___ prends un thé ?",
-      "hints": [],
+      "hints": [
+        "From the model Tu prends un thé ? — the informal subject before the verb."
+      ],
       "feedback": "Tu prends… ? asks what the other person is having — the tu-form you met in «Ordering and prendre».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9700,7 +9927,23 @@
             "tu"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Vous",
+              "category": "incorrect answer",
+              "explanation": "The model uses the informal you — and vous cannot take the tu form prends."
+            },
+            {
+              "answer": "Je",
+              "category": "incorrect answer",
+              "explanation": "The model asks the other person what they are having: Tu prends un thé ?"
+            },
+            {
+              "answer": "Il",
+              "category": "incorrect answer",
+              "explanation": "The model uses tu, the informal you, not il."
+            }
+          ]
         }
       }
     },
@@ -9718,7 +9961,9 @@
         "grammar"
       ],
       "prompt": "The waiter is waiting. Write in French: The bill, please.",
-      "hints": [],
+      "hints": [
+        "The bill word is feminine and elides: l’addition, then the softener."
+      ],
       "feedback": "L’addition, s’il vous plaît closes the café visit politely — the same ending you practiced in «Au café : commander et payer».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -9733,7 +9978,23 @@
           "L’addition, s’il vous plaît."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La addition, s’il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "addition is feminine but elides before the vowel: l’addition."
+          },
+          {
+            "answer": "L’addition, s’il te plaît.",
+            "category": "incorrect answer",
+            "explanation": "The model uses the formal vous form of the softener."
+          },
+          {
+            "answer": "L’addition.",
+            "category": "missing word",
+            "explanation": "The dictated sentence keeps the softener: L’addition, s’il vous plaît."
+          }
+        ]
       }
     },
     {
@@ -10243,7 +10504,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Names and introductions». What does «Je suis française.» mean?",
-      "hints": [],
+      "hints": [
+        "Je suis means “I am”, and the -e on française matches a feminine speaker."
+      ],
       "feedback": "Je suis means I am, and the -e on française matches a feminine je — the agreement you noticed in «Names and introductions».",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10288,8 +10551,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "You learned this in «Numbers and age». Complete: J’ai ___ ans.",
-      "hints": [],
+      "prompt": "You learned this in «Numbers and age». Complete: J’ai ___ ans. (twenty)",
+      "hints": [
+        "Age uses avoir, and you are recalling the number for twenty: vingt."
+      ],
       "feedback": "J’ai vingt ans — age uses avoir (to have), not être: I have twenty years.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10319,7 +10584,23 @@
             "vingt"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "dix",
+              "category": "wrong number",
+              "explanation": "The dictation says twenty: j’ai vingt ans."
+            },
+            {
+              "answer": "trente",
+              "category": "wrong number",
+              "explanation": "That is thirty. The recalled number is vingt."
+            },
+            {
+              "answer": "ans",
+              "category": "incorrect answer",
+              "explanation": "ans is already in the sentence. The blank is the NUMBER: vingt."
+            }
+          ]
         }
       }
     },
@@ -10336,7 +10617,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «First words». Write in French: Thank you.",
-      "hints": [],
+      "hints": [
+        "Your second French word, right after bonjour: the thanks word."
+      ],
       "feedback": "Merci — your second French word, right after bonjour.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10350,7 +10633,23 @@
           "Merci."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Merci beaucoup.",
+            "category": "incorrect answer",
+            "explanation": "That is “thank you very much”. The dictation is the plain thanks: Merci."
+          },
+          {
+            "answer": "S’il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "That is “please”, the request sibling. Thank you is Merci."
+          },
+          {
+            "answer": "Merci vous.",
+            "category": "incorrect answer",
+            "explanation": "French drops the “you” here: just Merci."
+          }
+        ]
       }
     },
     {
@@ -10366,7 +10665,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Asking simple questions». Build: Do you work?",
-      "hints": [],
+      "hints": [
+        "A yes/no question opens with Est-ce que — then the sentence keeps its order."
+      ],
       "feedback": "Est-ce que opens a yes/no question and nothing else moves: Est-ce que tu travailles ?",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10421,7 +10722,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Making a negative». Complete: Je ne ___ pas.",
-      "hints": [],
+      "hints": [
+        "ne…pas wraps the verb: Je ne travaille pas."
+      ],
       "feedback": "Ne … pas wraps the verb like a sandwich: Je ne travaille pas.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10451,7 +10754,23 @@
             "travaille"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "travailler",
+              "category": "wrong conjugation",
+              "explanation": "The blank needs the conjugated je form, not the infinitive: je ne travaille pas."
+            },
+            {
+              "answer": "travailles",
+              "category": "wrong conjugation",
+              "explanation": "-es is the tu ending. With je it is -e: je ne travaille pas."
+            },
+            {
+              "answer": "travail",
+              "category": "incorrect answer",
+              "explanation": "travail is the noun “work”. The verb form is travaille."
+            }
+          ]
         }
       }
     },
@@ -10469,7 +10788,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Names and introductions». Which one means “you are”?",
-      "hints": [],
+      "hints": [
+        "The informal you pairs with es — find the tu form of être."
+      ],
       "feedback": "Tu es pairs the informal you with es — je suis is I am, elle est is she is, j’ai is I have.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10515,7 +10836,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «Numbers and age». Write in French: I am twenty years old.",
-      "hints": [],
+      "hints": [
+        "Age is avoir + number + ans: I have twenty years."
+      ],
       "feedback": "J’ai vingt ans — you produce the whole age sentence now, not just the number.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -10529,7 +10852,23 @@
           "J’ai vingt ans."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je suis vingt ans.",
+            "category": "wrong auxiliary",
+            "explanation": "Age uses avoir, not être: j’ai vingt ans."
+          },
+          {
+            "answer": "J’ai vingt an.",
+            "category": "wrong number",
+            "explanation": "Years are plural: vingt ans."
+          },
+          {
+            "answer": "J’ai vingt.",
+            "category": "missing word",
+            "explanation": "The age sentence names the years: j’ai vingt ans."
+          }
+        ]
       }
     },
     {
@@ -10545,7 +10884,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «First words». Which greeting opens the day?",
-      "hints": [],
+      "hints": [
+        "The day-opener is the greeting that means “hello”."
+      ],
       "feedback": "Bonjour opens the day; merci, oui and non answer it. Your very first French word still works.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11559,7 +11900,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: My house is white.",
-      "hints": [],
+      "hints": [
+        "Maison is feminine: the possessive is ma and the adjective takes its feminine -e: blanche."
+      ],
       "feedback": "Maison is feminine, so the adjective takes its feminine form: blanche. Ma maison est blanche.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11610,7 +11953,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: The books are white.",
-      "hints": [],
+      "hints": [
+        "Plural noun, plural verb sont, plural adjective blancs."
+      ],
       "feedback": "Plural masculine takes blancs and the plural verb sont: Les livres sont blancs. Watch the s on both the noun and the adjective.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11662,7 +12007,9 @@
         "grammar"
       ],
       "prompt": "Build the sentence: My book is white.",
-      "hints": [],
+      "hints": [
+        "Livre is masculine: the possessive is mon and blanc stays bare."
+      ],
       "feedback": "Livre is masculine, so my becomes mon and the adjective stays masculine: blanc. Mon livre est blanc.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11713,7 +12060,9 @@
         "grammar"
       ],
       "prompt": "Complete the description: Les maisons sont ___. (The houses are big.)",
-      "hints": [],
+      "hints": [
+        "Maisons is feminine and plural: grande + the plural s."
+      ],
       "feedback": "Grande agrees with the feminine plural maisons: Les maisons sont grandes. Compare with the masculine plural: Les livres sont blancs.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11743,7 +12092,23 @@
             "grandes"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "grand",
+              "category": "wrong number",
+              "explanation": "grand is masculine singular. Maisons is feminine plural: grandes."
+            },
+            {
+              "answer": "grande",
+              "category": "wrong number",
+              "explanation": "grande is feminine singular. The houses are plural: grandes."
+            },
+            {
+              "answer": "grands",
+              "category": "wrong gender",
+              "explanation": "grands is masculine plural. Maisons is feminine: grandes."
+            }
+          ]
         }
       }
     },
@@ -11763,7 +12128,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence: ___ maison est grande. (My house is big.)",
-      "hints": [],
+      "hints": [
+        "Maison is feminine — the feminine my is ma."
+      ],
       "feedback": "Maison is feminine, so my is ma: Ma maison est grande. Masculine would be mon — Mon livre est grand.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11789,7 +12156,18 @@
             "Ma"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Mon",
+              "category": "wrong gender",
+              "explanation": "Maison is feminine: ma maison, not mon."
+            },
+            {
+              "answer": "Mes",
+              "category": "wrong number",
+              "explanation": "mes is the plural my. The house is singular: ma maison."
+            }
+          ]
         }
       }
     },
@@ -11809,7 +12187,9 @@
         "vocabulary"
       ],
       "prompt": "Write in French: My books are white.",
-      "hints": [],
+      "hints": [
+        "Plural my is mes, and the adjective agrees with the plural noun: blancs."
+      ],
       "feedback": "Mes is the plural my, and blancs agrees with the masculine plural livres: Mes livres sont blancs.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11823,7 +12203,23 @@
           "Mes livres sont blancs."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mes livres sont blanc.",
+            "category": "wrong number",
+            "explanation": "The adjective agrees with the plural noun: blancs."
+          },
+          {
+            "answer": "Mon livres sont blancs.",
+            "category": "wrong gender",
+            "explanation": "Plural my is mes, whatever the gender: mes livres."
+          },
+          {
+            "answer": "Mes livres est blancs.",
+            "category": "wrong conjugation",
+            "explanation": "The plural subject takes the plural verb: sont."
+          }
+        ]
       }
     },
     {
@@ -11844,7 +12240,9 @@
         "grammar"
       ],
       "prompt": "Spot the sentence with perfect agreement:",
-      "hints": [],
+      "hints": [
+        "Check every piece: feminine noun needs ma and blanche together."
+      ],
       "feedback": "Ma maison est blanche — feminine noun, feminine possessive, feminine adjective. The others break the pattern: maison needs ma (not mon) and blanche (not blanc), and maisons needs the plural verb and plural noun.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11893,7 +12291,9 @@
         "vocabulary"
       ],
       "prompt": "Write in French: Your book is big.",
-      "hints": [],
+      "hints": [
+        "Livre is masculine — the masculine your is ton, and grand stays as-is."
+      ],
       "feedback": "Ton is the masculine your, and grand stays masculine with livre: Ton livre est grand. You built six sentences today — agreement is yours.",
       "assistanceAffectsEvidence": [
         "hint",
@@ -11907,7 +12307,23 @@
           "Ton livre est grand."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ta livre est grand.",
+            "category": "wrong gender",
+            "explanation": "livre is masculine: ton livre."
+          },
+          {
+            "answer": "Ton livre est grande.",
+            "category": "wrong gender",
+            "explanation": "With the masculine livre the adjective stays grand."
+          },
+          {
+            "answer": "Ton livre sont grand.",
+            "category": "wrong conjugation",
+            "explanation": "A singular subject takes the singular verb: est."
+          }
+        ]
       }
     },
     {
@@ -13564,7 +13980,9 @@
         "vocabulary"
       ],
       "prompt": "Je vais manger. Which two words build the near future ?",
-      "hints": [],
+      "hints": [
+        "The near future is two pieces: a form of aller plus the infinitive. Which option holds both?"
+      ],
       "feedback": "vais manger — aller in the present + the infinitive. That’s the whole machine: near + decided. Je just points at who.",
       "evidenceKey": "fr-a2-futur-emplois-meet",
       "assistanceAffectsEvidence": [
@@ -13613,7 +14031,9 @@
         "grammar"
       ],
       "prompt": "Think: a promise takes the futur simple. “I will call you” (appeler).",
-      "hints": [],
+      "hints": [
+        "A promise takes the futur simple: appeler + the je ending. Watch the double l: j’appellerai."
+      ],
       "feedback": "Je t’appellerai. A promise → futur simple. And watch the spelling: appeler doubles its l for je/tu/il (appellerai) but not for nous/vous (appellerons).",
       "evidenceKey": "fr-a2-futur-emplois-think",
       "assistanceAffectsEvidence": [
@@ -13625,7 +14045,23 @@
           "Je t’appellerai."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je vais t’appeler.",
+            "category": "wrong tense",
+            "explanation": "The near future says “I am going to call you”. A promise takes the futur simple: Je t’appellerai."
+          },
+          {
+            "answer": "Je t’appelerai.",
+            "category": "incorrect answer",
+            "explanation": "Almost — but appeler doubles its l before a silent e: j’appellerai."
+          },
+          {
+            "answer": "Je t’appelle.",
+            "category": "wrong tense",
+            "explanation": "That is the present (“I call you”). The promise needs the futur simple: Je t’appellerai."
+          }
+        ]
       }
     },
     {
@@ -13647,7 +14083,9 @@
         "vocabulary"
       ],
       "prompt": "Il fera beau. “The weather will be nice.” Which verb has an irregular future stem ?",
-      "hints": [],
+      "hints": [
+        "The irregular stem hides inside faire: fer-. Which option is the verb wearing it?"
+      ],
       "feedback": "fera — faire → fer- is an irregular stem, with the regular ending -a. Il is just the weather’s dummy subject; beau just describes.",
       "evidenceKey": "fr-a2-futur-emplois-notice",
       "assistanceAffectsEvidence": [
@@ -13696,7 +14134,9 @@
         "grammar"
       ],
       "prompt": "Prediction now: “It will rain tomorrow.” (pleuvoir)",
-      "hints": [],
+      "hints": [
+        "A prediction takes the futur simple: pleuvr- + the il ending -a. Put demain at the end or the start."
+      ],
       "feedback": "Il pleuvra demain. A prediction → futur simple: pleuvr- + -a. Demain could also open the sentence — French is flexible with time words.",
       "evidenceKey": "fr-a2-futur-emplois-vary",
       "assistanceAffectsEvidence": [
@@ -13709,7 +14149,23 @@
           "Demain, il pleuvra."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il va pleuvoir demain.",
+            "category": "wrong tense",
+            "explanation": "That is the near future. The dictation is a prediction in the futur simple: Il pleuvra demain."
+          },
+          {
+            "answer": "Il pleut demain.",
+            "category": "wrong tense",
+            "explanation": "The present cannot carry tomorrow’s forecast. Futur simple: Il pleuvra demain."
+          },
+          {
+            "answer": "Il pleuvra.",
+            "category": "missing word",
+            "explanation": "The dictated sentence names the day: Il pleuvra demain."
+          }
+        ]
       }
     },
     {
@@ -13731,7 +14187,9 @@
         "grammar"
       ],
       "prompt": "Complete: Tu ___ : c’est une promesse. (réussir)",
-      "hints": [],
+      "hints": [
+        "A promise lives in the futur simple: réussir + the tu ending -as."
+      ],
       "feedback": "réussiras — a promise lives in the futur simple: infinitive + -as.",
       "evidenceKey": "fr-a2-futur-emplois-cloze",
       "assistanceAffectsEvidence": [
@@ -13759,7 +14217,23 @@
             "réussiras"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "réussis",
+              "category": "wrong tense",
+              "explanation": "réussis is the present. The promise takes the futur simple: tu réussiras."
+            },
+            {
+              "answer": "réussira",
+              "category": "wrong conjugation",
+              "explanation": "-a is the il/elle ending. With tu the future ending is -as: tu réussiras."
+            },
+            {
+              "answer": "réussir",
+              "category": "wrong conjugation",
+              "explanation": "The blank needs the conjugated future, not the infinitive: réussir + -as = réussiras."
+            }
+          ]
         }
       }
     },
@@ -13783,7 +14257,9 @@
         "vocabulary"
       ],
       "prompt": "J’ai l’intention de lire. Which chunk names the plan — “intend” ?",
-      "hints": [],
+      "hints": [
+        "The plan-word chunk is J’ai l’intention de + infinitive — find the part that names “intend”."
+      ],
       "feedback": "l’intention de — the plan-word. J’ai (“I have”) just carries it; lire is the infinitive it opens the door to.",
       "evidenceKey": "fr-a2-projets-resolutions-meet",
       "assistanceAffectsEvidence": [
@@ -13833,7 +14309,9 @@
         "grammar"
       ],
       "prompt": "Think: décider de + infinitif. “I decided to stop.”",
-      "hints": [],
+      "hints": [
+        "décider de + infinitive, and the de elides before the vowel: d’arrêter."
+      ],
       "feedback": "J’ai décidé d’arrêter. décider de demands the infinitive — d’arrêter, with élision before the vowel.",
       "evidenceKey": "fr-a2-projets-resolutions-think",
       "assistanceAffectsEvidence": [
@@ -13845,7 +14323,23 @@
           "J’ai décidé d’arrêter."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J’ai décidé de arrêter.",
+            "category": "incorrect answer",
+            "explanation": "The preposition elides before the vowel: d’arrêter."
+          },
+          {
+            "answer": "J’ai décidé arrêter.",
+            "category": "missing word",
+            "explanation": "décider de demands its de before the infinitive: J’ai décidé d’arrêter."
+          },
+          {
+            "answer": "Je décide d’arrêter.",
+            "category": "wrong tense",
+            "explanation": "That is the present. The dictation says “I decided” — passé composé: J’ai décidé d’arrêter."
+          }
+        ]
       }
     },
     {
@@ -13868,7 +14362,9 @@
         "vocabulary"
       ],
       "prompt": "J’espère réussir. After espérer, what form follows ?",
-      "hints": [],
+      "hints": [
+        "After espérer the verb stays in the infinitive — find the option that is a verb in its plain form."
+      ],
       "feedback": "réussir — the infinitive, as always after a plan-word. J’ points at who; espère names the hope.",
       "evidenceKey": "fr-a2-projets-resolutions-notice",
       "assistanceAffectsEvidence": [
@@ -13917,9 +14413,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Commit it: “I will sleep eight hours.”",
-      "hints": [],
-      "feedback": "Je dormirai huit heures. Infinitive dormir + -ai — the future sealing the resolution.",
+      "prompt": "Commit it: “I’m going to sleep eight hours.” (near future)",
+      "hints": [
+        "A resolution goes in the near future: aller + the infinitive of dormir. Eight hours is huit heures."
+      ],
+      "feedback": "Je vais dormir huit heures. — aller + infinitive seals the resolution: the near future, the engine of every project.",
       "evidenceKey": "fr-a2-projets-resolutions-vary",
       "assistanceAffectsEvidence": [
         "hint",
@@ -13927,10 +14425,26 @@
       ],
       "answer": {
         "answers": [
-          "Je dormirai huit heures."
+          "Je vais dormir huit heures."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je dormirai huit heures.",
+            "category": "wrong tense",
+            "explanation": "Also correct French — but this step dictates the near future, the engine of this lesson’s projects: Je vais dormir huit heures."
+          },
+          {
+            "answer": "Je vais dormir huit heure.",
+            "category": "wrong number",
+            "explanation": "Eight hours is plural: huit heures."
+          },
+          {
+            "answer": "Je vais dormir à huit heures.",
+            "category": "wrong preposition",
+            "explanation": "à huit heures means “at eight o’clock”. The dictation says eight HOURS of sleep: Je vais dormir huit heures."
+          }
+        ]
       }
     },
     {
@@ -13953,7 +14467,9 @@
         "grammar"
       ],
       "prompt": "Complete: J’ai ___ de changer. (décider, passé composé)",
-      "hints": [],
+      "hints": [
+        "The decision already happened: helper ai + the participle of décider."
+      ],
       "feedback": "décidé — the decision already happened, so photograph it: helper ai + participle décidé.",
       "evidenceKey": "fr-a2-projets-resolutions-cloze",
       "assistanceAffectsEvidence": [
@@ -13981,7 +14497,23 @@
             "décidé"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "décider",
+              "category": "wrong conjugation",
+              "explanation": "The helper ai needs the participle, not the infinitive: j’ai décidé."
+            },
+            {
+              "answer": "décide",
+              "category": "wrong tense",
+              "explanation": "décide is the present. The dictation is the passé composé: j’ai décidé."
+            },
+            {
+              "answer": "décidée",
+              "category": "incorrect answer",
+              "explanation": "With avoir, the participle does not pick up an -e here: j’ai décidé de changer."
+            }
+          ]
         }
       }
     },
@@ -16498,7 +17030,9 @@
         "vocabulary"
       ],
       "prompt": "Ma collègue est sympa. You know “sympa” means nice. Which word means “colleague” ?",
-      "hints": [],
+      "hints": [
+        "The person-word for a workmate: find the noun between ma and est."
+      ],
       "feedback": "collègue — the person-word. Ma just says “my”; est just links; sympa just describes.",
       "evidenceKey": "fr-a2-travail-vocab-meet",
       "assistanceAffectsEvidence": [
@@ -16548,7 +17082,9 @@
         "grammar"
       ],
       "prompt": "Think: “The boss is in a meeting.”",
-      "hints": [],
+      "hints": [
+        "The boss is le patron; “in a meeting” is the fixed phrase en réunion."
+      ],
       "feedback": "Le patron est en réunion. Two new words in one natural sentence — le patron, la réunion — the way colleagues actually talk.",
       "evidenceKey": "fr-a2-travail-vocab-think",
       "assistanceAffectsEvidence": [
@@ -16560,7 +17096,23 @@
           "Le patron est en réunion."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La patron est en réunion.",
+            "category": "wrong gender",
+            "explanation": "patron is masculine: le patron."
+          },
+          {
+            "answer": "Le patron est dans une réunion.",
+            "category": "incorrect answer",
+            "explanation": "Understandable, but the natural phrase is without an article: en réunion."
+          },
+          {
+            "answer": "Le patron est réunion.",
+            "category": "missing word",
+            "explanation": "The phrase needs en: Le patron est en réunion."
+          }
+        ]
       }
     },
     {
@@ -16583,7 +17135,9 @@
         "vocabulary"
       ],
       "prompt": "Je prends un congé en août. What does congé mean here ?",
-      "hints": [],
+      "hints": [
+        "August is the sacred French leave month — prendre un congé is time away from work."
+      ],
       "feedback": "a holiday/leave — prendre un congé is “to take time off”. August is the sacred month; now you know the word for it.",
       "evidenceKey": "fr-a2-travail-vocab-notice",
       "assistanceAffectsEvidence": [
@@ -16633,7 +17187,9 @@
         "grammar"
       ],
       "prompt": "Say: “The salary is fine.”",
-      "hints": [],
+      "hints": [
+        "The pay word is le salaire — masculine. “Fine” here is the understated correct."
+      ],
       "feedback": "Le salaire est correct. correct here means “fine, decent” — a very French understatement.",
       "evidenceKey": "fr-a2-travail-vocab-vary",
       "assistanceAffectsEvidence": [
@@ -16645,7 +17201,23 @@
           "Le salaire est correct."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La salaire est correct.",
+            "category": "wrong gender",
+            "explanation": "salaire is masculine: le salaire."
+          },
+          {
+            "answer": "Le salaire est fin.",
+            "category": "incorrect answer",
+            "explanation": "fin is a false friend (“thin” or “the end”). The A2 word for “fine, decent” is correct."
+          },
+          {
+            "answer": "Le salaire est bien.",
+            "category": "incorrect answer",
+            "explanation": "bien is an adverb. For “the salary is fine” the model uses the adjective: correct."
+          }
+        ]
       }
     },
     {
@@ -16668,7 +17240,9 @@
         "grammar"
       ],
       "prompt": "Complete: Le ___ est souvent en réunion. (boss)",
-      "hints": [],
+      "hints": [
+        "The person-word for boss, masculine: Le ____ est en réunion."
+      ],
       "feedback": "patron — the person-word. If it were the place, it would be bureau.",
       "evidenceKey": "fr-a2-travail-vocab-cloze",
       "assistanceAffectsEvidence": [
@@ -16696,7 +17270,18 @@
             "patron"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bureau",
+              "category": "incorrect answer",
+              "explanation": "bureau is the place, not the person. The boss is le patron."
+            },
+            {
+              "answer": "chef",
+              "category": "incorrect answer",
+              "explanation": "chef also means boss, but this lesson’s word is patron."
+            }
+          ]
         }
       }
     },
@@ -17173,7 +17758,9 @@
         "vocabulary"
       ],
       "prompt": "Tu es Marie. “You are Marie.” Which verb form says “are” ?",
-      "hints": [],
+      "hints": [
+        "The “are” verb for tu — être in its tu form: Tu es Marie."
+      ],
       "feedback": "es — être for tu. Tu points at who; Marie is just the name; es does all the verb-work.",
       "evidenceKey": "fr-a2-rappel-a1-act-2",
       "assistanceAffectsEvidence": [
@@ -17219,7 +17806,9 @@
         "grammar"
       ],
       "prompt": "Make it negative. Complete: Je ___ parle pas français.",
-      "hints": [],
+      "hints": [
+        "The first half of ne…pas hugs the verb: Je ne parle pas."
+      ],
       "feedback": "ne — the first half of ne…pas, hugging the verb: je ne parle pas. The pas alone is only half the negation.",
       "evidenceKey": "fr-a2-rappel-a1-act-3",
       "assistanceAffectsEvidence": [
@@ -17247,7 +17836,18 @@
             "ne"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "pas",
+              "category": "wrong conjugation",
+              "explanation": "pas is the second half — the verb goes between them: Je ne parle pas français."
+            },
+            {
+              "answer": "non",
+              "category": "incorrect answer",
+              "explanation": "non is the standalone “no”. Inside the sentence the second half is pas."
+            }
+          ]
         }
       }
     },
@@ -17266,7 +17866,9 @@
         "grammar"
       ],
       "prompt": "Ask: “Where is the station ?”",
-      "hints": [],
+      "hints": [
+        "The question word for where is où; the station is feminine: la gare."
+      ],
       "feedback": "Où est la gare ? — the question word où you met in “Asking simple questions”, still doing its job.",
       "evidenceKey": "fr-a2-rappel-a1-act-4",
       "assistanceAffectsEvidence": [
@@ -17279,7 +17881,23 @@
           "Où est la gare."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ou est la gare ?",
+            "category": "accent/diacritic issue",
+            "explanation": "The question word needs its accent: où = where (ou means “or”)."
+          },
+          {
+            "answer": "Où est le gare ?",
+            "category": "wrong gender",
+            "explanation": "gare is feminine: la gare."
+          },
+          {
+            "answer": "Où es la gare ?",
+            "category": "wrong conjugation",
+            "explanation": "es is the tu form. With the place it is est: Où est la gare ?"
+          }
+        ]
       }
     },
     {
@@ -17298,7 +17916,9 @@
         "grammar"
       ],
       "prompt": "Build: “It is three o’clock.”",
-      "hints": [],
+      "hints": [
+        "The dummy subject il, then être, then the number of the hour: Il est trois heures."
+      ],
       "feedback": "Il est trois heures. The dummy il, the être you’ve known since day one, and the number.",
       "evidenceKey": "fr-a2-rappel-a1-act-5",
       "assistanceAffectsEvidence": [
@@ -17342,7 +17962,9 @@
         "grammar"
       ],
       "prompt": "Yesterday again. Complete: Hier, j’___ mangé une pizza. (helper)",
-      "hints": [],
+      "hints": [
+        "The helper for je in the passé composé, sitting right after j’: j’ai mangé."
+      ],
       "feedback": "ai — the helper for je, the two-beat past you built in unit 9. The participle mangé waits for its helper.",
       "evidenceKey": "fr-a2-rappel-a1-act-6",
       "assistanceAffectsEvidence": [
@@ -17370,7 +17992,23 @@
             "ai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "a",
+              "category": "wrong conjugation",
+              "explanation": "a is the il/elle helper. With je it is ai: j’ai mangé."
+            },
+            {
+              "answer": "est",
+              "category": "wrong auxiliary",
+              "explanation": "mangé takes avoir, not être: j’ai mangé."
+            },
+            {
+              "answer": "suis",
+              "category": "wrong auxiliary",
+              "explanation": "je suis mangé would mean “I am eaten”. The helper here is ai: j’ai mangé."
+            }
+          ]
         }
       }
     },
@@ -17389,7 +18027,9 @@
         "vocabulary"
       ],
       "prompt": "At the café, which is the polite way to order ?",
-      "hints": [],
+      "hints": [
+        "The polite softener s’il vous plaît turns an order into a request."
+      ],
       "feedback": "Un café, s’il vous plaît. — the softener s’il vous plaît turns a demand into a request. “Je veux” is understood, just blunt.",
       "evidenceKey": "fr-a2-rappel-a1-act-7",
       "assistanceAffectsEvidence": [
@@ -17435,7 +18075,9 @@
         "grammar"
       ],
       "prompt": "Say: “I don’t understand.”",
-      "hints": [],
+      "hints": [
+        "Both halves of the sandwich: ne before the verb, pas after it."
+      ],
       "feedback": "Je ne comprends pas. The full ne…pas frame around the verb — the complete negation, both halves.",
       "evidenceKey": "fr-a2-rappel-a1-act-8",
       "assistanceAffectsEvidence": [
@@ -17448,7 +18090,23 @@
           "Je ne comprends pas"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je ne comprend pas.",
+            "category": "wrong conjugation",
+            "explanation": "The je form keeps its s: je comprends."
+          },
+          {
+            "answer": "Je ne comprends.",
+            "category": "missing word",
+            "explanation": "Half a negation. The full frame needs pas: Je ne comprends pas."
+          },
+          {
+            "answer": "Je ne pas comprends.",
+            "category": "word-order problem",
+            "explanation": "The verb goes between the two halves: Je ne comprends pas."
+          }
+        ]
       }
     },
     {
@@ -17467,7 +18125,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct ?",
-      "hints": [],
+      "hints": [
+        "Elle is a woman, so the adjective takes its feminine -e: française."
+      ],
       "feedback": "Elle est française. — être + feminine adjective with its -e. “français” would describe a man; word order never splits est from its adjective like that.",
       "evidenceKey": "fr-a2-rappel-a1-act-9",
       "assistanceAffectsEvidence": [
@@ -19820,7 +20480,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: I do not work.",
-      "hints": [],
+      "hints": [
+        "Place ne before the verb and pas after it: Je ne travaille pas."
+      ],
       "feedback": "Je ne travaille pas. — ne before the verb, pas after.",
       "evidenceKey": "fr-negation-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19872,7 +20534,9 @@
         "vocabulary"
       ],
       "prompt": "Which two words frame the verb? « Je ___ étudie ___ à la maison. »",
-      "hints": [],
+      "hints": [
+        "The verb starts with a vowel, so the first half elides: n’."
+      ],
       "feedback": "Je n'étudie pas — ne becomes n' before a vowel.",
       "evidenceKey": "fr-negation-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -19936,7 +20600,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Do you work?",
-      "hints": [],
+      "hints": [
+        "The question frame Est-ce que, then the plain sentence tu travailles."
+      ],
       "feedback": "Est-ce que tu travailles ? — the question frame, then the plain sentence.",
       "evidenceKey": "fr-questions-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19993,7 +20659,9 @@
         "vocabulary"
       ],
       "prompt": "Which word opens a yes/no question? « ___ tu travailles ? »",
-      "hints": [],
+      "hints": [
+        "The yes/no opener is the two-word frame: Est-ce que."
+      ],
       "feedback": "Est-ce que tu travailles ? — est-ce que turns any statement into a question.",
       "evidenceKey": "fr-questions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20057,7 +20725,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: My house is white.",
-      "hints": [],
+      "hints": [
+        "Maison is feminine: ma maison — and the adjective agrees: blanche."
+      ],
       "feedback": "Ma maison est blanche. — a feminine noun takes ma… and blanche.",
       "evidenceKey": "fr-possession-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20109,7 +20779,9 @@
         "vocabulary"
       ],
       "prompt": "Which possessive fits? « ___ livre est blanc. »",
-      "hints": [],
+      "hints": [
+        "The masculine singular possessive, whatever the owner’s gender: mon."
+      ],
       "feedback": "Mon livre — a masculine singular noun takes mon, whatever the owner's gender.",
       "evidenceKey": "fr-possession-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20173,7 +20845,9 @@
         "vocabulary"
       ],
       "prompt": "Complete the date, from memory: C'est le ___ mai. (3)",
-      "hints": [],
+      "hints": [
+        "The date says the number as a word: le ___ mai — recall 3 in French."
+      ],
       "feedback": "C'est le trois mai. — the number you learned, doing date duty.",
       "evidenceKey": "fr-days-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20201,7 +20875,23 @@
             "trois"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "deux",
+              "category": "wrong number",
+              "explanation": "The dictation says 3: le trois mai."
+            },
+            {
+              "answer": "trente",
+              "category": "wrong number",
+              "explanation": "trente is thirty. The date says three: trois."
+            },
+            {
+              "answer": "mai",
+              "category": "incorrect answer",
+              "explanation": "mai is already in the sentence. The blank is the NUMBER: trois."
+            }
+          ]
         }
       }
     },
@@ -20223,7 +20913,9 @@
         "vocabulary"
       ],
       "prompt": "From « Numbers and age »: which French word means “twenty”?",
-      "hints": [],
+      "hints": [
+        "Recall the counting word for twenty — it starts with v."
+      ],
       "feedback": "Vingt — twenty. Still there, isn't it?",
       "evidenceKey": "fr-days-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20287,7 +20979,9 @@
         "vocabulary"
       ],
       "prompt": "Complete, from memory: ___ , c'est vendredi. (tomorrow)",
-      "hints": [],
+      "hints": [
+        "The day-word for tomorrow opens the sentence: Demain, c’est vendredi."
+      ],
       "feedback": "Demain, c'est vendredi. — the day you learned, right on time.",
       "evidenceKey": "fr-time-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20311,7 +21005,23 @@
             "Demain"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Aujourd’hui",
+              "category": "incorrect answer",
+              "explanation": "That is today. The dictation says tomorrow: Demain."
+            },
+            {
+              "answer": "Hier",
+              "category": "wrong tense",
+              "explanation": "Hier is yesterday — c’est vendredi with demain points forward."
+            },
+            {
+              "answer": "Ce soir",
+              "category": "incorrect answer",
+              "explanation": "Also a real time-word, but the dictation says tomorrow: Demain."
+            }
+          ]
         }
       }
     },
@@ -20333,7 +21043,9 @@
         "vocabulary"
       ],
       "prompt": "From « Days, months and dates »: which French word means “Friday”?",
-      "hints": [],
+      "hints": [
+        "The Friday word starts with v — recall it from the week you learned."
+      ],
       "feedback": "Vendredi — Friday. Retrieved, not re-learned.",
       "evidenceKey": "fr-time-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20399,7 +21111,9 @@
         "vocabulary"
       ],
       "prompt": "Complete, from memory: Demain, je ___ . (travailler, futur simple)",
-      "hints": [],
+      "hints": [
+        "Recall the one-word future: travailler + the je ending -ai. From memory first!"
+      ],
       "feedback": "Demain, je travaillerai. — infinitive + -ai: the one-word future.",
       "evidenceKey": "fr-a2-futur-emplois-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20427,7 +21141,23 @@
             "travaillerai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "travailler",
+              "category": "wrong conjugation",
+              "explanation": "The blank needs the conjugated future: travailler + -ai = travaillerai. The bare infinitive leaves the tense unmarked."
+            },
+            {
+              "answer": "travaillera",
+              "category": "wrong conjugation",
+              "explanation": "-a is the il/elle ending. With je the future ending is -ai: je travaillerai."
+            },
+            {
+              "answer": "vais travailler",
+              "category": "incorrect answer",
+              "explanation": "Grammatical — but that is the near future. The step dictates the futur simple: Demain, je travaillerai."
+            }
+          ]
         }
       }
     },
@@ -20465,7 +21195,9 @@
         "vocabulary"
       ],
       "prompt": "Complete, from memory: ___ , je vais étudier. (tomorrow)",
-      "hints": [],
+      "hints": [
+        "The day-word for tomorrow starts the sentence, then the near future: Demain, je vais étudier."
+      ],
       "feedback": "Demain, je vais étudier. — the plan you learned, still going.",
       "evidenceKey": "fr-a2-projets-resolutions-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20489,7 +21221,23 @@
             "Demain"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Aujourd’hui",
+              "category": "incorrect answer",
+              "explanation": "Today is a real plan-word, but the dictation says tomorrow: Demain, je vais étudier."
+            },
+            {
+              "answer": "Hier",
+              "category": "wrong tense",
+              "explanation": "Hier points to the past — a plan in the near future needs demain."
+            },
+            {
+              "answer": "Ce soir",
+              "category": "incorrect answer",
+              "explanation": "Also a real plan-time — but the dictation says tomorrow: Demain."
+            }
+          ]
         }
       }
     },
@@ -20527,7 +21275,9 @@
         "vocabulary"
       ],
       "prompt": "Complete, from memory: J'___ chaque jour. (study)",
-      "hints": [],
+      "hints": [
+        "The study verb from your routine, in the je form: étudier → j’étudie."
+      ],
       "feedback": "J'étudie chaque jour. — the verb you learned, still working.",
       "evidenceKey": "fr-a2-travail-vocab-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20555,7 +21305,23 @@
             "étudie"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "étudier",
+              "category": "wrong conjugation",
+              "explanation": "The blank needs the conjugated je form: j’étudie, not the infinitive."
+            },
+            {
+              "answer": "étudies",
+              "category": "wrong conjugation",
+              "explanation": "-es is the tu ending. With je it is -e: j’étudie."
+            },
+            {
+              "answer": "travaille",
+              "category": "incorrect answer",
+              "explanation": "That is “I work”. The dictation says study: j’étudie chaque jour."
+            }
+          ]
         }
       }
     },

@@ -5972,7 +5972,9 @@
         "grammar"
       ],
       "prompt": "The blocks are out of order. Build the polite order for one coffee with gostaria de.",
-      "hints": [],
+      "hints": [
+        "Each block has a job: Eu + gostaria opens, de joins to the drink, um café is the order, por favor closes it — Eu gostaria de um café, por favor."
+      ],
       "feedback": "gostaria carries the politeness, de joins it to the drink, and por favor closes the request — every block has a job.",
       "tokens": [
         {
@@ -6042,7 +6044,9 @@
         "grammar"
       ],
       "prompt": "Now build the tea order, leaving eu out — gostaria already says who is speaking.",
-      "hints": [],
+      "hints": [
+        "Drop the subject: gostaria already tells who is speaking, so the build is Gostaria + de + um chá + por favor — no Eu block."
+      ],
       "feedback": "Gostaria de um chá, por favor. Dropping eu changes nothing about the meaning; the verb already points at you.",
       "tokens": [
         {
@@ -6107,7 +6111,9 @@
         "grammar"
       ],
       "prompt": "One block fell out of the frame. Put it back.",
-      "hints": [],
+      "hints": [
+        "The joiner between gostaria and the drink is the same two-letter word every time — de: Eu gostaria de um café, por favor."
+      ],
       "feedback": "de is the joiner: it holds gostaria and the drink together, and it never changes with the drink.",
       "segments": [
         {
@@ -6130,7 +6136,23 @@
             "de"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "do",
+              "category": "wrong article",
+              "explanation": "Do fuses de + o and only appears before a definite noun — the polite frame takes the bare joiner: gostaria de um café."
+            },
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "Em means 'in' — the request frame is gostaria de + drink: gostaria de um café."
+            },
+            {
+              "answer": "da",
+              "category": "wrong article",
+              "explanation": "Da fuses de + a for feminine nouns like a casa — before um the joiner stays bare: gostaria de um café."
+            }
+          ]
         }
       },
       "evidenceKey": "pt-cafe-order-construction-act-4",
@@ -6160,7 +6182,9 @@
         "grammar"
       ],
       "prompt": "Build the short counter order — no verb in it at all.",
-      "hints": [],
+      "hints": [
+        "At the counter the verb and the frame disappear: Um + chá first, then por favor — the noun phrase does the ordering alone."
+      ],
       "feedback": "Um chá, por favor. At the counter the verb can disappear and the order still works.",
       "tokens": [
         {
@@ -6215,7 +6239,9 @@
         "grammar"
       ],
       "prompt": "Fill the drink in this order.",
-      "hints": [],
+      "hints": [
+        "The drink block swaps in: the frame 'Gostaria de um ___ , por favor' is asking for the tea from the earlier build — chá."
+      ],
       "feedback": "The frame stays identical; only the drink block swaps in and out.",
       "segments": [
         {
@@ -6238,7 +6264,23 @@
             "chá"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "café",
+              "category": "incorrect answer",
+              "explanation": "Café is the other drink — this order asks for the tea: um chá."
+            },
+            {
+              "answer": "chás",
+              "category": "wrong number",
+              "explanation": "The frame counts one item (um chá) — chás is plural."
+            },
+            {
+              "answer": "cha",
+              "category": "accent/diacritic issue",
+              "explanation": "Chá carries the accent on the a — without it the word is no longer tea."
+            }
+          ]
         }
       },
       "evidenceKey": "pt-cafe-order-construction-act-6",
@@ -6268,7 +6310,9 @@
         "grammar"
       ],
       "prompt": "Ask for a coffee politely, keeping the full verb phrase — type the whole order.",
-      "hints": [],
+      "hints": [
+        "Type the full polite frame: (Eu) gostaria + de + um café + por favor — both the verb phrase and the closing please must stay."
+      ],
       "feedback": "The full frame is gostaria + de + drink + por favor. Once you can build it from memory, the café is yours.",
       "answer": {
         "answers": [
@@ -6276,7 +6320,23 @@
           "Gostaria de um café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quero um café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quero is blunt 'I want' — the polite request is gostaria de: Gostaria de um café, por favor."
+          },
+          {
+            "answer": "Eu gostaria um café, por favor.",
+            "category": "missing word",
+            "explanation": "The joiner de must sit between gostaria and the drink: Eu gostaria de um café, por favor."
+          },
+          {
+            "answer": "Eu gostaria de café, por favor.",
+            "category": "missing word",
+            "explanation": "A polite order counts the item: um café, not bare café."
+          }
+        ]
       },
       "evidenceKey": "pt-cafe-order-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -6305,7 +6365,9 @@
         "vocabulary"
       ],
       "prompt": "The customer thanks the server, and the customer is a man. Which thanks is his?",
-      "hints": [],
+      "hints": [
+        "Match the thanks to the speaker: a man says obrigado, a woman says obrigada — por favor and sim never say thanks."
+      ],
       "feedback": "Obrigado agrees with the speaker: a man says obrigado, a woman says obrigada — the word changes shape with who is speaking.",
       "options": [
         {
@@ -6356,7 +6418,9 @@
         "grammar"
       ],
       "prompt": "You are a woman at the counter. Order a tea politely, then thank the server — two sentences, in order.",
-      "hints": [],
+      "hints": [
+        "Two sentences in order: the polite tea order in the full frame — Gostaria de um chá, por favor — then your own thanks, and a woman's thanks ends in -a: Obrigada."
+      ],
       "feedback": "Two sentences, two skills: the polite frame for the order, and obrigada because the speaker is a woman.",
       "answer": {
         "answers": [
@@ -6364,7 +6428,23 @@
           "Gostaria de um chá, por favor. Obrigada."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gostaria de um chá, por favor. Obrigado.",
+            "category": "wrong gender",
+            "explanation": "The thanks agrees with the speaker — a woman says obrigada, not obrigado."
+          },
+          {
+            "answer": "Gostaria de chá, por favor. Obrigada.",
+            "category": "missing word",
+            "explanation": "The order counts the item: um chá, not bare chá."
+          },
+          {
+            "answer": "Quero um chá, por favor. Obrigada.",
+            "category": "incorrect answer",
+            "explanation": "Quero is blunt — the polite order is gostaria de: Gostaria de um chá, por favor."
+          }
+        ]
       },
       "evidenceKey": "pt-cafe-order-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -6869,7 +6949,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «First words». It opens every conversation in Lisbon. What does «Olá» mean?",
-      "hints": [],
+      "hints": [
+        "Olá is the greeting — it opens the conversation; goodbye, please and thank you are the other three blocks."
+      ],
       "feedback": "Olá opens the conversation — the first word of «First words», and still the first word you say.",
       "options": [
         {
@@ -6929,14 +7011,32 @@
         "grammar"
       ],
       "prompt": "From «Introducing yourself»: ask a neighbour's name with the full question.",
-      "hints": [],
+      "hints": [
+        "The full question is Qual + é + o seu nome — all three pieces, accent on é: Qual é o seu nome?"
+      ],
       "feedback": "Qual é o seu nome? — the whole question, accents and all, exactly as you practised it.",
       "answer": {
         "answers": [
           "Qual é o seu nome?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Como se chama?",
+            "category": "incorrect answer",
+            "explanation": "Como se chama is also polite, but this step asks for the taught question: Qual é o seu nome?"
+          },
+          {
+            "answer": "Qual e o seu nome?",
+            "category": "accent/diacritic issue",
+            "explanation": "É carries the accent: Qual é o seu nome?"
+          },
+          {
+            "answer": "Qual é seu nome?",
+            "category": "missing word",
+            "explanation": "The taught question keeps the article: Qual é o seu nome?"
+          }
+        ]
       },
       "evidenceKey": "pt-look-back-recall-act-3",
       "assistanceAffectsEvidence": [
@@ -6974,7 +7074,9 @@
         "grammar"
       ],
       "prompt": "From «At the café»: the little word that joins gostaria to the drink.",
-      "hints": [],
+      "hints": [
+        "The joiner between gostaria and the drink is de — the tiny word the café lesson warned you never to drop."
+      ],
       "feedback": "de — the joiner you were warned never to drop in «At the café».",
       "segments": [
         {
@@ -6997,7 +7099,23 @@
             "de"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "do",
+              "category": "wrong article",
+              "explanation": "Do fuses de + o and needs a definite noun after it — the frame is gostaria de um café."
+            },
+            {
+              "answer": "a",
+              "category": "wrong preposition",
+              "explanation": "A points to/towards — the polite frame joins with de: gostaria de um café."
+            },
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "Em means 'in' — the frame is gostaria de: gostaria de um café."
+            }
+          ]
         }
       },
       "evidenceKey": "pt-look-back-recall-act-4",
@@ -7036,7 +7154,9 @@
         "vocabulary"
       ],
       "prompt": "From «Numbers and quantities»: which line orders two apples politely?",
-      "hints": [],
+      "hints": [
+        "Duas agrees with the feminine maçãs, and the order keeps por favor — dois would need masculine nouns."
+      ],
       "feedback": "Duas, not dois — the number matches the feminine maçãs, and por favor keeps it polite.",
       "options": [
         {
@@ -7096,14 +7216,32 @@
         "grammar"
       ],
       "prompt": "From «Asking the way»: ask where the station is.",
-      "hints": [],
+      "hints": [
+        "Onde + fica + a estação — Portuguese asks where a place stays with ficar: Onde fica a estação?"
+      ],
       "feedback": "Onde fica a estação? — Portuguese asks where a place 'stays', with ficar.",
       "answer": {
         "answers": [
           "Onde fica a estação?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Onde está a estação?",
+            "category": "incorrect answer",
+            "explanation": "Portuguese asks where a place stays with ficar — the taught question is Onde fica a estação?"
+          },
+          {
+            "answer": "Onde fica estação?",
+            "category": "missing word",
+            "explanation": "The station takes its article: a estação."
+          },
+          {
+            "answer": "A estação fica onde?",
+            "category": "word-order problem",
+            "explanation": "The taught question leads with Onde: Onde fica a estação?"
+          }
+        ]
       },
       "evidenceKey": "pt-look-back-recall-act-6",
       "assistanceAffectsEvidence": [
@@ -7141,7 +7279,9 @@
         "grammar"
       ],
       "prompt": "From «Prices and paying»: the question you would put to a stallholder about one coffee.",
-      "hints": [],
+      "hints": [
+        "The price frame is Quanto + custa + the singular item: Quanto custa o café?"
+      ],
       "feedback": "Quanto custa o café? — the price frame from «Prices and paying», singular for one item.",
       "segments": [
         {
@@ -7160,7 +7300,23 @@
             "Quanto"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Onde",
+              "category": "incorrect answer",
+              "explanation": "Onde asks where — the price word is quanto: Quanto custa o café?"
+            },
+            {
+              "answer": "Quanto é",
+              "category": "extra word",
+              "explanation": "Custa already carries the verb — the blank takes just the question word: Quanto custa o café?"
+            },
+            {
+              "answer": "Que",
+              "category": "incorrect answer",
+              "explanation": "Que is not the price word — how much is quanto: Quanto custa o café?"
+            }
+          ]
         }
       },
       "evidenceKey": "pt-look-back-recall-act-7",
@@ -7199,14 +7355,32 @@
         "grammar"
       ],
       "prompt": "From «Days and times»: write 'today is Monday', counting the week from domingo.",
-      "hints": [],
+      "hints": [
+        "Hoje + é + segunda-feira with the hyphen — the second fair counting from domingo: Hoje é segunda-feira."
+      ],
       "feedback": "Segunda-feira is the second fair counting from domingo — the hyphen holds the compound together.",
       "answer": {
         "answers": [
           "Hoje é segunda-feira."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hoje é domingo.",
+            "category": "incorrect answer",
+            "explanation": "Domingo is the first fair — the prompt asks for Monday, the second: segunda-feira."
+          },
+          {
+            "answer": "Hoje é segunda feira.",
+            "category": "accent/diacritic issue",
+            "explanation": "Segunda-feira keeps its hyphen — it is one compound word."
+          },
+          {
+            "answer": "Segunda-feira é hoje.",
+            "category": "word-order problem",
+            "explanation": "The taught pattern puts hoje first: Hoje é segunda-feira."
+          }
+        ]
       },
       "evidenceKey": "pt-look-back-recall-act-8",
       "assistanceAffectsEvidence": [
@@ -7244,7 +7418,9 @@
         "vocabulary"
       ],
       "prompt": "From «Family and people»: which line says 'I have a sister' with the article that matches her?",
-      "hints": [],
+      "hints": [
+        "Uma agrees with irmã — the article matches the feminine noun, exactly the agreement the family lesson drilled."
+      ],
       "feedback": "Tenho uma irmã — uma matches the feminine irmã, exactly the article agreement «Family and people» drilled.",
       "options": [
         {
@@ -7304,14 +7480,32 @@
         "grammar"
       ],
       "prompt": "From «First words»: a woman thanks you. Which form of thanks did you hear?",
-      "hints": [],
+      "hints": [
+        "The thanks agrees with the speaker — a woman's thanks ends in -a: Obrigada."
+      ],
       "feedback": "Obrigada — the thanks agrees with the speaker, so a woman's thanks ends in -a.",
       "answer": {
         "answers": [
           "Obrigada."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Obrigado.",
+            "category": "wrong gender",
+            "explanation": "Obrigado is a man's thanks — the speaker is a woman, so it ends in -a: Obrigada."
+          },
+          {
+            "answer": "Por favor.",
+            "category": "incorrect answer",
+            "explanation": "Por favor is please — the prompt asks for the thanks you heard: Obrigada."
+          },
+          {
+            "answer": "Bom dia.",
+            "category": "incorrect answer",
+            "explanation": "Bom dia is a greeting, not a thanks — the thanks you heard is Obrigada."
+          }
+        ]
       },
       "evidenceKey": "pt-look-back-recall-act-10",
       "assistanceAffectsEvidence": [
@@ -8135,7 +8329,9 @@
         "grammar"
       ],
       "prompt": "The blocks are out of order. Build the sentence about a small family.",
-      "hints": [],
+      "hints": [
+        "The owner word hugs the thing it owns: A + minha before família, the verb é, and close with pequena — A minha família é pequena."
+      ],
       "feedback": "Minha sits before família — the owner word hugs the thing it owns — and é joins them to pequena.",
       "tokens": [
         {
@@ -8189,7 +8385,9 @@
         "grammar"
       ],
       "prompt": "Now build it with a brother.",
-      "hints": [],
+      "hints": [
+        "Tenho (I have) opens the line, um marks one, the family member closes it — Tenho um irmão."
+      ],
       "feedback": "Tenho (I have) opens, um marks one, and the family member closes the line.",
       "tokens": [
         {
@@ -8233,7 +8431,9 @@
         "grammar"
       ],
       "prompt": "Same shape, new ending — build it with a sister. What changed?",
-      "hints": [],
+      "hints": [
+        "Same shape as the brother line, but the little word flips: Tenho + uma + irmã — irmã is feminine, so the article is uma."
+      ],
       "feedback": "Um became uma — irmão is masculine, irmã is feminine, and the little word in front agrees. Portuguese gender lives in these small words.",
       "tokens": [
         {
@@ -8277,7 +8477,9 @@
         "vocabulary"
       ],
       "prompt": "Fill the gap — finish the sentence about the small family.",
-      "hints": [],
+      "hints": [
+        "The adjective agrees with what it describes: família is feminine, so the missing word is pequena, not pequeno."
+      ],
       "feedback": "Pequena ends in -a because família is feminine — the ending has to agree with the thing it describes.",
       "segments": [
         {
@@ -8297,11 +8499,26 @@
       "blanks": {
         "b1": {
           "answers": [
-            "pequena",
-            "pequena."
+            "pequena"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "pequeno",
+              "category": "wrong gender",
+              "explanation": "Pequeno is the masculine form — família is feminine, so the adjective agrees: pequena."
+            },
+            {
+              "answer": "grande",
+              "category": "incorrect answer",
+              "explanation": "The prompt says a small family — the describing word is pequena."
+            },
+            {
+              "answer": "pequenas",
+              "category": "wrong number",
+              "explanation": "One family, singular — the adjective stays singular: pequena."
+            }
+          ]
         }
       },
       "evidenceKey": "pt-family-construction-act-5",
@@ -8325,7 +8542,9 @@
         "grammar"
       ],
       "prompt": "A longer build — six blocks. Say where your parents live.",
-      "hints": [],
+      "hints": [
+        "Chain the six blocks: Os + meus (plural owner) before pais, the verb vivem, then em Lisboa — Os meus pais vivem em Lisboa."
+      ],
       "feedback": "Os meus pais: the plural owner word meus matches plural pais, and vivem (they live) lands before the place.",
       "tokens": [
         {
@@ -8384,7 +8603,9 @@
         "grammar"
       ],
       "prompt": "Which line is correct Portuguese for “My parents live in Lisbon”?",
-      "hints": [],
+      "hints": [
+        "Listen for the rhythm: owner word, noun, verb, place — 'Os meus pais vivem em Lisboa' keeps it; the other three scramble the blocks."
+      ],
       "feedback": "Owner word before the noun, verb before the place — the other three all break that rhythm.",
       "options": [
         {
@@ -8429,7 +8650,9 @@
         "grammar"
       ],
       "prompt": "Ana introduces herself — fill the owner word.",
-      "hints": [],
+      "hints": [
+        "The owner word agrees with the thing owned: nome is masculine, so Ana writes Meu nome — even though she is a woman."
+      ],
       "feedback": "Meu because nome is masculine — meu nome, minha família: the owner word agrees with the thing owned, not the speaker.",
       "segments": [
         {
@@ -8448,7 +8671,23 @@
             "Meu"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Minha",
+              "category": "wrong gender",
+              "explanation": "Minha would match a feminine noun — nome is masculine, so the owner word is Meu: Meu nome é Ana."
+            },
+            {
+              "answer": "Meus",
+              "category": "wrong number",
+              "explanation": "Meus is plural (os meus pais) — one name takes the singular owner word: Meu nome é Ana."
+            },
+            {
+              "answer": "Meu nome é Ana.",
+              "category": "extra word",
+              "explanation": "The blank takes the owner word only — the rest of the sentence is already on screen."
+            }
+          ]
         }
       },
       "evidenceKey": "pt-family-construction-act-8",
@@ -8472,7 +8711,9 @@
         "vocabulary"
       ],
       "prompt": "Now write one of your own: type “I have a sister” in Portuguese.",
-      "hints": [],
+      "hints": [
+        "From the blocks you just built: Tenho opens, and the article matches irmã — Tenho uma irmã."
+      ],
       "feedback": "Tenho uma irmã — a sentence you built yourself about your own family. Keep it.",
       "answer": {
         "answers": [
@@ -8480,7 +8721,23 @@
           "Tenho uma irmã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tenho um irmã.",
+            "category": "wrong gender",
+            "explanation": "Irmã is feminine, so the article is uma: Tenho uma irmã."
+          },
+          {
+            "answer": "Tenho uma irmão.",
+            "category": "wrong gender",
+            "explanation": "Irmão is 'brother' — the prompt asks for a sister, and irmã is feminine: Tenho uma irmã."
+          },
+          {
+            "answer": "Tenho irmã.",
+            "category": "missing word",
+            "explanation": "The count word stays: uma irmã, not bare irmã."
+          }
+        ]
       },
       "evidenceKey": "pt-family-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -9600,7 +9857,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb means to study?",
-      "hints": [],
+      "hints": [
+        "The verb for studying is estudar — the -ar verb you conjugate as eu estudo; trabalhar is to work and jantar is to have dinner."
+      ],
       "feedback": "Estudar is to study — eu estudo, I study.",
       "evidenceKey": "pt-routine-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9645,7 +9904,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I work in Lisbon. (-ar verbs swap -ar for -o.)",
-      "hints": [],
+      "hints": [
+        "Swap the -ar ending for -o: trabalhar → trabalho, then add the place: Trabalho em Lisboa."
+      ],
       "feedback": "Trabalhar → trabalho: Trabalho em Lisboa.",
       "evidenceKey": "pt-routine-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9659,7 +9920,23 @@
           "Trabalho em Lisboa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Trabalhar em Lisboa.",
+            "category": "wrong conjugation",
+            "explanation": "Trabalhar is the dictionary form — the prompt asks for the eu form: trabalho."
+          },
+          {
+            "answer": "Trabalho Lisboa.",
+            "category": "missing word",
+            "explanation": "The place takes em: Trabalho em Lisboa."
+          },
+          {
+            "answer": "Trabalha em Lisboa.",
+            "category": "wrong conjugation",
+            "explanation": "Trabalha is 'he/she works' — with eu the -ar ending becomes -o: trabalho."
+          }
+        ]
       }
     },
     {
@@ -9675,7 +9952,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "The time block is à tarde — one fused piece; em a tarde, na tarde and de tarde are all off."
+      ],
       "feedback": "À tarde is the fixed block — never em a tarde or na tarde.",
       "evidenceKey": "pt-routine-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9720,7 +9999,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I have dinner at home at night.",
-      "hints": [],
+      "hints": [
+        "The time block lands last: Janto + em casa first, then the à noite block at the end."
+      ],
       "feedback": "The time block lands last: Janto em casa à noite.",
       "evidenceKey": "pt-routine-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9774,7 +10055,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Estudo português ___ manhã. (in the morning)",
-      "hints": [],
+      "hints": [
+        "De manhã is one fixed phrase — the little word in the middle is de, never em."
+      ],
       "feedback": "De manhã is the fixed phrase — de, not em.",
       "evidenceKey": "pt-routine-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9804,7 +10087,23 @@
             "de"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "Em manhã would be a made-up 'in morning' — the fixed phrase is de manhã."
+            },
+            {
+              "answer": "na",
+              "category": "wrong article",
+              "explanation": "Na fuses em + a — the time block keeps its own fixed word: de manhã."
+            },
+            {
+              "answer": "a",
+              "category": "wrong preposition",
+              "explanation": "The phrase is de manhã — not a manhã: Estudo português de manhã."
+            }
+          ]
         }
       }
     },
@@ -10194,7 +10493,9 @@
         "vocabulary"
       ],
       "prompt": "Which word asks where?",
-      "hints": [],
+      "hints": [
+        "Onde asks where — the word that fits 'Onde fica o hotel?' is onde, not o que, quando or como."
+      ],
       "feedback": "Onde asks where — Onde fica o hotel?",
       "evidenceKey": "pt-questions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10239,7 +10540,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: What is this? (The question word is a pair.)",
-      "hints": [],
+      "hints": [
+        "The question word is the pair o que — never just que here: O que é isto?"
+      ],
       "feedback": "O que is the pair — never just que here: O que é isto?",
       "evidenceKey": "pt-questions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10253,7 +10556,23 @@
           "O que é isto?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Que é isto?",
+            "category": "missing word",
+            "explanation": "The what-pair is o que — plain que alone is not the taught form: O que é isto?"
+          },
+          {
+            "answer": "O que está isto?",
+            "category": "wrong conjugation",
+            "explanation": "With isto the verb is é (to be), not está (located/feeling): O que é isto?"
+          },
+          {
+            "answer": "O que é isso?",
+            "category": "incorrect answer",
+            "explanation": "Isso is 'that' — the prompt asks about 'this', which is isto: O que é isto?"
+          }
+        ]
       }
     },
     {
@@ -10269,7 +10588,9 @@
         "grammar"
       ],
       "prompt": "Which sounds the most naturally Portuguese?",
-      "hints": [],
+      "hints": [
+        "The local touch: é que right after the question word — Onde é que fica a estação? is the naturally Portuguese rhythm."
+      ],
       "feedback": "É que softens the question the Portuguese way: Onde é que fica a estação?",
       "evidenceKey": "pt-questions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10314,7 +10635,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: When do you arrive?",
-      "hints": [],
+      "hints": [
+        "Question word first and nothing else moves: Quando + chegas — no reordering like English."
+      ],
       "feedback": "Question word first, no reordering needed: Quando chegas?",
       "evidenceKey": "pt-questions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10353,7 +10676,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ estás? (how)",
-      "hints": [],
+      "hints": [
+        "The gloss in brackets says (how) — and how is como: Como estás?"
+      ],
       "feedback": "Como asks how: Como estás?",
       "evidenceKey": "pt-questions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10379,7 +10704,23 @@
             "Como"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Onde",
+              "category": "incorrect answer",
+              "explanation": "Onde asks where — the gloss says (how), and how is como: Como estás?"
+            },
+            {
+              "answer": "Quando",
+              "category": "incorrect answer",
+              "explanation": "Quando asks when — the gloss says (how): Como estás?"
+            },
+            {
+              "answer": "O que",
+              "category": "incorrect answer",
+              "explanation": "O que asks what — the gloss says (how): Como estás?"
+            }
+          ]
         }
       }
     },
@@ -11679,7 +12020,9 @@
         "vocabulary"
       ],
       "prompt": "Which form means 'I spoke'?",
-      "hints": [],
+      "hints": [
+        "Falei is the finished past — the -ei ending on falar; falo is present, falar is the dictionary form, falava is the habit past."
+      ],
       "feedback": "Falei is the finished past: Ontem falei.",
       "evidenceKey": "pt-past-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11724,7 +12067,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: Yesterday I ate a soup. (Comer → comi.)",
-      "hints": [],
+      "hints": [
+        "Comer → comi, then the soup with its feminine article: Ontem comi uma sopa."
+      ],
       "feedback": "Comer → comi: Ontem comi uma sopa.",
       "evidenceKey": "pt-past-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11740,7 +12085,23 @@
           "Comi uma sopa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ontem comi um sopa.",
+            "category": "wrong gender",
+            "explanation": "Sopa is feminine — the article is uma: Ontem comi uma sopa."
+          },
+          {
+            "answer": "Ontem como uma sopa.",
+            "category": "wrong tense",
+            "explanation": "Como is present ('I eat') — yesterday's finished meal takes comi."
+          },
+          {
+            "answer": "Ontem comi sopa.",
+            "category": "missing word",
+            "explanation": "The sentence counts the soup: uma sopa."
+          }
+        ]
       }
     },
     {
@@ -11756,7 +12117,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is in the past?",
-      "hints": [],
+      "hints": [
+        "Comi is the finished past — the -i ending; como is present and vou comer is future."
+      ],
       "feedback": "Comi is the pretérito perfeito — the finished action.",
       "evidenceKey": "pt-past-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11801,7 +12164,9 @@
         "grammar"
       ],
       "prompt": "Change the verb: Ontem falei com a Ana. → Yesterday I made dinner.",
-      "hints": [],
+      "hints": [
+        "Fazer is a rebel in the past: fiz. Ontem fiz o jantar."
+      ],
       "feedback": "Fazer is a rebel: fiz. Ontem fiz o jantar.",
       "evidenceKey": "pt-past-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11815,7 +12180,23 @@
           "Ontem fiz o jantar."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ontem faço o jantar.",
+            "category": "wrong tense",
+            "explanation": "Faço is present — yesterday's finished action is fiz."
+          },
+          {
+            "answer": "Ontem fiz jantar.",
+            "category": "missing word",
+            "explanation": "The dinner takes its article: o jantar."
+          },
+          {
+            "answer": "Ontem fizei o jantar.",
+            "category": "incorrect answer",
+            "explanation": "Fazer's past for eu is irregular — fiz, not fizei."
+          }
+        ]
       }
     },
     {
@@ -11831,7 +12212,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ um dia ótimo. (It was)",
-      "hints": [],
+      "hints": [
+        "Foi um dia ótimo — foi is the it-was past of ser, and the gloss says (It was)."
+      ],
       "feedback": "Foi means it was here: Foi um dia ótimo.",
       "evidenceKey": "pt-past-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11857,7 +12240,23 @@
             "Foi"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "É",
+              "category": "wrong tense",
+              "explanation": "É is present 'is' — the gloss says 'It was', so the past: Foi um dia ótimo."
+            },
+            {
+              "answer": "Era",
+              "category": "wrong tense",
+              "explanation": "Era is the ongoing past — a finished single day takes foi: Foi um dia ótimo."
+            },
+            {
+              "answer": "Ser",
+              "category": "wrong conjugation",
+              "explanation": "Ser is the dictionary form — the it-was past of ser is foi."
+            }
+          ]
         }
       }
     },
@@ -11881,7 +12280,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'let's' / 'we're going to'?",
-      "hints": [],
+      "hints": [
+        "Vamos is we/let's — the form in 'Vamos jantar fora?'; vou is I, vai is he/she, vão is they."
+      ],
       "feedback": "Vamos covers we and let's: Vamos jantar fora?",
       "evidenceKey": "pt-plans-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11927,7 +12328,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: Tomorrow I'm going to study. (Ir + infinitive.)",
-      "hints": [],
+      "hints": [
+        "Time Amanhã first, then vou + the plain infinitive estudar: Amanhã vou estudar."
+      ],
       "feedback": "Vou + estudar: Amanhã vou estudar.",
       "evidenceKey": "pt-plans-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11938,10 +12341,27 @@
       "id": "pt-plans-foundation-think",
       "answer": {
         "answers": [
-          "Amanhã vou estudar."
+          "Amanhã vou estudar.",
+          "Vou estudar amanhã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Amanhã eu vou estudar.",
+            "category": "extra word",
+            "explanation": "Eu is optional in speech — the taught line keeps it compact: Amanhã vou estudar."
+          },
+          {
+            "answer": "Amanhã estou estudar.",
+            "category": "wrong conjugation",
+            "explanation": "The near future is ir + infinitive — vou estudar, not estou estudar."
+          },
+          {
+            "answer": "Amanhã vou estudando.",
+            "category": "wrong conjugation",
+            "explanation": "Estudando is the gerund ('studying') — the near future takes the plain infinitive: vou estudar."
+          }
+        ]
       }
     },
     {
@@ -11957,7 +12377,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Nothing slips between vou and the infinitive: vou comer — no a, no que, no para."
+      ],
       "feedback": "Nothing goes between: vou comer.",
       "evidenceKey": "pt-plans-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12002,7 +12424,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Shall we eat out?",
-      "hints": [],
+      "hints": [
+        "Vamos doubles as let's: Vamos + jantar + fora — the whole plan in three blocks."
+      ],
       "feedback": "Vamos doubles as let's: Vamos jantar fora?",
       "evidenceKey": "pt-plans-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12046,7 +12470,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ chover à tarde. (It's going to rain)",
-      "hints": [],
+      "hints": [
+        "The rain is a single 'it' — vai + chover: Vai chover à tarde (the vai form of ir)."
+      ],
       "feedback": "Vai chover — vai for it/he/she: Vai chover à tarde.",
       "evidenceKey": "pt-plans-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12072,7 +12498,23 @@
             "Vai"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Vou",
+              "category": "wrong conjugation",
+              "explanation": "Vou is 'I am going' — the rain takes the it-form: Vai chover."
+            },
+            {
+              "answer": "Vamos",
+              "category": "wrong conjugation",
+              "explanation": "Vamos is we — a weather forecast takes vai: Vai chover à tarde."
+            },
+            {
+              "answer": "Vão",
+              "category": "wrong conjugation",
+              "explanation": "Vão is they — the rain is one thing: Vai chover."
+            }
+          ]
         }
       }
     },
@@ -15664,7 +16106,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence mixes background and event correctly?",
-      "hints": [],
+      "hints": [
+        "Background first (imperfeito: estava a chover), then the event (perfeito: cheguei) — only one line pairs them that way."
+      ],
       "feedback": "Estava a chover quando cheguei — imperfeito sets the scene (was raining), perfeito is the event (arrived). The other options pair two backgrounds or two events.",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-meet",
       "assistanceAffectsEvidence": [
@@ -15710,7 +16154,9 @@
         "grammar"
       ],
       "prompt": "Complete the background: 'Enquanto ela ___, ele pôs a mesa.' (she was cooking)",
-      "hints": [],
+      "hints": [
+        "Enquanto signals ongoing background, so the blank takes the imperfeito: cozinhava — the main event stays perfeito (pôs)."
+      ],
       "feedback": "Enquanto ela cozinhava — enquanto signals ongoing background, so the imperfeito: cozinhava.",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-think",
       "assistanceAffectsEvidence": [
@@ -15725,7 +16171,23 @@
           "cozinhava"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Enquanto ela cozinhou, ele pôs a mesa.",
+            "category": "wrong tense",
+            "explanation": "Cozinhou is a finished event — enquanto sets ongoing background, so the imperfeito: cozinhava."
+          },
+          {
+            "answer": "Enquanto ela cozinha, ele pôs a mesa.",
+            "category": "wrong tense",
+            "explanation": "Cozinha is present — the whole scene is past: cozinhava."
+          },
+          {
+            "answer": "Enquanto ela estava cozinhar, ele pôs a mesa.",
+            "category": "missing word",
+            "explanation": "The ongoing frame is estar a + infinitive (estava a cozinhar) — or the simple imperfeito this step targets: cozinhava."
+          }
+        ]
       }
     },
     {
@@ -15742,7 +16204,9 @@
         "vocabulary"
       ],
       "prompt": "Which word signals a one-time completed event?",
-      "hints": [],
+      "hints": [
+        "De repente bursts in — a single finished moment that pulls the perfeito; the other three signal habits or background."
+      ],
       "feedback": "De repente — suddenly marks a single finished event, so it pairs with the perfeito. Todos os dias, sempre and enquanto signal habits or background.",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-notice",
       "assistanceAffectsEvidence": [
@@ -15787,7 +16251,9 @@
         "grammar"
       ],
       "prompt": "Say: Suddenly the phone rang.",
-      "hints": [],
+      "hints": [
+        "De repente + the perfeito: tocar → tocou — De repente, o telemóvel tocou."
+      ],
       "feedback": "De repente, o telemóvel tocou — de repente + perfeito: tocar → tocou.",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-vary",
       "assistanceAffectsEvidence": [
@@ -15802,7 +16268,23 @@
           "De repente o telemóvel tocou."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "De repente, o telemóvel tocava.",
+            "category": "wrong tense",
+            "explanation": "Tocava is the background/habit past — a sudden ring is a finished event: tocou."
+          },
+          {
+            "answer": "De repente o telemóvel toca.",
+            "category": "wrong tense",
+            "explanation": "Toca is present — a sudden past event takes tocou."
+          },
+          {
+            "answer": "De repente, o telefone tocou.",
+            "category": "incorrect answer",
+            "explanation": "The taught word for the ringing device is telemóvel — keep it: o telemóvel tocou."
+          }
+        ]
       }
     },
     {
@@ -15818,7 +16300,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ a chover quando cheguei. (it was)",
-      "hints": [],
+      "hints": [
+        "The weather behind the scene is background — the imperfeito: Estava a chover."
+      ],
       "feedback": "Estava — the background weather takes the imperfeito: estava a chover.",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-cloze",
       "assistanceAffectsEvidence": [
@@ -15848,7 +16332,23 @@
             "Estava"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Esteve",
+              "category": "wrong tense",
+              "explanation": "Esteve is a finished event — background weather takes the imperfeito: Estava a chover."
+            },
+            {
+              "answer": "Está",
+              "category": "wrong tense",
+              "explanation": "Está is present — the whole scene is past: estava a chover."
+            },
+            {
+              "answer": "Era",
+              "category": "wrong conjugation",
+              "explanation": "Weather in the background takes estar: estava a chover, not era."
+            }
+          ]
         }
       }
     },
@@ -15867,7 +16367,9 @@
         "vocabulary"
       ],
       "prompt": "Which orders the day correctly, morning to night?",
-      "hints": [],
+      "hints": [
+        "Read the day in order: de manhã → depois → à noite, all in the perfeito — only one line runs the day morning to night."
+      ],
       "feedback": "De manhã fui ao mercado, depois almocei, à noite vi um filme — time markers in chronological order with perfeitos. The others scramble the day or mix tenses.",
       "evidenceKey": "pt-a2-contar-fim-de-semana-meet",
       "assistanceAffectsEvidence": [
@@ -15912,7 +16414,9 @@
         "grammar"
       ],
       "prompt": "Predict the sequencer: '___ almocei com os meus pais.' (then)",
-      "hints": [],
+      "hints": [
+        "Depois chains the next event in the weekend story: Depois almocei com os meus pais."
+      ],
       "feedback": "Depois almocei com os meus pais — depois links the next event in the chain.",
       "evidenceKey": "pt-a2-contar-fim-de-semana-think",
       "assistanceAffectsEvidence": [
@@ -15927,7 +16431,23 @@
           "Depois"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Amanhã almocei com os meus pais.",
+            "category": "incorrect answer",
+            "explanation": "Amanhã is tomorrow — the weekend sequencer for 'then' is depois."
+          },
+          {
+            "answer": "Então almocei com os meus pais.",
+            "category": "incorrect answer",
+            "explanation": "Então is also a connector, but this blank targets the taught then-word: depois."
+          },
+          {
+            "answer": "Depois almoçar com os meus pais.",
+            "category": "wrong conjugation",
+            "explanation": "The event already happened — almocei, not the infinitive almoçar."
+          }
+        ]
       }
     },
     {
@@ -15943,7 +16463,9 @@
         "vocabulary"
       ],
       "prompt": "Which word means 'then / afterwards'?",
-      "hints": [],
+      "hints": [
+        "Depois is then/afterwards — antes is before, agora is now, já is already."
+      ],
       "feedback": "Depois — then/afterwards. Antes is before, agora is now, já is already.",
       "evidenceKey": "pt-a2-contar-fim-de-semana-notice",
       "assistanceAffectsEvidence": [
@@ -15988,7 +16510,9 @@
         "grammar"
       ],
       "prompt": "Say: It was a great weekend!",
-      "hints": [],
+      "hints": [
+        "Foi + um fim de semana + fixe — foi is the perfeito of ser, and fixe is the very Portuguese 'great': Foi um fim de semana fixe!"
+      ],
       "feedback": "Foi um fim de semana fixe! — foi is the perfeito of ser; fixe is the very Portuguese 'cool/great'.",
       "evidenceKey": "pt-a2-contar-fim-de-semana-vary",
       "assistanceAffectsEvidence": [
@@ -16003,7 +16527,23 @@
           "Foi um fim de semana fixe."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Foi um fim de semana ótimo!",
+            "category": "incorrect answer",
+            "explanation": "Ótimo is fine Portuguese, but the taught exclamation uses the very Portuguese fixe: Foi um fim de semana fixe!"
+          },
+          {
+            "answer": "É um fim de semana fixe!",
+            "category": "wrong tense",
+            "explanation": "'It was great' — the past foi, not the present é."
+          },
+          {
+            "answer": "Foi uma fim de semana fixe!",
+            "category": "wrong gender",
+            "explanation": "Fim de semana is masculine — the article is um: um fim de semana."
+          }
+        ]
       }
     },
     {
@@ -16019,7 +16559,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: No sábado de manhã ___ ao mercado. (I went)",
-      "hints": [],
+      "hints": [
+        "No sábado + fui — the perfeito of ir for eu; vou would mean next Saturday."
+      ],
       "feedback": "Fui — the perfeito of ir for eu. 'No sábado vou' would mean next Saturday.",
       "evidenceKey": "pt-a2-contar-fim-de-semana-cloze",
       "assistanceAffectsEvidence": [
@@ -16049,7 +16591,23 @@
             "fui"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vou",
+              "category": "wrong tense",
+              "explanation": "Vou is present ('I go' / 'I'm going') — the visit already happened: fui."
+            },
+            {
+              "answer": "ia",
+              "category": "wrong tense",
+              "explanation": "Ia is the habit/background past — a single Saturday trip is fui."
+            },
+            {
+              "answer": "fui ao",
+              "category": "extra word",
+              "explanation": "The blank takes the verb only — ao comes after: fui ao mercado."
+            }
+          ]
         }
       }
     },
@@ -16083,7 +16641,9 @@
         "vocabulary"
       ],
       "prompt": "Which says 'I'm going to make dinner'?",
-      "hints": [],
+      "hints": [
+        "The future is vou + infinitive: Vou fazer o jantar — faço is present, fiz is past, vou a fazer mixes in the progressive."
+      ],
       "feedback": "Vou fazer o jantar — vou + infinitivo is the future. Faço is present, fiz is past, and 'vou a fazer' mixes the future with the progressive.",
       "evidenceKey": "pt-a2-ir-futuro-meet",
       "assistanceAffectsEvidence": [
@@ -16129,7 +16689,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: we are going to travel in August — '___ viajar em agosto.'",
-      "hints": [],
+      "hints": [
+        "The nós form of ir is vamos, then the plain infinitive viajar, then the time block: Vamos viajar em agosto."
+      ],
       "feedback": "Vamos viajar em agosto — the nós form of ir is vamos, then the infinitivo.",
       "evidenceKey": "pt-a2-ir-futuro-think",
       "assistanceAffectsEvidence": [
@@ -16144,7 +16706,23 @@
           "Vamos"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vão viajar em agosto.",
+            "category": "wrong conjugation",
+            "explanation": "Vão is they — the blank is about 'we': Vamos viajar em agosto."
+          },
+          {
+            "answer": "Vai viajar em agosto.",
+            "category": "wrong conjugation",
+            "explanation": "Vai is he/she — the we-form is vamos: Vamos viajar em agosto."
+          },
+          {
+            "answer": "Vamos viajamos em agosto.",
+            "category": "wrong conjugation",
+            "explanation": "Ir + infinitivo conjugates ir only — vamos + the plain viajar: Vamos viajar em agosto."
+          }
+        ]
       }
     },
     {
@@ -16160,7 +16738,9 @@
         "vocabulary"
       ],
       "prompt": "Which is NOT a future with ir + infinitivo?",
-      "hints": [],
+      "hints": [
+        "Three of the lines are future plans; Estou a ir is the present progressive (going, right now) — find the odd one out."
+      ],
       "feedback": "Estou a ir — that is the present progressive (I am going, right now), not a future plan. The other three are all ir + infinitivo.",
       "evidenceKey": "pt-a2-ir-futuro-notice",
       "assistanceAffectsEvidence": [
@@ -16205,7 +16785,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Are you going out tonight?",
-      "hints": [],
+      "hints": [
+        "Vais + the infinitive sair, then the time block hoje à noite at the end: Vais sair hoje à noite?"
+      ],
       "feedback": "Vais sair hoje à noite? — vais + infinitivo, time phrase at the end.",
       "evidenceKey": "pt-a2-ir-futuro-build",
       "assistanceAffectsEvidence": [
@@ -16259,7 +16841,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Eles ___ chegar amanhã. (are going to)",
-      "hints": [],
+      "hints": [
+        "The subject is eles, so ir takes its they-form: vão — Eles vão chegar."
+      ],
       "feedback": "Vão — the eles form of ir: eles vão chegar.",
       "evidenceKey": "pt-a2-ir-futuro-cloze",
       "assistanceAffectsEvidence": [
@@ -16289,7 +16873,23 @@
             "vão"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vou",
+              "category": "wrong conjugation",
+              "explanation": "Vou is I — the subject eles takes the they-form: vão chegar."
+            },
+            {
+              "answer": "vai",
+              "category": "wrong conjugation",
+              "explanation": "Vai is he/she — eles is plural, so the form is vão: Eles vão chegar."
+            },
+            {
+              "answer": "vamos",
+              "category": "wrong conjugation",
+              "explanation": "Vamos is we — eles takes vão: Eles vão chegar."
+            }
+          ]
         }
       }
     },
@@ -16613,7 +17213,9 @@
         "vocabulary"
       ],
       "prompt": "Which expresses an intention (not a completed change)?",
-      "hints": [],
+      "hints": [
+        "An intention looks forward: tenciono = I intend — the others are already done, habitual, or past-habit."
+      ],
       "feedback": "Tenciono mudar de emprego — tenciono = I intend. Mudei is already done (past), mudo is present habit, mudava is past habit.",
       "evidenceKey": "pt-a2-planos-intencoes-meet",
       "assistanceAffectsEvidence": [
@@ -16658,7 +17260,9 @@
         "grammar"
       ],
       "prompt": "Predict the verb: '___ em viajar para o Brasil.' (I'm thinking of)",
-      "hints": [],
+      "hints": [
+        "Pensar em + infinitive: Penso em viajar para o Brasil — the em is part of the verb."
+      ],
       "feedback": "Penso em viajar — pensar em + infinitivo expresses a considered idea.",
       "evidenceKey": "pt-a2-planos-intencoes-think",
       "assistanceAffectsEvidence": [
@@ -16673,7 +17277,23 @@
           "Penso"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Penso viajar para o Brasil.",
+            "category": "missing word",
+            "explanation": "Pensar takes em before the infinitive: Penso em viajar para o Brasil."
+          },
+          {
+            "answer": "Penso de viajar para o Brasil.",
+            "category": "wrong preposition",
+            "explanation": "The verb is pensar em — not de: Penso em viajar para o Brasil."
+          },
+          {
+            "answer": "Penso em viajar no Brasil.",
+            "category": "wrong preposition",
+            "explanation": "Para marks the destination — the trip points at Brazil: para o Brasil."
+          }
+        ]
       }
     },
     {
@@ -16689,7 +17309,9 @@
         "vocabulary"
       ],
       "prompt": "Which word means 'to intend'?",
-      "hints": [],
+      "hints": [
+        "Tencionar = to intend — easy to mix with tentar (to try), ter (to have) and tomar (to take)."
+      ],
       "feedback": "Tencionar — to intend. Tentar is to try, ter is to have, tomar is to take.",
       "evidenceKey": "pt-a2-planos-intencoes-notice",
       "assistanceAffectsEvidence": [
@@ -16735,7 +17357,9 @@
         "grammar"
       ],
       "prompt": "Say: I intend to change jobs this year.",
-      "hints": [],
+      "hints": [
+        "Tenciono + the plain infinitive: Tenciono mudar de emprego este ano."
+      ],
       "feedback": "Tenciono mudar de emprego este ano — tenciono + plain infinitivo.",
       "evidenceKey": "pt-a2-planos-intencoes-vary",
       "assistanceAffectsEvidence": [
@@ -16749,7 +17373,23 @@
           "Tenciono mudar de emprego este ano."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tento mudar de emprego este ano.",
+            "category": "incorrect answer",
+            "explanation": "Tento is 'I try' — intending is tenciono: Tenciono mudar de emprego este ano."
+          },
+          {
+            "answer": "Vou mudar de emprego este ano.",
+            "category": "incorrect answer",
+            "explanation": "Vou mudar is a near-future plan — this step asks for the intention verb: tenciono."
+          },
+          {
+            "answer": "Tenciono mudar o emprego este ano.",
+            "category": "wrong article",
+            "explanation": "Changing jobs is mudar de emprego — the de stays: mudar de emprego."
+          }
+        ]
       }
     },
     {
@@ -16765,7 +17405,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Vou atualizar o ___ amanhã. (CV)",
-      "hints": [],
+      "hints": [
+        "The document to update is the CV — o currículo: Vou atualizar o currículo amanhã."
+      ],
       "feedback": "Currículo — o currículo, the CV. A concrete first step for any career plan.",
       "evidenceKey": "pt-a2-planos-intencoes-cloze",
       "assistanceAffectsEvidence": [
@@ -16795,7 +17437,23 @@
             "currículo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "curriculo",
+              "category": "accent/diacritic issue",
+              "explanation": "Currículo carries the accent on the i: o currículo."
+            },
+            {
+              "answer": "emprego",
+              "category": "incorrect answer",
+              "explanation": "Emprego is the job — the blank is the document to update: o currículo."
+            },
+            {
+              "answer": "currículum",
+              "category": "incorrect answer",
+              "explanation": "The Portuguese word is currículo — no final -m."
+            }
+          ]
         }
       }
     },
@@ -17728,7 +18386,9 @@
         "vocabulary"
       ],
       "prompt": "Which joins correctly? 'A casa ___ nasci é pequena.'",
-      "hints": [],
+      "hints": [
+        "A place takes onde — casa is a place; que would need a preposition (em que) and quem is for people."
+      ],
       "feedback": "Onde — places take onde. Que would need a preposition ('em que'), and quem is for people.",
       "evidenceKey": "pt-a2-relativos-meet",
       "assistanceAffectsEvidence": [
@@ -17774,7 +18434,9 @@
         "grammar"
       ],
       "prompt": "Predict the joiner: 'O livro ___ comprei é ótimo.'",
-      "hints": [],
+      "hints": [
+        "For a thing as the object, plain que does the job: O livro que comprei é ótimo."
+      ],
       "feedback": "Que — for a thing as the object, plain que does the job.",
       "evidenceKey": "pt-a2-relativos-think",
       "assistanceAffectsEvidence": [
@@ -17789,7 +18451,23 @@
           "que"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O livro onde comprei é ótimo.",
+            "category": "incorrect answer",
+            "explanation": "Onde is for places — the book is a thing, so the joiner is que."
+          },
+          {
+            "answer": "O livro quem comprei é ótimo.",
+            "category": "incorrect answer",
+            "explanation": "Quem is for people — for a thing the joiner is que."
+          },
+          {
+            "answer": "O livro em que comprei é ótimo.",
+            "category": "extra word",
+            "explanation": "Comprar takes its object directly — no preposition needed: o livro que comprei."
+          }
+        ]
       }
     },
     {
@@ -17805,7 +18483,9 @@
         "vocabulary"
       ],
       "prompt": "After a preposition + person, we use…",
-      "hints": [],
+      "hints": [
+        "Person after a preposition → quem: com quem — never com que for a person."
+      ],
       "feedback": "Com quem — preposition + quem for people: a pessoa com quem falei. Never 'com que' for a person.",
       "evidenceKey": "pt-a2-relativos-notice",
       "assistanceAffectsEvidence": [
@@ -17850,7 +18530,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The house where I was born is small.",
-      "hints": [],
+      "hints": [
+        "The noun first, the onde-clause right behind it, then the main verb and adjective: A casa onde nasci é pequena."
+      ],
       "feedback": "A casa onde nasci é pequena — noun, onde-clause, then the main verb.",
       "evidenceKey": "pt-a2-relativos-build",
       "assistanceAffectsEvidence": [
@@ -17909,7 +18591,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: O café ___ almoçamos é fixe. (where)",
-      "hints": [],
+      "hints": [
+        "The café is a place, and places take onde: O café onde almoçamos é fixe."
+      ],
       "feedback": "Onde — a place takes onde.",
       "evidenceKey": "pt-a2-relativos-cloze",
       "assistanceAffectsEvidence": [
@@ -17939,7 +18623,23 @@
             "onde"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "que",
+              "category": "incorrect answer",
+              "explanation": "Que alone cannot follow a place noun without a preposition — places take onde: o café onde almoçamos."
+            },
+            {
+              "answer": "quem",
+              "category": "incorrect answer",
+              "explanation": "Quem is for people — the café is a place: onde."
+            },
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "Em + que would be the framing — the plain joiner for a place is onde."
+            }
+          ]
         }
       }
     },
@@ -18282,7 +18982,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'I gave her the book'?",
-      "hints": [],
+      "hints": [
+        "Dei-lhe o livro — lhe is the to-her pronoun that hugs the verb; 'dei ela' and 'dei para ela' miss the pt-PT habit."
+      ],
       "feedback": "Dei-lhe o livro — lhe is the indirect object pronoun (to her). 'Dei ela' is wrong, and 'dei para ela' misses the natural habit.",
       "evidenceKey": "pt-a2-lhe-lhes-meet",
       "assistanceAffectsEvidence": [
@@ -18327,7 +19029,9 @@
         "grammar"
       ],
       "prompt": "Predict the pronoun: 'Emprestei-___ o meu carro.' (to him)",
-      "hints": [],
+      "hints": [
+        "Emprestei + -lhe, one hyphenated word: Emprestei-lhe o meu carro."
+      ],
       "feedback": "Emprestei-lhe o meu carro — -lhe attaches with a hyphen: to him/her.",
       "evidenceKey": "pt-a2-lhe-lhes-think",
       "assistanceAffectsEvidence": [
@@ -18342,7 +19046,23 @@
           "Emprestei-lhe"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Emprestei-lhes o meu carro.",
+            "category": "wrong number",
+            "explanation": "Lhes is 'to them' — the gloss says to him: lhe."
+          },
+          {
+            "answer": "Emprestei lhe o meu carro.",
+            "category": "word-order problem",
+            "explanation": "The pronoun glues to the verb with a hyphen: emprestei-lhe."
+          },
+          {
+            "answer": "Emprestei a ele o meu carro.",
+            "category": "incorrect answer",
+            "explanation": "The taught pt-PT habit is the pronoun: emprestei-lhe o meu carro."
+          }
+        ]
       }
     },
     {
@@ -18359,7 +19079,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence places the pronoun correctly after 'não'?",
-      "hints": [],
+      "hints": [
+        "After não the pronoun moves before the verb: Não lhe disse nada."
+      ],
       "feedback": "Não lhe disse nada — after não the pronoun goes before the verb. 'Não disse-lhe' breaks the rule.",
       "evidenceKey": "pt-a2-lhe-lhes-notice",
       "assistanceAffectsEvidence": [
@@ -18404,7 +19126,9 @@
         "grammar"
       ],
       "prompt": "Say: I didn't tell him anything.",
-      "hints": [],
+      "hints": [
+        "Não pulls the pronoun in front of the verb: Não lhe disse nada."
+      ],
       "feedback": "Não lhe disse nada — não pulls the pronoun before the verb.",
       "evidenceKey": "pt-a2-lhe-lhes-vary",
       "assistanceAffectsEvidence": [
@@ -18418,7 +19142,23 @@
           "Não lhe disse nada."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Não disse-lhe nada.",
+            "category": "word-order problem",
+            "explanation": "After não the pronoun goes before the verb: Não lhe disse nada."
+          },
+          {
+            "answer": "Não lhe disse alguma coisa.",
+            "category": "incorrect answer",
+            "explanation": "The taught line says nothing at all — nada: Não lhe disse nada."
+          },
+          {
+            "answer": "Lhe não disse nada.",
+            "category": "word-order problem",
+            "explanation": "Não leads the negative — the pronoun follows it: Não lhe disse nada."
+          }
+        ]
       }
     },
     {
@@ -18435,7 +19175,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Disse-___ a verdade. (to her)",
-      "hints": [],
+      "hints": [
+        "Disse-lhe — lhe is the to-her pronoun riding after the verb with a hyphen."
+      ],
       "feedback": "Lhe — disse-lhe: told her.",
       "evidenceKey": "pt-a2-lhe-lhes-cloze",
       "assistanceAffectsEvidence": [
@@ -18465,7 +19207,23 @@
             "lhe"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "lhes",
+              "category": "wrong number",
+              "explanation": "Lhes is plural ('to them') — the gloss says to her: lhe."
+            },
+            {
+              "answer": "ela",
+              "category": "incorrect answer",
+              "explanation": "Ela is the subject pronoun — the indirect-object pronoun is lhe: disse-lhe."
+            },
+            {
+              "answer": "a ela",
+              "category": "extra word",
+              "explanation": "The pt-PT habit is the single pronoun: disse-lhe a verdade, not disse a ela."
+            }
+          ]
         }
       }
     },
@@ -19601,7 +20359,9 @@
         "vocabulary"
       ],
       "prompt": "You walk into the café in the morning. What do you say?",
-      "hints": [],
+      "hints": [
+        "Morning café → Bom dia — the time-based greeting; boa noite belongs to the night."
+      ],
       "feedback": "Bom dia — the morning greeting. Boa noite is for night, and a bare 'café!' skips the greeting entirely.",
       "evidenceKey": "pt-a2-revisao-a1-act-2",
       "assistanceAffectsEvidence": [
@@ -19647,7 +20407,9 @@
         "grammar"
       ],
       "prompt": "Order politely: 'I'd like a coffee, please.'",
-      "hints": [],
+      "hints": [
+        "The polite A1 order: Queria + um café + por favor — the warm queria carries the whole scene."
+      ],
       "feedback": "Queria um café, por favor — queria is the polite A1 habit you learned.",
       "evidenceKey": "pt-a2-revisao-a1-act-3",
       "assistanceAffectsEvidence": [
@@ -19661,7 +20423,23 @@
           "Queria um café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quero um café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quero is direct — the polite A1 habit is queria: Queria um café, por favor."
+          },
+          {
+            "answer": "Queria café, por favor.",
+            "category": "missing word",
+            "explanation": "The order counts the item: um café."
+          },
+          {
+            "answer": "Queria um café.",
+            "category": "missing word",
+            "explanation": "The polite order closes with por favor: Queria um café, por favor."
+          }
+        ]
       }
     },
     {
@@ -19677,7 +20455,9 @@
         "grammar"
       ],
       "prompt": "Chat about yesterday: 'Yesterday I went to the market.'",
-      "hints": [],
+      "hints": [
+        "Ontem first, then the perfeito fui, then ao mercado (a + o fused): Ontem fui ao mercado."
+      ],
       "feedback": "Ontem fui ao mercado — ontem + perfeito: fui.",
       "evidenceKey": "pt-a2-revisao-a1-act-4",
       "assistanceAffectsEvidence": [
@@ -19726,7 +20506,9 @@
         "grammar"
       ],
       "prompt": "Complete the plan: 'Amanhã ___ viajar.' (I am going to)",
-      "hints": [],
+      "hints": [
+        "Amanhã + vou + the plain infinitive — ir + infinitivo: Amanhã vou viajar."
+      ],
       "feedback": "Vou — ir + infinitivo for the near future.",
       "evidenceKey": "pt-a2-revisao-a1-act-5",
       "assistanceAffectsEvidence": [
@@ -19756,7 +20538,23 @@
             "vou"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vai",
+              "category": "wrong conjugation",
+              "explanation": "Vai is he/she — the gloss says 'I am going to': vou."
+            },
+            {
+              "answer": "vamos",
+              "category": "wrong conjugation",
+              "explanation": "Vamos is we — the speaker is one person: vou."
+            },
+            {
+              "answer": "ir",
+              "category": "wrong conjugation",
+              "explanation": "The blank takes the conjugated vou — the infinitive viajar follows it."
+            }
+          ]
         }
       }
     },
@@ -19774,7 +20572,9 @@
         "vocabulary"
       ],
       "prompt": "Which declines an invitation kindly?",
-      "hints": [],
+      "hints": [
+        "The cushioned refusal: Desta vez não posso, desculpa — a bare não reads cold."
+      ],
       "feedback": "Desta vez não posso, desculpa — the cushioned refusal from the invitations lesson. A bare 'não' sounds cold.",
       "evidenceKey": "pt-a2-revisao-a1-act-6",
       "assistanceAffectsEvidence": [
@@ -19820,7 +20620,9 @@
         "grammar"
       ],
       "prompt": "Predict the soft refusal before you say it: 'I can't this time, sorry.'",
-      "hints": [],
+      "hints": [
+        "The soft refusal from the invitations lesson: Desta vez + não posso + desculpa."
+      ],
       "feedback": "Desta vez não posso, desculpa — say it warmly.",
       "evidenceKey": "pt-a2-revisao-a1-act-7",
       "assistanceAffectsEvidence": [
@@ -19834,7 +20636,23 @@
           "Desta vez não posso, desculpa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Não posso.",
+            "category": "incorrect answer",
+            "explanation": "Bare 'não posso' sounds cold — the taught refusal cushions it: Desta vez não posso, desculpa."
+          },
+          {
+            "answer": "Não posso, desculpe.",
+            "category": "wrong conjugation",
+            "explanation": "Desculpe is the formal form — the café chat is tu-level: desculpa."
+          },
+          {
+            "answer": "Desta vez posso, desculpa.",
+            "category": "missing word",
+            "explanation": "The refusal needs its não: Desta vez não posso, desculpa."
+          }
+        ]
       }
     },
     {
@@ -19852,7 +20670,9 @@
         "vocabulary"
       ],
       "prompt": "Match each line to its meaning.",
-      "hints": [],
+      "hints": [
+        "Six pairs across all of A1: read each left line and match it to its English meaning — one meaning per line."
+      ],
       "feedback": "Six for six across the whole of A1. Bom trabalho.",
       "evidenceKey": "pt-a2-revisao-a1-act-8",
       "assistanceAffectsEvidence": [
@@ -19917,7 +20737,9 @@
         "grammar"
       ],
       "prompt": "Leave warmly: 'Thank you! See you tomorrow.'",
-      "hints": [],
+      "hints": [
+        "Two beats: the thanks (Obrigado! for a man, Obrigada! for a woman) and the warm send-off até amanhã."
+      ],
       "feedback": "Obrigado! Até amanhã — close every interaction the Portuguese way.",
       "evidenceKey": "pt-a2-revisao-a1-act-9",
       "assistanceAffectsEvidence": [
@@ -19932,7 +20754,23 @@
           "Obrigada! Até amanhã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Obrigado! Até logo.",
+            "category": "incorrect answer",
+            "explanation": "Até logo is 'see you later' — tomorrow is amanhã: Até amanhã."
+          },
+          {
+            "answer": "Obrigado até amanhã.",
+            "category": "missing word",
+            "explanation": "The send-off needs its mark and its pause: Obrigado! Até amanhã."
+          },
+          {
+            "answer": "Adeus, até amanhã.",
+            "category": "incorrect answer",
+            "explanation": "Adeus reads as a final goodbye — open with the thanks: Obrigado! Até amanhã."
+          }
+        ]
       }
     },
     {
@@ -20734,7 +21572,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I study Portuguese in the afternoon.",
-      "hints": [],
+      "hints": [
+        "Subject Eu, verb estudo, object português, time à tarde at the end — Eu estudo português à tarde."
+      ],
       "feedback": "Eu estudo português à tarde — subject, verb, object, time at the end.",
       "evidenceKey": "pt-routine-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20788,7 +21628,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Who is she?",
-      "hints": [],
+      "hints": [
+        "Quem leads, é follows, ela closes: Quem é ela?"
+      ],
       "feedback": "Quem é ela? — the question word leads, the rest stays put.",
       "evidenceKey": "pt-questions-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20833,7 +21675,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Tomorrow I'm going to travel.",
-      "hints": [],
+      "hints": [
+        "Time Amanhã first, then vou + the infinitive viajar: Amanhã vou viajar."
+      ],
       "feedback": "Amanhã vou viajar — time first, then vou + infinitive.",
       "evidenceKey": "pt-plans-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20878,7 +21722,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: We are going to travel in August.",
-      "hints": [],
+      "hints": [
+        "Vamos + viajar, then em agosto as the time block: Vamos viajar em agosto."
+      ],
       "feedback": "Vamos viajar em agosto — vamos + infinitive, time at the end.",
       "evidenceKey": "pt-a2-ir-futuro-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20928,7 +21774,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The book I bought is great.",
-      "hints": [],
+      "hints": [
+        "O livro + que comprei as one idea, then é ótimo: O livro que comprei é ótimo."
+      ],
       "feedback": "O livro que comprei é ótimo — que joins the clauses mid-sentence.",
       "evidenceKey": "pt-a2-relativos-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20993,7 +21841,9 @@
         "grammar"
       ],
       "prompt": "Retrieve the verb: I study Portuguese in the afternoon.",
-      "hints": [],
+      "hints": [
+        "The -ar present you already own from «Work and daily routine»: Eu estudo português à tarde."
+      ],
       "feedback": "Eu estudo português à tarde — the -ar present you learned in «Work and daily routine».",
       "evidenceKey": "pt-past-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21021,7 +21871,23 @@
             "estudo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "estudei",
+              "category": "wrong tense",
+              "explanation": "Estudei is past ('I studied') — the routine happens now: estudo."
+            },
+            {
+              "answer": "estudar",
+              "category": "wrong conjugation",
+              "explanation": "Estudar is the dictionary form — the subject eu takes estudo."
+            },
+            {
+              "answer": "estuda",
+              "category": "wrong conjugation",
+              "explanation": "Estuda is he/she — with eu the ending is -o: estudo."
+            }
+          ]
         }
       }
     },
@@ -21046,7 +21912,9 @@
         "grammar"
       ],
       "prompt": "Retrieve the verb: Yesterday I spoke with Ana.",
-      "hints": [],
+      "hints": [
+        "Ontem + falei — the perfeito from «Yesterday: a first look at the past»."
+      ],
       "feedback": "Ontem falei com a Ana — falei, straight from «Yesterday: a first look at the past».",
       "evidenceKey": "pt-a2-contar-fim-de-semana-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21074,7 +21942,23 @@
             "falei"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "falo",
+              "category": "wrong tense",
+              "explanation": "Falo is present — yesterday's finished talk takes falei."
+            },
+            {
+              "answer": "falava",
+              "category": "wrong tense",
+              "explanation": "Falava is the habit past — a finished talk is falei."
+            },
+            {
+              "answer": "falei com",
+              "category": "extra word",
+              "explanation": "The blank takes the verb only — com comes after: falei com a Ana."
+            }
+          ]
         }
       }
     },
@@ -21099,7 +21983,9 @@
         "grammar"
       ],
       "prompt": "Retrieve the verb: We are going to travel in August.",
-      "hints": [],
+      "hints": [
+        "The we-form of ir + the infinitive: Vamos viajar em agosto — from «Ir + infinitivo»."
+      ],
       "feedback": "Vamos viajar em agosto — ir + infinitive, from «Ir + infinitivo».",
       "evidenceKey": "pt-a2-planos-intencoes-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21127,7 +22013,23 @@
             "Vamos"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Vou",
+              "category": "wrong conjugation",
+              "explanation": "Vou is I — the gloss says 'we are going to': Vamos."
+            },
+            {
+              "answer": "Vai",
+              "category": "wrong conjugation",
+              "explanation": "Vai is he/she — we takes vamos: Vamos viajar em agosto."
+            },
+            {
+              "answer": "Vão",
+              "category": "wrong conjugation",
+              "explanation": "Vão is they — we is vamos: Vamos viajar em agosto."
+            }
+          ]
         }
       }
     },
@@ -21152,7 +22054,9 @@
         "grammar"
       ],
       "prompt": "Retrieve the verb: Can you help me, please?",
-      "hints": [],
+      "hints": [
+        "The polite frame from «Polite requests»: Pode + ajudar-me — the -me rides on the infinitive."
+      ],
       "feedback": "Pode ajudar-me, por favor? — poder + -me, from «Polite requests».",
       "evidenceKey": "pt-a2-lhe-lhes-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21180,7 +22084,23 @@
             "ajudar-me"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "me ajudar",
+              "category": "word-order problem",
+              "explanation": "In this frame the pronoun attaches to the infinitive: ajudar-me, not me ajudar."
+            },
+            {
+              "answer": "ajudar",
+              "category": "missing word",
+              "explanation": "The frame needs the -me pronoun: Pode ajudar-me, por favor?"
+            },
+            {
+              "answer": "ajudar-te",
+              "category": "wrong number",
+              "explanation": "Te is 'you' — the speaker asks for me: ajudar-me."
+            }
+          ]
         }
       }
     },
@@ -21205,7 +22125,9 @@
         "grammar"
       ],
       "prompt": "Retrieve the verb: Yesterday I spoke with Maria.",
-      "hints": [],
+      "hints": [
+        "Ontem + the finished past of falar: falei — straight from «O pretérito perfeito»."
+      ],
       "feedback": "Ontem falei com a Maria — the pretérito perfeito, from «O pretérito perfeito».",
       "evidenceKey": "pt-a2-perfeito-vs-imperfeito-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21233,7 +22155,23 @@
             "falei"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "falo",
+              "category": "wrong tense",
+              "explanation": "Falo is present — yesterday's finished talk takes the perfeito: falei."
+            },
+            {
+              "answer": "falava",
+              "category": "wrong tense",
+              "explanation": "Falava is the habit/background past — a finished talk is falei."
+            },
+            {
+              "answer": "falar",
+              "category": "wrong conjugation",
+              "explanation": "Falar is the dictionary form — the speaker did it: falei."
+            }
+          ]
         }
       }
     },

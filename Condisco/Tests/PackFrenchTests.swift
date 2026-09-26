@@ -1419,4 +1419,348 @@ final class PackFrenchTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Wave F (the twelve French construction + recall lessons)
+
+    /// The twelve Wave F lessons (5 construction: negation/possession/
+    /// questions/café-build/home-build; 7 recall: days/time/first-steps/
+    /// future/resolutions/travail/A1-rappel), keyed by the path activity ids
+    /// each lesson references (graded steps only).
+    private static let batch6Lessons: [String: [String]] = [
+        "fr-negation-foundation": [
+            "fr-negation-foundation-order", "fr-negation-foundation-act-rb2",
+            "fr-negation-foundation-act-rb3", "fr-negation-foundation-cloze",
+            "fr-negation-foundation-produce", "fr-negation-foundation-meet",
+        ],
+        "fr-possession-foundation": [
+            "fr-possession-foundation-order", "fr-possession-foundation-act-rb2",
+            "fr-possession-foundation-act-rb3", "fr-possession-foundation-cloze",
+            "fr-possession-foundation-produce", "fr-possession-foundation-meet",
+        ],
+        "fr-questions-foundation": [
+            "fr-questions-foundation-order", "fr-questions-foundation-act-rb2",
+            "fr-questions-foundation-act-rb3", "fr-questions-foundation-cloze",
+            "fr-questions-foundation-produce", "fr-questions-foundation-meet",
+        ],
+        "fr-cafe-build-construction": [
+            "fr-cafe-build-construction-act-2", "fr-cafe-build-construction-act-3",
+            "fr-cafe-build-construction-act-4", "fr-cafe-build-construction-act-5",
+            "fr-cafe-build-construction-act-6", "fr-cafe-build-construction-act-7",
+            "fr-cafe-build-construction-act-8", "fr-cafe-build-construction-act-9",
+        ],
+        "fr-home-build-construction": [
+            "fr-home-build-construction-act-2", "fr-home-build-construction-act-3",
+            "fr-home-build-construction-act-4", "fr-home-build-construction-act-5",
+            "fr-home-build-construction-act-6", "fr-home-build-construction-act-7",
+            "fr-home-build-construction-act-8", "fr-home-build-construction-act-9",
+        ],
+        "fr-days-foundation": [
+            "fr-days-foundation-meet", "fr-days-foundation-act-rb2",
+            "fr-days-foundation-produce", "fr-days-foundation-act-rb3",
+            "fr-days-foundation-cloze", "fr-days-foundation-read",
+        ],
+        "fr-time-foundation": [
+            "fr-time-foundation-meet", "fr-time-foundation-act-rb2",
+            "fr-time-foundation-produce", "fr-time-foundation-act-rb3",
+            "fr-time-foundation-cloze", "fr-time-foundation-read",
+        ],
+        "fr-first-steps-recall": [
+            "fr-first-steps-recall-act-2", "fr-first-steps-recall-act-3",
+            "fr-first-steps-recall-act-4", "fr-first-steps-recall-act-5",
+            "fr-first-steps-recall-act-6", "fr-first-steps-recall-act-7",
+            "fr-first-steps-recall-act-8", "fr-first-steps-recall-act-9",
+        ],
+        "fr-a2-futur-emplois": [
+            "fr-a2-futur-emplois-meet", "fr-a2-futur-emplois-act-rb2",
+            "fr-a2-futur-emplois-think", "fr-a2-futur-emplois-notice",
+            "fr-a2-futur-emplois-cloze", "fr-a2-futur-emplois-vary",
+        ],
+        "fr-a2-projets-resolutions": [
+            "fr-a2-projets-resolutions-meet", "fr-a2-projets-resolutions-act-rb2",
+            "fr-a2-projets-resolutions-think", "fr-a2-projets-resolutions-notice",
+            "fr-a2-projets-resolutions-cloze", "fr-a2-projets-resolutions-vary",
+        ],
+        "fr-a2-travail-vocab": [
+            "fr-a2-travail-vocab-meet", "fr-a2-travail-vocab-act-rb2",
+            "fr-a2-travail-vocab-think", "fr-a2-travail-vocab-notice",
+            "fr-a2-travail-vocab-cloze", "fr-a2-travail-vocab-vary",
+        ],
+        "fr-a2-rappel-a1": [
+            "fr-a2-rappel-a1-act-2", "fr-a2-rappel-a1-act-3",
+            "fr-a2-rappel-a1-act-4", "fr-a2-rappel-a1-act-5",
+            "fr-a2-rappel-a1-act-6", "fr-a2-rappel-a1-act-7",
+            "fr-a2-rappel-a1-act-8", "fr-a2-rappel-a1-act-9",
+        ],
+    ]
+
+    /// Every graded step in the twelve Wave F construction/recall lessons has
+    /// a real authored hint, not the runtime generic fallbacks.
+    func testBatch6GradedStepsHaveAuthoredHints() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text activity and cloze blank in the Wave F lessons authors
+    /// error-specific feedback.
+    func testBatch6TextActivitiesAuthorErrors() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in the Wave F lessons hit their authored
+    /// category + explanation and are never accepted.
+    func testBatch6ErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try frenchPack()
+
+        // fr-negation-foundation — sandwich slots, written-form policy.
+        var result = try gradeBlank("fr-negation-foundation-cloze", blank: "b1", in: pack, "ne")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-negation-foundation-produce", in: pack, "Je ne travaille.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-negation-foundation-produce", in: pack, "Je travaille pas.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-possession-foundation — gender agreement on the possessed noun.
+        result = try gradeBlank("fr-possession-foundation-cloze", blank: "b1", in: pack, "Mon")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-possession-foundation-produce", in: pack, "Ma maison est blanc.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-possession-foundation-produce", in: pack, "La maison est blanche.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-questions-foundation — tu -es, vous register, missing que.
+        result = try gradeBlank("fr-questions-foundation-cloze", blank: "b1", in: pack, "travaille")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-questions-foundation-produce", in: pack, "Est-ce que vous travaillez ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-questions-foundation-produce", in: pack, "Est-ce tu travailles ?")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-cafe-build-construction — polite register, prendre conjugation.
+        result = try gradeBlank("fr-cafe-build-construction-act-4", blank: "b1", in: pack, "veux")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-cafe-build-construction-act-4", blank: "b1", in: pack, "voudrai")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-cafe-build-construction-act-6", in: pack, "Je prend un café.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-cafe-build-construction-act-6", in: pack, "Je prends le café.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeBlank("fr-cafe-build-construction-act-8", blank: "b1", in: pack, "Vous")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-build-construction-act-9", in: pack, "La addition, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-home-build-construction — agreement on both sides of the verb.
+        result = try gradeBlank("fr-home-build-construction-act-5", blank: "b1", in: pack, "grande")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeBlank("fr-home-build-construction-act-5", blank: "b1", in: pack, "grands")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeBlank("fr-home-build-construction-act-6", blank: "b1", in: pack, "Mon")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-home-build-construction-act-7", in: pack, "Mes livres sont blanc.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("fr-home-build-construction-act-9", in: pack, "Ta livre est grand.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // fr-days-foundation — date number, article, order.
+        result = try gradeBlank("fr-days-foundation-act-rb2", blank: "b1", in: pack, "trente")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeBlank("fr-days-foundation-cloze", blank: "b1", in: pack, "deux")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("fr-days-foundation-read", in: pack, "trois mai")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-days-foundation-read", in: pack, "le mai trois")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-days-foundation-produce", in: pack, "Aujourd'hui, il est lundi.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-time-foundation — clock subjects and the arrival decoy.
+        result = try gradeBlank("fr-time-foundation-act-rb2", blank: "b1", in: pack, "Hier")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeBlank("fr-time-foundation-cloze", blank: "b1", in: pack, "Elle")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-time-foundation-read", in: pack, "à huit heures")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-time-foundation-read", in: pack, "midi")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-time-foundation-produce", in: pack, "Il est trois heures et demi.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // fr-first-steps-recall — avoir-age, thanks, negation verb.
+        result = try gradeBlank("fr-first-steps-recall-act-3", blank: "b1", in: pack, "dix")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("fr-first-steps-recall-act-4", in: pack, "Merci beaucoup.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-first-steps-recall-act-6", blank: "b1", in: pack, "travailler")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-first-steps-recall-act-8", in: pack, "Je suis vingt ans.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeText("fr-first-steps-recall-act-8", in: pack, "J'ai vingt.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-futur-emplois — future endings, tense family, double-l.
+        result = try gradeBlank("fr-a2-futur-emplois-act-rb2", blank: "b1", in: pack, "travaillera")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-futur-emplois-act-rb2", blank: "b1", in: pack, "vais travailler")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-futur-emplois-think", in: pack, "Je vais t'appeler.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-futur-emplois-think", in: pack, "Je t'appelerai.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-futur-emplois-cloze", blank: "b1", in: pack, "réussis")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-futur-emplois-vary", in: pack, "Il va pleuvoir demain.")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // fr-a2-projets-resolutions — plan words, élision, near-future terminal.
+        result = try gradeBlank("fr-a2-projets-resolutions-act-rb2", blank: "b1", in: pack, "Hier")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-projets-resolutions-think", in: pack, "J'ai décidé de arrêter.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-projets-resolutions-cloze", blank: "b1", in: pack, "décidée")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-projets-resolutions-vary", in: pack, "Je dormirai huit heures.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-projets-resolutions-vary", in: pack, "Je vais dormir huit heure.")
+        XCTAssertEqual(result.category, "wrong number")
+
+        // fr-a2-travail-vocab — work nouns, gender, false friends.
+        result = try gradeBlank("fr-a2-travail-vocab-act-rb2", blank: "b1", in: pack, "travaille")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-travail-vocab-think", in: pack, "La patron est en réunion.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeBlank("fr-a2-travail-vocab-cloze", blank: "b1", in: pack, "bureau")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-travail-vocab-cloze", blank: "b1", in: pack, "chef")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-travail-vocab-vary", in: pack, "La salaire est correct.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-a2-travail-vocab-vary", in: pack, "Le salaire est fin.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-rappel-a1 — A1 retrieval with specific error categories.
+        result = try gradeBlank("fr-a2-rappel-a1-act-3", blank: "b1", in: pack, "pas")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-rappel-a1-act-4", in: pack, "Ou est la gare ?")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("fr-a2-rappel-a1-act-4", in: pack, "Où est le gare ?")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeBlank("fr-a2-rappel-a1-act-6", blank: "b1", in: pack, "suis")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeText("fr-a2-rappel-a1-act-8", in: pack, "Je ne comprend pas.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-rappel-a1-act-8", in: pack, "Je ne comprends.")
+        XCTAssertEqual(result.category, "missing word")
+    }
+
+    /// Wave F alignment fixes: natural renderings accepted where the prompt
+    /// legitimately allows them.
+    func testBatch6AcceptsNaturalAlternatives() throws {
+        let pack = try frenchPack()
+
+        // Days produce: today-is-Monday with the day first is natural French.
+        var result = try gradeText("fr-days-foundation-produce", in: pack, "C'est lundi aujourd'hui.")
+        XCTAssertTrue(result.accepted)
+
+        // Time read: the bare departure time and the full sentence both answer
+        // the when-question naturally.
+        result = try gradeText("fr-time-foundation-read", in: pack, "huit heures et demie")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-time-foundation-read", in: pack, "Le train part à huit heures et demie.")
+        XCTAssertTrue(result.accepted)
+
+        // Questions produce: the rising-intonation form is the lesson's own
+        // sanctioned alternative to Est-ce que.
+        result = try gradeText("fr-questions-foundation-produce", in: pack, "Tu travailles ?")
+        XCTAssertTrue(result.accepted)
+
+        // Resolutions vary: the re-authored near-future terminal is the model.
+        result = try gradeText("fr-a2-projets-resolutions-vary", in: pack, "Je vais dormir huit heures.")
+        XCTAssertTrue(result.accepted)
+    }
+
+    /// Wave F prompt/answer alignment (H1): cloze prompts that previously left
+    /// the blank under-determined now dictate the target, and the resolutions
+    /// terminal no longer silently accepts the off-theme futur simple.
+    func testBatch6PromptNarrowingHolds() throws {
+        let pack = try frenchPack()
+
+        // The date cloze now dictates the day-number 3.
+        var base = try XCTUnwrap(pack.activity(id: "fr-days-foundation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("(3)"),
+                      "days cloze must dictate the date number")
+
+        // The age cloze now dictates twenty.
+        base = try XCTUnwrap(pack.activity(id: "fr-first-steps-recall-act-3")?.base)
+        XCTAssertTrue(base.prompt.contains("(twenty)"),
+                      "age cloze must dictate the number")
+
+        // The possession cloze now dictates "my house".
+        base = try XCTUnwrap(pack.activity(id: "fr-possession-foundation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("My house is white"),
+                      "possession cloze must dictate the possessive")
+
+        // The questions cloze now dictates the verb.
+        base = try XCTUnwrap(pack.activity(id: "fr-questions-foundation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("(work)"),
+                      "questions cloze must dictate the verb")
+
+        // The resolutions terminal is the near future again; the futur simple
+        // answer must not be silently accepted on a near-future lesson.
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-projets-resolutions-vary")?.base)
+        XCTAssertTrue(base.prompt.contains("going to sleep"),
+                      "resolutions vary must dictate the near future")
+        let oldFuture = try gradeText("fr-a2-projets-resolutions-vary", in: pack, "Je dormirai huit heures.")
+        XCTAssertFalse(oldFuture.accepted,
+                       "the futur simple must not auto-grade on the near-future terminal")
+        let nearFuture = try gradeText("fr-a2-projets-resolutions-vary", in: pack, "Je vais dormir huit heures.")
+        XCTAssertTrue(nearFuture.accepted,
+                      "the near-future model must be the accepted answer")
+    }
+
+    /// Every Wave F construction/recall lesson ends on a specific graded
+    /// response step — never an ungraded or open-ended terminal (M5-style
+    /// outcome coherence for these families).
+    func testBatch6LessonsEndOnGradedResponse() throws {
+        let pack = try frenchPack()
+        for lessonId in Self.batch6Lessons.keys.sorted() {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), lessonId)
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                guard case .information = act else {
+                    continue
+                }
+                XCTFail("\(lessonId): terminal step \(step.id) must be graded, not information")
+            }
+        }
+    }
+
 }

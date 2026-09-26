@@ -6190,7 +6190,9 @@
         "grammar"
       ],
       "prompt": "The words are shuffled. Build the full polite request for one coffee.",
-      "hints": [],
+      "hints": [
+        "Verb second: start with Ich, put möchte right behind it, then the drink with its object article, and finish with bitte, comma."
+      ],
       "feedback": "Ich (1) möchte (2) — the verb holds second position, then the object einen Kaffee, and bitte closes the request.",
       "evidenceKey": "de-requests-build-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -6246,7 +6248,9 @@
         "grammar"
       ],
       "prompt": "Now build the same request for a tea — only the drink changes.",
-      "hints": [],
+      "hints": [
+        "Only the drink changes: swap Kaffee for Tee; Tee is masculine too, so einen stays and the order is identical."
+      ],
       "feedback": "Only the drink changed: Tee is masculine too, so einen stays.",
       "evidenceKey": "de-requests-build-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -6302,7 +6306,9 @@
         "vocabulary"
       ],
       "prompt": "Which line follows the German rule — the verb in second position?",
-      "hints": [],
+      "hints": [
+        "The rule is verb-second: check each line for where möchte sits — the verb must be the second block, not the first or the last."
+      ],
       "feedback": "Only the first line keeps the verb in second position; the others scatter the blocks.",
       "evidenceKey": "de-requests-build-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -6347,7 +6353,9 @@
         "grammar"
       ],
       "prompt": "Build the introduction line you learned in «Introducing yourself».",
-      "hints": [],
+      "hints": [
+        "The same verb-second rule builds introductions too: Ich first, then heiße, then the name."
+      ],
       "feedback": "Ich (1) heiße (2) Anna — the same verb-second rule builds introductions too.",
       "evidenceKey": "de-requests-build-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -6392,7 +6400,9 @@
         "grammar"
       ],
       "prompt": "The drink is the thing being ordered, so the article takes its object form. Fill the blank.",
-      "hints": [],
+      "hints": [
+        "Kaffee is masculine, and it is the thing being ordered — the object form of ein is einen."
+      ],
       "feedback": "Einen — Kaffee is masculine, and a masculine object takes einen.",
       "evidenceKey": "de-requests-build-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -6422,7 +6432,23 @@
             "einen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ein",
+              "category": "wrong article",
+              "explanation": "Ein is the subject form; the drink being ordered takes the object form: Ich möchte einen Kaffee, bitte."
+            },
+            {
+              "answer": "eine",
+              "category": "wrong gender",
+              "explanation": "Kaffee is masculine — the object form is einen, not eine (eine is feminine)."
+            },
+            {
+              "answer": "einen Tee",
+              "category": "incorrect answer",
+              "explanation": "That orders a tea — the request here is for Kaffee: Ich möchte einen Kaffee, bitte."
+            }
+          ]
         }
       }
     },
@@ -6440,7 +6466,9 @@
         "vocabulary"
       ],
       "prompt": "Say the short version: just the coffee, politely.",
-      "hints": [],
+      "hints": [
+        "Answer with the drink in its object form and the polite word: Einen + Kaffee + comma + bitte."
+      ],
       "feedback": "Einen Kaffee, bitte. — the object form survives even without the verb.",
       "evidenceKey": "de-requests-build-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -6454,7 +6482,23 @@
           "Einen Kaffee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ein Kaffee, bitte.",
+            "category": "wrong article",
+            "explanation": "The object form survives even without a verb: Einen Kaffee, bitte. Ein is the subject form."
+          },
+          {
+            "answer": "Kaffee, bitte.",
+            "category": "missing word",
+            "explanation": "The request names the drink with its object article: Einen Kaffee, bitte."
+          },
+          {
+            "answer": "Eine Kaffee, bitte.",
+            "category": "wrong gender",
+            "explanation": "Kaffee is masculine — the article is einen: Einen Kaffee, bitte."
+          }
+        ]
       }
     },
     {
@@ -6470,7 +6514,9 @@
         "vocabulary"
       ],
       "prompt": "Build the friendly line that follows an introduction.",
-      "hints": [],
+      "hints": [
+        "Two blocks only: the verb first, then mich — there is no subject in this friendly line."
+      ],
       "feedback": "Freut mich. — two blocks, and the verb comes first here because there is no subject at all.",
       "evidenceKey": "de-requests-build-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -6511,7 +6557,9 @@
         "grammar"
       ],
       "prompt": "From memory now: the full polite coffee request.",
-      "hints": [],
+      "hints": [
+        "Everything you built this lesson in one line: Ich + möchte + einen Kaffee + bitte — verb second, object article einen."
+      ],
       "feedback": "You built it from blocks, and now it is yours: Ich möchte einen Kaffee, bitte.",
       "evidenceKey": "de-requests-build-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -6525,7 +6573,23 @@
           "Ich möchte einen Kaffee, bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich möchte ein Kaffee, bitte.",
+            "category": "wrong article",
+            "explanation": "The direct object takes the object article: Ich möchte einen Kaffee, bitte."
+          },
+          {
+            "answer": "Ich möchte Kaffee, bitte.",
+            "category": "missing word",
+            "explanation": "The request keeps its object article: Ich möchte einen Kaffee, bitte."
+          },
+          {
+            "answer": "Möchte ich einen Kaffee, bitte.",
+            "category": "word-order problem",
+            "explanation": "Verb-first turns the line into a question; a wish-statement starts with the subject: Ich möchte einen Kaffee, bitte."
+          }
+        ]
       }
     },
     {
@@ -6870,7 +6934,9 @@
         "grammar"
       ],
       "prompt": "You learned this in «At the café»: which article does a masculine drink take when it is being ordered?",
-      "hints": [],
+      "hints": [
+        "The drink is the direct object of möchten — it takes the object form of ein; only one option ends in -en."
+      ],
       "feedback": "Einen — the object form. Ein would leave the drink standing as a bare subject.",
       "evidenceKey": "de-remember-recall-act-2",
       "assistanceAffectsEvidence": [
@@ -6915,7 +6981,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Prices and paying»: fill the missing first word of the price question.",
-      "hints": [],
+      "hints": [
+        "The price question is a fixed frame: Was … kostet …? — start with the W-word that asks for a price."
+      ],
       "feedback": "Was kostet das? — the fixed frame for every price question.",
       "evidenceKey": "de-remember-recall-act-3",
       "assistanceAffectsEvidence": [
@@ -6941,7 +7009,18 @@
             "Was"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Wie",
+              "category": "incorrect answer",
+              "explanation": "Wie asks how; the price frame is Was kostet das?"
+            },
+            {
+              "answer": "Wo",
+              "category": "incorrect answer",
+              "explanation": "Wo asks where; the price frame is Was kostet das?"
+            }
+          ]
         }
       }
     },
@@ -6958,7 +7037,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «First words»: how do you say thank you?",
-      "hints": [],
+      "hints": [
+        "The one-word thank-you, four letters: d-a-n-k-e."
+      ],
       "feedback": "Danke — still the most useful word you own.",
       "evidenceKey": "de-remember-recall-act-4",
       "assistanceAffectsEvidence": [
@@ -6972,7 +7053,18 @@
           "danke"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "danken",
+            "category": "incorrect answer",
+            "explanation": "Danken is the verb 'to thank'; the thanks-word you recall is danke."
+          },
+          {
+            "answer": "danke schön",
+            "category": "extra word",
+            "explanation": "Danke alone is the word from «First words»; danke schön is the fuller thanks."
+          }
+        ]
       }
     },
     {
@@ -6988,7 +7080,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Asking the way»: you must turn left at the corner. Which word sends you left?",
-      "hints": [],
+      "hints": [
+        "The left-turn word starts with l — the option starting with r sends you the other way."
+      ],
       "feedback": "Links — rechts would send you the wrong way entirely.",
       "evidenceKey": "de-remember-recall-act-5",
       "assistanceAffectsEvidence": [
@@ -7033,7 +7127,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Days and times»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The missing word is the time word for 'today' — it starts with H."
+      ],
       "feedback": "Heute ist Montag — and morgen it will be Tuesday.",
       "evidenceKey": "de-remember-recall-act-6",
       "assistanceAffectsEvidence": [
@@ -7059,7 +7155,18 @@
             "Heute"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Morgen",
+              "category": "incorrect answer",
+              "explanation": "Morgen is tomorrow; the sentence says it is Monday now — Heute ist Montag."
+            },
+            {
+              "answer": "Gestern",
+              "category": "incorrect answer",
+              "explanation": "Gestern is yesterday; the sentence means today — Heute ist Montag."
+            }
+          ]
         }
       }
     },
@@ -7076,7 +7183,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Family and people»: write the German for “the brother”.",
-      "hints": [],
+      "hints": [
+        "Masculine noun plus its article: der + Bruder."
+      ],
       "feedback": "Der Bruder — masculine, so der.",
       "evidenceKey": "de-remember-recall-act-7",
       "assistanceAffectsEvidence": [
@@ -7090,7 +7199,23 @@
           "der Bruder"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "die Bruder",
+            "category": "wrong article",
+            "explanation": "Bruder is masculine — its article is der: der Bruder."
+          },
+          {
+            "answer": "das Bruder",
+            "category": "wrong article",
+            "explanation": "Bruder is masculine — its article is der, not das (neuter)."
+          },
+          {
+            "answer": "der Schwester",
+            "category": "incorrect answer",
+            "explanation": "That is the sister (die Schwester); the brother is der Bruder."
+          }
+        ]
       }
     },
     {
@@ -7106,7 +7231,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Weather and seasons»: which line says it is raining?",
-      "hints": [],
+      "hints": [
+        "The raining line uses the verb regnen — only one option has it."
+      ],
       "feedback": "Es regnet. — if the sun were out, the second line would be the one.",
       "evidenceKey": "de-remember-recall-act-8",
       "assistanceAffectsEvidence": [
@@ -7151,7 +7278,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «Free time and hobbies»: complete the line with the little word that means “gladly”.",
-      "hints": [],
+      "hints": [
+        "The little adverb that means 'gladly / like to' has four letters: g-e-r-n."
+      ],
       "feedback": "Gern — the little word that turns playing into liking to play.",
       "evidenceKey": "de-remember-recall-act-9",
       "assistanceAffectsEvidence": [
@@ -7181,7 +7310,18 @@
             "gern"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "spielen",
+              "category": "wrong conjugation",
+              "explanation": "The blank is not the verb — the verb stays in its ich-form spiele: Ich spiele gern Fußball."
+            },
+            {
+              "answer": "lieber",
+              "category": "incorrect answer",
+              "explanation": "Lieber is 'rather/preferably'; the word for 'gladly' is gern."
+            }
+          ]
         }
       }
     },
@@ -8102,7 +8242,9 @@
         "grammar"
       ],
       "prompt": "Build: Today I play.",
-      "hints": [],
+      "hints": [
+        "Time first, then the verb, then the person: Heute + spiele + ich."
+      ],
       "feedback": "Heute spiele ich. — time first, verb second. Feel that rhythm; it never changes.",
       "evidenceKey": "de-routine-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -8147,7 +8289,9 @@
         "grammar"
       ],
       "prompt": "Build: I like playing.",
-      "hints": [],
+      "hints": [
+        "Ich + the verb, then the little word for 'gladly' at the end — gern."
+      ],
       "feedback": "Ich spiele gern. — gern after the verb turns it into a like. One tiny word, a whole new meaning.",
       "evidenceKey": "de-routine-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -8193,7 +8337,9 @@
         "grammar"
       ],
       "prompt": "Which sentence has true German word order?",
-      "hints": [],
+      "hints": [
+        "With a time word first, the verb still jumps to second position — only one line does that."
+      ],
       "feedback": "Morgen ist kalt. — tomorrow it is cold. Time first, verb second: the pattern holds again.",
       "evidenceKey": "de-routine-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -8239,7 +8385,9 @@
         "vocabulary"
       ],
       "prompt": "Start a sentence with a day word. Complete it:",
-      "hints": [],
+      "hints": [
+        "The day-word that means 'tomorrow' — it starts with M and ends in -gen. Put it first, before ist."
+      ],
       "feedback": "Morgen ist Montag. — tomorrow is Monday. You just built a sentence about the week.",
       "evidenceKey": "de-routine-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -8263,7 +8411,18 @@
             "Morgen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Heute",
+              "category": "incorrect answer",
+              "explanation": "Heute is today; the sentence is about tomorrow — Morgen ist Montag."
+            },
+            {
+              "answer": "Gestern",
+              "category": "incorrect answer",
+              "explanation": "Gestern is yesterday; the sentence says tomorrow is Monday — Morgen ist Montag."
+            }
+          ]
         }
       }
     },
@@ -8285,7 +8444,9 @@
         "grammar"
       ],
       "prompt": "Build: The family likes playing.",
-      "hints": [],
+      "hints": [
+        "Die + Familie, then the verb form for one family, then gern at the end."
+      ],
       "feedback": "Die Familie spielt gern. — four tiles, one real sentence about real people.",
       "evidenceKey": "de-routine-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -8334,7 +8495,9 @@
         "vocabulary"
       ],
       "prompt": "Write in German: I live in Berlin.",
-      "hints": [],
+      "hints": [
+        "Ich + the verb for living somewhere (wohnen) + in + the city."
+      ],
       "feedback": "Ich wohne in Berlin. — wohnen is to live somewhere. Another brick in your week.",
       "evidenceKey": "de-routine-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -8346,7 +8509,23 @@
           "Ich wohne in Berlin."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich lebe in Berlin.",
+            "category": "incorrect answer",
+            "explanation": "Leben means to be alive; living in a place is wohnen: Ich wohne in Berlin."
+          },
+          {
+            "answer": "Ich wohne Berlin.",
+            "category": "missing word",
+            "explanation": "Wohnen takes the preposition in before the place: Ich wohne in Berlin."
+          },
+          {
+            "answer": "Ich wohnen in Berlin.",
+            "category": "wrong conjugation",
+            "explanation": "After ich the verb takes -e: Ich wohne in Berlin."
+          }
+        ]
       }
     },
     {
@@ -8367,7 +8546,9 @@
         "grammar"
       ],
       "prompt": "Talk about your sister's hobbies. Complete it:",
-      "hints": [],
+      "hints": [
+        "One sister, one person — the verb form ends in -t: spielt, not spiele."
+      ],
       "feedback": "Meine Schwester spielt gern. — my sister likes playing. Spielt, not spiele — the verb changes with the person, and you just handled it.",
       "evidenceKey": "de-routine-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -8395,7 +8576,18 @@
             "spielt"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "spiele",
+              "category": "wrong conjugation",
+              "explanation": "Spiele is the ich-form; with meine Schwester (one person, sie) the verb is spielt."
+            },
+            {
+              "answer": "spielen",
+              "category": "wrong conjugation",
+              "explanation": "Spielen is the infinitive or the wir/sie-plural form; with meine Schwester use spielt."
+            }
+          ]
         }
       }
     },
@@ -8416,7 +8608,9 @@
         "grammar"
       ],
       "prompt": "Final test — the whole pattern in one choice. Which is correct German?",
-      "hints": [],
+      "hints": [
+        "The pattern you built all lesson: time first, verb second, person after the verb."
+      ],
       "feedback": "Heute spiele ich. — time, verb, person. You have built real sentences all lesson; this pattern is yours now.",
       "evidenceKey": "de-routine-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -9162,7 +9356,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the plural of der Stuhl?",
-      "hints": [],
+      "hints": [
+        "Stuhl takes -e in the plural AND the vowel changes (u → ü) — only one option does both."
+      ],
       "feedback": "Stuhl takes -e plus an umlaut: die Stühle. The umlaut is part of the plural — without it the word is wrong.",
       "evidenceKey": "de-plural-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9207,7 +9403,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: The tables are big.",
-      "hints": [],
+      "hints": [
+        "Der Tisch pluralizes to die Tische with the umlaut, and the verb becomes sind."
+      ],
       "feedback": "Plural article die, plural noun Tische, plural verb sind: Die Tische sind groß.",
       "evidenceKey": "de-plural-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9221,7 +9419,23 @@
           "Die Tische sind groß."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Die Tisch sind groß.",
+            "category": "wrong number",
+            "explanation": "Tisch alone is singular — the plural is die Tische: Die Tische sind groß."
+          },
+          {
+            "answer": "Die Tische ist groß.",
+            "category": "wrong conjugation",
+            "explanation": "With a plural subject the verb is sind, not ist: Die Tische sind groß."
+          },
+          {
+            "answer": "Der Tische sind groß.",
+            "category": "wrong article",
+            "explanation": "Plural nouns always take die: die Tische."
+          }
+        ]
       }
     },
     {
@@ -9237,7 +9451,9 @@
         "vocabulary"
       ],
       "prompt": "Kind is neuter and takes -er in the plural. Pick the right plural.",
-      "hints": [],
+      "hints": [
+        "Kind grows -er in the plural: Kind + -er = Kinder — and the article becomes die."
+      ],
       "feedback": "Kind → Kinder with -er. The other two endings belong to other nouns, not to Kind.",
       "evidenceKey": "de-plural-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9278,7 +9494,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say the children are small.",
-      "hints": [],
+      "hints": [
+        "Die for the plural, then Kinder, then the plural verb sind, then klein."
+      ],
       "feedback": "Die Kinder sind klein: die for every plural, sind for the plural verb.",
       "evidenceKey": "de-plural-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9327,7 +9545,9 @@
         "grammar"
       ],
       "prompt": "Make it plural: Das Auto ist neu.",
-      "hints": [],
+      "hints": [
+        "Auto takes -s in the plural, the article becomes die, and ist becomes sind — all three changes today."
+      ],
       "feedback": "Auto takes -s, the article becomes die, and ist becomes sind: Die Autos sind neu.",
       "evidenceKey": "de-plural-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9341,7 +9561,23 @@
           "Die Autos sind neu."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Die Auto sind neu.",
+            "category": "wrong number",
+            "explanation": "The plural needs its -s ending: die Autos."
+          },
+          {
+            "answer": "Das Autos sind neu.",
+            "category": "wrong article",
+            "explanation": "Plural nouns take die, not das: die Autos."
+          },
+          {
+            "answer": "Die Autos ist neu.",
+            "category": "wrong conjugation",
+            "explanation": "Plural subject, plural verb: die Autos sind neu."
+          }
+        ]
       }
     },
     {
@@ -9357,7 +9593,9 @@
         "grammar"
       ],
       "prompt": "Complete the plural: Die ___ sind groß.",
-      "hints": [],
+      "hints": [
+        "Frau pluralizes with -en: Frau + -en = Frauen. Start your answer with the article die."
+      ],
       "feedback": "Frau takes -en: die Frauen sind groß.",
       "evidenceKey": "de-plural-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9387,7 +9625,18 @@
             "Frauen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Frau",
+              "category": "wrong number",
+              "explanation": "The plural needs its ending: die Frauen sind groß."
+            },
+            {
+              "answer": "Kinder",
+              "category": "incorrect answer",
+              "explanation": "The noun in the sentence is Frau; its plural is die Frauen."
+            }
+          ]
         }
       }
     },
@@ -9757,7 +10006,9 @@
         "vocabulary"
       ],
       "prompt": "Which word negates a noun, like ‘no car’?",
-      "hints": [],
+      "hints": [
+        "The word that stands in front of a noun — the others negate verbs, answer questions, or mean never."
+      ],
       "feedback": "Kein negates nouns: kein Auto. Nicht negates verbs, nein answers a question, nie means never.",
       "evidenceKey": "de-negation-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9803,7 +10054,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I have no car.",
-      "hints": [],
+      "hints": [
+        "Auto is neuter, so the negating article is kein with no ending: Ich habe kein Auto."
+      ],
       "feedback": "Auto is neuter, so the negating article is kein: Ich habe kein Auto.",
       "evidenceKey": "de-negation-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9817,7 +10070,18 @@
           "Ich habe kein Auto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe keine Auto.",
+            "category": "wrong article",
+            "explanation": "Auto is neuter — kein, not keine (keine is for feminine nouns): Ich habe kein Auto."
+          },
+          {
+            "answer": "Ich habe nicht Auto.",
+            "category": "incorrect answer",
+            "explanation": "Nicht negates verbs; a noun needs the negating article: Ich habe kein Auto."
+          }
+        ]
       }
     },
     {
@@ -9835,7 +10099,9 @@
         "vocabulary"
       ],
       "prompt": "Auto is neuter. Pick the sentence that says I have no car.",
-      "hints": [],
+      "hints": [
+        "Two rules together: nouns take kein (not nicht), and neuter Auto takes kein without an ending."
+      ],
       "feedback": "A noun needs kein, not nicht, and neuter Auto takes kein — keine is for feminine nouns.",
       "evidenceKey": "de-negation-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9876,7 +10142,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say I do not work.",
-      "hints": [],
+      "hints": [
+        "Subject first, verb second, and nicht closes the sentence right after the verb it negates."
+      ],
       "feedback": "The verb is negated with nicht at the end: Ich arbeite nicht.",
       "evidenceKey": "de-negation-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9921,7 +10189,9 @@
         "grammar"
       ],
       "prompt": "Negate the noun: Ich habe ein Auto.",
-      "hints": [],
+      "hints": [
+        "Swap ein for its negating twin — neuter, so kein without an ending: Ich habe kein Auto."
+      ],
       "feedback": "Ein becomes kein and the rest stays: Ich habe kein Auto.",
       "evidenceKey": "de-negation-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9935,7 +10205,23 @@
           "Ich habe kein Auto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe keine Auto.",
+            "category": "wrong article",
+            "explanation": "Auto is neuter — the negating article is kein, not keine."
+          },
+          {
+            "answer": "Ich habe nicht Auto.",
+            "category": "incorrect answer",
+            "explanation": "Nicht negates verbs; the noun keeps kein: Ich habe kein Auto."
+          },
+          {
+            "answer": "Ich habe kein Autos.",
+            "category": "wrong number",
+            "explanation": "The noun stays singular: ein Auto becomes kein Auto, not kein Autos."
+          }
+        ]
       }
     },
     {
@@ -9951,7 +10237,9 @@
         "grammar"
       ],
       "prompt": "Zeit is feminine. Fill in the negating article: Ich habe ___ Zeit.",
-      "hints": [],
+      "hints": [
+        "Kein copies ein's endings — Zeit is feminine, so the negating article is keine."
+      ],
       "feedback": "Feminine Zeit takes keine: Ich habe keine Zeit.",
       "evidenceKey": "de-negation-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9981,7 +10269,18 @@
             "keine"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "kein",
+              "category": "wrong article",
+              "explanation": "Zeit is feminine, so the negating article is keine: Ich habe keine Zeit."
+            },
+            {
+              "answer": "nicht",
+              "category": "incorrect answer",
+              "explanation": "Nicht negates verbs; a noun needs the negating article kein: Ich habe keine Zeit."
+            }
+          ]
         }
       }
     },
@@ -11129,7 +11428,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘would like’?",
-      "hints": [],
+      "hints": [
+        "The polite wish — möchten; the others are can, must, and want."
+      ],
       "feedback": "Möchten is would like. Können is can, müssen is must, wollen is to want.",
       "evidenceKey": "de-requests-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11175,7 +11476,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I would like a coffee.",
-      "hints": [],
+      "hints": [
+        "Ich + möchte + the object article for masculine Kaffee (einen) + Kaffee."
+      ],
       "feedback": "Kaffee is masculine and the direct object, so einen: Ich möchte einen Kaffee.",
       "evidenceKey": "de-requests-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11189,7 +11492,23 @@
           "Ich möchte einen Kaffee."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich möchte ein Kaffee.",
+            "category": "wrong article",
+            "explanation": "The direct object takes the object article: Ich möchte einen Kaffee."
+          },
+          {
+            "answer": "Ich möchte eine Kaffee.",
+            "category": "wrong gender",
+            "explanation": "Kaffee is masculine — the article is einen, not eine."
+          },
+          {
+            "answer": "Ich möchte einen Tee.",
+            "category": "incorrect answer",
+            "explanation": "The drink is Kaffee: Ich möchte einen Kaffee."
+          }
+        ]
       }
     },
     {
@@ -11206,7 +11525,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the sentence with the verbs in the right order.",
-      "hints": [],
+      "hints": [
+        "With a modal, the modal sits second and the main verb goes to the very end — check where sprechen lands."
+      ],
       "feedback": "The modal comes second and the main verb goes last: Ich kann Deutsch sprechen.",
       "evidenceKey": "de-requests-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11249,7 +11570,9 @@
         "grammar"
       ],
       "prompt": "Change ‘can’ to ‘would like’: Ich kann Deutsch sprechen.",
-      "hints": [],
+      "hints": [
+        "Swap kann for the would-like modal (möchte); sprechen stays parked at the end."
+      ],
       "feedback": "Kann becomes möchte; sprechen stays at the end: Ich möchte Deutsch sprechen.",
       "evidenceKey": "de-requests-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11263,7 +11586,23 @@
           "Ich möchte Deutsch sprechen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich will Deutsch sprechen.",
+            "category": "incorrect answer",
+            "explanation": "Will is 'want'; the polite request uses möchte: Ich möchte Deutsch sprechen."
+          },
+          {
+            "answer": "Ich möchte sprechen Deutsch.",
+            "category": "word-order problem",
+            "explanation": "With a modal the main verb stays last: Ich möchte Deutsch sprechen."
+          },
+          {
+            "answer": "Ich möchte Deutsch spreche.",
+            "category": "wrong conjugation",
+            "explanation": "The modal carries the person; the main verb stays as the infinitive sprechen."
+          }
+        ]
       }
     },
     {
@@ -11279,7 +11618,9 @@
         "grammar"
       ],
       "prompt": "Complete with the du-form of können: Du ___ gut Deutsch.",
-      "hints": [],
+      "hints": [
+        "Können's du-form drops the umlaut and adds -st: du kannst."
+      ],
       "feedback": "Können bends for du: du kannst — Du kannst gut Deutsch.",
       "evidenceKey": "de-requests-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11309,7 +11650,23 @@
             "kannst"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "kann",
+              "category": "wrong conjugation",
+              "explanation": "Kann is the ich/er form; with du the verb is kannst."
+            },
+            {
+              "answer": "könnt",
+              "category": "wrong conjugation",
+              "explanation": "Könnt is the ihr-form; with du the verb is kannst."
+            },
+            {
+              "answer": "können",
+              "category": "wrong conjugation",
+              "explanation": "Können is the infinitive; with du the verb is kannst."
+            }
+          ]
         }
       }
     },
@@ -12216,7 +12573,9 @@
         "vocabulary"
       ],
       "prompt": "Which question asks for the time?",
-      "hints": [],
+      "hints": [
+        "The time question starts the same way whether you ask or answer — Wie spät …? The others ask how you are, what, and where."
+      ],
       "feedback": "Wie spät ist es? asks the time. Wie geht es? asks how you are, the others ask what and where.",
       "evidenceKey": "de-time-telling-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12261,7 +12620,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: It is half past two.",
-      "hints": [],
+      "hints": [
+        "German counts the half toward the NEXT hour: half past two is halb + drei, not halb zwei."
+      ],
       "feedback": "German counts the half toward three: halb drei is 2:30, not 3:30.",
       "evidenceKey": "de-time-telling-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12275,7 +12636,23 @@
           "Es ist halb drei."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es ist halb zwei.",
+            "category": "incorrect answer",
+            "explanation": "Halb zwei is 1:30; half past two is halb drei."
+          },
+          {
+            "answer": "Es ist halb drei Uhr.",
+            "category": "extra word",
+            "explanation": "Halbe hours don't take Uhr: Es ist halb drei."
+          },
+          {
+            "answer": "Es ist drei halb.",
+            "category": "word-order problem",
+            "explanation": "The half goes before the hour it points to: Es ist halb drei."
+          }
+        ]
       }
     },
     {
@@ -12291,7 +12668,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the sentence that means 2:30.",
-      "hints": [],
+      "hints": [
+        "Halb points at the coming hour — 2:30 is halb drei; halb zwei would be 1:30."
+      ],
       "feedback": "Halb drei points at the coming hour: 2:30. Halb zwei would be 1:30.",
       "evidenceKey": "de-time-telling-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12334,7 +12713,9 @@
         "grammar"
       ],
       "prompt": "Change it to quarter to three: Es ist viertel nach drei.",
-      "hints": [],
+      "hints": [
+        "Swap nach for its opposite — vor — and the rest stands still: Es ist viertel vor drei."
+      ],
       "feedback": "Nach becomes vor; the rest stands still: Es ist viertel vor drei.",
       "evidenceKey": "de-time-telling-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12348,7 +12729,23 @@
           "Es ist viertel vor drei."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es ist viertel nach drei.",
+            "category": "incorrect answer",
+            "explanation": "That is quarter past; the task says quarter TO the hour — viertel vor drei."
+          },
+          {
+            "answer": "Es ist viertel vor drei Uhr.",
+            "category": "extra word",
+            "explanation": "Quarter-hours don't take Uhr: Es ist viertel vor drei."
+          },
+          {
+            "answer": "Es ist vor viertel drei.",
+            "category": "word-order problem",
+            "explanation": "The pattern is viertel + vor + the hour: Es ist viertel vor drei."
+          }
+        ]
       }
     },
     {
@@ -12364,7 +12761,9 @@
         "grammar"
       ],
       "prompt": "Complete the time question: Wie ___ ist es?",
-      "hints": [],
+      "hints": [
+        "Wie + the little word that means 'late' + ist es? — the two-word opener of the time question."
+      ],
       "feedback": "Wie spät ist es? is the standard way to ask the time.",
       "evidenceKey": "de-time-telling-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12394,7 +12793,18 @@
             "spät"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "oft",
+              "category": "incorrect answer",
+              "explanation": "Wie oft asks how often; the time question is Wie spät ist es?"
+            },
+            {
+              "answer": "lange",
+              "category": "incorrect answer",
+              "explanation": "Wie lange asks how long; the time question is Wie spät ist es?"
+            }
+          ]
         }
       }
     },
@@ -13808,7 +14218,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct Perfekt?",
-      "hints": [],
+      "hints": [
+        "Perfekt is a frame: the helper haben second, the participle (ge-…-t) last — only one line has both."
+      ],
       "feedback": "Ich habe gespielt is the frame: haben second, participle last. Ich spielte is book-German past, Ich habe spiele misses the ge-...-t participle, and Ich gespielt habe scrambles the word order.",
       "evidenceKey": "de-a2-perfekt-bildung-meet",
       "assistanceAffectsEvidence": [
@@ -13853,7 +14265,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I played football.",
-      "hints": [],
+      "hints": [
+        "Frame it: Ich + habe + Fußball + the participle gespielt — helper second, participle last."
+      ],
       "feedback": "Frame it: Ich + habe + Fußball + gespielt — haben second, participle last.",
       "evidenceKey": "de-a2-perfekt-bildung-think",
       "assistanceAffectsEvidence": [
@@ -13868,7 +14282,23 @@
           "Ich habe Fussball gespielt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe Fußball spielen.",
+            "category": "wrong conjugation",
+            "explanation": "The participle is gespielt, not the infinitive spielen: Ich habe Fußball gespielt."
+          },
+          {
+            "answer": "Ich spielte Fußball.",
+            "category": "wrong tense",
+            "explanation": "Spielte is the book past (Präteritum); the Perfekt frame is haben + gespielt."
+          },
+          {
+            "answer": "Ich habe Fußball spiele.",
+            "category": "wrong conjugation",
+            "explanation": "The participle form is gespielt: Ich habe Fußball gespielt."
+          }
+        ]
       }
     },
     {
@@ -13884,7 +14314,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct participle of kochen.",
-      "hints": [],
+      "hints": [
+        "Regular participles wrap the stem: ge- + koch + -t → gekocht."
+      ],
       "feedback": "Gekocht: ge- + koch + -t. Kochte is the book past, gekochet doubles the ending, and kochen is the infinitive.",
       "evidenceKey": "de-a2-perfekt-bildung-notice",
       "assistanceAffectsEvidence": [
@@ -13929,7 +14361,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: we worked yesterday.",
-      "hints": [],
+      "hints": [
+        "Wir + haben, then the time word, and the participle ge-…-t at the very end."
+      ],
       "feedback": "Wir haben gestern gearbeitet: subject, haben, time, participle last.",
       "evidenceKey": "de-a2-perfekt-bildung-build",
       "assistanceAffectsEvidence": [
@@ -13984,7 +14418,9 @@
         "grammar"
       ],
       "prompt": "Say it in the Perfekt: Er spielt Tennis.",
-      "hints": [],
+      "hints": [
+        "Er takes hat; the main verb becomes the participle and goes last: Er hat Tennis gespielt."
+      ],
       "feedback": "Er hat Tennis gespielt — er takes hat, and gespielt closes the sentence.",
       "evidenceKey": "de-a2-perfekt-bildung-vary",
       "assistanceAffectsEvidence": [
@@ -13998,7 +14434,23 @@
           "Er hat Tennis gespielt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Er hat Tennis spielt.",
+            "category": "wrong conjugation",
+            "explanation": "The main verb becomes the participle gespielt: Er hat Tennis gespielt."
+          },
+          {
+            "answer": "Er habe Tennis gespielt.",
+            "category": "wrong conjugation",
+            "explanation": "With er the helper is hat — habe is the ich-form."
+          },
+          {
+            "answer": "Er hat Tennis spielen.",
+            "category": "wrong conjugation",
+            "explanation": "The participle is gespielt, not the infinitive spielen."
+          }
+        ]
       }
     },
     {
@@ -14014,7 +14466,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence: Sie ___ gestern getanzt.",
-      "hints": [],
+      "hints": [
+        "Sie (she, one person) takes hat — haben's er/sie form."
+      ],
       "feedback": "Sie takes hat: Sie hat gestern getanzt.",
       "evidenceKey": "de-a2-perfekt-bildung-cloze",
       "assistanceAffectsEvidence": [
@@ -14044,7 +14498,23 @@
             "hat"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "habe",
+              "category": "wrong conjugation",
+              "explanation": "Habe is the ich-form; for sie (one person) the helper is hat."
+            },
+            {
+              "answer": "hast",
+              "category": "wrong conjugation",
+              "explanation": "Hast is the du-form; for sie the helper is hat."
+            },
+            {
+              "answer": "haben",
+              "category": "wrong conjugation",
+              "explanation": "Haben is for wir/sie (plural); for one person sie the helper is hat."
+            }
+          ]
         }
       }
     },
@@ -14061,7 +14531,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence uses the right helper verb?",
-      "hints": [],
+      "hints": [
+        "Fahren is movement, so the helper is sein (bin) — and the participle stays last."
+      ],
       "feedback": "Fahren is movement, so it takes sein: Ich bin nach Berlin gefahren. Haben is wrong here, and the verb must stay second with the participle last.",
       "evidenceKey": "de-a2-perfekt-sein-irregular-meet",
       "assistanceAffectsEvidence": [
@@ -14106,7 +14578,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: She came late.",
-      "hints": [],
+      "hints": [
+        "Kommen is movement → the helper is sein: Sie + ist + spät + the participle gekommen."
+      ],
       "feedback": "Kommen means movement, so it takes sein: Sie ist spät gekommen.",
       "evidenceKey": "de-a2-perfekt-sein-irregular-think",
       "assistanceAffectsEvidence": [
@@ -14120,7 +14594,23 @@
           "Sie ist spät gekommen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sie hat spät gekommen.",
+            "category": "wrong auxiliary",
+            "explanation": "Kommen is movement — it takes sein: Sie ist spät gekommen."
+          },
+          {
+            "answer": "Sie ist spät gekommt.",
+            "category": "wrong conjugation",
+            "explanation": "The participle is irregular: gekommen, not gekommt."
+          },
+          {
+            "answer": "Sie ist spät kommen.",
+            "category": "wrong conjugation",
+            "explanation": "The participle is gekommen: Sie ist spät gekommen."
+          }
+        ]
       }
     },
     {
@@ -14136,7 +14626,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the correct participle of fahren?",
-      "hints": [],
+      "hints": [
+        "Fahren is irregular — its participle keeps the -en ending: ge + fahren; the others follow the regular -t rule incorrectly."
+      ],
       "feedback": "Gefahren — irregular, with an -en ending. Gefahrt follows the regular rule, but fahren is irregular.",
       "evidenceKey": "de-a2-perfekt-sein-irregular-notice",
       "assistanceAffectsEvidence": [
@@ -14181,7 +14673,9 @@
         "grammar"
       ],
       "prompt": "Say it in the Perfekt: Er geht nach Hause.",
-      "hints": [],
+      "hints": [
+        "Gehen is movement → sein: Er ist + nach Hause + the participle gegangen, last."
+      ],
       "feedback": "Gehen means movement, so it takes sein: Er ist nach Hause gegangen.",
       "evidenceKey": "de-a2-perfekt-sein-irregular-vary",
       "assistanceAffectsEvidence": [
@@ -14195,7 +14689,23 @@
           "Er ist nach Hause gegangen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Er hat nach Hause gegangen.",
+            "category": "wrong auxiliary",
+            "explanation": "Gehen takes sein: Er ist nach Hause gegangen."
+          },
+          {
+            "answer": "Er ist nach Hause gegeht.",
+            "category": "wrong conjugation",
+            "explanation": "The participle of gehen is gegangen, not gegeht."
+          },
+          {
+            "answer": "Er ist gegangen nach Hause.",
+            "category": "word-order problem",
+            "explanation": "Nach Hause stays before the participle: Er ist nach Hause gegangen."
+          }
+        ]
       }
     },
     {
@@ -14211,7 +14721,9 @@
         "grammar"
       ],
       "prompt": "Complete the question: ___ du schon einmal geflogen?",
-      "hints": [],
+      "hints": [
+        "Du with sein takes bist — and in a yes/no question the helper jumps to the front of the line."
+      ],
       "feedback": "Du takes bist: Bist du schon einmal geflogen?",
       "evidenceKey": "de-a2-perfekt-sein-irregular-cloze",
       "assistanceAffectsEvidence": [
@@ -14241,7 +14753,23 @@
             "Bist"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Hast",
+              "category": "wrong auxiliary",
+              "explanation": "Flogen is movement, so the helper is sein — with du: Bist du schon einmal geflogen?"
+            },
+            {
+              "answer": "Bin",
+              "category": "wrong conjugation",
+              "explanation": "Bin is the ich-form; with du the helper is bist."
+            },
+            {
+              "answer": "Sei",
+              "category": "wrong conjugation",
+              "explanation": "Sei is the wish/imperative form; with du the helper is bist."
+            }
+          ]
         }
       }
     },
@@ -14258,7 +14786,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence means 'I had to work'?",
-      "hints": [],
+      "hints": [
+        "The story past of müssen is musste, and the main verb stays as the infinitive — only one line has both."
+      ],
       "feedback": "Ich musste arbeiten — musste is the Präteritum of müssen. Muss arbeitete mixes tenses, habe gemusst is the wrong past for storytelling, and musste gearbeitet doubles the past.",
       "evidenceKey": "de-a2-praeteritum-modal-meet",
       "assistanceAffectsEvidence": [
@@ -14303,7 +14833,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: She was tired.",
-      "hints": [],
+      "hints": [
+        "Sein in the story past: war. Sie + war + müde."
+      ],
       "feedback": "Sein in the story past: Sie war müde.",
       "evidenceKey": "de-a2-praeteritum-modal-think",
       "assistanceAffectsEvidence": [
@@ -14317,7 +14849,18 @@
           "Sie war müde."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sie ist müde.",
+            "category": "wrong tense",
+            "explanation": "Ist is the present; the story past of sein is war: Sie war müde."
+          },
+          {
+            "answer": "Sie hatte müde.",
+            "category": "incorrect answer",
+            "explanation": "Hatte is 'had'; tired takes the past of sein: Sie war müde."
+          }
+        ]
       }
     },
     {
@@ -14333,7 +14876,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the Präteritum of können for ich.",
-      "hints": [],
+      "hints": [
+        "The story past of können has NO umlaut; könnte is the would-form and kannte belongs to kennen."
+      ],
       "feedback": "Konnte — no umlaut in the past. Könnte is Konjunktiv (would), kannte belongs to kennen.",
       "evidenceKey": "de-a2-praeteritum-modal-notice",
       "assistanceAffectsEvidence": [
@@ -14378,7 +14923,9 @@
         "grammar"
       ],
       "prompt": "Put the modal in the story past: Ich muss früh aufstehen.",
-      "hints": [],
+      "hints": [
+        "Muss loses its umlaut and gains -te: musste — aufstehen stays as the infinitive."
+      ],
       "feedback": "Ich musste früh aufstehen — musste, no umlaut.",
       "evidenceKey": "de-a2-praeteritum-modal-vary",
       "assistanceAffectsEvidence": [
@@ -14392,7 +14939,23 @@
           "Ich musste früh aufstehen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich musste früh aufsteht.",
+            "category": "wrong conjugation",
+            "explanation": "The main verb stays an infinitive: Ich musste früh aufstehen."
+          },
+          {
+            "answer": "Ich muss früh aufstehen.",
+            "category": "wrong tense",
+            "explanation": "Muss is the present; the story past is musste."
+          },
+          {
+            "answer": "Ich müsste früh aufstehen.",
+            "category": "incorrect answer",
+            "explanation": "Müsste is the would-form (Konjunktiv); the story past is musste, no umlaut."
+          }
+        ]
       }
     },
     {
@@ -14408,7 +14971,9 @@
         "grammar"
       ],
       "prompt": "Complete the excuse: Er ___ gestern nicht kommen.",
-      "hints": [],
+      "hints": [
+        "Können's story past drops the umlaut: konnte."
+      ],
       "feedback": "Konnte — he couldn't come: Er konnte gestern nicht kommen.",
       "evidenceKey": "de-a2-praeteritum-modal-cloze",
       "assistanceAffectsEvidence": [
@@ -14438,7 +15003,23 @@
             "konnte"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "kann",
+              "category": "wrong tense",
+              "explanation": "Kann is the present; the story past is konnte."
+            },
+            {
+              "answer": "könnte",
+              "category": "incorrect answer",
+              "explanation": "Könnte is the would-form (Konjunktiv); the story past is konnte, no umlaut."
+            },
+            {
+              "answer": "konnt",
+              "category": "wrong conjugation",
+              "explanation": "The past of können is konnte — for er it keeps the -e: Er konnte gestern nicht kommen."
+            }
+          ]
         }
       }
     },
@@ -14677,7 +15258,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct Futur I?",
-      "hints": [],
+      "hints": [
+        "Futur I is a frame: werden (second) + infinitive (last). Only one line keeps werden conjugated AND the infinitive at the end."
+      ],
       "feedback": "Ich werde reisen: werden conjugated + infinitive last. Werde reisen ich scrambles the order, and ich werde reise breaks the infinitive.",
       "evidenceKey": "de-a2-futur-bildung-meet",
       "assistanceAffectsEvidence": [
@@ -14723,7 +15306,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: I will travel next year.",
-      "hints": [],
+      "hints": [
+        "Ich + werde + nächstes Jahr + the infinitive reisen at the end."
+      ],
       "feedback": "Ich werde nächstes Jahr reisen — werden second, reisen last.",
       "evidenceKey": "de-a2-futur-bildung-think",
       "assistanceAffectsEvidence": [
@@ -14737,7 +15322,23 @@
           "Ich werde nächstes Jahr reisen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich werde nächstes Jahr reise.",
+            "category": "wrong conjugation",
+            "explanation": "The main verb stays an infinitive: reisen."
+          },
+          {
+            "answer": "Ich reise nächstes Jahr.",
+            "category": "wrong tense",
+            "explanation": "Reise is the present; the future needs werde + reisen."
+          },
+          {
+            "answer": "Ich werde reisen nächstes Jahr.",
+            "category": "word-order problem",
+            "explanation": "The time word goes before the infinitive: Ich werde nächstes Jahr reisen."
+          }
+        ]
       }
     },
     {
@@ -14753,7 +15354,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct er-form of werden.",
-      "hints": [],
+      "hints": [
+        "Er takes wird — werdet is ihr, werde is ich, werden is wir/sie."
+      ],
       "feedback": "Er wird — not *er werdet (that is ihr) and not *er werde (that is ich).",
       "evidenceKey": "de-a2-futur-bildung-notice",
       "assistanceAffectsEvidence": [
@@ -14799,7 +15402,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: we will travel a lot.",
-      "hints": [],
+      "hints": [
+        "Wir + werden, then the amount viel, and the infinitive reisen at the very end."
+      ],
       "feedback": "Wir werden viel reisen.",
       "evidenceKey": "de-a2-futur-bildung-build",
       "assistanceAffectsEvidence": [
@@ -14848,7 +15453,9 @@
         "grammar"
       ],
       "prompt": "Put it in the future: Sie lernt Deutsch.",
-      "hints": [],
+      "hints": [
+        "Sie takes wird, and lernt becomes the infinitive lernen at the end."
+      ],
       "feedback": "Sie wird Deutsch lernen.",
       "evidenceKey": "de-a2-futur-bildung-vary",
       "assistanceAffectsEvidence": [
@@ -14862,7 +15469,23 @@
           "Sie wird Deutsch lernen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sie wird Deutsch lernt.",
+            "category": "wrong conjugation",
+            "explanation": "The future takes the infinitive: Sie wird Deutsch lernen."
+          },
+          {
+            "answer": "Sie werde Deutsch lernen.",
+            "category": "wrong conjugation",
+            "explanation": "With sie the helper is wird — werde is the ich-form."
+          },
+          {
+            "answer": "Sie lernt Deutsch.",
+            "category": "wrong tense",
+            "explanation": "Lernt is the present; the future needs wird + lernen."
+          }
+        ]
       }
     },
     {
@@ -14878,7 +15501,9 @@
         "grammar"
       ],
       "prompt": "Complete the promise: Ich ___ dir helfen.",
-      "hints": [],
+      "hints": [
+        "Ich takes werde — the helper sits second, and helfen stays at the end as the infinitive."
+      ],
       "feedback": "Ich werde dir helfen.",
       "evidenceKey": "de-a2-futur-bildung-cloze",
       "assistanceAffectsEvidence": [
@@ -14908,7 +15533,23 @@
             "werde"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "werden",
+              "category": "wrong conjugation",
+              "explanation": "Werden is the infinitive/wir-form; with ich the helper is werde."
+            },
+            {
+              "answer": "wirst",
+              "category": "wrong conjugation",
+              "explanation": "Wirst is the du-form; with ich the helper is werde."
+            },
+            {
+              "answer": "werdet",
+              "category": "wrong conjugation",
+              "explanation": "Werdet is the ihr-form; with ich the helper is werde."
+            }
+          ]
         }
       }
     },
@@ -15927,7 +16568,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is a correct unreal wish?",
-      "hints": [],
+      "hints": [
+        "The wish frame is wünschte + wäre — the other lines mix moods, use würde, or stack two pasts."
+      ],
       "feedback": "Ich wünschte, ich wäre in Italien — wünschte + wäre. Würde sein doesn't belong in a wünschte-sentence, and wünschte with bin mixes the moods.",
       "evidenceKey": "de-a2-irreale-wuensche-meet",
       "assistanceAffectsEvidence": [
@@ -15972,7 +16615,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: If only I had more time!",
-      "hints": [],
+      "hints": [
+        "The wish frame: Wenn ich nur + mehr Zeit + the unreal form of haben (hätte) at the end."
+      ],
       "feedback": "Wenn ich nur mehr Zeit hätte!",
       "evidenceKey": "de-a2-irreale-wuensche-think",
       "assistanceAffectsEvidence": [
@@ -15987,7 +16632,23 @@
           "Wenn ich nur mehr Zeit hätte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Wenn ich nur mehr Zeit habe!",
+            "category": "wrong tense",
+            "explanation": "Habe is the real form; the wish uses the unreal hätte."
+          },
+          {
+            "answer": "Wenn ich nur mehr Zeit hatte!",
+            "category": "wrong tense",
+            "explanation": "Hatte is the plain past; the unreal wish form is hätte."
+          },
+          {
+            "answer": "Wenn ich nur hätte mehr Zeit!",
+            "category": "word-order problem",
+            "explanation": "The unreal verb goes last: Wenn ich nur mehr Zeit hätte!"
+          }
+        ]
       }
     },
     {
@@ -16003,7 +16664,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the unreal ich-form of haben?",
-      "hints": [],
+      "hints": [
+        "Haben's unreal form adds the umlaut: hätte — habe is the real form and hast belongs to du."
+      ],
       "feedback": "Hätte — the wish-form. Habe is real, hast belongs to du.",
       "evidenceKey": "de-a2-irreale-wuensche-notice",
       "assistanceAffectsEvidence": [
@@ -16048,7 +16711,9 @@
         "grammar"
       ],
       "prompt": "Sigh it as a wish: Ich bin nicht in Italien.",
-      "hints": [],
+      "hints": [
+        "Twist the real line into the wish frame: Ich wünschte, ich wäre + in Italien."
+      ],
       "feedback": "Ich wünschte, ich wäre in Italien.",
       "evidenceKey": "de-a2-irreale-wuensche-vary",
       "assistanceAffectsEvidence": [
@@ -16062,7 +16727,23 @@
           "Ich wünschte, ich wäre in Italien."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich wünschte, ich bin in Italien.",
+            "category": "wrong tense",
+            "explanation": "The wish needs the unreal wäre, not bin."
+          },
+          {
+            "answer": "Ich wünschte, ich wäre in Italien gewesen.",
+            "category": "extra word",
+            "explanation": "Gewesen would make it a finished past wish; the simple wish is wäre in Italien."
+          },
+          {
+            "answer": "Ich wäre in Italien.",
+            "category": "missing word",
+            "explanation": "The wish frame needs its opener: Ich wünschte, ich wäre in Italien."
+          }
+        ]
       }
     },
     {
@@ -16079,7 +16760,9 @@
         "grammar"
       ],
       "prompt": "Complete the daydream: Wenn ich nur ___ wäre!",
-      "hints": [],
+      "hints": [
+        "The missing word is the adjective for 'rich' that completes the daydream — reich."
+      ],
       "feedback": "Reich: Wenn ich nur reich wäre!",
       "evidenceKey": "de-a2-irreale-wuensche-cloze",
       "assistanceAffectsEvidence": [
@@ -16109,7 +16792,18 @@
             "reich"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "reichlich",
+              "category": "incorrect answer",
+              "explanation": "Reichlich means plentiful; the wish is to be rich — reich: Wenn ich nur reich wäre!"
+            },
+            {
+              "answer": "viel",
+              "category": "incorrect answer",
+              "explanation": "The wish is to be rich — reich, not viel (much)."
+            }
+          ]
         }
       }
     },
@@ -16144,7 +16838,9 @@
         "vocabulary"
       ],
       "prompt": "Choose the right pronoun: Das ist die Frau, ___ dort wohnt.",
-      "hints": [],
+      "hints": [
+        "The pronoun copies the noun's gender — die Frau is feminine, so die."
+      ],
       "feedback": "Die — it copies die Frau. Der is masculine, das is neuter.",
       "evidenceKey": "de-a2-relativsaetze-meet",
       "assistanceAffectsEvidence": [
@@ -16189,7 +16885,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: That is the man who lives there.",
-      "hints": [],
+      "hints": [
+        "Der Mann is masculine: the pronoun repeats der, and wohnt goes to the end of the clause."
+      ],
       "feedback": "Das ist der Mann, der dort wohnt — der copies der Mann.",
       "evidenceKey": "de-a2-relativsaetze-think",
       "assistanceAffectsEvidence": [
@@ -16203,7 +16901,23 @@
           "Das ist der Mann, der dort wohnt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist der Mann, den dort wohnt.",
+            "category": "wrong article",
+            "explanation": "Den is the object form; the man is the subject of the clause — the pronoun is der."
+          },
+          {
+            "answer": "Das ist der Mann, der dort wohne.",
+            "category": "wrong conjugation",
+            "explanation": "With der Mann the verb is wohnt, not wohne (ich-form)."
+          },
+          {
+            "answer": "Das ist der Mann, der wohnt dort.",
+            "category": "word-order problem",
+            "explanation": "In the relative clause the verb goes last: der dort wohnt."
+          }
+        ]
       }
     },
     {
@@ -16219,7 +16933,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "The pronoun must match das Buch (neuter → das), and the comma before ist must stay put."
+      ],
       "feedback": "Das Buch, das ich lese, ist spannend — das copies das Buch, verb last. Der and die don't match the noun.",
       "evidenceKey": "de-a2-relativsaetze-notice",
       "assistanceAffectsEvidence": [
@@ -16264,7 +16980,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: the woman I know is nice.",
-      "hints": [],
+      "hints": [
+        "Die Frau, then the pronoun die that copies her, then ich kenne — and the verb of the clause slides to the end."
+      ],
       "feedback": "Die Frau, die ich kenne, ist nett.",
       "evidenceKey": "de-a2-relativsaetze-build",
       "assistanceAffectsEvidence": [
@@ -16328,7 +17046,9 @@
         "grammar"
       ],
       "prompt": "Combine into one sentence: Das ist ein Hotel. Das Hotel ist sehr schön.",
-      "hints": [],
+      "hints": [
+        "Splice the second sentence in with the pronoun das (neuter hotel), and the verb ist moves to the clause end."
+      ],
       "feedback": "Das ist ein Hotel, das sehr schön ist.",
       "evidenceKey": "de-a2-relativsaetze-vary",
       "assistanceAffectsEvidence": [
@@ -16342,7 +17062,23 @@
           "Das ist ein Hotel, das sehr schön ist."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist ein Hotel, der sehr schön ist.",
+            "category": "wrong article",
+            "explanation": "Das Hotel is neuter — the pronoun is das, not der."
+          },
+          {
+            "answer": "Das ist ein Hotel, dass sehr schön ist.",
+            "category": "incorrect answer",
+            "explanation": "Dass is the conjunction 'that'; the relative pronoun is das without the double-s."
+          },
+          {
+            "answer": "Das ist ein sehr schönes Hotel.",
+            "category": "incorrect answer",
+            "explanation": "That collapses the two sentences; the task wants the relative clause: ein Hotel, das sehr schön ist."
+          }
+        ]
       }
     },
     {
@@ -16358,7 +17094,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence: Der Film, ___ wir gesehen haben, war toll.",
-      "hints": [],
+      "hints": [
+        "The pronoun copies the noun's gender AND its case — der Film is the object in this clause, so the accusative den."
+      ],
       "feedback": "Den — accusative masculine: der Film, den wir gesehen haben.",
       "evidenceKey": "de-a2-relativsaetze-cloze",
       "assistanceAffectsEvidence": [
@@ -16388,7 +17126,23 @@
             "den"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "der",
+              "category": "wrong article",
+              "explanation": "Der is the nominative form; the film is the object here — the pronoun is den."
+            },
+            {
+              "answer": "das",
+              "category": "wrong article",
+              "explanation": "Das is neuter; the film is masculine — the pronoun is den."
+            },
+            {
+              "answer": "die",
+              "category": "wrong article",
+              "explanation": "Die is feminine; the film is masculine — the pronoun is den."
+            }
+          ]
         }
       }
     },
@@ -16771,7 +17525,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'the fastest train'?",
-      "hints": [],
+      "hints": [
+        "Before a noun the superlative takes -ste: der schnellste Zug."
+      ],
       "feedback": "Der schnellste Zug — -ste before the noun. Der schnell Zug drops the ending.",
       "evidenceKey": "de-a2-superlativ-meet",
       "assistanceAffectsEvidence": [
@@ -16816,7 +17572,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: This is the most beautiful city.",
-      "hints": [],
+      "hints": [
+        "Stadt is feminine: die + schönste + Stadt."
+      ],
       "feedback": "Das ist die schönste Stadt.",
       "evidenceKey": "de-a2-superlativ-think",
       "assistanceAffectsEvidence": [
@@ -16830,7 +17588,23 @@
           "Das ist die schönste Stadt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist das schönste Stadt.",
+            "category": "wrong article",
+            "explanation": "Stadt is feminine — die schönste Stadt."
+          },
+          {
+            "answer": "Das ist die schönste Städte.",
+            "category": "wrong number",
+            "explanation": "Stadt stays singular: die schönste Stadt."
+          },
+          {
+            "answer": "Das ist die schön Stadt.",
+            "category": "missing word",
+            "explanation": "The superlative keeps its ending: die schönste Stadt."
+          }
+        ]
       }
     },
     {
@@ -16846,7 +17620,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct superlative sentence.",
-      "hints": [],
+      "hints": [
+        "Standing alone, the superlative is am + -sten — only one option has that shape."
+      ],
       "feedback": "Das Wetter ist heute am besten — am + -sten. Am beste and das besteste don't exist.",
       "evidenceKey": "de-a2-superlativ-notice",
       "assistanceAffectsEvidence": [
@@ -16891,7 +17667,9 @@
         "grammar"
       ],
       "prompt": "Make it superlative: Das Hotel ist gut.",
-      "hints": [],
+      "hints": [
+        "Gut's superlative is irregular: am besten — gutesten does not exist."
+      ],
       "feedback": "Das Hotel ist am besten.",
       "evidenceKey": "de-a2-superlativ-vary",
       "assistanceAffectsEvidence": [
@@ -16905,7 +17683,18 @@
           "Das Hotel ist am besten."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Hotel ist am gutesten.",
+            "category": "incorrect answer",
+            "explanation": "Gut is irregular — the superlative is am besten, not am gutesten."
+          },
+          {
+            "answer": "Das Hotel ist am best.",
+            "category": "missing word",
+            "explanation": "The standalone superlative keeps -en: am besten."
+          }
+        ]
       }
     },
     {
@@ -16921,7 +17710,9 @@
         "grammar"
       ],
       "prompt": "Complete the fact: Berlin ist ___ größte Stadt Deutschlands.",
-      "hints": [],
+      "hints": [
+        "Stadt is feminine — the article in front of größte is die."
+      ],
       "feedback": "Die — die größte Stadt.",
       "evidenceKey": "de-a2-superlativ-cloze",
       "assistanceAffectsEvidence": [
@@ -16951,7 +17742,23 @@
             "die"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "der",
+              "category": "wrong article",
+              "explanation": "Der is masculine; Stadt is feminine — die größte Stadt."
+            },
+            {
+              "answer": "das",
+              "category": "wrong article",
+              "explanation": "Das is neuter; the feminine superlative is die größte Stadt."
+            },
+            {
+              "answer": "den",
+              "category": "wrong article",
+              "explanation": "Den is an object form; the superlative phrase needs die: die größte Stadt."
+            }
+          ]
         }
       }
     },
@@ -19294,7 +20101,9 @@
       "kind": "ordering",
       "id": "de-a2-perfekt-bildung-act-rb1",
       "prompt": "Arrange the words: I cooked yesterday.",
-      "hints": [],
+      "hints": [
+        "Ich + habe, then gestern, and the participle gekocht last — helper second, participle last."
+      ],
       "feedback": "Ich habe gestern gekocht — haben second, the participle last, the time word in the middle.",
       "evidenceKey": "de-a2-perfekt-bildung-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19348,7 +20157,9 @@
       "kind": "ordering",
       "id": "de-a2-futur-bildung-act-rb1",
       "prompt": "Arrange the words: you will travel soon.",
-      "hints": [],
+      "hints": [
+        "Du takes wirst (werden's du-form), then the time word bald, and the infinitive last."
+      ],
       "feedback": "Du wirst bald reisen — werden conjugated in second position, the infinitive parked at the very end.",
       "evidenceKey": "de-a2-futur-bildung-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19402,7 +20213,9 @@
       "kind": "ordering",
       "id": "de-a2-relativsaetze-act-rb1",
       "prompt": "Arrange the words: that is the woman who lives there.",
-      "hints": [],
+      "hints": [
+        "Das ist die Frau, then the pronoun die (copying die Frau), then dort — and wohnt at the end of the clause."
+      ],
       "feedback": "Das ist die Frau, die dort wohnt — the pronoun copies die Frau, and wohnt slides to the end of the clause.",
       "evidenceKey": "de-a2-relativsaetze-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19470,7 +20283,9 @@
       "kind": "ordering",
       "id": "de-plural-foundation-act-rb1",
       "prompt": "Arrange the words: the chairs are new.",
-      "hints": [],
+      "hints": [
+        "Die plural article, then the plural Stühle with its umlaut, then sind, then neu."
+      ],
       "feedback": "Die Stühle sind neu — die for every plural, sind for the plural verb, and the umlaut is part of the plural.",
       "evidenceKey": "de-plural-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19522,7 +20337,9 @@
       "kind": "ordering",
       "id": "de-negation-foundation-act-rb1",
       "prompt": "Arrange the words: I have no time.",
-      "hints": [],
+      "hints": [
+        "Ich + habe + the negating article for feminine Zeit (keine) + Zeit."
+      ],
       "feedback": "Ich habe keine Zeit — Zeit is feminine, so keine. The noun decides which negator you build with.",
       "evidenceKey": "de-negation-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19594,7 +20411,9 @@
       "kind": "cloze",
       "id": "de-a2-perfekt-sein-irregular-act-rb2",
       "prompt": "Complete with the right helper: Wir ___ gestern geblieben.",
-      "hints": [],
+      "hints": [
+        "Bleiben (to stay, a change of place) takes sein — and wir takes sind."
+      ],
       "feedback": "Bleiben is a change of place, so it takes sein: Wir sind gestern geblieben. Haben would be wrong here.",
       "evidenceKey": "de-a2-perfekt-sein-irregular-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19622,7 +20441,18 @@
             "sind"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "haben",
+              "category": "wrong auxiliary",
+              "explanation": "Bleiben is a change of place — it takes sein, not haben: Wir sind gestern geblieben."
+            },
+            {
+              "answer": "seid",
+              "category": "wrong conjugation",
+              "explanation": "Seid is the ihr-form; with wir the helper is sind."
+            }
+          ]
         }
       }
     },
@@ -19664,7 +20494,9 @@
       "kind": "cloze",
       "id": "de-a2-praeteritum-modal-act-rb2",
       "prompt": "Complete the story opening: Es ___ einmal ein kleines Café.",
-      "hints": [],
+      "hints": [
+        "The fairy-tale opener runs on sein's story past: Es war einmal …"
+      ],
       "feedback": "Es war einmal — 'once upon a time' runs on war, the Präteritum of sein.",
       "evidenceKey": "de-a2-praeteritum-modal-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19692,7 +20524,18 @@
             "war"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ist",
+              "category": "wrong tense",
+              "explanation": "Ist is the present; the story opener needs the past war: Es war einmal."
+            },
+            {
+              "answer": "hatte",
+              "category": "incorrect answer",
+              "explanation": "Hatte is 'had'; the opener is Es war einmal."
+            }
+          ]
         }
       }
     },
@@ -19734,7 +20577,9 @@
       "kind": "cloze",
       "id": "de-a2-irreale-wuensche-act-rb2",
       "prompt": "Complete the wish: Ich wünschte, ich ___ in Italien.",
-      "hints": [],
+      "hints": [
+        "The unreal form of sein — wäre. Wünschte sets the wish up, wäre delivers it."
+      ],
       "feedback": "Wäre — the unreal form of sein. Wünschen sets it up, wäre delivers it.",
       "evidenceKey": "de-a2-irreale-wuensche-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19762,7 +20607,23 @@
             "wäre"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "bin",
+              "category": "wrong tense",
+              "explanation": "Bin is the real form; the wish needs the unreal wäre."
+            },
+            {
+              "answer": "war",
+              "category": "wrong tense",
+              "explanation": "War is the plain past; the unreal form of sein is wäre."
+            },
+            {
+              "answer": "würde",
+              "category": "incorrect answer",
+              "explanation": "Würde pairs with an infinitive; after wünschte the unreal sein is wäre."
+            }
+          ]
         }
       }
     },
@@ -19804,7 +20665,9 @@
       "kind": "cloze",
       "id": "de-a2-superlativ-act-rb2",
       "prompt": "Complete the winner: Er läuft ___.",
-      "hints": [],
+      "hints": [
+        "No noun follows, so the standalone form: am + schnellsten."
+      ],
       "feedback": "Am schnellsten — am plus -sten when the superlative stands alone.",
       "evidenceKey": "de-a2-superlativ-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19832,7 +20695,23 @@
             "am schnellsten"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "am schnellste",
+              "category": "missing word",
+              "explanation": "The standalone superlative ends in -sten: am schnellsten."
+            },
+            {
+              "answer": "schnell",
+              "category": "incorrect answer",
+              "explanation": "Schnell is the plain adjective; the winner's form is am schnellsten."
+            },
+            {
+              "answer": "der schnellste",
+              "category": "wrong article",
+              "explanation": "Der + -ste needs a noun after it; standing alone it is am schnellsten."
+            }
+          ]
         }
       }
     },
@@ -19872,7 +20751,9 @@
       "kind": "cloze",
       "id": "de-time-telling-foundation-act-rb2",
       "prompt": "Complete the time: Es ist viertel ___ acht.",
-      "hints": [],
+      "hints": [
+        "Quarter PAST the hour is viertel nach — vor would look back to the hour before."
+      ],
       "feedback": "Viertel nach acht — quarter past eight. Nach looks forward, vor looks back.",
       "evidenceKey": "de-time-telling-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19900,7 +20781,18 @@
             "nach"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vor",
+              "category": "incorrect answer",
+              "explanation": "Vor looks back to the previous hour; quarter PAST eight is viertel nach acht."
+            },
+            {
+              "answer": "um",
+              "category": "wrong preposition",
+              "explanation": "Um means at (a clock time); the quarter-hour phrase is viertel nach acht."
+            }
+          ]
         }
       }
     },
@@ -19938,7 +20830,9 @@
       "kind": "cloze",
       "id": "de-requests-foundation-act-rb2",
       "prompt": "Complete the request: Ich ___ Deutsch sprechen.",
-      "hints": [],
+      "hints": [
+        "The ich-form of the modal 'can' — kann — goes second; sprechen already waits at the end."
+      ],
       "feedback": "Ich kann Deutsch sprechen — the modal in second position, sprechen last.",
       "evidenceKey": "de-requests-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19966,7 +20860,23 @@
             "kann"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "können",
+              "category": "wrong conjugation",
+              "explanation": "With ich the modal is kann: Ich kann Deutsch sprechen."
+            },
+            {
+              "answer": "kannst",
+              "category": "wrong conjugation",
+              "explanation": "Kannst is the du-form; with ich the modal is kann."
+            },
+            {
+              "answer": "spreche",
+              "category": "incorrect answer",
+              "explanation": "Sprechen is already at the end of the line — the blank holds the modal kann."
+            }
+          ]
         }
       }
     },

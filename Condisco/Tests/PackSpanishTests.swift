@@ -1169,6 +1169,368 @@ final class PackSpanishTests: XCTestCase {
         XCTAssertTrue(result.accepted)
     }
 
+    // MARK: - Wave F (construction + recall families, rubric H4/H3 + M5)
+
+    /// The seven construction-family and seven recall-family lessons in wave F
+    /// scope (units 5–16), keyed by their graded path activities.
+    private static let batch6Lessons: [String: [String]] = [
+        "es-cafe-order-construction": [
+            "es-cafe-order-construction-act-2", "es-cafe-order-construction-act-3",
+            "es-cafe-order-construction-act-4", "es-cafe-order-construction-act-5",
+            "es-cafe-order-construction-act-6", "es-cafe-order-construction-act-7",
+            "es-cafe-order-construction-act-8", "es-cafe-order-construction-act-9",
+        ],
+        "es-family-construction": [
+            "es-family-construction-act-2", "es-family-construction-act-3",
+            "es-family-construction-act-4", "es-family-construction-act-5",
+            "es-family-construction-act-6", "es-family-construction-act-7",
+            "es-family-construction-act-8", "es-family-construction-act-9",
+            "es-family-construction-act-10",
+        ],
+        "es-plural-foundation": [
+            "es-plural-foundation-build", "es-plural-foundation-act-rb1",
+            "es-plural-foundation-meet", "es-plural-foundation-fill",
+            "es-plural-foundation-think", "es-plural-foundation-notice",
+        ],
+        "es-negation-foundation": [
+            "es-negation-foundation-build", "es-negation-foundation-act-rb1",
+            "es-negation-foundation-meet", "es-negation-foundation-fill",
+            "es-negation-foundation-think", "es-negation-foundation-notice",
+        ],
+        "es-possession-foundation": [
+            "es-possession-foundation-build", "es-possession-foundation-act-rb1",
+            "es-possession-foundation-meet", "es-possession-foundation-fill",
+            "es-possession-foundation-think", "es-possession-foundation-notice",
+        ],
+        "es-a2-relativos": [
+            "es-a2-relativos-build", "es-a2-relativos-act-rb1",
+            "es-a2-relativos-meet", "es-a2-relativos-fill",
+            "es-a2-relativos-think", "es-a2-relativos-notice",
+        ],
+        "es-a2-pronombres-od-oi": [
+            "es-a2-pronombres-od-oi-build", "es-a2-pronombres-od-oi-act-rb1",
+            "es-a2-pronombres-od-oi-meet", "es-a2-pronombres-od-oi-fill",
+            "es-a2-pronombres-od-oi-think", "es-a2-pronombres-od-oi-notice",
+        ],
+        "es-basics-recall": [
+            "es-basics-recall-act-2", "es-basics-recall-act-3",
+            "es-basics-recall-act-4", "es-basics-recall-act-5",
+            "es-basics-recall-act-6", "es-basics-recall-act-7",
+            "es-basics-recall-act-8", "es-basics-recall-act-9",
+            "es-basics-recall-act-10",
+        ],
+        "es-plans-foundation": [
+            "es-plans-foundation-act-rb2", "es-plans-foundation-act-rb3",
+            "es-plans-foundation-act-rb4", "es-plans-foundation-act-rb5",
+            "es-plans-foundation-act-rb6", "es-plans-foundation-act-rb7",
+            "es-plans-foundation-act-rb8",
+        ],
+        "es-time-telling-foundation": [
+            "es-time-telling-foundation-act-rb2", "es-time-telling-foundation-act-rb3",
+            "es-time-telling-foundation-act-rb4", "es-time-telling-foundation-act-rb5",
+            "es-time-telling-foundation-act-rb6", "es-time-telling-foundation-act-rb7",
+            "es-time-telling-foundation-act-rb8",
+        ],
+        "es-free-time-foundation": [
+            "es-free-time-foundation-act-rb2", "es-free-time-foundation-act-rb3",
+            "es-free-time-foundation-act-rb4", "es-free-time-foundation-act-rb5",
+            "es-free-time-foundation-act-rb6", "es-free-time-foundation-act-rb7",
+            "es-free-time-foundation-act-rb8",
+        ],
+        "es-a2-preterito-imperfecto": [
+            "es-a2-preterito-imperfecto-act-rb2", "es-a2-preterito-imperfecto-act-rb3",
+            "es-a2-preterito-imperfecto-act-rb4", "es-a2-preterito-imperfecto-act-rb5",
+            "es-a2-preterito-imperfecto-act-rb6", "es-a2-preterito-imperfecto-act-rb7",
+            "es-a2-preterito-imperfecto-act-rb8",
+        ],
+        "es-a2-fin-de-semana": [
+            "es-a2-fin-de-semana-act-rb2", "es-a2-fin-de-semana-act-rb3",
+            "es-a2-fin-de-semana-act-rb4", "es-a2-fin-de-semana-act-rb5",
+            "es-a2-fin-de-semana-act-rb6", "es-a2-fin-de-semana-act-rb7",
+            "es-a2-fin-de-semana-act-rb8",
+        ],
+        "es-a2-me-gustaria": [
+            "es-a2-me-gustaria-act-rb2", "es-a2-me-gustaria-act-rb3",
+            "es-a2-me-gustaria-act-rb4", "es-a2-me-gustaria-act-rb5",
+            "es-a2-me-gustaria-act-rb6", "es-a2-me-gustaria-act-rb7",
+            "es-a2-me-gustaria-act-rb8",
+        ],
+    ]
+
+    /// Every graded step in wave-F lessons has a real authored hint
+    /// (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch6GradedStepsHaveAuthoredHints() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and every cloze blank in wave-F lessons authors
+    /// error-specific feedback (audit_editorial error-gap must stay 0).
+    func testBatch6TextAndClozeActivitiesAuthorErrors() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Every wave-F lesson carries a non-empty objective and closes on a
+    /// graded distinct final response (M5 outcome coherence: construction
+    /// ends building the target from memory, recall ends retrieving it).
+    func testBatch6LessonsEndWithGradedTerminal() throws {
+        let pack = try spanishPack()
+        for (lessonId, _) in Self.batch6Lessons {
+            let lesson = try XCTUnwrap(pack.lessons.first { $0.id == lessonId }, "missing lesson \(lessonId)")
+            XCTAssertTrue(
+                lesson.family == .construction || lesson.family == .recall,
+                "\(lessonId) must be construction or recall")
+            XCTAssertFalse(
+                lesson.objective.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                "\(lessonId) must have an objective")
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            var allGraded = true
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                if act.base == nil { allGraded = false }
+            }
+            XCTAssertTrue(allGraded, "\(lessonId) must end on a graded final-response step (M5)")
+        }
+    }
+
+    /// Plausible wrong answers in wave-F lessons hit their authored category
+    /// + explanation (text and cloze-blank surfaces).
+    func testBatch6AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try spanishPack()
+
+        // es-cafe-order-construction
+        var result = try gradeClozeBlank("es-cafe-order-construction-act-4", in: pack, blank: "b1", "Quiero")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-cafe-order-construction-act-7", in: pack, "Quiero un té por favor")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("es-cafe-order-construction-act-8", in: pack, blank: "b1", "te")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+
+        // es-family-construction
+        result = try gradeClozeBlank("es-family-construction-act-4", in: pack, blank: "b1", "hermano")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("es-family-construction-act-7", in: pack, "Me llama Ana")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("es-family-construction-act-8", in: pack, blank: "b1", "la")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // es-plural-foundation
+        result = try gradeClozeBlank("es-plural-foundation-fill", in: pack, blank: "b1", "lápiz")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-plural-foundation-think", in: pack, "dos mesa")
+        XCTAssertEqual(result.category, "wrong number")
+
+        // es-negation-foundation
+        result = try gradeClozeBlank("es-negation-foundation-fill", in: pack, blank: "b1", "Nada")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-negation-foundation-think", in: pack, "No estudiar")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-possession-foundation
+        result = try gradeClozeBlank("es-possession-foundation-fill", in: pack, blank: "b1", "Mi")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-possession-foundation-think", in: pack, "Mi amigos viven aquí")
+        XCTAssertEqual(result.category, "wrong number")
+
+        // es-a2-relativos
+        result = try gradeClozeBlank("es-a2-relativos-fill", in: pack, blank: "b1", "quién")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-a2-relativos-think", in: pack, "dondé")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+
+        // es-a2-pronombres-od-oi
+        result = try gradeClozeBlank("es-a2-pronombres-od-oi-fill", in: pack, blank: "b1", "Lo")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-pronombres-od-oi-think", in: pack, "le lo")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-basics-recall
+        result = try gradeClozeBlank("es-basics-recall-act-3", in: pack, blank: "b1", "Mi")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-basics-recall-act-4", in: pack, "Me llama Ana")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-basics-recall-act-9", in: pack, "Si gracias")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+
+        // es-plans-foundation
+        result = try gradeClozeBlank("es-plans-foundation-act-rb3", in: pack, blank: "b1", "al")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("es-plans-foundation-act-rb4", in: pack, "Voy en pie")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeClozeBlank("es-plans-foundation-act-rb6", in: pack, blank: "b1", "Vas")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-plans-foundation-act-rb7", in: pack, "Vamos a coche")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // es-time-telling-foundation
+        result = try gradeClozeBlank("es-time-telling-foundation-act-rb3", in: pack, blank: "b1", "cuatro")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-time-telling-foundation-act-rb4", in: pack, "seis")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("es-time-telling-foundation-act-rb6", in: pack, blank: "b1", "manzano")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("es-time-telling-foundation-act-rb7", in: pack, "dieciséis")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-free-time-foundation
+        result = try gradeClozeBlank("es-free-time-foundation-act-rb3", in: pack, blank: "b1", "la")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("es-free-time-foundation-act-rb4", in: pack, "Me gusta el fruta")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("es-free-time-foundation-act-rb6", in: pack, blank: "b1", "leche")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-free-time-foundation-act-rb7", in: pack, "la queso")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // es-a2-preterito-imperfecto
+        result = try gradeClozeBlank("es-a2-preterito-imperfecto-act-rb3", in: pack, blank: "b1", "jugué")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-preterito-imperfecto-act-rb4", in: pack, "comemos")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("es-a2-preterito-imperfecto-act-rb6", in: pack, blank: "b1", "Tenía")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-preterito-imperfecto-act-rb7", in: pack, "Hubo mucha gente")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // es-a2-fin-de-semana
+        result = try gradeClozeBlank("es-a2-fin-de-semana-act-rb3", in: pack, blank: "b1", "Hoy")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-fin-de-semana-act-rb4", in: pack, "como")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("es-a2-fin-de-semana-act-rb6", in: pack, blank: "b1", "era")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-fin-de-semana-act-rb7", in: pack, "anoche")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-a2-me-gustaria
+        result = try gradeClozeBlank("es-a2-me-gustaria-act-rb3", in: pack, blank: "b1", "Puede")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-me-gustaria-act-rb4", in: pack, "Quiero café")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeClozeBlank("es-a2-me-gustaria-act-rb6", in: pack, blank: "b1", "ayuda")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-me-gustaria-act-rb7", in: pack, "Quiero la cuenta por favor")
+        XCTAssertEqual(result.category, "wrong conjugation")
+    }
+
+    /// The authored accepted answers for wave-F surfaces stay accepted,
+    /// including the accented forms the construction steps insist on.
+    func testBatch6AcceptsAuthoredAnswers() throws {
+        let pack = try spanishPack()
+
+        // es-cafe-order-construction
+        var result = try gradeText("es-cafe-order-construction-act-7", in: pack, "Quisiera un té, por favor.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-cafe-order-construction-act-8", in: pack, blank: "b1", "té")
+        XCTAssertTrue(result.accepted)
+
+        // es-family-construction
+        result = try gradeText("es-family-construction-act-7", in: pack, "Me llamo Ana.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-family-construction-act-8", in: pack, blank: "b1", "el")
+        XCTAssertTrue(result.accepted)
+
+        // es-plural-foundation
+        result = try gradeClozeBlank("es-plural-foundation-fill", in: pack, blank: "b1", "lápices")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-plural-foundation-think", in: pack, "dos mesas")
+        XCTAssertTrue(result.accepted)
+
+        // es-negation-foundation
+        result = try gradeText("es-negation-foundation-think", in: pack, "No estudia.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-negation-foundation-fill", in: pack, blank: "b1", "Nadie")
+        XCTAssertTrue(result.accepted)
+
+        // es-possession-foundation
+        result = try gradeText("es-possession-foundation-think", in: pack, "Mis amigos viven aquí.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-possession-foundation-fill", in: pack, blank: "b1", "Mis")
+        XCTAssertTrue(result.accepted)
+
+        // es-a2-relativos
+        result = try gradeClozeBlank("es-a2-relativos-fill", in: pack, blank: "b1", "quien")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-relativos-think", in: pack, "donde")
+        XCTAssertTrue(result.accepted)
+
+        // es-a2-pronombres-od-oi
+        result = try gradeClozeBlank("es-a2-pronombres-od-oi-fill", in: pack, blank: "b1", "Le")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-pronombres-od-oi-think", in: pack, "lo")
+        XCTAssertTrue(result.accepted)
+
+        // es-basics-recall
+        result = try gradeText("es-basics-recall-act-4", in: pack, "Me llamo Ana.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-basics-recall-act-9", in: pack, "Sí, gracias.")
+        XCTAssertTrue(result.accepted)
+
+        // es-plans-foundation
+        result = try gradeText("es-plans-foundation-act-rb4", in: pack, "Voy a pie.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-plans-foundation-act-rb7", in: pack, "Vamos en coche.")
+        XCTAssertTrue(result.accepted)
+
+        // es-time-telling-foundation
+        result = try gradeText("es-time-telling-foundation-act-rb4", in: pack, "ocho")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-time-telling-foundation-act-rb7", in: pack, "diez")
+        XCTAssertTrue(result.accepted)
+
+        // es-free-time-foundation
+        result = try gradeText("es-free-time-foundation-act-rb4", in: pack, "Me gusta la fruta.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-free-time-foundation-act-rb7", in: pack, "el queso")
+        XCTAssertTrue(result.accepted)
+
+        // es-a2-preterito-imperfecto
+        result = try gradeText("es-a2-preterito-imperfecto-act-rb4", in: pack, "comimos")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-preterito-imperfecto-act-rb7", in: pack, "Había mucha gente.")
+        XCTAssertTrue(result.accepted)
+
+        // es-a2-fin-de-semana
+        result = try gradeText("es-a2-fin-de-semana-act-rb4", in: pack, "comí")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-fin-de-semana-act-rb7", in: pack, "ayer")
+        XCTAssertTrue(result.accepted)
+
+        // es-a2-me-gustaria
+        result = try gradeText("es-a2-me-gustaria-act-rb4", in: pack, "Quiero un café.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-me-gustaria-act-rb7", in: pack, "Querría la cuenta, por favor.")
+        XCTAssertTrue(result.accepted)
+    }
+
     // MARK: - Accepted answers (prompt ↔ answers alignment)
 
     /// Natural Spanish replies for comprehension/quantity prompts are accepted

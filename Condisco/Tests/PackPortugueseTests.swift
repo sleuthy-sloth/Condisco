@@ -1172,6 +1172,329 @@ final class PackPortugueseTests: XCTestCase {
         }
     }
 
+    // MARK: - Wave F construction + recall lessons (rubric H4/H3/H1/M5)
+
+    /// The fourteen Wave F lessons (units 5–9, 13–17): the seven construction
+    /// lessons and the seven recall lessons, keyed by the graded path
+    /// activity ids each lesson references (information steps excluded).
+    private static let batch6Lessons: [String: [String]] = [
+        "pt-cafe-order-construction": [
+            "pt-cafe-order-construction-act-2", "pt-cafe-order-construction-act-3",
+            "pt-cafe-order-construction-act-4", "pt-cafe-order-construction-act-5",
+            "pt-cafe-order-construction-act-6", "pt-cafe-order-construction-act-7",
+            "pt-cafe-order-construction-act-8", "pt-cafe-order-construction-act-9",
+        ],
+        "pt-family-construction": [
+            "pt-family-construction-act-2", "pt-family-construction-act-3",
+            "pt-family-construction-act-4", "pt-family-construction-act-5",
+            "pt-family-construction-act-6", "pt-family-construction-act-7",
+            "pt-family-construction-act-8", "pt-family-construction-act-9",
+        ],
+        "pt-routine-foundation": [
+            "pt-routine-foundation-build", "pt-routine-foundation-act-rb1",
+            "pt-routine-foundation-meet", "pt-routine-foundation-cloze",
+            "pt-routine-foundation-think", "pt-routine-foundation-notice",
+        ],
+        "pt-questions-foundation": [
+            "pt-questions-foundation-build", "pt-questions-foundation-act-rb1",
+            "pt-questions-foundation-meet", "pt-questions-foundation-cloze",
+            "pt-questions-foundation-think", "pt-questions-foundation-notice",
+        ],
+        "pt-plans-foundation": [
+            "pt-plans-foundation-build", "pt-plans-foundation-act-rb1",
+            "pt-plans-foundation-meet", "pt-plans-foundation-cloze",
+            "pt-plans-foundation-think", "pt-plans-foundation-notice",
+        ],
+        "pt-a2-ir-futuro": [
+            "pt-a2-ir-futuro-build", "pt-a2-ir-futuro-act-rb1",
+            "pt-a2-ir-futuro-meet", "pt-a2-ir-futuro-cloze",
+            "pt-a2-ir-futuro-think", "pt-a2-ir-futuro-notice",
+        ],
+        "pt-a2-relativos": [
+            "pt-a2-relativos-build", "pt-a2-relativos-act-rb1",
+            "pt-a2-relativos-meet", "pt-a2-relativos-cloze",
+            "pt-a2-relativos-think", "pt-a2-relativos-notice",
+        ],
+        "pt-look-back-recall": [
+            "pt-look-back-recall-act-2", "pt-look-back-recall-act-3",
+            "pt-look-back-recall-act-4", "pt-look-back-recall-act-5",
+            "pt-look-back-recall-act-6", "pt-look-back-recall-act-7",
+            "pt-look-back-recall-act-8", "pt-look-back-recall-act-9",
+            "pt-look-back-recall-act-10",
+        ],
+        "pt-past-foundation": [
+            "pt-past-foundation-meet", "pt-past-foundation-cloze",
+            "pt-past-foundation-think", "pt-past-foundation-notice",
+            "pt-past-foundation-act-rb2", "pt-past-foundation-vary",
+        ],
+        "pt-a2-perfeito-vs-imperfeito": [
+            "pt-a2-perfeito-vs-imperfeito-meet", "pt-a2-perfeito-vs-imperfeito-cloze",
+            "pt-a2-perfeito-vs-imperfeito-think", "pt-a2-perfeito-vs-imperfeito-notice",
+            "pt-a2-perfeito-vs-imperfeito-act-rb2", "pt-a2-perfeito-vs-imperfeito-vary",
+        ],
+        "pt-a2-contar-fim-de-semana": [
+            "pt-a2-contar-fim-de-semana-meet", "pt-a2-contar-fim-de-semana-cloze",
+            "pt-a2-contar-fim-de-semana-think", "pt-a2-contar-fim-de-semana-notice",
+            "pt-a2-contar-fim-de-semana-act-rb2", "pt-a2-contar-fim-de-semana-vary",
+        ],
+        "pt-a2-planos-intencoes": [
+            "pt-a2-planos-intencoes-meet", "pt-a2-planos-intencoes-cloze",
+            "pt-a2-planos-intencoes-think", "pt-a2-planos-intencoes-notice",
+            "pt-a2-planos-intencoes-act-rb2", "pt-a2-planos-intencoes-vary",
+        ],
+        "pt-a2-lhe-lhes": [
+            "pt-a2-lhe-lhes-meet", "pt-a2-lhe-lhes-cloze",
+            "pt-a2-lhe-lhes-think", "pt-a2-lhe-lhes-notice",
+            "pt-a2-lhe-lhes-act-rb2", "pt-a2-lhe-lhes-vary",
+        ],
+        "pt-a2-revisao-a1": [
+            "pt-a2-revisao-a1-act-2", "pt-a2-revisao-a1-act-3",
+            "pt-a2-revisao-a1-act-4", "pt-a2-revisao-a1-act-5",
+            "pt-a2-revisao-a1-act-6", "pt-a2-revisao-a1-act-7",
+            "pt-a2-revisao-a1-act-8", "pt-a2-revisao-a1-act-9",
+        ],
+    ]
+
+    /// Every graded step in the Wave F construction/recall lessons has a real
+    /// authored hint, not the runtime generic fallbacks (audit hint-gap 0).
+    func testWaveFGradedStepsHaveAuthoredHints() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and cloze blank in the Wave F lessons authors
+    /// error-specific feedback (audit error-feedback gap must be 0).
+    func testWaveFTextActivitiesAuthorErrors() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for blank in spec.blanks.values {
+                        XCTAssertFalse(
+                            blank.errors.isEmpty,
+                            "\(lessonId): \(activityId) blank must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers hit their authored category + explanation.
+    func testWaveFAuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try portuguesePack()
+
+        // pt-cafe-order-construction
+        var result = try gradeText("pt-cafe-order-construction-act-7", in: pack, "Quero um café, por favor.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-cafe-order-construction-act-9", in: pack, "Gostaria de um chá, por favor. Obrigado.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("pt-cafe-order-construction-act-4", blank: "b1", in: pack, "do")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // pt-family-construction
+        result = try gradeText("pt-family-construction-act-9", in: pack, "Tenho um irmã.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("pt-family-construction-act-5", blank: "b1", in: pack, "pequeno")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("pt-family-construction-act-8", blank: "b1", in: pack, "Minha")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // pt-routine-foundation
+        result = try gradeText("pt-routine-foundation-think", in: pack, "Trabalhar em Lisboa.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("pt-routine-foundation-cloze", blank: "b1", in: pack, "em")
+        XCTAssertEqual(result.category, "wrong preposition")
+
+        // pt-questions-foundation
+        result = try gradeText("pt-questions-foundation-think", in: pack, "Que é isto?")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeClozeBlank("pt-questions-foundation-cloze", blank: "b1", in: pack, "Onde")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-plans-foundation
+        result = try gradeText("pt-plans-foundation-think", in: pack, "Amanhã eu vou estudar.")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeClozeBlank("pt-plans-foundation-cloze", blank: "b1", in: pack, "Vou")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // pt-a2-ir-futuro
+        result = try gradeText("pt-a2-ir-futuro-think", in: pack, "Vão viajar em agosto.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeClozeBlank("pt-a2-ir-futuro-cloze", blank: "b1", in: pack, "vou")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // pt-a2-relativos
+        result = try gradeText("pt-a2-relativos-think", in: pack, "O livro onde comprei é ótimo.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("pt-a2-relativos-cloze", blank: "b1", in: pack, "que")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-look-back-recall
+        result = try gradeText("pt-look-back-recall-act-3", in: pack, "Qual e o seu nome?")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeClozeBlank("pt-look-back-recall-act-4", blank: "b1", in: pack, "do")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("pt-look-back-recall-act-8", in: pack, "Hoje é domingo.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-look-back-recall-act-10", in: pack, "Obrigado.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // pt-past-foundation
+        result = try gradeText("pt-past-foundation-think", in: pack, "Ontem comi um sopa.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeClozeBlank("pt-past-foundation-cloze", blank: "b1", in: pack, "É")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-past-foundation-vary", in: pack, "Ontem faço o jantar.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("pt-past-foundation-act-rb2", blank: "b1", in: pack, "estudei")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // pt-a2-perfeito-vs-imperfeito
+        result = try gradeText("pt-a2-perfeito-vs-imperfeito-think", in: pack, "Enquanto ela cozinhou, ele pôs a mesa.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("pt-a2-perfeito-vs-imperfeito-cloze", blank: "b1", in: pack, "Esteve")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-perfeito-vs-imperfeito-vary", in: pack, "De repente, o telemóvel tocava.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeClozeBlank("pt-a2-perfeito-vs-imperfeito-act-rb2", blank: "b1", in: pack, "falava")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // pt-a2-contar-fim-de-semana
+        result = try gradeText("pt-a2-contar-fim-de-semana-think", in: pack, "Amanhã almocei com os meus pais.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("pt-a2-contar-fim-de-semana-cloze", blank: "b1", in: pack, "vou")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-contar-fim-de-semana-vary", in: pack, "Foi um fim de semana ótimo!")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-a2-planos-intencoes
+        result = try gradeText("pt-a2-planos-intencoes-think", in: pack, "Penso viajar para o Brasil.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeClozeBlank("pt-a2-planos-intencoes-cloze", blank: "b1", in: pack, "curriculo")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("pt-a2-planos-intencoes-vary", in: pack, "Tento mudar de emprego este ano.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-a2-lhe-lhes
+        result = try gradeText("pt-a2-lhe-lhes-think", in: pack, "Emprestei-lhes o meu carro.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeClozeBlank("pt-a2-lhe-lhes-cloze", blank: "b1", in: pack, "lhes")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("pt-a2-lhe-lhes-vary", in: pack, "Não disse-lhe nada.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeClozeBlank("pt-a2-lhe-lhes-act-rb2", blank: "b1", in: pack, "me ajudar")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // pt-a2-revisao-a1
+        result = try gradeText("pt-a2-revisao-a1-act-3", in: pack, "Quero um café, por favor.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeClozeBlank("pt-a2-revisao-a1-act-5", blank: "b1", in: pack, "vai")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-a2-revisao-a1-act-7", in: pack, "Não posso.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("pt-a2-revisao-a1-act-9", in: pack, "Obrigado! Até logo.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// Natural full/short/alternative forms are accepted where the learner
+    /// would not be wrong to give them; the wrong-but-taught lines are not.
+    func testWaveFAcceptsNaturalAlternatives() throws {
+        let pack = try portuguesePack()
+
+        // The polite café frame works with or without the explicit subject.
+        var result = try gradeText("pt-cafe-order-construction-act-7", in: pack, "Gostaria de um café, por favor.")
+        XCTAssertTrue(result.accepted, "Gostaria de um café, por favor. must be accepted")
+        result = try gradeText("pt-cafe-order-construction-act-9", in: pack, "Gostaria de um chá, por favor. Obrigada.")
+        XCTAssertTrue(result.accepted, "the woman's full polite order must be accepted")
+
+        // Family sentence with the agreeing article stays accepted.
+        result = try gradeText("pt-family-construction-act-9", in: pack, "Tenho uma irmã.")
+        XCTAssertTrue(result.accepted, "Tenho uma irmã. must be accepted")
+
+        // Time phrase may trail at the end (pack convention on think steps).
+        result = try gradeText("pt-plans-foundation-think", in: pack, "Vou estudar amanhã.")
+        XCTAssertTrue(result.accepted, "Vou estudar amanhã. must be accepted")
+
+        // Dictated blanks keep both the full sentence and the bare blank form.
+        result = try gradeText("pt-a2-ir-futuro-think", in: pack, "Vamos")
+        XCTAssertTrue(result.accepted, "Vamos must be accepted")
+        result = try gradeText("pt-a2-relativos-think", in: pack, "que")
+        XCTAssertTrue(result.accepted, "que must be accepted")
+
+        // Recall comprehension targets stay answerable in Portuguese.
+        result = try gradeText("pt-look-back-recall-act-6", in: pack, "Onde fica a estação?")
+        XCTAssertTrue(result.accepted, "Onde fica a estação? must be accepted")
+
+        // Time-phrase order variant accepted on the past think step.
+        result = try gradeText("pt-past-foundation-think", in: pack, "Comi uma sopa ontem.")
+        XCTAssertTrue(result.accepted, "Comi uma sopa ontem. must be accepted")
+
+        // Sequencer blanks accept both the bare word and the full sentence.
+        result = try gradeText("pt-a2-contar-fim-de-semana-think", in: pack, "Depois")
+        XCTAssertTrue(result.accepted, "Depois must be accepted")
+        result = try gradeText("pt-a2-planos-intencoes-think", in: pack, "Penso")
+        XCTAssertTrue(result.accepted, "Penso must be accepted")
+        result = try gradeText("pt-a2-lhe-lhes-think", in: pack, "Emprestei-lhe")
+        XCTAssertTrue(result.accepted, "Emprestei-lhe must be accepted")
+
+        // The review lesson accepts both genders of thanks on the warm close.
+        result = try gradeText("pt-a2-revisao-a1-act-9", in: pack, "Obrigada! Até amanhã.")
+        XCTAssertTrue(result.accepted, "Obrigada! Até amanhã. must be accepted")
+
+        // Wrong-but-plausible lines still fail with the taught diagnosis.
+        result = try gradeText("pt-past-foundation-think", in: pack, "Ontem como uma sopa.")
+        XCTAssertFalse(result.accepted, "present-tense como must not pass")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-lhe-lhes-vary", in: pack, "Não lhe disse alguma coisa.")
+        XCTAssertFalse(result.accepted, "alguma coisa must not pass for 'nothing'")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// The Wave F lessons all close on a graded step with an authored hint;
+    /// every terminal step of the lesson-shaped builds and of every recall
+    /// lesson is a text response (rubric M5: distinct final response).
+    func testWaveFFinalStepsAreTextResponses() throws {
+        let pack = try portuguesePack()
+        let recallFamily: Set<String> = [
+            "pt-look-back-recall", "pt-past-foundation", "pt-a2-perfeito-vs-imperfeito",
+            "pt-a2-contar-fim-de-semana", "pt-a2-planos-intencoes", "pt-a2-lhe-lhes",
+            "pt-a2-revisao-a1",
+        ]
+        for lessonId in Self.batch6Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+            let terminal = try XCTUnwrap(
+                lesson.steps.first { $0.nextStepId == nil && $0.branches.isEmpty },
+                "\(lessonId) has no terminal step")
+            let act = try activity(terminal.activityId, in: pack)
+            let base = try XCTUnwrap(act.base)
+            XCTAssertFalse(
+                base.hints.allSatisfy { Self.genericHints.contains($0) },
+                "\(lessonId) final response must have an authored hint")
+            if recallFamily.contains(lessonId) {
+                guard case .text = act else {
+                    XCTFail("\(lessonId) terminal \(terminal.id) must be a text activity")
+                    continue
+                }
+            }
+        }
+    }
+
     // MARK: - Retained v1 legacy exercises stay in sync
 
     /// The lesson-level legacyExercises mirror the path activities; the

@@ -1751,4 +1751,542 @@ final class PackGermanTests: XCTestCase {
         result = try gradeText("de-a2-hoefliche-bitten-read", in: pack, "Ein offenes Fenster.")
         XCTAssertTrue(result.accepted)
     }
+
+    // MARK: - Wave F (batch 6): construction + recall families
+
+    /// The fourteen construction/recall lessons dispositioned in wave F,
+    /// keyed by the graded activity ids each lesson's path references.
+    private static let batch6Lessons: [String: [String]] = [
+        "de-requests-build-construction": [
+            "de-requests-build-construction-act-2", "de-requests-build-construction-act-3",
+            "de-requests-build-construction-act-4", "de-requests-build-construction-act-5",
+            "de-requests-build-construction-act-6", "de-requests-build-construction-act-7",
+            "de-requests-build-construction-act-8", "de-requests-build-construction-act-9",
+        ],
+        "de-remember-recall": [
+            "de-remember-recall-act-2", "de-remember-recall-act-3",
+            "de-remember-recall-act-4", "de-remember-recall-act-5",
+            "de-remember-recall-act-6", "de-remember-recall-act-7",
+            "de-remember-recall-act-8", "de-remember-recall-act-9",
+        ],
+        "de-routine-construction": [
+            "de-routine-construction-act-2", "de-routine-construction-act-3",
+            "de-routine-construction-act-4", "de-routine-construction-act-5",
+            "de-routine-construction-act-6", "de-routine-construction-act-7",
+            "de-routine-construction-act-8", "de-routine-construction-act-9",
+        ],
+        "de-plural-foundation": [
+            "de-plural-foundation-build", "de-plural-foundation-act-rb1",
+            "de-plural-foundation-meet", "de-plural-foundation-cloze",
+            "de-plural-foundation-think", "de-plural-foundation-notice",
+            "de-plural-foundation-vary",
+        ],
+        "de-negation-foundation": [
+            "de-negation-foundation-build", "de-negation-foundation-act-rb1",
+            "de-negation-foundation-meet", "de-negation-foundation-cloze",
+            "de-negation-foundation-think", "de-negation-foundation-notice",
+            "de-negation-foundation-vary",
+        ],
+        "de-requests-foundation": [
+            "de-requests-foundation-meet", "de-requests-foundation-cloze",
+            "de-requests-foundation-think", "de-requests-foundation-notice",
+            "de-requests-foundation-act-rb2", "de-requests-foundation-vary",
+        ],
+        "de-time-telling-foundation": [
+            "de-time-telling-foundation-meet", "de-time-telling-foundation-cloze",
+            "de-time-telling-foundation-think", "de-time-telling-foundation-notice",
+            "de-time-telling-foundation-act-rb2", "de-time-telling-foundation-vary",
+        ],
+        "de-a2-perfekt-bildung": [
+            "de-a2-perfekt-bildung-build", "de-a2-perfekt-bildung-act-rb1",
+            "de-a2-perfekt-bildung-meet", "de-a2-perfekt-bildung-cloze",
+            "de-a2-perfekt-bildung-think", "de-a2-perfekt-bildung-notice",
+            "de-a2-perfekt-bildung-vary",
+        ],
+        "de-a2-perfekt-sein-irregular": [
+            "de-a2-perfekt-sein-irregular-meet", "de-a2-perfekt-sein-irregular-cloze",
+            "de-a2-perfekt-sein-irregular-think", "de-a2-perfekt-sein-irregular-notice",
+            "de-a2-perfekt-sein-irregular-act-rb2", "de-a2-perfekt-sein-irregular-vary",
+        ],
+        "de-a2-praeteritum-modal": [
+            "de-a2-praeteritum-modal-meet", "de-a2-praeteritum-modal-cloze",
+            "de-a2-praeteritum-modal-think", "de-a2-praeteritum-modal-notice",
+            "de-a2-praeteritum-modal-act-rb2", "de-a2-praeteritum-modal-vary",
+        ],
+        "de-a2-futur-bildung": [
+            "de-a2-futur-bildung-build", "de-a2-futur-bildung-act-rb1",
+            "de-a2-futur-bildung-meet", "de-a2-futur-bildung-cloze",
+            "de-a2-futur-bildung-think", "de-a2-futur-bildung-notice",
+            "de-a2-futur-bildung-vary",
+        ],
+        "de-a2-irreale-wuensche": [
+            "de-a2-irreale-wuensche-meet", "de-a2-irreale-wuensche-cloze",
+            "de-a2-irreale-wuensche-think", "de-a2-irreale-wuensche-notice",
+            "de-a2-irreale-wuensche-act-rb2", "de-a2-irreale-wuensche-vary",
+        ],
+        "de-a2-relativsaetze": [
+            "de-a2-relativsaetze-build", "de-a2-relativsaetze-act-rb1",
+            "de-a2-relativsaetze-meet", "de-a2-relativsaetze-cloze",
+            "de-a2-relativsaetze-think", "de-a2-relativsaetze-notice",
+            "de-a2-relativsaetze-vary",
+        ],
+        "de-a2-superlativ": [
+            "de-a2-superlativ-meet", "de-a2-superlativ-cloze",
+            "de-a2-superlativ-think", "de-a2-superlativ-notice",
+            "de-a2-superlativ-act-rb2", "de-a2-superlativ-vary",
+        ],
+    ]
+
+    /// Every graded step in wave-F lessons has a real authored hint
+    /// (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch6GradedStepsHaveAuthoredHints() throws {
+        let pack = try germanPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and every cloze blank in wave-F lessons authors
+    /// error-specific feedback (audit_editorial error-gap must stay 0).
+    func testBatch6TextAndClozeActivitiesAuthorErrors() throws {
+        let pack = try germanPack()
+        for (lessonId, activityIds) in Self.batch6Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in wave-F lessons hit their authored
+    /// category + explanation instead of the generic fallback.
+    func testBatch6AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try germanPack()
+
+        // de-requests-build-construction-act-6 (einen)
+        var result = try gradeClozeBlank(
+            "de-requests-build-construction-act-6", in: pack, blank: "b1", "ein")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeClozeBlank(
+            "de-requests-build-construction-act-6", in: pack, blank: "b1", "eine")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // de-requests-build-construction-act-7 (Einen Kaffee, bitte.)
+        result = try gradeText("de-requests-build-construction-act-7", in: pack, "Ein Kaffee, bitte.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-requests-build-construction-act-7", in: pack, "Kaffee, bitte.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // de-requests-build-construction-act-9 (Ich möchte einen Kaffee, bitte.)
+        result = try gradeText(
+            "de-requests-build-construction-act-9", in: pack, "Ich möchte ein Kaffee, bitte.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-requests-build-construction-act-9", in: pack, "Möchte ich einen Kaffee, bitte.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-remember-recall-act-4 (danke)
+        result = try gradeText("de-remember-recall-act-4", in: pack, "danken")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-remember-recall-act-4", in: pack, "danke schön")
+        XCTAssertEqual(result.category, "extra word")
+
+        // de-remember-recall-act-7 (der Bruder)
+        result = try gradeText("de-remember-recall-act-7", in: pack, "die Bruder")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-remember-recall-act-7", in: pack, "der Schwester")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-remember-recall-act-9 (gern)
+        result = try gradeClozeBlank("de-remember-recall-act-9", in: pack, blank: "b1", "spielen")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeClozeBlank("de-remember-recall-act-9", in: pack, blank: "b1", "lieber")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-routine-construction-act-7 (Ich wohne in Berlin.)
+        result = try gradeText("de-routine-construction-act-7", in: pack, "Ich lebe in Berlin.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-routine-construction-act-7", in: pack, "Ich wohne Berlin.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("de-routine-construction-act-7", in: pack, "Ich wohnen in Berlin.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-routine-construction-act-8 (spielt)
+        result = try gradeClozeBlank(
+            "de-routine-construction-act-8", in: pack, blank: "b1", "spiele")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeClozeBlank(
+            "de-routine-construction-act-8", in: pack, blank: "b1", "spielen")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-plural-foundation-think (Die Tische sind groß.)
+        result = try gradeText("de-plural-foundation-think", in: pack, "Die Tisch sind groß.")
+        XCTAssertEqual(result.category, "wrong number")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-plural-foundation-think", in: pack, "Die Tische ist groß.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("de-plural-foundation-think", in: pack, "Der Tische sind groß.")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // de-plural-foundation-vary (Die Autos sind neu.)
+        result = try gradeText("de-plural-foundation-vary", in: pack, "Die Auto sind neu.")
+        XCTAssertEqual(result.category, "wrong number")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-plural-foundation-vary", in: pack, "Das Autos sind neu.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("de-plural-foundation-vary", in: pack, "Die Autos ist neu.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-negation-foundation-think (Ich habe kein Auto.)
+        result = try gradeText("de-negation-foundation-think", in: pack, "Ich habe keine Auto.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-negation-foundation-think", in: pack, "Ich habe nicht Auto.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-negation-foundation-vary (Ich habe kein Auto.)
+        result = try gradeText("de-negation-foundation-vary", in: pack, "Ich habe keine Auto.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-negation-foundation-vary", in: pack, "Ich habe kein Autos.")
+        XCTAssertEqual(result.category, "wrong number")
+
+        // de-requests-foundation-think (Ich möchte einen Kaffee.)
+        result = try gradeText("de-requests-foundation-think", in: pack, "Ich möchte ein Kaffee.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-requests-foundation-think", in: pack, "Ich möchte eine Kaffee.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("de-requests-foundation-think", in: pack, "Ich möchte einen Tee.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-requests-foundation-vary (Ich möchte Deutsch sprechen.)
+        result = try gradeText("de-requests-foundation-vary", in: pack, "Ich will Deutsch sprechen.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-requests-foundation-vary", in: pack, "Ich möchte sprechen Deutsch.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText(
+            "de-requests-foundation-vary", in: pack, "Ich möchte Deutsch spreche.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-time-telling-foundation-think (Es ist halb drei.)
+        result = try gradeText("de-time-telling-foundation-think", in: pack, "Es ist halb zwei.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-time-telling-foundation-think", in: pack, "Es ist halb drei Uhr.")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeText("de-time-telling-foundation-think", in: pack, "Es ist drei halb.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-time-telling-foundation-vary (Es ist viertel vor drei.)
+        result = try gradeText(
+            "de-time-telling-foundation-vary", in: pack, "Es ist viertel nach drei.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-time-telling-foundation-vary", in: pack, "Es ist viertel vor drei Uhr.")
+        XCTAssertEqual(result.category, "extra word")
+
+        // de-a2-perfekt-bildung-think (Ich habe Fußball gespielt.)
+        result = try gradeText("de-a2-perfekt-bildung-think", in: pack, "Ich habe Fußball spielen.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-perfekt-bildung-think", in: pack, "Ich spielte Fußball.")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // de-a2-perfekt-bildung-vary (Er hat Tennis gespielt.)
+        result = try gradeText("de-a2-perfekt-bildung-vary", in: pack, "Er hat Tennis spielt.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-perfekt-bildung-vary", in: pack, "Er habe Tennis gespielt.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-a2-perfekt-sein-irregular-cloze (Bist)
+        result = try gradeClozeBlank(
+            "de-a2-perfekt-sein-irregular-cloze", in: pack, blank: "b1", "Hast")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        XCTAssertFalse(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-perfekt-sein-irregular-cloze", in: pack, blank: "b1", "Bin")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-a2-perfekt-sein-irregular-think (Sie ist spät gekommen.)
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-think", in: pack, "Sie hat spät gekommen.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-think", in: pack, "Sie ist spät gekommt.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-a2-perfekt-sein-irregular-vary (Er ist nach Hause gegangen.)
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-vary", in: pack, "Er hat nach Hause gegangen.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-vary", in: pack, "Er ist gegangen nach Hause.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-a2-praeteritum-modal-think (Sie war müde.)
+        result = try gradeText("de-a2-praeteritum-modal-think", in: pack, "Sie ist müde.")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-praeteritum-modal-think", in: pack, "Sie hatte müde.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-a2-praeteritum-modal-vary (Ich musste früh aufstehen.)
+        result = try gradeText(
+            "de-a2-praeteritum-modal-vary", in: pack, "Ich muss früh aufstehen.")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-praeteritum-modal-vary", in: pack, "Ich müsste früh aufstehen.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-a2-futur-bildung-think (Ich werde nächstes Jahr reisen.)
+        result = try gradeText(
+            "de-a2-futur-bildung-think", in: pack, "Ich werde nächstes Jahr reise.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-futur-bildung-think", in: pack, "Ich reise nächstes Jahr.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText(
+            "de-a2-futur-bildung-think", in: pack, "Ich werde reisen nächstes Jahr.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-a2-futur-bildung-vary (Sie wird Deutsch lernen.)
+        result = try gradeText("de-a2-futur-bildung-vary", in: pack, "Sie wird Deutsch lernt.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-futur-bildung-vary", in: pack, "Sie lernt Deutsch.")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // de-a2-irreale-wuensche-think (Wenn ich nur mehr Zeit hätte!)
+        result = try gradeText(
+            "de-a2-irreale-wuensche-think", in: pack, "Wenn ich nur mehr Zeit habe!")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-irreale-wuensche-think", in: pack, "Wenn ich nur hätte mehr Zeit!")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-a2-irreale-wuensche-vary (Ich wünschte, ich wäre in Italien.)
+        result = try gradeText(
+            "de-a2-irreale-wuensche-vary", in: pack, "Ich wünschte, ich bin in Italien.")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-irreale-wuensche-vary", in: pack, "Ich wäre in Italien.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // de-a2-relativsaetze-think (Das ist der Mann, der dort wohnt.)
+        result = try gradeText(
+            "de-a2-relativsaetze-think", in: pack, "Das ist der Mann, den dort wohnt.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-relativsaetze-think", in: pack, "Das ist der Mann, der wohnt dort.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-a2-relativsaetze-vary (Das ist ein Hotel, das sehr schön ist.)
+        result = try gradeText(
+            "de-a2-relativsaetze-vary", in: pack, "Das ist ein Hotel, der sehr schön ist.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-relativsaetze-vary", in: pack, "Das ist ein Hotel, dass sehr schön ist.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-a2-superlativ-think (Das ist die schönste Stadt.)
+        result = try gradeText("de-a2-superlativ-think", in: pack, "Das ist das schönste Stadt.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-superlativ-think", in: pack, "Das ist die schönste Städte.")
+        XCTAssertEqual(result.category, "wrong number")
+
+        // de-a2-superlativ-act-rb2 (am schnellsten)
+        result = try gradeClozeBlank("de-a2-superlativ-act-rb2", in: pack, blank: "b1", "am schnellste")
+        XCTAssertEqual(result.category, "missing word")
+        XCTAssertFalse(result.accepted)
+        result = try gradeClozeBlank("de-a2-superlativ-act-rb2", in: pack, blank: "b1", "der schnellste")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // de-a2-superlativ-vary (Das Hotel ist am besten.)
+        result = try gradeText("de-a2-superlativ-vary", in: pack, "Das Hotel ist am gutesten.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-superlativ-vary", in: pack, "Das Hotel ist am best.")
+        XCTAssertEqual(result.category, "missing word")
+    }
+
+    /// Wave-F lessons accept their dictated target lines and cloze answers.
+    func testBatch6AcceptsAuthoredAnswers() throws {
+        let pack = try germanPack()
+
+        // de-requests-build-construction
+        var result = try gradeText(
+            "de-requests-build-construction-act-7", in: pack, "Einen Kaffee, bitte.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-requests-build-construction-act-9", in: pack, "Ich möchte einen Kaffee, bitte.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-requests-build-construction-act-6", in: pack, blank: "b1", "einen")
+        XCTAssertTrue(result.accepted)
+
+        // de-remember-recall
+        result = try gradeText("de-remember-recall-act-4", in: pack, "danke")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-remember-recall-act-7", in: pack, "der Bruder")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("de-remember-recall-act-3", in: pack, blank: "b1", "Was")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("de-remember-recall-act-9", in: pack, blank: "b1", "gern")
+        XCTAssertTrue(result.accepted)
+
+        // de-routine-construction
+        result = try gradeText("de-routine-construction-act-7", in: pack, "Ich wohne in Berlin.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-routine-construction-act-5", in: pack, blank: "b1", "Morgen")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-routine-construction-act-8", in: pack, blank: "b1", "spielt")
+        XCTAssertTrue(result.accepted)
+
+        // de-plural-foundation
+        result = try gradeText("de-plural-foundation-think", in: pack, "Die Tische sind groß.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-plural-foundation-vary", in: pack, "Die Autos sind neu.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("de-plural-foundation-cloze", in: pack, blank: "b1", "Frauen")
+        XCTAssertTrue(result.accepted)
+
+        // de-negation-foundation
+        result = try gradeText("de-negation-foundation-think", in: pack, "Ich habe kein Auto.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-negation-foundation-vary", in: pack, "Ich habe kein Auto.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-negation-foundation-cloze", in: pack, blank: "b1", "keine")
+        XCTAssertTrue(result.accepted)
+
+        // de-requests-foundation
+        result = try gradeText("de-requests-foundation-think", in: pack, "Ich möchte einen Kaffee.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-requests-foundation-vary", in: pack, "Ich möchte Deutsch sprechen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-requests-foundation-act-rb2", in: pack, blank: "b1", "kann")
+        XCTAssertTrue(result.accepted)
+
+        // de-time-telling-foundation
+        result = try gradeText("de-time-telling-foundation-think", in: pack, "Es ist halb drei.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-time-telling-foundation-vary", in: pack, "Es ist viertel vor drei.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-time-telling-foundation-act-rb2", in: pack, blank: "b1", "nach")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-perfekt-bildung
+        result = try gradeText("de-a2-perfekt-bildung-think", in: pack, "Ich habe Fußball gespielt.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-a2-perfekt-bildung-vary", in: pack, "Er hat Tennis gespielt.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-perfekt-bildung-cloze", in: pack, blank: "b1", "hat")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-perfekt-sein-irregular
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-think", in: pack, "Sie ist spät gekommen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-perfekt-sein-irregular-vary", in: pack, "Er ist nach Hause gegangen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-perfekt-sein-irregular-cloze", in: pack, blank: "b1", "Bist")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-praeteritum-modal
+        result = try gradeText("de-a2-praeteritum-modal-think", in: pack, "Sie war müde.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-praeteritum-modal-vary", in: pack, "Ich musste früh aufstehen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-praeteritum-modal-cloze", in: pack, blank: "b1", "konnte")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-futur-bildung
+        result = try gradeText(
+            "de-a2-futur-bildung-think", in: pack, "Ich werde nächstes Jahr reisen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-a2-futur-bildung-vary", in: pack, "Sie wird Deutsch lernen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("de-a2-futur-bildung-cloze", in: pack, blank: "b1", "werde")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-irreale-wuensche
+        result = try gradeText(
+            "de-a2-irreale-wuensche-think", in: pack, "Wenn ich nur mehr Zeit hätte!")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-irreale-wuensche-vary", in: pack, "Ich wünschte, ich wäre in Italien.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-irreale-wuensche-act-rb2", in: pack, blank: "b1", "wäre")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-relativsaetze
+        result = try gradeText(
+            "de-a2-relativsaetze-think", in: pack, "Das ist der Mann, der dort wohnt.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-relativsaetze-vary", in: pack, "Das ist ein Hotel, das sehr schön ist.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("de-a2-relativsaetze-cloze", in: pack, blank: "b1", "den")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-superlativ
+        result = try gradeText("de-a2-superlativ-think", in: pack, "Das ist die schönste Stadt.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-a2-superlativ-vary", in: pack, "Das Hotel ist am besten.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank(
+            "de-a2-superlativ-act-rb2", in: pack, blank: "b1", "am schnellsten")
+        XCTAssertTrue(result.accepted)
+    }
 }

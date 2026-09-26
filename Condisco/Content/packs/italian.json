@@ -12569,7 +12569,9 @@
         "grammar"
       ],
       "prompt": "Think about the model, then build: I would like a coffee, please.",
-      "hints": [],
+      "hints": [
+        "The polite frame from the café: vorrei opens, then un caffè, then per favore closes it."
+      ],
       "feedback": "Vorrei opens a polite request, then the thing you want, then per favore to close it. The comma before per favore is the written breath of politeness.",
       "evidenceKey": "it-cafe-build-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -12619,7 +12621,9 @@
         "grammar"
       ],
       "prompt": "Build: I will have a tea.",
-      "hints": [],
+      "hints": [
+        "Prendo first (io + prendere), then un tè — and never drop the accent on tè."
+      ],
       "feedback": "Prendo is io + prendere: in a café it means “I'll have”. Un tè keeps its accent — tè, not te.",
       "evidenceKey": "it-cafe-build-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -12663,7 +12667,9 @@
         "grammar"
       ],
       "prompt": "Which of these is a correct Italian word order?",
-      "hints": [],
+      "hints": [
+        "Check each option: does the verb of wanting come first, followed by the thing? Only one gets that right."
+      ],
       "feedback": "The verb of wanting comes first: vorrei + the thing. Italian doesn't front the object the way the wrong options do.",
       "evidenceKey": "it-cafe-build-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -12709,7 +12715,9 @@
         "grammar"
       ],
       "prompt": "Complete the order. Think: which little word sits between vorrei and caffè?",
-      "hints": [],
+      "hints": [
+        "caffè is masculine singular → un. Say the café sentence aloud: Vorrei un caffè, per favore."
+      ],
       "feedback": "Un caffè — masculine, so un. You met this exact sentence in «At the café: order and pay»: Vorrei un caffè, per favore.",
       "evidenceKey": "it-cafe-build-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -12739,7 +12747,23 @@
             "un"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "una",
+              "category": "wrong article",
+              "explanation": "caffè is masculine: un caffè, never una."
+            },
+            {
+              "answer": "il",
+              "category": "wrong article",
+              "explanation": "The polite order uses the indefinite article un — Vorrei un caffè."
+            },
+            {
+              "answer": "uno",
+              "category": "wrong article",
+              "explanation": "Uno appears before s+consonant (uno zaino); here the masculine article is un."
+            }
+          ]
         }
       }
     },
@@ -12758,7 +12782,9 @@
         "grammar"
       ],
       "prompt": "Build: Can I have a coffee? (use potere + the infinitive)",
-      "hints": [],
+      "hints": [
+        "posso + the infinitive prendere — potere always leans on another verb. Then un caffè."
+      ],
       "feedback": "Posso + infinitive: potere always leans on another verb. Posso prendere — “can I take”, the polite café ask.",
       "evidenceKey": "it-cafe-build-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -12808,7 +12834,9 @@
         "grammar"
       ],
       "prompt": "Complete it: ___ un tè, per favore.",
-      "hints": [],
+      "hints": [
+        "Verb first, capital letter: the io form of prendere — Prendo un tè, per favore. Not the tu form."
+      ],
       "feedback": "Prendo — the io form. Prendi would be talking to the other person, not ordering for yourself.",
       "evidenceKey": "it-cafe-build-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -12838,7 +12866,23 @@
             "Prendo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Prendi",
+              "category": "wrong conjugation",
+              "explanation": "Prendi is the tu form; you are ordering for yourself, so it is io → Prendo."
+            },
+            {
+              "answer": "Prendere",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive cannot start the order; use the conjugated io form Prendo."
+            },
+            {
+              "answer": "Prende",
+              "category": "wrong conjugation",
+              "explanation": "Prende is he/she takes; the speaker orders for themselves → Prendo."
+            }
+          ]
         }
       }
     },
@@ -12858,7 +12902,9 @@
         "grammar"
       ],
       "prompt": "Now without tiles. Write in Italian: I would like a tea, please.",
-      "hints": [],
+      "hints": [
+        "Same frame as the coffee model — vorrei + un tè + per favore, with the accent on tè."
+      ],
       "feedback": "Vorrei un tè, per favore. Same frame as the coffee — only the drink changed. That's the power of a pattern.",
       "evidenceKey": "it-cafe-build-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -12872,7 +12918,23 @@
           "Vorrei un tè, per favore."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vorrei un te, per favore.",
+            "category": "accent/diacritic issue",
+            "explanation": "tè keeps its accent — without it, te means 'you'."
+          },
+          {
+            "answer": "Voglio un tè, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Voglio is blunt; the lesson's polite frame is vorrei."
+          },
+          {
+            "answer": "Vorrei un caffè, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Right frame, wrong drink — the prompt dictates a tea: Vorrei un tè."
+          }
+        ]
       }
     },
     {
@@ -12890,7 +12952,9 @@
         "grammar"
       ],
       "prompt": "Final build — the whole table's order: I would like a coffee and a tea, please.",
-      "hints": [],
+      "hints": [
+        "One polite frame with e between the two drinks: vorrei un caffè e un tè, then per favore closes it."
+      ],
       "feedback": "One frame, two drinks: vorrei … e … per favore. You just built a real café sentence from nothing but tiles.",
       "evidenceKey": "it-cafe-build-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -13274,7 +13338,9 @@
         "vocabulary"
       ],
       "prompt": "You learned this in «First words». Which Italian word means “thank you”?",
-      "hints": [],
+      "hints": [
+        "The word you say AFTER you get something — not the word for asking, not hello, not yes."
+      ],
       "feedback": "Grazie — thank you. Per favore is “please”, the word you use before you get what grazie is for.",
       "evidenceKey": "it-early-words-recall-act-2",
       "assistanceAffectsEvidence": [
@@ -13320,7 +13386,9 @@
         "grammar"
       ],
       "prompt": "From «Names and introductions»: introduce yourself as Anna. Write it in Italian.",
-      "hints": [],
+      "hints": [
+        "From «Names and introductions»: Io + sono + your name → Io sono Anna."
+      ],
       "feedback": "Io sono Anna. Io + sono — the first sentence you ever built. Still standing.",
       "evidenceKey": "it-early-words-recall-act-3",
       "assistanceAffectsEvidence": [
@@ -13331,10 +13399,27 @@
       "id": "it-early-words-recall-act-3",
       "answer": {
         "answers": [
-          "Io sono Anna."
+          "Io sono Anna.",
+          "sono Anna."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io è Anna.",
+            "category": "wrong conjugation",
+            "explanation": "With io the verb is sono: Io sono Anna."
+          },
+          {
+            "answer": "Io sei Anna.",
+            "category": "wrong conjugation",
+            "explanation": "Sei is the tu form; introducing yourself takes sono."
+          },
+          {
+            "answer": "Mi chiamo Anna.",
+            "category": "incorrect answer",
+            "explanation": "Valid Italian, but the lesson taught the intro Io sono Anna — that is the form being recalled."
+          }
+        ]
       }
     },
     {
@@ -13351,7 +13436,9 @@
         "grammar"
       ],
       "prompt": "From «At the café: order and pay» — complete the order: Vorrei ___ caffè, per favore.",
-      "hints": [],
+      "hints": [
+        "The café headline: Vorrei ___ caffè, per favore. caffè is masculine → un."
+      ],
       "feedback": "Un caffè. If you hesitated, picture the café lesson's first screen — the sentence was the headline.",
       "evidenceKey": "it-early-words-recall-act-4",
       "assistanceAffectsEvidence": [
@@ -13381,7 +13468,23 @@
             "un"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "una",
+              "category": "wrong article",
+              "explanation": "caffè is masculine: the café sentence is Vorrei un caffè."
+            },
+            {
+              "answer": "il",
+              "category": "wrong article",
+              "explanation": "The order uses the indefinite article un, not the definite il."
+            },
+            {
+              "answer": "lo",
+              "category": "wrong article",
+              "explanation": "caffè takes un, not lo (which appears before s+consonant)."
+            }
+          ]
         }
       }
     },
@@ -13398,7 +13501,9 @@
         "grammar"
       ],
       "prompt": "From «Food and -ere verbs»: which verb form means “I will have”?",
-      "hints": [],
+      "hints": [
+        "The io form of prendere ends in -o. prendi is you, prendere is the infinitive, posso is 'I can'."
+      ],
       "feedback": "Prendo — the io form of prendere. Prendi is “you take”, prendere is the infinitive, posso is “I can”. The -o ending is the io fingerprint.",
       "evidenceKey": "it-early-words-recall-act-5",
       "assistanceAffectsEvidence": [
@@ -13445,7 +13550,9 @@
         "grammar"
       ],
       "prompt": "From «Modal verbs and requests»: build “Can I have a coffee?”",
-      "hints": [],
+      "hints": [
+        "Modal first (posso), then the infinitive prendere, then un caffè — the pattern from «Modal verbs and requests»."
+      ],
       "feedback": "Posso prendere un caffè? — modal + infinitive, the pattern from «Modal verbs and requests». Your memory filed it under potere; good filing.",
       "evidenceKey": "it-early-words-recall-act-6",
       "assistanceAffectsEvidence": [
@@ -13494,7 +13601,9 @@
         "grammar"
       ],
       "prompt": "From «At the market: prices» — complete the question: Quanto ___ un chilo di mele?",
-      "hints": [],
+      "hints": [
+        "One kilo is singular → costa. If it were several kilos, it would be costano."
+      ],
       "feedback": "Costa — one kilo, singular. The market lesson drilled this pair: costa for one thing, costano for several.",
       "evidenceKey": "it-early-words-recall-act-7",
       "assistanceAffectsEvidence": [
@@ -13524,7 +13633,23 @@
             "costa"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "costano",
+              "category": "wrong number",
+              "explanation": "One kilo is singular → costa. Costano is for several things."
+            },
+            {
+              "answer": "è",
+              "category": "incorrect answer",
+              "explanation": "The market question asks the price verb: quanto costa, not quanto è."
+            },
+            {
+              "answer": "costare",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive does not answer quanto; use the conjugated costa."
+            }
+          ]
         }
       }
     },
@@ -13542,7 +13667,9 @@
         "grammar"
       ],
       "prompt": "From «Food and -ere verbs»: write “I will have a coffee.”",
-      "hints": [],
+      "hints": [
+        "From «Food and -ere verbs»: io form of prendere + un caffè → Prendo un caffè."
+      ],
       "feedback": "Prendo un caffè. The same sentence you wrote in the food lesson — retrieved, not relearned.",
       "evidenceKey": "it-early-words-recall-act-8",
       "assistanceAffectsEvidence": [
@@ -13553,10 +13680,27 @@
       "id": "it-early-words-recall-act-8",
       "answer": {
         "answers": [
-          "Prendo un caffè."
+          "Prendo un caffè.",
+          "Io prendo un caffè."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Prendi un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "Prendi is the tu form; you are saying what YOU will have → prendo."
+          },
+          {
+            "answer": "Prendere un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive is not a finished sentence; use the io form prendo."
+          },
+          {
+            "answer": "Prendo un cafe.",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè keeps its accent on the final è."
+          }
+        ]
       }
     },
     {
@@ -13572,7 +13716,9 @@
         "vocabulary"
       ],
       "prompt": "From «Modal verbs and requests»: what does “per favore” mean?",
-      "hints": [],
+      "hints": [
+        "The polite word that travels with requests — not thanks, not the bill."
+      ],
       "feedback": "Please. Per favore opens doors; grazie closes them politely. Both live on your memory shelf now.",
       "evidenceKey": "it-early-words-recall-act-9",
       "assistanceAffectsEvidence": [
@@ -14464,7 +14610,9 @@
         "grammar"
       ],
       "prompt": "Build: I'll have a coffee.",
-      "hints": [],
+      "hints": [
+        "prendo (io) comes first, then un caffè — and the accent on caffè never drops."
+      ],
       "feedback": "Io + prendere → prendo, then un caffè. The accent on caffè is part of the word — never drop it.",
       "evidenceKey": "it-food-construction-act-2",
       "assistanceAffectsEvidence": [
@@ -14509,7 +14657,9 @@
         "grammar"
       ],
       "prompt": "Build: Will you have a tea?",
-      "hints": [],
+      "hints": [
+        "The tu form flips the verb: prendi. One letter changes the whole person. Then un tè, with the question mark."
+      ],
       "feedback": "Tu + prendere → prendi, and the question mark turns the statement into an offer. Compare with the tile you just built: one letter changes the whole person.",
       "evidenceKey": "it-food-construction-act-3",
       "assistanceAffectsEvidence": [
@@ -14557,7 +14707,9 @@
         "grammar"
       ],
       "prompt": "Change your mind politely: «Non ___ un caffè, grazie.»",
-      "hints": [],
+      "hints": [
+        "Non sits straight before the verb: non + the io form prendo. Nothing goes between them."
+      ],
       "feedback": "Non sits immediately before the verb: non prendo. No extra words, no do — Italian negation is one small word in exactly the right place.",
       "evidenceKey": "it-food-construction-act-4",
       "assistanceAffectsEvidence": [
@@ -14587,7 +14739,23 @@
             "prendo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prende",
+              "category": "wrong conjugation",
+              "explanation": "Prende is he/she takes. The refusal is about yourself → io prendo."
+            },
+            {
+              "answer": "prendere",
+              "category": "wrong conjugation",
+              "explanation": "After non the verb stays conjugated: non prendo, never non prendere."
+            },
+            {
+              "answer": "prendi",
+              "category": "wrong conjugation",
+              "explanation": "Prendi is the tu form; you are refusing for yourself → prendo."
+            }
+          ]
         }
       }
     },
@@ -14607,7 +14775,9 @@
         "grammar"
       ],
       "prompt": "Build: I would like a tea, please.",
-      "hints": [],
+      "hints": [
+        "vorrei never changes — then un tè, then per favore at the end."
+      ],
       "feedback": "Vorrei never changes — io, tu, always vorrei. Then the thing, then per favore: the polite frame you can reuse anywhere.",
       "evidenceKey": "it-food-construction-act-5",
       "assistanceAffectsEvidence": [
@@ -14658,7 +14828,9 @@
         "grammar"
       ],
       "prompt": "The barista asks: «Cosa prendi?» Which answer is correct for you?",
-      "hints": [],
+      "hints": [
+        "The barista asked you (tu → prendi), but your answer is about yourself → io form prendo. Watch out for the unconjugated infinitive."
+      ],
       "feedback": "Cosa prendi? asks YOU (tu → prendi), but the answer flips to io → prendo. The third option leaves the verb unconjugated — prendere alone is never a finished answer.",
       "evidenceKey": "it-food-construction-act-6",
       "assistanceAffectsEvidence": [
@@ -14706,7 +14878,9 @@
         "grammar"
       ],
       "prompt": "Build: The coffee is hot.",
-      "hints": [],
+      "hints": [
+        "Il caffè + è (with its accent!) + caldo. è matches caffè: masculine singular."
+      ],
       "feedback": "È with the accent means is — e without it means and. And caldo matches caffè: masculine singular, like bianco with il libro.",
       "evidenceKey": "it-food-construction-act-7",
       "assistanceAffectsEvidence": [
@@ -14757,7 +14931,9 @@
         "grammar"
       ],
       "prompt": "Careful — the tea is cold: «Il tè ___ freddo.»",
-      "hints": [],
+      "hints": [
+        "The verb is 'is' — with its accent: è. Not e, which means 'and'."
+      ],
       "feedback": "È, with the accent. This tiny mark is the whole difference between is and and — Italian spelling carries meaning.",
       "evidenceKey": "it-food-construction-act-8",
       "assistanceAffectsEvidence": [
@@ -14787,7 +14963,23 @@
             "è"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "e",
+              "category": "accent/diacritic issue",
+              "explanation": "e means 'and'; the verb 'is' keeps its accent: è."
+            },
+            {
+              "answer": "sono",
+              "category": "wrong conjugation",
+              "explanation": "The tea is one thing ∈ è, not sono."
+            },
+            {
+              "answer": "sta",
+              "category": "incorrect answer",
+              "explanation": "Sta means 'stays'; the sentence says the tea IS cold → è freddo."
+            }
+          ]
         }
       }
     },
@@ -14807,7 +14999,9 @@
         "writing"
       ],
       "prompt": "Type the full polite refusal: I won't have a tea, thanks.",
-      "hints": [],
+      "hints": [
+        "negation non + prendo + un tè + grazie. Accent on tè, comma before grazie."
+      ],
       "feedback": "Non prendo un tè, grazie — negation, verb, thing, politeness, all in one breath. You built this from tiles; now it lives in your head.",
       "evidenceKey": "it-food-construction-act-9",
       "assistanceAffectsEvidence": [
@@ -14821,7 +15015,23 @@
           "Non prendo un tè, grazie."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Non prendo un te, grazie.",
+            "category": "accent/diacritic issue",
+            "explanation": "tè keeps its accent — without it, te means 'you'."
+          },
+          {
+            "answer": "Non prendi un tè, grazie.",
+            "category": "wrong conjugation",
+            "explanation": "Prendi is the tu form; you are refusing for yourself → prendo."
+          },
+          {
+            "answer": "Non prendere un tè, grazie.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive cannot stand alone here; use the io form prendo."
+          }
+        ]
       }
     },
     {
@@ -14849,7 +15059,9 @@
         "vocabulary"
       ],
       "prompt": "Domani ___ a Roma. (andare — I will go)",
-      "hints": [],
+      "hints": [
+        "Con il futuro: andare → andrò. vado è presente; sono andato è passato; andrei è il condizionale (prossimo capitolo)."
+      ],
       "feedback": "andare is irregular in the future: andrò. vado is present (fine for near plans, but this exercise wants the future form); sono andato is past; andrei is the conditional — coming in the next unit.",
       "evidenceKey": "it-a2-futuro-semplice-meet",
       "assistanceAffectsEvidence": [
@@ -14899,7 +15111,9 @@
         "grammar"
       ],
       "prompt": "Type: They will eat together. (mangiare)",
-      "hints": [],
+      "hints": [
+        "Start with the future verb: mangiare → the stem manger- plus -anno → mangeranno. Then insieme."
+      ],
       "feedback": "mangiare gives the stem manger- plus -anno: mangeranno.",
       "evidenceKey": "it-a2-futuro-semplice-think",
       "assistanceAffectsEvidence": [
@@ -14913,7 +15127,23 @@
           "Mangeranno insieme."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mangiano insieme.",
+            "category": "wrong tense",
+            "explanation": "Mangiano is present 'they eat'; the prompt wants the future mangeranno."
+          },
+          {
+            "answer": "Mangiaremo insieme.",
+            "category": "wrong conjugation",
+            "explanation": "Mangiaremo is 'we will eat'; for they the ending is -anno: mangeranno."
+          },
+          {
+            "answer": "Mangiare insieme.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive is not a finished sentence; use the future form mangeranno."
+          }
+        ]
       }
     },
     {
@@ -14934,7 +15164,9 @@
         "vocabulary"
       ],
       "prompt": "Non lo so: ___ domani. (sapere — I will know)",
-      "hints": [],
+      "hints": [
+        "sapere has the irregular stem sapr-: saprò. so è presente; ho saputo è passato; saprei è condizionale."
+      ],
       "feedback": "sapere has the irregular stem sapr-: saprò. so is present; ho saputo is past; saprei is conditional.",
       "evidenceKey": "it-a2-futuro-semplice-notice",
       "assistanceAffectsEvidence": [
@@ -14984,7 +15216,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Next week we will work from home.",
-      "hints": [],
+      "hints": [
+        "Time phrase first (La prossima settimana), then the noi future lavoreremo, then da casa."
+      ],
       "feedback": "Time phrase first, then the future verb: La prossima settimana lavoreremo da casa.",
       "evidenceKey": "it-a2-futuro-semplice-build",
       "assistanceAffectsEvidence": [
@@ -15048,7 +15282,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "essere is irregular in the future: sarò. \"Fra due giorni\" signals the future, and the subject is io."
+      ],
       "feedback": "essere is irregular: sarò. “Fra due giorni” points to the future.",
       "evidenceKey": "it-a2-futuro-semplice-cloze",
       "assistanceAffectsEvidence": [
@@ -15078,7 +15314,23 @@
             "sarò"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "sarà",
+              "category": "wrong conjugation",
+              "explanation": "Sarà is he/she will be. The subject here is io — the future of essere is sarò."
+            },
+            {
+              "answer": "sono",
+              "category": "wrong tense",
+              "explanation": "Sono is present; 'fra due giorni' points forward, so use the future sarò."
+            },
+            {
+              "answer": "saro",
+              "category": "accent/diacritic issue",
+              "explanation": "The future io ending needs its accent: sarò."
+            }
+          ]
         }
       }
     },
@@ -15402,7 +15654,9 @@
         "vocabulary"
       ],
       "prompt": "___ viaggiare di più quest’anno. (I would like…)",
-      "hints": [],
+      "hints": [
+        "Un desiderio usa il condizionale: mi piacerebbe. mi piace è un fatto presente; mi piacerà è futuro; mi è piaciuto è passato."
+      ],
       "feedback": "A wish takes the conditional: mi piacerebbe. mi piace is a present fact; mi piacerà is future; mi è piaciuto is past.",
       "evidenceKey": "it-a2-condizionale-meet",
       "assistanceAffectsEvidence": [
@@ -15452,7 +15706,9 @@
         "grammar"
       ],
       "prompt": "Type: I would buy a house. (comprare)",
-      "hints": [],
+      "hints": [
+        "comprare → the stem comprer- plus the io conditional ending -ei → Comprerei. Then una casa."
+      ],
       "feedback": "comprare gives the stem comprer- plus -ei: comprerei.",
       "evidenceKey": "it-a2-condizionale-think",
       "assistanceAffectsEvidence": [
@@ -15466,7 +15722,23 @@
           "Comprerei una casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Compro una casa.",
+            "category": "wrong tense",
+            "explanation": "Compro is present 'I buy'; the prompt says 'would buy' → the conditional comprerei."
+          },
+          {
+            "answer": "Comprerò una casa.",
+            "category": "wrong tense",
+            "explanation": "Comprerò is the future 'I will buy'; the conditional of comprare is comprerei."
+          },
+          {
+            "answer": "Comprare una casa.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive cannot carry the wish; use the conditional comprerei."
+          }
+        ]
       }
     },
     {
@@ -15487,7 +15759,9 @@
         "vocabulary"
       ],
       "prompt": "___ aiutarti, ma sono occupato. (potere — I could)",
-      "hints": [],
+      "hints": [
+        "potere → potrei in the conditional. Posso è presente; potrò è futuro; ho potuto è passato."
+      ],
       "feedback": "potere is irregular: potrei. A hypothetical ability takes the conditional.",
       "evidenceKey": "it-a2-condizionale-notice",
       "assistanceAffectsEvidence": [
@@ -15537,7 +15811,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: In your place, I would stay home.",
-      "hints": [],
+      "hints": [
+        "The hypothetical frame comes first — al tuo posto — then the conditional resterei."
+      ],
       "feedback": "The hypothetical frame first (al tuo posto), then the conditional: resterei.",
       "evidenceKey": "it-a2-condizionale-build",
       "assistanceAffectsEvidence": [
@@ -15601,7 +15877,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "dovere is irregular in the conditional: dovrei — 'I should'. The subject is io."
+      ],
       "feedback": "dovere is irregular: dovrei — “I should”.",
       "evidenceKey": "it-a2-condizionale-cloze",
       "assistanceAffectsEvidence": [
@@ -15627,7 +15905,23 @@
             "Dovrei"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Dovrà",
+              "category": "wrong tense",
+              "explanation": "Dovrà is the future. The sentence expresses 'I should' → the conditional dovrei."
+            },
+            {
+              "answer": "Devo",
+              "category": "wrong tense",
+              "explanation": "Devo is present 'I must'; 'I should' is the conditional dovrei."
+            },
+            {
+              "answer": "Dovrò",
+              "category": "wrong tense",
+              "explanation": "Dovrò is the future 'I will have to'; the conditional of dovere is dovrei."
+            }
+          ]
         }
       }
     },
@@ -16772,7 +17066,9 @@
         "vocabulary"
       ],
       "prompt": "Quanti caffè prendi? — ___ prendo due. (I’ll have two of them)",
-      "hints": [],
+      "hints": [
+        "Two OF THEM → ne. ci means 'there'; li and lo are direct pronouns without the 'of'."
+      ],
       "feedback": "Two OF THEM means ne. ci means “there”; li and lo are direct pronouns (them, him) without the “of”.",
       "evidenceKey": "it-a2-ne-ci-meet",
       "assistanceAffectsEvidence": [
@@ -16822,7 +17118,9 @@
         "grammar"
       ],
       "prompt": "Type: Yes, I’m going there. (andare)",
-      "hints": [],
+      "hints": [
+        "'There' for a place is ci, and it goes before the verb: ci vado."
+      ],
       "feedback": "“There” of place is ci: ci vado.",
       "evidenceKey": "it-a2-ne-ci-think",
       "assistanceAffectsEvidence": [
@@ -16836,7 +17134,23 @@
           "Sì, ci vado."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sì, vado.",
+            "category": "missing word",
+            "explanation": "The prompt says 'going there' — the little word ci must appear before vado."
+          },
+          {
+            "answer": "Sì, ne vado.",
+            "category": "incorrect answer",
+            "explanation": "Ne means 'of it'; for a place, the pronoun is ci: ci vado."
+          },
+          {
+            "answer": "Sì, ci andare.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive cannot follow ci here; use the conjugated vado."
+          }
+        ]
       }
     },
     {
@@ -16857,7 +17171,9 @@
         "vocabulary"
       ],
       "prompt": "“Ci sono molti turisti in piazza.” What does “ci sono” mean here?",
-      "hints": [],
+      "hints": [
+        "ci + essere = there is/are. The tourists exist in the square: ci sono molti turisti = there are many tourists."
+      ],
       "feedback": "ci plus essere means “there is / there are”: ci sono molti turisti = there are many tourists.",
       "evidenceKey": "it-a2-ne-ci-notice",
       "assistanceAffectsEvidence": [
@@ -16907,7 +17223,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I have no idea.",
-      "hints": [],
+      "hints": [
+        "Non + ne + ho + idea. The little pronoun ne sits right before the verb."
+      ],
       "feedback": "Non plus ne plus the verb: Non ne ho idea. The little word sits before the verb.",
       "evidenceKey": "it-a2-ne-ci-build",
       "assistanceAffectsEvidence": [
@@ -16961,7 +17279,9 @@
         "grammar"
       ],
       "prompt": "Complete the answer.",
-      "hints": [],
+      "hints": [
+        "parlare di + the thing becomes ne: 'del viaggio' is replaced by ne — ne ho parlato ieri."
+      ],
       "feedback": "parlare di plus the thing becomes ne: “del viaggio” is replaced by ne — ne ho parlato ieri.",
       "evidenceKey": "it-a2-ne-ci-cloze",
       "assistanceAffectsEvidence": [
@@ -16991,7 +17311,23 @@
             "ne"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ci",
+              "category": "incorrect answer",
+              "explanation": "Ci means 'there/about it', but parlare di is replaced by ne: ne ho parlato."
+            },
+            {
+              "answer": "lo",
+              "category": "incorrect answer",
+              "explanation": "Lo is a direct object pronoun; 'parlare di qualcosa' needs ne."
+            },
+            {
+              "answer": "ho ne parlato",
+              "category": "word-order problem",
+              "explanation": "Ne goes before the helper: ne ho parlato."
+            }
+          ]
         }
       }
     },
@@ -17020,7 +17356,9 @@
         "vocabulary"
       ],
       "prompt": "Il ragazzo ___ ho visto ieri è mio cugino. (whom I saw)",
-      "hints": [],
+      "hints": [
+        "No preposition and a direct object → che. cui needs a preposition (a cui, di cui); chi asks questions; quale takes an article."
+      ],
       "feedback": "No preposition and a direct object means che. cui needs a preposition (a cui, di cui); chi asks questions; quale needs an article.",
       "evidenceKey": "it-a2-relativi-che-cui-meet",
       "assistanceAffectsEvidence": [
@@ -17070,7 +17408,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The film you are talking about is beautiful.",
-      "hints": [],
+      "hints": [
+        "parlare takes DI → di cui. Order: Il film + di cui + parli + è bello."
+      ],
       "feedback": "parlare takes DI: di plus cui — Il film di cui parli è bello.",
       "evidenceKey": "it-a2-relativi-che-cui-build",
       "assistanceAffectsEvidence": [
@@ -17139,7 +17479,9 @@
         "grammar"
       ],
       "prompt": "Join into one sentence: Parlo spesso con Maria. Maria è gentile.",
-      "hints": [],
+      "hints": [
+        "'con Maria' becomes con cui, and the clause tucks right after Maria: Maria, con cui parlo spesso, è gentile. Keep the commas."
+      ],
       "feedback": "“con Maria” becomes con cui, and the two sentences merge: Maria, con cui parlo spesso, è gentile.",
       "evidenceKey": "it-a2-relativi-che-cui-vary",
       "assistanceAffectsEvidence": [
@@ -17153,7 +17495,23 @@
           "Maria, con cui parlo spesso, è gentile."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Maria che parlo spesso con è gentile.",
+            "category": "word-order problem",
+            "explanation": "The preposition stays with the pronoun — con cui — and the clause follows Maria."
+          },
+          {
+            "answer": "Con cui parlo spesso Maria è gentile.",
+            "category": "word-order problem",
+            "explanation": "The relative clause must touch the noun it describes: Maria, con cui parlo spesso, è gentile."
+          },
+          {
+            "answer": "Maria, con che parlo spesso, è gentile.",
+            "category": "incorrect answer",
+            "explanation": "After a preposition the relative pronoun is cui, not che."
+          }
+        ]
       }
     },
     {
@@ -17174,7 +17532,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "parlare takes DI: di + cui. Ecco il libro di cui ti ho parlato — never che here, because the preposition di must stay."
+      ],
       "feedback": "parlare takes DI: di plus cui — Ecco il libro di cui ti ho parlato.",
       "evidenceKey": "it-a2-relativi-che-cui-cloze",
       "assistanceAffectsEvidence": [
@@ -17204,7 +17564,23 @@
             "di cui"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "che",
+              "category": "incorrect answer",
+              "explanation": "With the preposition di, che cannot follow — the pronoun must be cui: di cui."
+            },
+            {
+              "answer": "cui",
+              "category": "missing word",
+              "explanation": "Cui needs its preposition: di cui. Without it the phrase is incomplete."
+            },
+            {
+              "answer": "di che",
+              "category": "incorrect answer",
+              "explanation": "After a preposition the relative pronoun is cui, not che: di cui."
+            }
+          ]
         }
       }
     },
@@ -18434,7 +18810,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence correctly says “Yesterday I ate a pizza”?",
-      "hints": [],
+      "hints": [
+        "The past needs TWO parts: helper + participle. One option has ho mangiato; the others are present, infinitive, or reflexive."
+      ],
       "feedback": "The passato prossimo needs two parts: the helper ho plus the past participle mangiato. “Ieri mangio” is present tense — I eat. “Ho mangiare” uses the infinitive, which can never follow the helper. “Mi mangio” is reflexive and means something else entirely.",
       "evidenceKey": "it-a2-passato-prossimo-meet",
       "assistanceAffectsEvidence": [
@@ -18484,7 +18862,9 @@
         "grammar"
       ],
       "prompt": "You bought a book yesterday. Type: I bought a book.",
-      "hints": [],
+      "hints": [
+        "comprare → comprato (-ato for -are verbs). For 'I' the helper is ho: Ho comprato un libro."
+      ],
       "feedback": "comprare gives comprato — regular -are verbs take -ato. The helper for “I” is ho. So: ho + comprato.",
       "evidenceKey": "it-a2-passato-prossimo-think",
       "assistanceAffectsEvidence": [
@@ -18498,7 +18878,23 @@
           "Ho comprato un libro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho comprare un libro.",
+            "category": "wrong conjugation",
+            "explanation": "After ho comes the participle comprato, never the infinitive."
+          },
+          {
+            "answer": "Ho comprato una libro.",
+            "category": "wrong article",
+            "explanation": "Libro is masculine: un libro, so the article stays un."
+          },
+          {
+            "answer": "Sono comprato un libro.",
+            "category": "wrong auxiliary",
+            "explanation": "Comprare takes avere — the helper for 'I' is ho, not sono."
+          }
+        ]
       }
     },
     {
@@ -18519,7 +18915,9 @@
         "vocabulary"
       ],
       "prompt": "Noi ___ visto il film. (we saw)",
-      "hints": [],
+      "hints": [
+        "vedere takes avere; with noi the helper is abbiamo. siamo is the essere-helper (next lesson); ho and ha are singular."
+      ],
       "feedback": "vedere takes avere, and with noi the helper is abbiamo. siamo is the essere-helper — you meet it in the next lesson. ho and ha are singular.",
       "evidenceKey": "it-a2-passato-prossimo-notice",
       "assistanceAffectsEvidence": [
@@ -18569,7 +18967,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: They called the doctor.",
-      "hints": [],
+      "hints": [
+        "Helper first (hanno), then the participle (chiamato), then the object: Hanno chiamato il dottore."
+      ],
       "feedback": "Helper first (hanno), then the participle (chiamato), then the rest: Hanno chiamato il dottore.",
       "evidenceKey": "it-a2-passato-prossimo-build",
       "assistanceAffectsEvidence": [
@@ -18623,7 +19023,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "Maria is third-person singular → the helper is ha. The participle stays comprato."
+      ],
       "feedback": "Maria is third person singular, so the helper is ha. With avere the participle never changes: comprato stays comprato.",
       "evidenceKey": "it-a2-passato-prossimo-cloze",
       "assistanceAffectsEvidence": [
@@ -18653,7 +19055,23 @@
             "ha"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ho",
+              "category": "wrong conjugation",
+              "explanation": "Ho is the io helper; Maria is she → ha."
+            },
+            {
+              "answer": "siamo",
+              "category": "wrong auxiliary",
+              "explanation": "Siamo is the essere helper; comprare (with avere) needs ha here."
+            },
+            {
+              "answer": "hanno",
+              "category": "wrong number",
+              "explanation": "Maria is one person → the singular helper ha, not hanno."
+            }
+          ]
         }
       }
     },
@@ -19977,7 +20395,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Tomorrow they will eat together.",
-      "hints": [],
+      "hints": [
+        "Domani first, then the loro future of mangiare (mangeranno), then insieme."
+      ],
       "feedback": "Domani mangeranno insieme. — time first, then the future verb.",
       "evidenceKey": "it-a2-futuro-semplice-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20026,7 +20446,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I would like to live in Italy.",
-      "hints": [],
+      "hints": [
+        "Mi piacerebbe first (it would please me), then vivere, then in Italia."
+      ],
       "feedback": "Mi piacerebbe vivere in Italia. — with piacere the sentence flips: it would please me.",
       "evidenceKey": "it-a2-condizionale-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20080,7 +20502,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: We often go there.",
-      "hints": [],
+      "hints": [
+        "Ci first ('there'), then andiamo, then spesso. ci never leaves the verb's side."
+      ],
       "feedback": "Ci andiamo spesso. — ci jumps in front of the verb, always.",
       "evidenceKey": "it-a2-ne-ci-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20129,7 +20553,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The girl I'm going out with is nice.",
-      "hints": [],
+      "hints": [
+        "uscire con → con cui, and the pair never splits: La ragazza con cui esco è simpatica."
+      ],
       "feedback": "La ragazza con cui esco è simpatica. — con cui never splits.",
       "evidenceKey": "it-a2-relativi-che-cui-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20193,7 +20619,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence correctly uses «cui»?",
-      "hints": [],
+      "hints": [
+        "The preposition comes BEFORE cui: per cui. One option gets that order right."
+      ],
       "feedback": "Per cui — the preposition always comes before cui, never after, never replaced by che.",
       "evidenceKey": "it-a2-relativi-che-cui-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20243,7 +20671,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Yesterday I ate a pizza.",
-      "hints": [],
+      "hints": [
+        "Ieri first, then the helper ho, then mangiato, then una pizza. With avere the participle never changes."
+      ],
       "feedback": "Ieri ho mangiato una pizza. — helper ho locks to the subject; with avere the participle never changes.",
       "evidenceKey": "it-a2-passato-prossimo-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20319,7 +20749,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: Domani ___ a Roma. (I will go)",
-      "hints": [],
+      "hints": [
+        "Recalling the future of andare: andrò. vado is present; andrei is the conditional."
+      ],
       "feedback": "Andrò — the future of andare is irregular: andrò, andrai, andrà.",
       "evidenceKey": "it-a2-futuro-usi-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20369,7 +20801,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The noi future of lavorare ends in -emo: lavoreremo. The future lives in the ending."
+      ],
       "feedback": "Lavoreremo — we will work. The future lives in the ending: -emo.",
       "evidenceKey": "it-a2-futuro-usi-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20397,7 +20831,23 @@
             "lavoreremo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "lavoriamo",
+              "category": "wrong tense",
+              "explanation": "Lavoriamo is present 'we work'; the future of noi is lavoreremo."
+            },
+            {
+              "answer": "lavorerò",
+              "category": "wrong conjugation",
+              "explanation": "Lavorerò is the io form; with noi the ending is -emo: lavoreremo."
+            },
+            {
+              "answer": "lavoraremo",
+              "category": "wrong conjugation",
+              "explanation": "The -are future changes -a- to -e-: lavoreremo, not lavoraremo."
+            }
+          ]
         }
       }
     },
@@ -20421,7 +20871,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: write “They will eat together.”",
-      "hints": [],
+      "hints": [
+        "From «Il futuro semplice»: the loro future ends -anno on the stem manger-: Mangeranno insieme."
+      ],
       "feedback": "Mangeranno insieme. — still there.",
       "evidenceKey": "it-a2-futuro-usi-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20433,7 +20885,23 @@
           "Mangeranno insieme."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mangiano insieme.",
+            "category": "wrong tense",
+            "explanation": "Mangiano is present; the recalled sentence is the future mangeranno."
+          },
+          {
+            "answer": "Mangieranno insieme.",
+            "category": "wrong conjugation",
+            "explanation": "mangiare forms its future on the stem manger-: mangeranno."
+          },
+          {
+            "answer": "Avranno mangiato insieme.",
+            "category": "wrong tense",
+            "explanation": "That is the future perfect 'they will have eaten' — the recall wants mangeranno insieme."
+          }
+        ]
       }
     },
     {
@@ -20456,7 +20924,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: which word means “soon”?",
-      "hints": [],
+      "hints": [
+        "The short time word that pairs with the future in \"Ci vedremo ___\". Not 'late', not 'tomorrow', not 'always'."
+      ],
       "feedback": "Presto — soon. Ci vedremo presto.",
       "evidenceKey": "it-a2-futuro-usi-act-rb5",
       "assistanceAffectsEvidence": [
@@ -20506,7 +20976,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: complete the promise.",
-      "hints": [],
+      "hints": [
+        "A promise takes the future: chiamare → chiamerò (io). Ti chiamerò più tardi."
+      ],
       "feedback": "Ti chiamerò più tardi. — promises are future tense.",
       "evidenceKey": "it-a2-futuro-usi-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20534,7 +21006,23 @@
             "chiamerò"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "chiamo",
+              "category": "wrong tense",
+              "explanation": "Chiamo is present 'I call'; a promise for later takes the future chiamerò."
+            },
+            {
+              "answer": "chiamerà",
+              "category": "wrong conjugation",
+              "explanation": "Chiamerà is he/she will call; the promise is about yourself → chiamerò."
+            },
+            {
+              "answer": "chiamero",
+              "category": "accent/diacritic issue",
+              "explanation": "The future io ending needs its accent: chiamerò."
+            }
+          ]
         }
       }
     },
@@ -20558,7 +21046,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il futuro semplice»: write “We will leave in two days.”",
-      "hints": [],
+      "hints": [
+        "partire → the noi future part- + -emo → Partiremo, then fra due giorni."
+      ],
       "feedback": "Partiremo fra due giorni. — remembered, not relearned.",
       "evidenceKey": "it-a2-futuro-usi-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20570,7 +21060,23 @@
           "Partiremo fra due giorni."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Partiamo fra due giorni.",
+            "category": "wrong tense",
+            "explanation": "Partiamo is present 'we leave'; the future of noi is partiremo."
+          },
+          {
+            "answer": "Partirò fra due giorni.",
+            "category": "wrong conjugation",
+            "explanation": "Partirò is the io form; with noi the ending is -emo: partiremo."
+          },
+          {
+            "answer": "Partiremo due giorni.",
+            "category": "missing word",
+            "explanation": "The time span needs its preposition: fra due giorni (in two days)."
+          }
+        ]
       }
     },
     {
@@ -20606,7 +21112,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: which Italian word means “yesterday”?",
-      "hints": [],
+      "hints": [
+        "The word for the day before today — the doorway to the past. Not tomorrow, not today, not always."
+      ],
       "feedback": "Ieri — yesterday, the doorway to the past.",
       "evidenceKey": "it-a2-imperfetto-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20654,7 +21162,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The classic first past sentence: Ieri + ho + mangiato. Both words go in the blank."
+      ],
       "feedback": "Ieri ho mangiato. — the classic first past sentence.",
       "evidenceKey": "it-a2-imperfetto-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20682,7 +21192,23 @@
             "ho mangiato"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mangiato",
+              "category": "missing word",
+              "explanation": "The helper is missing: the past needs ho + mangiato."
+            },
+            {
+              "answer": "ho mangiare",
+              "category": "wrong conjugation",
+              "explanation": "After ho comes the participle mangiato, never the infinitive."
+            },
+            {
+              "answer": "sono mangiato",
+              "category": "wrong auxiliary",
+              "explanation": "Mangiare takes avere → ho mangiato, not sono mangiato."
+            }
+          ]
         }
       }
     },
@@ -20704,7 +21230,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: write “I studied at home.”",
-      "hints": [],
+      "hints": [
+        "The helper ho + studiato, then the place: Ho studiato in casa (or a casa)."
+      ],
       "feedback": "Ho studiato in casa.",
       "evidenceKey": "it-a2-imperfetto-act-rb4",
       "assistanceAffectsEvidence": [
@@ -20717,7 +21245,23 @@
           "Ho studiato a casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho studiare in casa.",
+            "category": "wrong conjugation",
+            "explanation": "After ho comes the participle studiato, never the infinitive."
+          },
+          {
+            "answer": "Sono studiato in casa.",
+            "category": "wrong auxiliary",
+            "explanation": "Studiare takes avere → ho studiato, not sono studiato."
+          },
+          {
+            "answer": "Ho studio in casa.",
+            "category": "wrong tense",
+            "explanation": "Studio is present 'I study'; the past needs the participle studiato."
+          }
+        ]
       }
     },
     {
@@ -20738,7 +21282,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: which word means “eaten”?",
-      "hints": [],
+      "hints": [
+        "The past participle of mangiare — -ato for -are verbs. Not the io form, not the infinitive."
+      ],
       "feedback": "Mangiato — the past participle: -ato for -are verbs.",
       "evidenceKey": "it-a2-imperfetto-act-rb5",
       "assistanceAffectsEvidence": [
@@ -20786,7 +21332,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "After the helper ho comes the participle of studiare: -ato → studiato."
+      ],
       "feedback": "Ho studiato in casa.",
       "evidenceKey": "it-a2-imperfetto-act-rb6",
       "assistanceAffectsEvidence": [
@@ -20814,7 +21362,23 @@
             "studiato"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "studiare",
+              "category": "wrong conjugation",
+              "explanation": "After ho the participle is needed: studiato, never the infinitive."
+            },
+            {
+              "answer": "studio",
+              "category": "wrong tense",
+              "explanation": "Studio is present 'I study'; with the helper ho the participle is studiato."
+            },
+            {
+              "answer": "studia",
+              "category": "wrong conjugation",
+              "explanation": "Studia is he/she studies; the participle of studiare is studiato."
+            }
+          ]
         }
       }
     },
@@ -20836,7 +21400,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: write “Yesterday I ate.”",
-      "hints": [],
+      "hints": [
+        "Ieri + ho + mangiato — the sentence that started your past."
+      ],
       "feedback": "Ieri ho mangiato. — where your past began.",
       "evidenceKey": "it-a2-imperfetto-act-rb7",
       "assistanceAffectsEvidence": [
@@ -20848,7 +21414,23 @@
           "Ieri ho mangiato."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ieri mangio.",
+            "category": "wrong tense",
+            "explanation": "Mangio is present; with ieri the sentence needs the past: Ieri ho mangiato."
+          },
+          {
+            "answer": "Ieri ho mangiare.",
+            "category": "wrong conjugation",
+            "explanation": "After ho comes the participle mangiato, never the infinitive."
+          },
+          {
+            "answer": "Ieri sono mangiato.",
+            "category": "wrong auxiliary",
+            "explanation": "Mangiare takes avere → ieri ho mangiato, not sono mangiato."
+          }
+        ]
       }
     },
     {
@@ -20888,7 +21470,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: which sentence correctly says “Yesterday I ate a pizza”?",
-      "hints": [],
+      "hints": [
+        "Recall the two-part formula: helper ho + participle mangiato. One option has both."
+      ],
       "feedback": "Ho mangiato — helper plus participle: the avere formula.",
       "evidenceKey": "it-a2-essere-participi-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20938,7 +21522,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The noi helper with avere is abbiamo: Noi abbiamo visto il film."
+      ],
       "feedback": "Abbiamo visto — we saw.",
       "evidenceKey": "it-a2-essere-participi-act-rb3",
       "assistanceAffectsEvidence": [
@@ -20966,7 +21552,23 @@
             "abbiamo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "siamo",
+              "category": "wrong auxiliary",
+              "explanation": "Siamo is the essere helper; vedere takes avere → abbiamo."
+            },
+            {
+              "answer": "hanno",
+              "category": "wrong conjugation",
+              "explanation": "Hanno is 'they'; the subject is noi → abbiamo."
+            },
+            {
+              "answer": "abbiamo visto",
+              "category": "extra word",
+              "explanation": "Visto is already in the sentence; the blank asks only for the helper abbiamo."
+            }
+          ]
         }
       }
     },
@@ -20990,7 +21592,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: write “They called a taxi.”",
-      "hints": [],
+      "hints": [
+        "The loro helper is hanno + the participle chiamato: Hanno chiamato un taxi."
+      ],
       "feedback": "Hanno chiamato un taxi.",
       "evidenceKey": "it-a2-essere-participi-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21002,7 +21606,23 @@
           "Hanno chiamato un taxi."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ha chiamato un taxi.",
+            "category": "wrong conjugation",
+            "explanation": "Ha is he/she called; the prompt says 'they' → hanno chiamato."
+          },
+          {
+            "answer": "Hanno chiamare un taxi.",
+            "category": "wrong conjugation",
+            "explanation": "After hanno comes the participle chiamato, never the infinitive."
+          },
+          {
+            "answer": "Sono chiamato un taxi.",
+            "category": "wrong auxiliary",
+            "explanation": "Chiamare un taxi takes avere → hanno chiamato, not sono chiamato."
+          }
+        ]
       }
     },
     {
@@ -21025,7 +21645,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: which phrase means “two hours ago”?",
-      "hints": [],
+      "hints": [
+        "fa turns the clock backwards: due ore fa. fra due ore is the future — 'in two hours'."
+      ],
       "feedback": "Due ore fa — fa turns time backwards.",
       "evidenceKey": "it-a2-essere-participi-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21075,7 +21697,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "Maria is she → helper ha, then the participle comprato: ha comprato. Two words in the blank."
+      ],
       "feedback": "Ha comprato — she bought.",
       "evidenceKey": "it-a2-essere-participi-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21103,7 +21727,23 @@
             "ha comprato"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ha",
+              "category": "missing word",
+              "explanation": "The blank asks for the whole past form: ha comprato — two words."
+            },
+            {
+              "answer": "è comprato",
+              "category": "wrong auxiliary",
+              "explanation": "Comprare takes avere, not essere: ha comprato."
+            },
+            {
+              "answer": "ha comprare",
+              "category": "wrong conjugation",
+              "explanation": "After ha the participle is comprato, never the infinitive comprare."
+            }
+          ]
         }
       }
     },
@@ -21127,7 +21767,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: write “We saw a beautiful film.”",
-      "hints": [],
+      "hints": [
+        "The noi helper abbiamo + visto + un film bellissimo (or un bel film)."
+      ],
       "feedback": "Abbiamo visto un film bellissimo.",
       "evidenceKey": "it-a2-essere-participi-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21140,7 +21782,23 @@
           "Abbiamo visto un bel film."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Siamo visto un film bellissimo.",
+            "category": "wrong auxiliary",
+            "explanation": "Vedere takes avere → abbiamo visto, not siamo visto."
+          },
+          {
+            "answer": "Abbiamo visto un bello film.",
+            "category": "incorrect answer",
+            "explanation": "Before a consonant, bello shortens to bel: un bel film (or un film bellissimo)."
+          },
+          {
+            "answer": "Ho visto un film bellissimo.",
+            "category": "wrong conjugation",
+            "explanation": "Ho is the io helper; the prompt says 'we saw' → abbiamo visto."
+          }
+        ]
       }
     },
     {
@@ -21190,7 +21848,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: Noi ___ visto il film. (we saw)",
-      "hints": [],
+      "hints": [
+        "The noi helper with avere is abbiamo: abbiamo visto il film."
+      ],
       "feedback": "Abbiamo visto — we saw: avere is the helper for most verbs.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21245,7 +21905,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The classic: Ieri + ho + mangiato — both words go in the blank."
+      ],
       "feedback": "Ieri ho mangiato. — the classic first past sentence.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb3",
       "assistanceAffectsEvidence": [
@@ -21273,7 +21935,23 @@
             "ho mangiato"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mangiato",
+              "category": "missing word",
+              "explanation": "The helper is missing: the past needs ho + mangiato."
+            },
+            {
+              "answer": "ho mangiare",
+              "category": "wrong conjugation",
+              "explanation": "After ho comes the participle mangiato, never the infinitive."
+            },
+            {
+              "answer": "sono mangiato",
+              "category": "wrong auxiliary",
+              "explanation": "Mangiare takes avere → ho mangiato, not sono mangiato."
+            }
+          ]
         }
       }
     },
@@ -21302,7 +21980,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: write “Maria bought a new book.”",
-      "hints": [],
+      "hints": [
+        "Maria is she → the helper ha, then comprato: Maria ha comprato un libro nuovo. Dropping Maria is fine too."
+      ],
       "feedback": "Maria ha comprato un libro nuovo.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21315,7 +21995,23 @@
           "Ha comprato un libro nuovo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Maria ho comprato un libro nuovo.",
+            "category": "wrong conjugation",
+            "explanation": "Ho is the io helper; Maria is she → ha comprato."
+          },
+          {
+            "answer": "Maria ha comprare un libro nuovo.",
+            "category": "wrong conjugation",
+            "explanation": "After ha comes the participle comprato, never the infinitive."
+          },
+          {
+            "answer": "Maria è comprato un libro nuovo.",
+            "category": "wrong auxiliary",
+            "explanation": "Comprare takes avere → ha comprato, not è comprato."
+          }
+        ]
       }
     },
     {
@@ -21343,7 +22039,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: which word means “studied”?",
-      "hints": [],
+      "hints": [
+        "The participle of studiare — -ato for -are verbs."
+      ],
       "feedback": "Studiato — the past participle of studiare.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21398,7 +22096,9 @@
         "vocabulary"
       ],
       "prompt": "From «Il passato prossimo con avere»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The loro helper hanno + chiamato, capital H: Hanno chiamato un taxi."
+      ],
       "feedback": "Hanno chiamato un taxi.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21422,7 +22122,23 @@
             "Hanno chiamato"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Ha chiamato",
+              "category": "wrong conjugation",
+              "explanation": "Ha is he/she; the taxi sentence says 'they called' → hanno chiamato."
+            },
+            {
+              "answer": "Hanno chiamare",
+              "category": "wrong conjugation",
+              "explanation": "After hanno comes the participle chiamato, never the infinitive."
+            },
+            {
+              "answer": "Sono chiamato",
+              "category": "wrong auxiliary",
+              "explanation": "Chiamare takes avere → hanno chiamato, not sono chiamato."
+            }
+          ]
         }
       }
     },
@@ -21451,7 +22167,9 @@
         "vocabulary"
       ],
       "prompt": "From «A first look at the past»: write “I studied at home.”",
-      "hints": [],
+      "hints": [
+        "ho + studiato + in casa (or a casa) — the same sentence you wrote in the past lesson."
+      ],
       "feedback": "Ho studiato in casa. — still yours.",
       "evidenceKey": "it-a2-passato-imperfetto-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21464,7 +22182,23 @@
           "Ho studiato a casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho studiare in casa.",
+            "category": "wrong conjugation",
+            "explanation": "After ho comes the participle studiato, never the infinitive."
+          },
+          {
+            "answer": "Sono studiato in casa.",
+            "category": "wrong auxiliary",
+            "explanation": "Studiare takes avere → ho studiato, not sono studiato."
+          },
+          {
+            "answer": "Ho studio in casa.",
+            "category": "wrong tense",
+            "explanation": "Studio is present 'I study'; the past needs the participle studiato."
+          }
+        ]
       }
     },
     {
@@ -21500,7 +22234,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: which Italian word means “I study”?",
-      "hints": [],
+      "hints": [
+        "The io form of studiare ends in -o. Pick 'I study' — not 'you study', not the infinitive, not a different verb."
+      ],
       "feedback": "Studio — I study, every day.",
       "evidenceKey": "it-reflexive-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -21548,7 +22284,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The pattern from «Study and work»: Io + the verb ending in -o. Type: Io studio ogni giorno."
+      ],
       "feedback": "Studio ogni giorno.",
       "evidenceKey": "it-reflexive-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -21576,7 +22314,23 @@
             "studio"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "studi",
+              "category": "wrong conjugation",
+              "explanation": "Studi is the tu form. After Io the verb is studio."
+            },
+            {
+              "answer": "studiare",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive never follows Io here; use the conjugated studio."
+            },
+            {
+              "answer": "lavoro",
+              "category": "incorrect answer",
+              "explanation": "Lavoro means 'I work' — a different verb. Io studio = I study."
+            }
+          ]
         }
       }
     },
@@ -21598,7 +22352,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: write “You work at home.”",
-      "hints": [],
+      "hints": [
+        "You (tu) + lavorare → lavori. Then the place: in casa or a casa — both are fine."
+      ],
       "feedback": "Lavori in casa.",
       "evidenceKey": "it-reflexive-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -21611,7 +22367,23 @@
           "Lavori a casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Lavora in casa.",
+            "category": "wrong conjugation",
+            "explanation": "Lavora is he/she works. The prompt says 'you work' → tu form lavori."
+          },
+          {
+            "answer": "Lavoro in casa.",
+            "category": "wrong conjugation",
+            "explanation": "Lavoro is 'I work at home'; the prompt dictates the tu form lavori."
+          },
+          {
+            "answer": "Lavori casa.",
+            "category": "missing word",
+            "explanation": "The place needs its preposition: Lavori in casa (or a casa)."
+          }
+        ]
       }
     },
     {
@@ -21632,7 +22404,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: which phrase means “every day”?",
-      "hints": [],
+      "hints": [
+        "Think of Marco's routine: every single day — not every evening, not 'always' in general."
+      ],
       "feedback": "Ogni giorno — the backbone of every routine.",
       "evidenceKey": "it-reflexive-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -21680,7 +22454,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The tu form of lavorare, capital letter at the start of the sentence: Lavori in casa."
+      ],
       "feedback": "Lavori in casa.",
       "evidenceKey": "it-reflexive-foundation-act-rb6",
       "assistanceAffectsEvidence": [
@@ -21704,7 +22480,23 @@
             "Lavori"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "lavoro",
+              "category": "wrong conjugation",
+              "explanation": "Lavoro is the io form. The sentence says 'you work' → tu form lavori."
+            },
+            {
+              "answer": "lavora",
+              "category": "wrong conjugation",
+              "explanation": "Lavora is he/she works. For you (tu) it is lavori."
+            },
+            {
+              "answer": "lavorare",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive is not a finished sentence; use the conjugated lavori."
+            }
+          ]
         }
       }
     },
@@ -21726,7 +22518,9 @@
         "vocabulary"
       ],
       "prompt": "From «Study and work»: write “I study every day.”",
-      "hints": [],
+      "hints": [
+        "Same verb as step 3, now with the time phrase: io form of studiare + ogni giorno → Studio ogni giorno."
+      ],
       "feedback": "Studio ogni giorno. — still yours.",
       "evidenceKey": "it-reflexive-foundation-act-rb7",
       "assistanceAffectsEvidence": [
@@ -21738,7 +22532,23 @@
           "Studio ogni giorno."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Studi ogni giorno.",
+            "category": "wrong conjugation",
+            "explanation": "Studi is the tu form; the prompt says 'I study' → studio."
+          },
+          {
+            "answer": "Sono ogni giorno.",
+            "category": "incorrect answer",
+            "explanation": "Sono is 'I am'; the routine verb is studiare → studio ogni giorno."
+          },
+          {
+            "answer": "Studio ogni giorni.",
+            "category": "wrong number",
+            "explanation": "Giorno stays singular in ogni giorno — 'every day', not 'every days'."
+          }
+        ]
       }
     },
     {
@@ -26381,7 +27191,7 @@
       "id": "it-reflexive-foundation",
       "unitId": "it-unit-4",
       "title": "Morning routines",
-      "objective": "Use morning routines in a short exchange.",
+      "objective": "Remember the morning-routine words and sentences from «Study and work».",
       "family": "recall",
       "revision": 1,
       "estimatedMinutes": 8,
@@ -31255,7 +32065,7 @@
       "id": "it-a2-essere-participi",
       "unitId": "it-unit-9",
       "title": "Il passato prossimo con essere",
-      "objective": "Use essere as the helper for verbs of movement and change — with the participle that agrees.",
+      "objective": "Remember the passato prossimo with avere: the helper that changes with the person, the participle that never does.",
       "family": "recall",
       "revision": 1,
       "estimatedMinutes": 8,
@@ -31349,7 +32159,7 @@
       "id": "it-a2-imperfetto",
       "unitId": "it-unit-9",
       "title": "L’imperfetto",
-      "objective": "Describe habits and scenes from the past with the imperfetto.",
+      "objective": "Remember the passato prossimo you first met in «A first look at the past»: ieri, ho mangiato, ho studiato.",
       "family": "recall",
       "revision": 1,
       "estimatedMinutes": 8,
@@ -31441,7 +32251,7 @@
       "id": "it-a2-passato-imperfetto",
       "unitId": "it-unit-9",
       "title": "Passato prossimo o imperfetto?",
-      "objective": "Choose the right past tense — single events vs. background and habits — and tell the story of a day.",
+      "objective": "Remember both passes over the past — «Il passato prossimo con avere» and «A first look at the past» — mixed retrieval, one sentence at a time.",
       "family": "recall",
       "revision": 1,
       "estimatedMinutes": 8,

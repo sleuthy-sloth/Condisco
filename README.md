@@ -165,18 +165,107 @@ anything else). Five packs: `french`, `italian`, `german`, `portuguese`, `spanis
 
 ## Testing
 
-Two test files, deliberately small:
+Unit tests live in `Condisco/Tests/` (target `CondiscoTests`); the UI
+end-to-end flow lives in `Condisco/UITests/` (target `CondiscoUITests`):
 
-- **`Condisco/Tests/PlacementTests.swift`** — placement math (weighted scoring,
-  victory-lap clamping) and accent-tolerance cases for `AnswerEngine`, plus two
+- **`PlacementTests.swift`** — placement math (weighted scoring, victory-lap
+  clamping) and accent-tolerance cases for `AnswerEngine`, plus two
   `LessonContextTests` that load the real French pack through `PackLoader` and
   check story-stimulus selection.
+- **`EngineTests.swift`** — deterministic grading decisions (`AnswerEngine`:
+  exact match, tolerance, alternatives, authored errors, typo forgiveness).
+- **`StoreTests.swift`** — `LearningStore` event-log persistence against a
+  throwaway SQLite file per test.
+- **`Pack{French,Italian,German,Portuguese,Spanish}Tests.swift`** — per-pack
+  editorial regression tests, one file per bundled language.
 - **`Condisco/UITests/FirstRunUITests.swift`** — one end-to-end flow: fresh
   install, onboarding, placement, first lesson (including an accent-missing
   answer), leaving and resuming mid-lesson.
 
+Run the unit tests on the simulator (scheme `Condisco`, test target
+`CondiscoTests`; UI tests live in target `CondiscoUITests`):
+
+```
+xcodebuild test -project Condisco.xcodeproj -scheme Condisco \
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
+  -only-testing:CondiscoTests \
+  ONLY_ACTIVE_ARCH=YES
+```
+
+### Automated gates and reports
+
+- `bash tools/check_packs.sh` — pack + media integrity gate: compiles the real
+  production model with `xcrun swiftc`, decodes all five packs, and verifies
+  every declared media asset (existence, type, SHA-256); the 21 intentional
+  device-speech assets are allowlisted in `tools/device-speech-media.txt`. Exits
+  non-zero on any problem.
+- `bash tools/audit_editorial.sh` — editorial backlog report (missing authored
+  error feedback, generic-only hints, ungraded activities, mission/story
+  final-response gaps). Report-only: exits 0 whenever the packs load; the counts
+  are a backlog, not a gate. `--strict` additionally exits 1 on
+  objectively-enforceable violations (open-ended prompts falsely auto-graded) —
+  that is what the CI workflow runs.
+- `bash tools/preflight.sh` — the **pre-share gate**: runs `check_packs.sh`,
+  the editorial audit, a byte-identical regeneration check of
+  `LessonCatalog.generated.swift`, and the unit tests above (plus the UI smoke
+  with `--with-ui`). Stops on the first failure and exits non-zero on any
+  required failure. Run it before sharing a build — see
+  `docs/release-checklist.md` for the full manual checklist:
+
+  ```sh
+  bash tools/preflight.sh            # required steps
+  bash tools/preflight.sh --with-ui  # + UI smoke — REQUIRED before any external share
+  ```
+
+  The UI smoke is what the 2026-09-25 baseline caught failing (a stale Home
+  string broke `FirstRunUITests`); the Phase 1 and Phase 2 runs after the fix
+  both end in `PREFLIGHT PASSED` (logs below).
+
 The check-packs tool is the real content safety net; the unit tests cover the pure
-scoring/engine math that needs no fixtures.
+scoring/engine math that needs no fixtures. `preflight.sh` is the single entry
+point before any share.
+
+### Verification evidence
+
+All gate runs are logged under `docs/verification/`, named by date and phase, so
+a claim like "preflight green" is traceable to a recorded exit code:
+
+- `2026-09-25-baseline.md` (+ `2026-09-25-baseline-preflight-with-ui.log`) —
+  pre-fix state: steps 1–4 green, UI smoke FAIL, preflight exit 1.
+- `2026-09-25-phase1-preflight-with-ui.log` — post-fix: all five steps PASS
+  (unit suite 123 tests / 0 failures; UI 1/1), `PREFLIGHT PASSED`, exit 0.
+- `2026-09-25-phase2-preflight-with-ui.log` — rerun: all five steps PASS
+  (unit suite 127 tests / 0 failures; UI 1/1), `PREFLIGHT PASSED`, exit 0.
+
+The **editorial review log** lives at `docs/reviews/review-log.jsonl` — one
+disposition row per lesson (255 rows; all currently `unreviewed`, with the
+in-progress batch-1 dispositions in per-pack files under
+`docs/reviews/review-log/`). Review to date is AI-assisted/developer-led only.
+
+**Continuous integration:** `.github/workflows/ci.yml` runs the same four checks
+— pack/media integrity, the editorial audit with `--strict`, the generated
+catalog drift check, and the `CondiscoTests` unit tests — on every push and pull
+request. It uses no secrets and does not run the UI tests (simulator flakiness;
+local `preflight.sh --with-ui` covers them).
+
+### Honest limitations
+
+What has **not** been verified yet — do not claim otherwise in releases,
+screenshots, or store copy:
+
+- **Native-speaker review is pending.** All content edits so far are
+  AI-assisted/developer-reviewed only; nothing has been certified by a native
+  speaker, and no pack claims complete A1/A2 coverage or full proficiency.
+- **Listening audio is synthesized course voice.** The 21 device-speech
+  fallback steps ship without bundled audio (allowlisted in
+  `tools/device-speech-media.txt`) and all 5 bundled Listen tracks are TTS with
+  `reviewPending`; human listening review remains open
+  (see `docs/audio-provenance/`).
+- **No physical-device, performance, or battery evidence is recorded yet.** The
+  gates above are simulator/automation evidence only; on-device audio,
+  battery, and performance are unmeasured (see `docs/performance-budget.md`).
+- **Learner-outcome measures are unverified.** No usability sessions or
+  outcome study has been run.
 
 ## Where to start
 

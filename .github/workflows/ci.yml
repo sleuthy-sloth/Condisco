@@ -1,0 +1,84 @@
+# CI for Condisco (iOS) — no secrets, no CloudKit, no code signing.
+#
+# Mirrors the local pre-share gate (`bash tools/preflight.sh`) minus the UI
+# smoke, which is deliberately NOT run in CI: simulator UI runs are flaky on
+# shared runners, and the local `bash tools/preflight.sh --with-ui` covers it
+# (required before any external share, per docs/release-checklist.md).
+#
+# Steps, in order (same as preflight steps 1–4):
+#   1. Pack + media integrity        tools/check_packs.sh            (gate)
+#   2. Editorial audit               tools/audit_editorial.sh --strict
+#                                     (backlog counts are report-only; the
+#                                      --strict gate may fail the build)
+#   3. Generated catalog drift       tools/gen_lesson_catalog.py + diff (gate)
+#   4. Unit tests (CondiscoTests)    xcodebuild -only-testing:CondiscoTests
+#
+# The workflow uses whatever Xcode/simulator runtimes the macos-latest runner
+# image ships; the unit-test step picks the first available iPhone simulator
+# via `xcrun simctl list`, so it does not depend on a specific device name.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify packs, editorial, catalog, unit tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step 1 — pack + media integrity. Compiles the real production model
+      # with `xcrun swiftc`, decodes all five packs, and verifies every
+      # declared media asset (existence, type, SHA-256), attribution
+      # citations, and listen-duration/section checks. The 21 intentional
+      # device-speech assets are allowlisted in tools/device-speech-media.txt.
+      - name: Pack + media integrity (tools/check_packs.sh)
+        run: bash tools/check_packs.sh
+
+      # Step 2 — editorial audit. The full report is printed for the human
+      # audit trail; the hint/error-feedback backlog counts do NOT fail the
+      # build (report-only), but `--strict` exits 1 on objectively-enforceable
+      # violations (open-ended prompts falsely auto-graded), which DOES fail
+      # the build. This is currently green: EXIT-GATE PASS (0).
+      - name: Editorial audit (tools/audit_editorial.sh --strict)
+        run: bash tools/audit_editorial.sh --strict
+
+      # Step 3 — the generated Siri/Shortcuts lesson catalog must be a
+      # byte-identical snapshot of the five packs. Regenerate into a temp file
+      # and diff against the committed one; `diff` failing is a build failure.
+      - name: Generated lesson catalog drift check
+        run: |
+          tmp="$(mktemp -d)"
+          python3 tools/gen_lesson_catalog.py \
+            Condisco/Content/packs "$tmp/LessonCatalog.generated.swift"
+          diff -u Condisco/DeepLink/LessonCatalog.generated.swift \
+            "$tmp/LessonCatalog.generated.swift"
+          rm -rf "$tmp"
+
+      # Step 4 — unit tests (CondiscoTests) on an available iPhone simulator.
+      # The runner's shipped device names vary by image, so pick the first
+      # available iPhone from `xcrun simctl list` instead of hard-coding one;
+      # xcodebuild boots it automatically. No signing: CODE_SIGNING_ALLOWED=NO.
+      # UI tests (CondiscoUITests) are NOT run here — see header comment.
+      - name: Unit tests (xcodebuild -only-testing:CondiscoTests)
+        run: |
+          device="$(xcrun simctl list devices available | grep -oE 'iPhone [^(]+' | head -1 | sed 's/[[:space:]]*$//')"
+          if [ -z "$device" ]; then
+            echo "::error::No available iPhone simulator found on this runner."
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Using simulator: $device"
+          xcodebuild test \
+            -project Condisco.xcodeproj \
+            -scheme Condisco \
+            -destination "platform=iOS Simulator,name=$device" \
+            -only-testing:CondiscoTests \
+            ONLY_ACTIVE_ARCH=YES \
+            CODE_SIGNING_ALLOWED=NO

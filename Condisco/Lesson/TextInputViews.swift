@@ -61,6 +61,9 @@ struct TextResponseActivityView: View {
             Text("Your answer")
                 .font(DesignTokens.text(14, weight: .medium))
                 .foregroundStyle(DesignTokens.muted)
+                // Label of the editor below, so VoiceOver pairs them instead
+                // of announcing the caption and a nameless empty field.
+                .accessibilityHidden(true)
             TextEditor(text: Binding(
                 get: { text },
                 set: { draft = .text($0) }
@@ -76,6 +79,7 @@ struct TextResponseActivityView: View {
                     .stroke(DesignTokens.edge, lineWidth: 1.5)
             )
             .disabled(disabled)
+            .accessibilityLabel("Your answer")
 
             if revealed {
                 Text(activity.answer.answers.joined(separator: " / "))
@@ -134,7 +138,7 @@ struct InlineClozeActivityView: View {
                     .foregroundStyle(DesignTokens.ink)
                     .multilineTextAlignment(.center)
                     .frame(minWidth: 70, maxWidth: 150)
-                    .padding(.vertical, 4)
+                    .padding(.vertical, 8)
                     .padding(.horizontal, 6)
                     .background(DesignTokens.stock2)
                     .cornerRadius(6)

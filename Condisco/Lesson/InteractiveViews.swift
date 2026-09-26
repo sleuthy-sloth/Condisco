@@ -47,18 +47,24 @@ struct OrderingActivityView: View {
                                 setIds(next)
                             }
                             .disabled(disabled || index == 0)
+                            .frame(minWidth: 40, minHeight: 44)
+                            .accessibilityLabel("Move up")
                             Button("↓") {
                                 var next = placedIds
                                 next.swapAt(index, index + 1)
                                 setIds(next)
                             }
                             .disabled(disabled || index == placedIds.count - 1)
+                            .frame(minWidth: 40, minHeight: 44)
+                            .accessibilityLabel("Move down")
                             Button("✕") {
                                 var next = placedIds
                                 next.remove(at: index)
                                 setIds(next)
                             }
                             .disabled(disabled)
+                            .frame(minWidth: 40, minHeight: 44)
+                            .accessibilityLabel("Remove")
                         }
                         .font(DesignTokens.text(16))
                         .foregroundStyle(DesignTokens.ink)
@@ -70,7 +76,7 @@ struct OrderingActivityView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(DesignTokens.primary, lineWidth: 1.5)
                         )
-                        .accessibilityElement(children: .combine)
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel("Placed: \(item.text)\(duplicateSuffix(for: id))")
                     }
                 }
@@ -91,6 +97,7 @@ struct OrderingActivityView: View {
                     .foregroundStyle(DesignTokens.ink)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
+                    .frame(minHeight: 44)
                     .background(DesignTokens.stock)
                     .cornerRadius(8)
                     .overlay(
@@ -141,7 +148,7 @@ struct MatchingActivityView: View {
                         }
                         .font(DesignTokens.text(15))
                         .foregroundStyle(selectedLeftId == item.id ? DesignTokens.stock : DesignTokens.ink)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, minHeight: 44)
                         .padding(.vertical, 10)
                         .background(selectedLeftId == item.id ? DesignTokens.primary : DesignTokens.stock)
                         .cornerRadius(8)
@@ -163,7 +170,7 @@ struct MatchingActivityView: View {
                         }
                         .font(DesignTokens.text(15))
                         .foregroundStyle(DesignTokens.ink)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, minHeight: 44)
                         .padding(.vertical, 10)
                         .background(DesignTokens.stock)
                         .cornerRadius(8)

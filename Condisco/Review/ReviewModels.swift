@@ -74,6 +74,38 @@ enum ReviewVerdict: String {
     }
 }
 
+// MARK: - Attempt construction
+//
+// Review verdicts and the lesson warm-up record through the same event
+// pipeline, so the SRS reschedules an evidence key identically whether it
+// was rated in the Review tab or in a lesson's warm-up phase.
+
+extension ReviewItem {
+    /// Builds the activity attempt a review verdict records: the exact
+    /// shape `ReviewModel.recordVerdict` writes (same evidenceKey, stepId,
+    /// response, independence, and grade mapping via `Fsrs.grade(for:)`).
+    /// `at` defaults to now, matching the Review tab's behavior.
+    func makeAttempt(verdict: ReviewVerdict, at: Date = Date()) -> ActivityAttempt {
+        ActivityAttempt(
+            id: UUID().uuidString,
+            packId: packId,
+            packVersion: packVersion,
+            lessonId: lessonId,
+            lessonRevision: lessonRevision,
+            stepId: stepId,
+            activityId: activityId,
+            activityRevision: activityRevision,
+            evidenceKey: evidenceKey,
+            response: verdict.response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: verdict.outcome,
+                independent: verdict.independent,
+                feedback: ""),
+            at: at)
+    }
+}
+
 // MARK: - Review catalog
 
 enum ReviewCatalog {
@@ -210,7 +242,15 @@ enum ReviewCatalog {
         let packsById = Dictionary(
             uniqueKeysWithValues: packs.map { ($0.id, $0) })
         var latestByKey: [String: ActivityAttempt] = [:]
-        for event in try store.allEvents() {
+        // Tolerant global read: an undecodable row anywhere in the log — even
+        // in a pack never opened — is skipped and logged instead of failing
+        // the whole Review tab. Selection semantics below are unchanged: the
+        // decodable events arrive in the same (at, id) order as before.
+        let (events, skipped) = try store.allEventsWithQuarantine()
+        if !skipped.isEmpty {
+            LearningStore.logCorruptRows(skipped)
+        }
+        for event in events {
             guard case .attempt(let attempt) = event,
                   let key = attempt.evidenceKey else { continue }
             if let current = latestByKey[key], current.at >= attempt.at {
@@ -257,5 +297,55 @@ enum ReviewCatalog {
             }
         }
         return count
+    }
+}
+
+// MARK: - Warm-up recall selection
+
+/// Purely selects the warm-up cards for a brand-new lesson: the oldest
+/// due items from *earlier* lessons in the same pack, capped at `limit`.
+/// No store access — the lesson player hands in the due list it already
+/// loads, so the whole rule set is testable in isolation.
+enum RecallWarmUp {
+    /// Rules, in order over the (already oldest-first) due list:
+    /// 1. drop items whose lesson is the current lesson or appears at or
+    ///    after it in `pack.lessons` order ("earlier ideas" only);
+    /// 2. drop items whose evidence key is produced by any *required* step
+    ///    of the current lesson (never ask the exact same question within
+    ///    one mission);
+    /// 3. drop items whose `stepId` is the "review" fallback (quarantined
+    ///    by projection, never reschedules FSRS);
+    /// 4. dedupe by evidence key;
+    /// 5. `prefix(limit)`.
+    static func select(
+        due: [ReviewItem], currentLesson: Lesson, pack: CoursePack, limit: Int = 2
+    ) -> [ReviewItem] {
+        guard let currentIndex = pack.lessons.firstIndex(where: {
+            $0.id == currentLesson.id
+        }) else { return [] }
+        // Evidence the current lesson's required steps will themselves
+        // produce: asking any of these in the warm-up would duplicate a
+        // question the mission is about to ask.
+        let currentLessonEvidence = Set(
+            currentLesson.steps
+                .filter { $0.required }
+                .compactMap { pack.activity(id: $0.activityId)?.evidenceKey })
+        var seen = Set<String>()
+        var selected: [ReviewItem] = []
+        for item in due {
+            guard selected.count < limit else { break }
+            // Earlier ideas only: the item's lesson must precede the
+            // current lesson in pack order.
+            guard let itemIndex = pack.lessons.firstIndex(where: {
+                $0.id == item.lessonId
+            }), itemIndex < currentIndex else { continue }
+            guard !currentLessonEvidence.contains(item.evidenceKey) else { continue }
+            // The "review" fallback step is quarantined by projection and
+            // never reschedules FSRS, so rating it would be a no-op.
+            guard item.stepId != "review" else { continue }
+            guard seen.insert(item.evidenceKey).inserted else { continue }
+            selected.append(item)
+        }
+        return selected
     }
 }

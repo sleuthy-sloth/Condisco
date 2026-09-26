@@ -135,6 +135,10 @@ struct CoursesView: View {
     private func courseRow(_ pack: CoursePack) -> some View {
         let done = model.progress[pack.id]?.finishedLessons.count ?? 0
         let total = pack.lessons.count
+        let finishedSet = model.progress[pack.id]?.finishedLessons ?? []
+        let remainingMinutes = pack.lessons
+            .filter { !finishedSet.contains($0.id) }
+            .reduce(0) { $0 + $1.estimatedMinutes }
         return PaperCard {
             VStack(alignment: .leading, spacing: 6) {
                 Text(pack.language.displayName)
@@ -148,12 +152,18 @@ struct CoursesView: View {
                     .font(DesignTokens.text(14))
                     .foregroundStyle(DesignTokens.muted)
                     .lineLimit(2)
+                if remainingMinutes > 0 {
+                    Text("~\(remainingMinutes) min left")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
                 HStack {
                     Text("\(done) of \(total) lessons complete")
                         .font(DesignTokens.text(13))
                         .foregroundStyle(DesignTokens.muted)
                     Spacer()
                     lessonProgressBar(done: done, total: total)
+                        .accessibilityHidden(true)
                 }
                 .padding(.top, 4)
             }
@@ -198,6 +208,7 @@ struct CoursesView: View {
             .padding(.vertical, 10)
             .background(DesignTokens.primary)
             .cornerRadius(8)
+            .frame(minHeight: 44)
         }
     }
 }
@@ -223,6 +234,26 @@ struct LessonListView: View {
 
     private func lessons(in unit: CourseUnit) -> [Lesson] {
         pack.lessons.filter { $0.unitId == unit.id }
+    }
+
+    /// "You'll be able to …" line for a unit, grounded in authored copy:
+    /// the unit objective when present, otherwise the first lesson
+    /// objective in the unit. Only the leading letter is adjusted to fit
+    /// the phrasing — no content is fabricated.
+    private func unitAbilityLine(_ unit: CourseUnit) -> String? {
+        let objective = unit.objective.trimmingCharacters(in: .whitespacesAndNewlines)
+        let sentence: String
+        if !objective.isEmpty {
+            sentence = objective
+        } else if let first = lessons(in: unit)
+            .map({ $0.objective.trimmingCharacters(in: .whitespacesAndNewlines) })
+            .first(where: { !$0.isEmpty }) {
+            sentence = first
+        } else {
+            return nil
+        }
+        guard let head = sentence.first else { return nil }
+        return "You'll be able to " + String(head).lowercased() + sentence.dropFirst()
     }
 
     var body: some View {
@@ -266,9 +297,13 @@ struct LessonListView: View {
                 Text(unit.title)
                     .font(DesignTokens.display(17))
                     .foregroundStyle(DesignTokens.inkDeep)
-                Text(unit.objective)
-                    .font(DesignTokens.text(13))
-                    .foregroundStyle(DesignTokens.muted)
+                    .accessibilityAddTraits(.isHeader)
+                if let ability = unitAbilityLine(unit) {
+                    Text(ability)
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                        .lineLimit(2)
+                }
             }
             .padding(.horizontal, 4)
             ForEach(lessons(in: unit), id: \.id) { lesson in
@@ -307,6 +342,7 @@ struct LessonListView: View {
                     Image(systemName: "book.closed")
                         .foregroundStyle(DesignTokens.primary)
                         .font(.system(size: 18))
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Vocabulary")
                             .font(DesignTokens.text(16, weight: .semibold))
@@ -319,6 +355,7 @@ struct LessonListView: View {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(DesignTokens.muted)
                         .font(.system(size: 16, weight: .semibold))
+                        .accessibilityHidden(true)
                 }
             }
         }
@@ -360,6 +397,9 @@ struct LessonListView: View {
         let knownOnly = progress.knownLessons.contains(lesson.id)
             && !progress.participationCompleted.contains(lesson.id)
             && !progress.legacyCredits.contains(lesson.id)
+        let recommended = pack.firstUncompletedLesson(
+            completed: progress.finishedLessons)?.lesson.id == lesson.id
+        let skills = CourseSkillMapper.skills(for: lesson, in: pack)
         return PaperCard {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -382,6 +422,15 @@ struct LessonListView: View {
                         if lesson.family != .discovery {
                             FamilyBadge(family: lesson.family)
                         }
+                        if recommended {
+                            Text("Up next")
+                                .font(DesignTokens.text(11, weight: .semibold))
+                                .foregroundStyle(DesignTokens.primary)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(DesignTokens.primarySoft)
+                                .cornerRadius(6)
+                        }
                         if PlacementStore.recommendedLessonId(packId: pack.id) == lesson.id {
                             Text("Suggested start")
                                 .font(DesignTokens.text(11, weight: .semibold))
@@ -392,16 +441,39 @@ struct LessonListView: View {
                                 .cornerRadius(6)
                         }
                     }
+                    if !skills.isEmpty {
+                        HStack(spacing: 6) {
+                            ForEach(skills, id: \.self) { skill in
+                                Text(skill.label)
+                                    .font(DesignTokens.text(11, weight: .medium))
+                                    .foregroundStyle(DesignTokens.primary)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 3)
+                                    .background(DesignTokens.primarySoft)
+                                    .cornerRadius(6)
+                            }
+                        }
+                    }
                 }
                 Spacer()
                 if finished {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(DesignTokens.primary)
                         .font(.system(size: 22))
+                        .accessibilityHidden(true)
+                } else if recommended {
+                    Text("Continue")
+                        .font(DesignTokens.text(14, weight: .semibold))
+                        .foregroundStyle(DesignTokens.stock)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(DesignTokens.primary)
+                        .cornerRadius(8)
                 } else {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(DesignTokens.muted)
                         .font(.system(size: 16, weight: .semibold))
+                        .accessibilityHidden(true)
                 }
             }
         }
@@ -413,6 +485,60 @@ struct LessonListView: View {
             try? store.setLessonKnown(pack: pack, lessonId: lesson.id, known: known)
             onProgressRefresh()
         }
+    }
+}
+
+// MARK: - Practiced-skill derivation
+//
+// Each lesson's practiced skills are derived from the v2 steps the player
+// actually runs (lesson.steps → pack.activities), never from the lesson
+// family label. The mapping is deliberately conservative — it claims no
+// more than each activity kind demonstrably exercises:
+//
+//   · self-compare (record yourself, compare with the model)  → speaking
+//   · text / cloze (type an answer)                           → writing
+//   · selection / matching / ordering / information /
+//     dialogue-choice / scene-selection (choose an option)    → reading
+//   · any activity whose stimulus is audio                    → listening
+//
+// Audio detection reads the stimulus kind on the pack ("audio"), which
+// also covers the listening-family lesson. Legacy v1 exercises are excluded
+// on purpose: they are retained for progress migration only and are not
+// part of the v2 sequence the learner plays.
+
+/// The four core skills, in display order.
+private enum CourseSkill: String, CaseIterable {
+    case reading, listening, speaking, writing
+
+    var label: String { rawValue.capitalized }
+}
+
+private enum CourseSkillMapper {
+    /// Practiced skills for a lesson, in `CourseSkill` display order.
+    static func skills(for lesson: Lesson, in pack: CoursePack) -> [CourseSkill] {
+        let activitiesById = Dictionary(
+            uniqueKeysWithValues: pack.activities.map { ($0.id, $0) })
+        var found = Set<CourseSkill>()
+        for step in lesson.steps {
+            guard let activity = activitiesById[step.activityId] else { continue }
+            switch activity {
+            case .selfCompare: found.insert(.speaking)
+            case .text, .cloze: found.insert(.writing)
+            case .selection, .matching, .ordering, .information,
+                 .dialogueChoice, .sceneSelection: found.insert(.reading)
+            case .legacy: continue
+            }
+            if let stimulusId = activity.stimulusId,
+               pack.stimuli.contains(where: { $0.id == stimulusId && isAudio($0) }) {
+                found.insert(.listening)
+            }
+        }
+        return CourseSkill.allCases.filter(found.contains)
+    }
+
+    private static func isAudio(_ stimulus: Stimulus) -> Bool {
+        if case .audio = stimulus { return true }
+        return false
     }
 }
 

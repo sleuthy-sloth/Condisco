@@ -59,7 +59,14 @@ struct HandsFreeCardView: View {
                                 .cornerRadius(10)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityHint("Synthesized course voice")
+                        // Minimum 44pt hit area (text + padding lands just
+                        // under it at current type sizes).
+                        .frame(minHeight: 44)
                         .padding(.top, 2)
+                        Text("Course voice (synthesized)")
+                            .font(DesignTokens.text(12))
+                            .foregroundStyle(DesignTokens.muted)
                         if !revealed {
                             Text("Say it out loud, then reveal the answer.")
                                 .font(DesignTokens.text(14))
@@ -70,6 +77,8 @@ struct HandsFreeCardView: View {
                             }
                             .font(DesignTokens.text(15, weight: .semibold))
                             .foregroundStyle(DesignTokens.primary)
+                            // 44pt minimum hit area for the plain-text button.
+                            .frame(minHeight: 44)
                             .padding(.top, 2)
                         }
                     }

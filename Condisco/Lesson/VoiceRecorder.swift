@@ -4,13 +4,13 @@ import SwiftUI
 // MARK: - Record and compare
 //
 // On-device pronunciation practice: the learner records their take of a
-// phrase, then hears it back followed by the native voice. No scoring, no
+// phrase, then hears it back followed by the synthesized course voice. No scoring, no
 // judgment — just listen and compare. Recordings are ephemeral: a tmp
 // .m4a deleted on disappear and after playback completes. Nothing is ever
 // uploaded.
 
 /// Owns one record-and-compare cycle: idle → recording → "your take" →
-/// "native voice" → idle. Mic denial stays quiet — the button simply notes
+/// "course voice (synthesized)" → idle. Mic denial stays quiet — the button simply notes
 /// the mic is unavailable, never an alert.
 @MainActor
 final class VoiceRecorder: NSObject, ObservableObject, AVAudioPlayerDelegate {
@@ -170,7 +170,7 @@ final class VoiceRecorder: NSObject, ObservableObject, AVAudioPlayerDelegate {
         }
     }
 
-    /// Return to idle once the native voice finishes, so the button
+    /// Return to idle once the course voice finishes, so the button
     /// reflects reality without needing a manual tap.
     private func watchNativeVoice() {
         nativeWatch?.cancel()
@@ -218,7 +218,7 @@ struct RecordCompareButton: View {
                                      : DesignTokens.muted)
                 if recorder.phase == .yourTake || recorder.phase == .native {
                     Text(recorder.phase == .yourTake
-                         ? "Your take" : "Native voice")
+                         ? "Your take" : "Course voice (synthesized)")
                         .font(DesignTokens.text(10))
                         .foregroundStyle(DesignTokens.muted)
                         .fixedSize()

@@ -15,6 +15,7 @@ struct FlashcardStudyView: View {
     let onVerdict: (ReviewVerdict) -> Void
 
     @State private var flipped = false
+    @ObservedObject private var a11y = A11ySettings.shared
 
     var body: some View {
         ScrollView {
@@ -27,8 +28,13 @@ struct FlashcardStudyView: View {
                 SessionDots(position: position, total: total)
 
                 Button {
-                    withAnimation(.easeInOut(duration: 0.35)) {
+                    // No 3D flip for users who asked for reduced motion.
+                    if a11y.effectiveReduceMotion {
                         flipped.toggle()
+                    } else {
+                        withAnimation(.easeInOut(duration: 0.35)) {
+                            flipped.toggle()
+                        }
                     }
                 } label: {
                     ZStack {
@@ -126,6 +132,10 @@ struct VerdictButtonRow: View {
                                 ? RoundedRectangle(cornerRadius: 8)
                                     .stroke(DesignTokens.primary, lineWidth: 1)
                                 : nil)
+                        // 44pt minimum hit area; applied after the visual
+                        // styling so the pill keeps its drawn size.
+                        .frame(minHeight: 44)
+                        .accessibilityLabel(verdict.a11yLabel)
                 }
             }
             if let saveError {
@@ -133,6 +143,28 @@ struct VerdictButtonRow: View {
                     .font(DesignTokens.text(13))
                     .foregroundStyle(DesignTokens.attentionInk)
             }
+        }
+    }
+}
+
+// MARK: - VoiceOver labels
+
+/// The bare verdict titles ("Almost", "Not yet", "Easy") are ambiguous when
+/// a VoiceOver user lands on the row out of context, so each button speaks
+/// its title plus what the rating means. The "How did that go?" heading that
+/// precedes the row already supplies the group context, so no row-level hint
+/// is added.
+private extension ReviewVerdict {
+    var a11yLabel: String {
+        switch self {
+        case .tryAgain:
+            return "Not yet. I didn't know it."
+        case .close:
+            return "Almost. I nearly knew it."
+        case .exact:
+            return "I knew it. I recalled the answer independently."
+        case .easy:
+            return "Easy. I knew it without effort."
         }
     }
 }

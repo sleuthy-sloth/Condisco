@@ -1093,6 +1093,43 @@ final class TodayPlanTests: XCTestCase {
         XCTAssertNil(restPlan.listen)
         XCTAssertNotNil(restPlan.nextDueAt)
     }
+
+    func testFreshLearnerWithNoProgressLeadsToLesson() throws {
+        // A brand-new learner — no checkpoint, nothing completed, nothing
+        // due: the next lesson is the only thing worth offering.
+        let pack = try frenchPack()
+        let next = try XCTUnwrap(pack.firstUncompletedLesson(completed: []))
+
+        let plan = TodayPlan.make(
+            resume: nil, nextLesson: next, dueCount: 0,
+            nextDueAt: nil, listen: nil)
+
+        guard case .lesson(let lesson, let unit) = plan.primary else {
+            return XCTFail("expected .lesson, got \(plan.primary)")
+        }
+        XCTAssertEqual(lesson.id, next.lesson.id)
+        XCTAssertEqual(unit.id, next.unit.id)
+        XCTAssertEqual(plan.dueCount, 0)
+    }
+
+    func testPathCompleteWithReviewsDueLeadsToReview() throws {
+        // Every lesson on the path is done: with nothing left to start,
+        // the non-empty due queue becomes the headline — the "come back
+        // and review" day.
+        let pack = try frenchPack()
+        let allDone = Set(pack.lessons.map(\.id))
+        XCTAssertNil(pack.firstUncompletedLesson(completed: allDone))
+
+        let plan = TodayPlan.make(
+            resume: nil, nextLesson: nil, dueCount: 3,
+            nextDueAt: Date.distantFuture, listen: nil)
+
+        guard case .review(let due) = plan.primary else {
+            return XCTFail("expected .review, got \(plan.primary)")
+        }
+        XCTAssertEqual(due, 3)
+        XCTAssertEqual(plan.dueCount, 3)
+    }
 }
 
 // MARK: - Scenario loop (P3.2 pure core)
@@ -1387,5 +1424,412 @@ final class RecapSplitTests: XCTestCase {
         split = LessonRecapSplit()
         XCTAssertEqual(split.independentCount, 0)
         XCTAssertEqual(split.practiceCount, 0)
+    }
+}
+
+// MARK: - Recap phrase source ids
+
+/// Phrases saved from the lesson recap must carry the pack and lesson
+/// they came from, so phrasebook rows can route back to their origin
+/// lesson. The save button itself is a view, but the payload both recap
+/// call sites hand it is built by the shared pure `recapPhraseSave`
+/// helper — the two recap save paths (word rows and the mission card)
+/// use it, and these tests pin that the ids always travel with it.
+final class RecapPhraseSaveTests: XCTestCase {
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    func testRecapSaveCarriesPackAndLessonSourceIds() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lessons.first)
+
+        let save = recapPhraseSave(
+            target: "Bonjour", meaning: "Hello", pack: pack, lesson: lesson)
+
+        XCTAssertEqual(save.sourcePackId, pack.id)
+        XCTAssertEqual(save.sourceLessonId, lesson.id)
+        // The human-readable source label stays the lesson title, so the
+        // Saved list's existing grouping is unchanged.
+        XCTAssertEqual(save.source, lesson.title)
+        XCTAssertEqual(save.languageSlug, pack.language.slug)
+        XCTAssertFalse(save.phrase.target.isEmpty)
+        XCTAssertEqual(save.phrase.languageName, pack.language.displayName)
+    }
+
+    func testEveryLessonRecapSaveCarriesNonEmptySourceIds() throws {
+        let pack = try frenchPack()
+        XCTAssertFalse(pack.lessons.isEmpty, "fixture needs at least one lesson")
+        for lesson in pack.lessons {
+            let save = recapPhraseSave(
+                target: "Merci", meaning: "Thanks", pack: pack, lesson: lesson)
+            XCTAssertFalse(
+                save.sourcePackId.isEmpty,
+                "lesson \(lesson.id) must carry its pack id")
+            XCTAssertEqual(save.sourceLessonId, lesson.id)
+        }
+    }
+
+    /// The stored phrase shape the button writes: the deterministic id
+    /// plus every field, exactly as `PhraseSaveButton` builds it — the
+    /// source ids must land on the persisted row, not just the payload.
+    func testStoredPhraseCarriesTheRecapSourceIds() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lessons.first)
+        let save = recapPhraseSave(
+            target: "Merci", meaning: "Thanks", pack: pack, lesson: lesson)
+
+        let stored = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: save.languageSlug,
+                target: save.phrase.target,
+                meaning: save.phrase.meaning),
+            languageSlug: save.languageSlug,
+            languageName: save.phrase.languageName,
+            target: save.phrase.target,
+            meaning: save.phrase.meaning,
+            source: save.source,
+            sourcePackId: save.sourcePackId,
+            sourceLessonId: save.sourceLessonId,
+            savedAt: Date())
+
+        XCTAssertEqual(stored.sourcePackId, pack.id)
+        XCTAssertEqual(stored.sourceLessonId, lesson.id)
+        XCTAssertEqual(stored.id, LearningStore.savedPhraseId(
+            languageSlug: pack.language.slug,
+            target: "Merci",
+            meaning: "Thanks"))
+    }
+}
+
+// MARK: - Listen + stimulus phrase source ids
+
+/// Phrases saved outside the recap must carry source ids too, so phrasebook
+/// rows can route back to their origin lesson. The listen player's save is
+/// the only one of the three remaining call sites with non-trivial logic —
+/// locating the pack from the track's lesson id — which is extracted pure
+/// (`ListenTrack.sourcePackId`) and pinned below. The other two call sites
+/// (lesson stimulus, vocabulary browser) pass ids that are already in
+/// scope: the pack id comes straight off the `CoursePack` the view holds,
+/// and a lesson id is passed only where a single lesson genuinely exists
+/// (stimulus examples carry `lesson?.id`, which callers of
+/// `StimulusContextView` do not yet supply; the vocabulary browser spans
+/// the whole pack, so no lesson id exists there at all).
+final class PhraseSourceIdsForListenAndBrowserTests: XCTestCase {
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    /// Every bundled listen track resolves to a real pack by its lesson id
+    /// — the exact lookup the listen save button relies on, and the same
+    /// one the phrasebook runs to open a saved phrase's lesson.
+    func testEveryListenTrackResolvesToItsPack() throws {
+        let packs = try PackLoader.loadPacks()
+        let tracks = ListenCatalog.loadTracks()
+        XCTAssertFalse(tracks.isEmpty, "fixture needs at least one track")
+        for track in tracks {
+            let packId = track.sourcePackId
+            XCTAssertFalse(
+                packId.isEmpty,
+                "track \(track.lessonId) must resolve to a pack")
+            let pack = try XCTUnwrap(
+                packs.first { $0.id == packId },
+                "resolved pack must exist")
+            XCTAssertTrue(
+                pack.lessons.contains { $0.id == track.lessonId },
+                "resolved pack \(packId) must contain the track's lesson")
+        }
+    }
+
+    /// The French track's save payload: full ids — pack and lesson — plus
+    /// the unchanged human-readable source and language slug.
+    func testListenTrackExposesFullPackAndLessonSourceIds() throws {
+        let pack = try frenchPack()
+        let track = try XCTUnwrap(
+            ListenCatalog.loadTracks().first { $0.courseSlug == "french" })
+
+        XCTAssertEqual(track.sourcePackId, pack.id)
+        XCTAssertFalse(track.lessonId.isEmpty)
+        XCTAssertTrue(
+            pack.lessons.contains { $0.id == track.lessonId })
+
+        // The button writes these onto the persisted row.
+        let stored = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: track.courseSlug,
+                target: "Je suis Anna.",
+                meaning: "I am Anna."),
+            languageSlug: track.courseSlug,
+            languageName: ListenCourse.displayName(for: track.courseSlug),
+            target: "Je suis Anna.",
+            meaning: "I am Anna.",
+            source: track.lessonTitle,
+            sourcePackId: track.sourcePackId,
+            sourceLessonId: track.lessonId,
+            savedAt: Date())
+        XCTAssertEqual(stored.sourcePackId, pack.id)
+        XCTAssertEqual(stored.sourceLessonId, track.lessonId)
+    }
+}
+
+// MARK: - Review session length entry points
+
+/// Home's Today invitation promises "Up to 5 reviews", so entering
+/// Review from there must preselect a five-card session. Direct
+/// Review-tab entry keeps the learner's chosen size, and a deep link
+/// (widget) asks for everything due. The shared binding in ContentView
+/// is the single source of truth, so a picker change persists across
+/// tab switches — the `.tab` entry below pins exactly that contract.
+final class ReviewSessionLengthTests: XCTestCase {
+
+    func testHomeInvitationAlwaysPreselectsFive() {
+        // Even when the learner had chosen a bigger sitting, Home's
+        // invitation still opens a five-card session matching its copy.
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .homeInvitation, current: .all), .five)
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .homeInvitation, current: .ten), .five)
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .homeInvitation, current: .five), .five)
+    }
+
+    func testTabEntryKeepsCurrentChoice() {
+        // A picker change ("picker change persists") survives tab
+        // switches: entering the tab re-applies whatever is current.
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .tab, current: .ten), .ten)
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .tab, current: .five), .five)
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .tab, current: .all), .all)
+    }
+
+    func testDeepLinkRequestsEverythingDue() {
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .deepLink, current: .five), .all)
+        XCTAssertEqual(
+            resolveReviewSessionLength(for: .deepLink, current: .all), .all)
+    }
+}
+
+// MARK: - Warm-up recall selection (supplement)
+
+/// The pure selection rules of the lesson warm-up are covered in detail
+/// by `LearningStoreTests` (earlier-ideas-only, current-lesson evidence
+/// exclusion, evidence-key dedup, the "review" fallback skip). These
+/// pin the two branches those tests leave open: the strict cap of two
+/// when more than two earlier items are due, and the guard for a
+/// current lesson that is not in the pack at all.
+final class RecallWarmUpTests: XCTestCase {
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    /// A minimal due item from `lessonId`; the evidence key is invented
+    /// so it can never collide with the current lesson's real evidence.
+    private func dueItem(
+        pack: CoursePack, lessonId: String, evidenceKey: String, dueAt: Date
+    ) -> ReviewItem {
+        ReviewItem(
+            evidenceKey: evidenceKey,
+            packId: pack.id,
+            packVersion: pack.version,
+            courseTitle: pack.title,
+            lessonId: lessonId,
+            lessonTitle: lessonId,
+            lessonRevision: 1,
+            stepId: "warm-up-step",
+            activityId: evidenceKey,
+            activityRevision: 1,
+            prompt: "prompt",
+            answerText: "answer",
+            feedback: "feedback",
+            dueAt: dueAt)
+    }
+
+    func testCapOfTwoKeepsOnlyTheTwoOldest() throws {
+        let pack = try frenchPack()
+        let current = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let t1 = Date(timeIntervalSince1970: 1_700_000_000)
+        // Three eligible earlier-lesson items — strictly more than the
+        // cap, so the truncation (not just the filters) is what decides.
+        let due = [
+            dueItem(pack: pack, lessonId: "fr-identity-foundation",
+                    evidenceKey: "warmup-key-a", dueAt: t1),
+            dueItem(pack: pack, lessonId: "fr-identity-foundation",
+                    evidenceKey: "warmup-key-b", dueAt: t1.addingTimeInterval(100)),
+            dueItem(pack: pack, lessonId: "fr-identity-foundation",
+                    evidenceKey: "warmup-key-c", dueAt: t1.addingTimeInterval(200)),
+        ]
+
+        let selected = RecallWarmUp.select(
+            due: due, currentLesson: current, pack: pack, limit: 2)
+
+        XCTAssertEqual(
+            selected.map(\.evidenceKey), ["warmup-key-a", "warmup-key-b"])
+    }
+
+    func testCurrentLessonMissingFromPackYieldsNothing() throws {
+        let pack = try frenchPack()
+        let t1 = Date(timeIntervalSince1970: 1_700_000_000)
+        // A lesson whose id is not in the pack (stale payload, pack
+        // reshuffle): there is no "earlier" anchor, so nothing may be
+        // offered rather than guessing wrong.
+        let ghost = try decodedGhostLesson(pack: pack)
+        let due = [
+            dueItem(pack: pack, lessonId: "fr-identity-foundation",
+                    evidenceKey: "warmup-key-a", dueAt: t1),
+        ]
+
+        XCTAssertTrue(RecallWarmUp.select(
+            due: due, currentLesson: ghost, pack: pack).isEmpty)
+    }
+
+    /// A minimum valid Lesson not present in the fixture pack.
+    private func decodedGhostLesson(pack: CoursePack) throws -> Lesson {
+        let dict: [String: Any] = [
+            "id": "ghost-lesson",
+            "unitId": pack.units.first?.id ?? "u1",
+            "title": "Ghost lesson",
+            "objective": "objective",
+            "family": "discovery",
+            "revision": 1,
+            "estimatedMinutes": 5,
+            "entryStepId": "ghost-step",
+            "steps": [
+                ["id": "ghost-step", "purpose": "practice",
+                 "activityId": "ghost-activity", "required": true],
+            ],
+            "completionPolicy": ["kind": "participation"],
+            "conceptIds": [],
+            "vocabulary": [],
+        ]
+        let data = try JSONSerialization.data(withJSONObject: dict)
+        return try JSONDecoder().decode(Lesson.self, from: data)
+    }
+}
+
+// MARK: - Review due projection
+
+/// The review queue has a single source of truth — the learning-event
+/// projection. `ReviewCatalog.loadDue` and every due count it feeds
+/// (Home, Review, You, the widget) must agree exactly with the due
+/// records `project(pack:)` derives; there is deliberately no separate
+/// persisted review counter (the store schema keeps only events,
+/// checkpoints, kv, and phrasebook tables). These tests pin that
+/// equivalence directly from a fresh store.
+@MainActor
+final class ReviewCatalogProjectionTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-loaddue-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    /// A valid independent-correct attempt on a real step of
+    /// fr-home-foundation. `at` controls the FSRS schedule: an old date
+    /// puts the card due today, today's date schedules it into the future.
+    private func makeAttempt(
+        id: String, pack: CoursePack, stepId: String, at: Date
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let step = try XCTUnwrap(lesson.steps.first { $0.id == stepId })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        let response: AttemptResponse
+        switch activity {
+        case .selection(let spec):
+            response = .selection(ids: spec.acceptedIds)
+        case .cloze(let spec):
+            response = .cloze(values: Dictionary(
+                uniqueKeysWithValues: spec.blanks.map {
+                    ($0.key, $0.value.answers.first ?? "")
+                }))
+        default:
+            throw XCTSkip("expected a selection or cloze step")
+        }
+        return ActivityAttempt(
+            id: id, packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            stepId: step.id, activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: .correct, independent: true, feedback: "correct"),
+            at: at)
+    }
+
+    func testLoadDueMatchesProjectionExactly() throws {
+        let store = try LearningStore(
+            path: tempDir.appendingPathComponent("store.sqlite").path)
+        let pack = try frenchPack()
+        let now = Date()
+        let past = Date(timeIntervalSince1970: 1_700_000_000)
+
+        // Empty store: nothing due, no next date.
+        let empty = try ReviewCatalog.loadDue(packs: [pack], store: store, now: now)
+        XCTAssertTrue(empty.due.isEmpty)
+        XCTAssertNil(empty.nextDueAt)
+
+        // Two past attempts on different evidence keys: both the
+        // projection and loadDue must surface the same due set, and the
+        // count can only come from the projection — there is nowhere
+        // else for loadDue to read.
+        try store.record(.attempt(try makeAttempt(
+            id: "due-old-1", pack: pack,
+            stepId: "fr-home-foundation-step-rb2", at: past)))
+        try store.record(.attempt(try makeAttempt(
+            id: "due-old-2", pack: pack,
+            stepId: "fr-home-foundation-step-rb7", at: past)))
+
+        let due = try ReviewCatalog.loadDue(packs: [pack], store: store, now: now)
+        let progress = try store.project(pack: pack)
+        XCTAssertEqual(due.due.count, 2)
+        XCTAssertEqual(
+            due.due.count,
+            progress.evidence.values.filter { $0.fsrs.dueAt <= now }.count)
+        for item in due.due {
+            let record = try XCTUnwrap(progress.evidence[item.evidenceKey])
+            XCTAssertLessThanOrEqual(record.fsrs.dueAt, now)
+        }
+    }
+
+    func testFreshAttemptIsNotDueUntilItsSchedule() throws {
+        let store = try LearningStore(
+            path: tempDir.appendingPathComponent("store2.sqlite").path)
+        let pack = try frenchPack()
+
+        // Recorded now: FSRS schedules at least a day out, so the same
+        // projection-driven path must NOT surface it as due.
+        try store.record(.attempt(try makeAttempt(
+            id: "due-future", pack: pack,
+            stepId: "fr-home-foundation-step-rb2", at: Date())))
+
+        let due = try ReviewCatalog.loadDue(packs: [pack], store: store)
+        XCTAssertTrue(due.due.isEmpty)
+        XCTAssertNotNil(due.nextDueAt, "the fresh schedule is the next due date")
     }
 }

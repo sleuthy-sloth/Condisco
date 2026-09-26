@@ -242,6 +242,10 @@ struct AudioStimulusView: View {
     @ObservedObject var audioPlayer: LessonAudioPlayer
 
     @State private var transcriptShown = false
+    /// On-device course voice for steps whose recording is not part of the
+    /// shipped content (or fails to play) — never a dead play control.
+    @StateObject private var ttsSpeaker = ShadowSpeaker()
+    @State private var ttsTarget: String? = nil
 
     private var media: MediaItem? {
         pack.media(id: mediaId)
@@ -259,6 +263,39 @@ struct AudioStimulusView: View {
         return MediaResolver.bundleURL(for: url)
     }
 
+    private var languageCode: String {
+        ShadowVoice.languageCode(for: pack.language.slug)
+    }
+
+    private var speakingTranscript: Bool {
+        ttsSpeaker.isSpeaking && ttsTarget == transcript
+    }
+
+    /// Working alternative when the recorded audio is unavailable: reads the
+    /// step's transcript with the synthesized course voice, clearly labeled.
+    private var synthesizedAlternative: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if let transcript {
+                StudioSecondaryButton(speakingTranscript ? "Stop" : "Hear audio") {
+                    if speakingTranscript {
+                        ttsSpeaker.stop()
+                        ttsTarget = nil
+                    } else {
+                        ttsTarget = transcript
+                        ttsSpeaker.speak(transcript, languageCode: languageCode)
+                    }
+                }
+                Text("Course voice (synthesized)")
+                    .font(DesignTokens.text(12))
+                    .foregroundStyle(DesignTokens.muted)
+            } else {
+                Text("A recording for this step isn't available yet.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.attentionInk)
+            }
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             if let url = audioURL {
@@ -266,14 +303,13 @@ struct AudioStimulusView: View {
                     audioPlayer.toggle(url: url)
                 }
                 if audioPlayer.failed {
-                    Text("Audio could not play. Check the download and try again.")
+                    Text("Audio could not play on this device. Try again.")
                         .font(DesignTokens.text(14))
                         .foregroundStyle(DesignTokens.attentionInk)
+                    synthesizedAlternative
                 }
             } else {
-                Text("Audio for this step is not available.")
-                    .font(DesignTokens.text(14))
-                    .foregroundStyle(DesignTokens.attentionInk)
+                synthesizedAlternative
             }
 
             if let transcript {
@@ -289,6 +325,10 @@ struct AudioStimulusView: View {
                     }
                 }
             }
+        }
+        .onDisappear {
+            ttsSpeaker.stop()
+            ttsTarget = nil
         }
     }
 }
@@ -348,6 +388,13 @@ struct ExamplesStimulusView: View {
 
     private var pairIndices: [Int] {
         Array(0..<pairs.count)
+    }
+
+    /// True when at least one example has no bundled recording, so the
+    /// "Hear them all" sequence will read part of the list with the
+    /// on-device synthesized course voice.
+    private var includesSynthesizedVoice: Bool {
+        pairs.contains { audioURL(for: $0) == nil }
     }
 
     private func audioURL(for pair: ConceptExample) -> URL? {
@@ -413,8 +460,17 @@ struct ExamplesStimulusView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             if pairs.count > 1 {
-                StudioSecondaryButton(playingAll ? "Stop" : "Hear them all") {
-                    playingAll ? stopPlayAll() : playAll()
+                VStack(alignment: .leading, spacing: 4) {
+                    StudioSecondaryButton(playingAll ? "Stop" : "Hear them all") {
+                        playingAll ? stopPlayAll() : playAll()
+                    }
+                    .accessibilityHint(includesSynthesizedVoice
+                                       ? "Synthesized course voice" : "")
+                    if includesSynthesizedVoice {
+                        Text("Includes course voice (synthesized)")
+                            .font(DesignTokens.text(12))
+                            .foregroundStyle(DesignTokens.muted)
+                    }
                 }
                 .padding(.bottom, 4)
             }
@@ -481,6 +537,7 @@ struct ExamplesStimulusView: View {
                                 .accessibilityLabel(
                                     (speaking ? "Stop" : "Hear")
                                     + " pronunciation of \"\(pair.target)\"")
+                                .accessibilityHint("Synthesized course voice")
                                 let speakingSlow = ttsSpeaker.isSpeaking
                                     && ttsSlowTarget == pair.target
                                 Button {
@@ -507,6 +564,7 @@ struct ExamplesStimulusView: View {
                                 .accessibilityLabel(
                                     (speakingSlow ? "Stop" : "Hear")
                                     + " \"\(pair.target)\" slowly")
+                                .accessibilityHint("Synthesized course voice")
                             }
                             PhraseSaveButton(
                                 phrase: ShareablePhrase(
@@ -514,7 +572,9 @@ struct ExamplesStimulusView: View {
                                     meaning: pair.meaning,
                                     languageName: languageName),
                                 languageSlug: languageSlug,
-                                source: lesson?.title ?? "")
+                                source: lesson?.title ?? "",
+                                sourcePackId: pack?.id ?? "",
+                                sourceLessonId: lesson?.id ?? "")
                             PhraseShareButton(phrase: ShareablePhrase(
                                 target: pair.target,
                                 meaning: pair.meaning,
@@ -523,6 +583,11 @@ struct ExamplesStimulusView: View {
                                 target: pair.target,
                                 languageCode: languageCode)
                         }
+                    }
+                    if audioURL(for: pair) == nil {
+                        Text("Course voice (synthesized)")
+                            .font(DesignTokens.text(12))
+                            .foregroundStyle(DesignTokens.muted)
                     }
                     Text(pair.meaning)
                         .font(DesignTokens.text(15))

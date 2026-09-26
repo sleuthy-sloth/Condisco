@@ -43,15 +43,39 @@ struct LessonPlayerView: View {
     @State private var checkpointError: String?
     @State private var resumedComplete = false
     @State private var restartNotice: String?
+    /// Non-blocking notice when stored event rows could not be decoded at
+    /// boot: the lesson still opens, but those rows are skipped.
+    @State private var corruptProgressNotice: String?
     @State private var bootstrapped = false
     @StateObject private var audioPlayer = LessonAudioPlayer()
+    /// Comfort settings observed so the explicit animation modifiers below
+    /// honor the in-app toggle and the system reduce-motion setting live.
+    @ObservedObject private var a11y = A11ySettings.shared
     /// Brand-new lessons open with the briefing; resumes go straight in.
     @State private var showBriefing = false
+    /// Warm-up recall phase: due cards from earlier lessons, shown before
+    /// the briefing only when a brand-new lesson starts this visit. Lives
+    /// entirely outside LessonSession — the engine and its checkpoint
+    /// logic are untouched, so nothing here can disturb resume semantics.
+    @State private var warmUpItems: [ReviewItem] = []
+    @State private var warmUpActive = false
+    /// Offered once per visit: the recap's "Next lesson" stays in the same
+    /// visit, so switching must not re-offer the warm-up.
+    @State private var warmUpOffered = false
+    @State private var warmUpIndex = 0
+    @State private var warmUpSaveError: String?
     /// Steps whose evaluation came back incorrect or blocked this run —
     /// the recap offers them for one more try.
     @State private var troubleStepIds: [String] = []
+    /// The specific fix (correction) shown for each trouble spot, keyed by
+    /// step id — the recap's "Worth remembering" takeaway draws from here.
+    @State private var troubleCorrections: [String: String] = [:]
     @State private var retryQueue: [String] = []
     @State private var retrying = false
+    /// One slot per distinct step this run: the recap's honest split between
+    /// recall and practice-with-help counts steps, never checks, so revisiting
+    /// a trouble spot in the retry pass cannot inflate the numbers.
+    @State private var recapSplit = LessonRecapSplit()
     /// One-time guide to the lesson controls, shown on the first step
     /// the learner ever opens.
     @AppStorage("condisco.hasSeenLessonGuide") private var hasSeenLessonGuide = false
@@ -128,6 +152,20 @@ struct LessonPlayerView: View {
         return pack.lessons[next]
     }
 
+    /// The single correction worth remembering from this run: the newest
+    /// trouble spot's specific fix. Trouble steps are ordered by when they
+    /// went wrong, so walking backwards finds the freshest mistake; blocked
+    /// steps carry no correction and are skipped. Nil when nothing was
+    /// missed, or when the lesson was resumed already complete.
+    private var recapTakeaway: String? {
+        for stepId in troubleStepIds.reversed() {
+            if let correction = troubleCorrections[stepId], !correction.isEmpty {
+                return correction
+            }
+        }
+        return nil
+    }
+
     // MARK: Body
 
     var body: some View {
@@ -140,6 +178,8 @@ struct LessonPlayerView: View {
                         ProgressView("Loading lesson…")
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                } else if warmUpActive, warmUpIndex < warmUpItems.count {
+                    warmUpCard
                 } else if showBriefing, let lesson {
                     LessonBriefingView(
                         lesson: lesson, pack: pack,
@@ -154,6 +194,9 @@ struct LessonPlayerView: View {
                         troubleCount: troubleStepIds.count,
                         keyPhrases: keyPhrases(for: lesson, pack: pack, limit: 4),
                         nextLesson: nextLessonInPack,
+                        takeaway: recapTakeaway,
+                        independentCount: recapSplit.independentCount,
+                        practiceCount: recapSplit.practiceCount,
                         onRevisitTroubleSpots: startRetry,
                         onNextLesson: { switchLesson(to: $0) },
                         onExit: onExit)
@@ -209,6 +252,10 @@ struct LessonPlayerView: View {
                         PlayerNoticeView(text: notice)
                     }
 
+                    if let notice = corruptProgressNotice {
+                        PlayerNoticeView(text: notice)
+                    }
+
                     stepSlide(step: step, activity: activity)
 
                     if saveError {
@@ -232,30 +279,60 @@ struct LessonPlayerView: View {
                             Spacer()
                             if step.supportActivityId != nil {
                                 StudioSecondaryButton("I need help") { handleHelp() }
+                                    .accessibilityHint("Opens a help step")
                             }
                         }
                     }
                 }
                 .padding(16)
                 .id("playerTop")
-                // Calm slide between steps; the root transaction already
-                // disables animations when reduce motion is on.
-                .animation(.easeInOut(duration: 0.25), value: step.id)
+                // Calm slide between steps; silenced when reduce motion is on.
+                .animation(a11y.effectiveReduceMotion
+                           ? nil : .easeInOut(duration: 0.25), value: step.id)
             }
+            // The primary action never leaves the thumb's reach: it stays
+            // pinned above the bottom safe area (and above the keyboard),
+            // and the scroll content is inset so nothing hides behind it.
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                primaryActionBar(step: step, activity: activity)
+            }
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: step.id) { _, _ in
                 proxy.scrollTo("playerTop", anchor: .top)
             }
             .onChange(of: evaluation) { _, result in
                 guard result != nil else { return }
-                withAnimation(.easeOut(duration: 0.2)) {
+                if a11y.effectiveReduceMotion {
                     proxy.scrollTo("answerFeedback", anchor: .bottom)
+                } else {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        proxy.scrollTo("answerFeedback", anchor: .bottom)
+                    }
                 }
             }
         }
     }
 
-    /// The step-varying slice of the player: feedback, body, and primary
-    /// action slide as one when the step changes.
+    /// The bottom bar holding the step's primary action, pinned above the
+    /// keyboard and the home indicator so it is tappable in every state.
+    @ViewBuilder
+    private func primaryActionBar(step: LessonStep, activity: Activity) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            primaryButton(step: step, activity: activity)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(DesignTokens.canvas)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(DesignTokens.edgeSoft)
+                .frame(height: 1)
+        }
+    }
+
+    /// The step-varying slice of the player: feedback and body slide as one
+    /// when the step changes. The primary action lives in the pinned bar.
     @ViewBuilder
     private func stepSlide(step: LessonStep, activity: Activity) -> some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -267,8 +344,6 @@ struct LessonPlayerView: View {
             } else if !stepCompleted && assistanceTainted {
                 PlayerNoticeView(text: "Help was used on this step, so it will not count as independent practice.")
             }
-
-            primaryButton(step: step, activity: activity)
         }
         .id("step-\(step.id)")
         .transition(.asymmetric(
@@ -286,8 +361,13 @@ struct LessonPlayerView: View {
     private func stepBody(step: LessonStep, activity: Activity) -> some View {
         let family = lesson?.family ?? .discovery
         let isEntry = step.id == lesson?.entryStepId
-        let compactContext = (family == .mission && !isEntry)
-            || (family == .story && !isInformation(activity))
+        // Only the step that introduces the context shows it in the open
+        // card; later steps in the same lesson collapse it to a one-line
+        // disclosure so the repeated passage never pushes the question off
+        // the phone. Story lessons also keep it open on their reading
+        // (information) steps.
+        let compactContext = shouldCompactContext(
+            family: family, isEntry: isEntry, activity: activity)
         // A full scene belongs to the reading step; question screens keep
         // the prompt and answer visible without another tall illustration.
         if !compactContext,
@@ -306,8 +386,7 @@ struct LessonPlayerView: View {
         }
         if compactContext {
             if let stimulus = contextStimulus {
-                DisclosureGroup(family == .story
-                                ? "Read the passage again" : "Review the mission notes") {
+                DisclosureGroup(compactContextLabel(family)) {
                     StimulusContextView(stimulus: stimulus, pack: pack,
                                         onAssist: recordAssistance, audioPlayer: audioPlayer)
                         .id(stimulus.id)
@@ -323,9 +402,43 @@ struct LessonPlayerView: View {
         activitySection(step: step, activity: activity)
     }
 
+    /// One-line disclosure title for a collapsed context: names what the
+    /// learner can reopen rather than repeating the passage itself.
+    private func compactContextLabel(_ family: LessonFamily) -> String {
+        switch family {
+        case .story: return "Read the passage again"
+        case .mission: return "Review the mission notes"
+        case .conversation: return "Read the dialogue again"
+        case .listening: return "Hear the audio again"
+        case .discovery: return "Context"
+        default: return "Context"
+        }
+    }
+
     private func isInformation(_ activity: Activity) -> Bool {
         if case .information = activity { return true }
         return false
+    }
+
+    /// Whether the context collapses to a one-line disclosure for this step.
+    /// Kept out of the `@ViewBuilder` body: a `switch` statement of plain
+    /// assignments is not valid view content.
+    private func shouldCompactContext(
+        family: LessonFamily, isEntry: Bool, activity: Activity
+    ) -> Bool {
+        switch family {
+        case .discovery:
+            // Discovery keeps its compact disclosure on every step.
+            return false
+        case .story:
+            // Story keeps the passage open on its reading (information) steps.
+            return !isInformation(activity)
+        case .mission, .conversation, .listening:
+            return !isEntry
+        default:
+            // Construction, scene, and recall rely on their full stimulus.
+            return false
+        }
     }
 
     @ViewBuilder
@@ -412,7 +525,7 @@ struct LessonPlayerView: View {
 
     private func activityPrompt(for activity: Activity) -> String? {
         switch activity {
-        case .information: return "Read"
+        case .information: return "Read — not graded"
         case .selfCompare(let spec): return spec.prompt
         default: return activity.base?.prompt
         }
@@ -464,8 +577,15 @@ struct LessonPlayerView: View {
         }
         do {
             let storedCheckpoint = try store.loadCheckpoint(packId: pack.id, lessonId: lesson.id)
-            let events = try store.learningEvents(packId: pack.id)
+            let (events, skippedEventRows) = try store.learningEventsWithQuarantine(packId: pack.id)
             let quarantined = Set(try store.project(pack: pack).quarantined)
+            // A corrupt row in this pack never blocks the lesson: the tolerant
+            // read skips it, and the learner gets a non-blocking notice
+            // instead of a PlayerErrorView dead-end.
+            if !skippedEventRows.isEmpty {
+                corruptProgressNotice =
+                    "Some saved progress couldn't be read and was skipped — everything else is intact."
+            }
             var checkpoint = storedCheckpoint
             // Opening the briefing creates an entry-step checkpoint before
             // the learner taps Start lesson. Keep showing that briefing if
@@ -562,6 +682,11 @@ struct LessonPlayerView: View {
                 }
                 resumedComplete = false
                 showBriefing = openedFresh || unstartedEntry
+                // Warm-up recall only when the lesson starts from scratch
+                // this visit — a resume (valid checkpoint) never sees it.
+                if openedFresh {
+                    offerWarmUpIfNeeded(lesson: lesson)
+                }
             }
         } catch {
             checkpointError = "Could not load your saved progress: \(String(describing: error))"
@@ -633,9 +758,20 @@ struct LessonPlayerView: View {
                 // help, even if the learner types it in unaided afterward.
                 recordAssistance(.model)
             }
+            // The patched correction (what the learner actually saw) is the
+            // specific fix worth remembering; blocked steps carry none, so
+            // they never supply the recap takeaway.
+            troubleCorrections[step.id] = next.currentEvaluation?.correction ?? ""
         } else if evaluation.outcome == .correct {
             Haptics.correct()
         }
+        // Only real checks claim a slot in the recap's honest split between
+        // recall and practice-with-help: reading steps (ungraded) and failed
+        // saves (blocked) are not practice, and every self-compare is
+        // practice against the model. Each distinct step counts once per
+        // visit — a retried trouble spot updates nothing, never a second
+        // count.
+        recapSplit.record(stepId: step.id, evaluation: evaluation)
         let now = Date()
         let attemptId = UUID().uuidString
         let attempt = ActivityAttempt(
@@ -850,6 +986,79 @@ struct LessonPlayerView: View {
         onExit()
     }
 
+    // MARK: - Warm-up recall
+
+    /// Offers the warm-up recall phase for a brand-new lesson. Runs only
+    /// from `boot()`'s restart branch when `openedFresh` — no checkpoint,
+    /// no history — so a mid-lesson resume never interrupts with cards.
+    /// `warmUpOffered` gates the phase to once per visit: the recap's
+    /// "Next lesson" stays in the same visit and must not re-offer.
+    @MainActor
+    private func offerWarmUpIfNeeded(lesson: Lesson) {
+        guard !warmUpOffered else { return }
+        let picked: [ReviewItem]
+        do {
+            picked = RecallWarmUp.select(
+                due: try ReviewCatalog.loadDue(packs: [pack], store: store).due,
+                currentLesson: lesson, pack: pack)
+        } catch {
+            // No due data (store hiccup) simply means no warm-up; the
+            // lesson itself is unaffected.
+            return
+        }
+        guard !picked.isEmpty else { return }
+        warmUpItems = picked
+        warmUpIndex = 0
+        warmUpActive = true
+        warmUpSaveError = nil
+        warmUpOffered = true
+    }
+
+    /// The warm-up card: the existing Review card and session dots, so the
+    /// flow is identical to a Review session — recall prompt, reveal, then
+    /// a self-rating that reschedules this evidence key like any attempt.
+    private var warmUpCard: some View {
+        ZStack {
+            DesignTokens.canvas.ignoresSafeArea()
+            ReviewCardView(
+                item: warmUpItems[warmUpIndex],
+                position: warmUpIndex + 1,
+                total: warmUpItems.count,
+                saveError: warmUpSaveError
+            ) { verdict in
+                handleWarmUpVerdict(verdict)
+            }
+            .id(warmUpItems[warmUpIndex].id)
+        }
+    }
+
+    /// Records a warm-up verdict through the lesson event pipeline (the
+    /// same path ReviewModel.recordVerdict uses), then advances. After the
+    /// last card the reminders refresh like a lesson completion's, and the
+    /// phase deactivates so the briefing/lesson flow continues below.
+    private func handleWarmUpVerdict(_ verdict: ReviewVerdict) {
+        guard warmUpIndex < warmUpItems.count else { return }
+        let item = warmUpItems[warmUpIndex]
+        do {
+            try store.record(.attempt(item.makeAttempt(verdict: verdict)))
+            warmUpSaveError = nil
+        } catch {
+            warmUpSaveError =
+                "Couldn't save that review — tap your rating again to retry."
+            return
+        }
+        if warmUpIndex + 1 < warmUpItems.count {
+            warmUpIndex += 1
+        } else {
+            // Warm-up done: the briefing (or the lesson itself) continues.
+            // New evidence may have refilled the review queue.
+            ReviewReminders.refreshShared()
+            warmUpActive = false
+            warmUpItems = []
+            warmUpIndex = 0
+        }
+    }
+
     // MARK: - Trouble-spot retry
 
     /// Re-walk exactly the steps that came back incorrect or blocked,
@@ -870,6 +1079,7 @@ struct LessonPlayerView: View {
         }
         let doneId = retryQueue.removeFirst()
         troubleStepIds.removeAll { $0 == doneId }
+        troubleCorrections.removeValue(forKey: doneId)
         Haptics.stepComplete()
         if retryQueue.isEmpty {
             endRetry()
@@ -923,10 +1133,19 @@ struct LessonPlayerView: View {
         checkpointError = nil
         resumedComplete = false
         restartNotice = nil
+        corruptProgressNotice = nil
         troubleStepIds = []
+        troubleCorrections = [:]
+        recapSplit = LessonRecapSplit()
         retryQueue = []
         retrying = false
         showBriefing = false
+        // Transient warm-up state resets per lesson; `warmUpOffered` does
+        // NOT — the recap's next lesson is the same visit.
+        warmUpItems = []
+        warmUpActive = false
+        warmUpIndex = 0
+        warmUpSaveError = nil
         boot()
     }
 
@@ -951,11 +1170,55 @@ struct LessonPlayerView: View {
     }
 }
 
+// MARK: - Recap honest split
+
+/// How one graded check lands in the recap's independence line.
+enum RecapClassification: Equatable {
+    case independent
+    case helped
+
+    init(evaluation: AttemptEvaluation) {
+        self = evaluation.independent ? .independent : .helped
+    }
+}
+
+/// Accumulates the recap's "Solved N on your own · practiced M with help"
+/// split for a single visit. Each DISTINCT step claims at most one slot,
+/// decided by its first countable check (correct, incorrect, or
+/// self-assessed): once a step needed help this run it stays
+/// practice-with-help, even when a later retry comes back clean — help was
+/// used on it, so upgrading would overstate recall. Reading steps
+/// (ungraded) and failed saves (blocked) claim nothing; self-compares are
+/// always practice with help. Fresh per lesson (`switchLesson`).
+struct LessonRecapSplit: Equatable {
+    private(set) var stepClass: [String: RecapClassification] = [:]
+
+    var independentCount: Int {
+        stepClass.values.filter { $0 == .independent }.count
+    }
+
+    var practiceCount: Int {
+        stepClass.values.filter { $0 == .helped }.count
+    }
+
+    mutating func record(stepId: String, evaluation: AttemptEvaluation) {
+        switch evaluation.outcome {
+        case .correct, .incorrect, .selfAssessed:
+            guard stepClass[stepId] == nil else { return }
+            stepClass[stepId] = RecapClassification(evaluation: evaluation)
+        case .ungraded, .blocked:
+            return
+        }
+    }
+}
+
 // MARK: - Small player pieces
 
 struct PlayerProgressHeader: View {
     let done: Int
     let total: Int
+
+    @ObservedObject private var a11y = A11ySettings.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -971,13 +1234,15 @@ struct PlayerProgressHeader: View {
                         .fill(DesignTokens.primary)
                         .frame(width: total > 0 ? proxy.size.width * CGFloat(done) / CGFloat(total) : 0,
                                height: 8)
-                        .animation(.easeInOut(duration: 0.3), value: done)
+                        .animation(a11y.effectiveReduceMotion
+                                   ? nil : .easeInOut(duration: 0.3), value: done)
                 }
             }
             .frame(height: 8)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(total > 0 ? "\(done) of \(total) steps completed" : "Lesson")
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -1015,9 +1280,7 @@ struct PlayerFeedbackView: View {
                     .foregroundStyle(DesignTokens.inkDeep)
             }
             if evaluation.outcome == .correct || evaluation.outcome == .selfAssessed {
-                Text(evaluation.independent
-                     ? "Solved on your own — that counts as independent practice."
-                     : "Solved with help — good work getting there; it will not count as independent practice.")
+                Text(independenceLine)
                     .font(DesignTokens.text(13))
                     .foregroundStyle(DesignTokens.muted)
             }
@@ -1031,6 +1294,18 @@ struct PlayerFeedbackView: View {
                 .stroke(DesignTokens.edge, lineWidth: 1.5)
         )
         .shadow(color: DesignTokens.ink, radius: 0, x: 3, y: 3)
+    }
+
+    /// Plain, truthful note about how this attempt counts. Self-compare
+    /// steps are never graded, so "help" language and independent-practice
+    /// framing read wrong there; graded steps keep the distinction.
+    private var independenceLine: String {
+        if evaluation.outcome == .selfAssessed {
+            return "Self-assessed — it doesn't count as independent practice."
+        }
+        return evaluation.independent
+            ? "Solved on your own — that counts as independent practice."
+            : "Solved with help — it doesn't count as independent practice."
     }
 }
 

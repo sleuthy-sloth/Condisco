@@ -193,9 +193,9 @@ func outcomeWord(_ outcome: AttemptEvaluation.Outcome) -> String {
     switch outcome {
     case .correct: return "That's it."
     case .incorrect: return "Not quite — try again."
-    case .selfAssessed: return "Thanks — that shapes what comes back next."
+    case .selfAssessed: return "Compare with the model — this one isn't graded."
     case .blocked: return "Not saved — check your connection and try again."
-    case .ungraded: return "Working on it…"
+    case .ungraded: return "Not graded — continue when you're ready."
     }
 }
 

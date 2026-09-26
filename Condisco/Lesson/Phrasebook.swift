@@ -19,10 +19,13 @@ struct PhraseSaveButton: View {
     let languageSlug: String
     let source: String
     /// Deep-link targets, carried onto the saved row so the phrasebook can
-    /// open the lesson the phrase came from. Worker 3 fills these at the
-    /// call sites; empty until then and everything still compiles.
-    let sourcePackId: String = ""
-    let sourceLessonId: String = ""
+    /// open the lesson the phrase came from. `var` (not `let`) so the
+    /// memberwise initializer accepts them as defaulted parameters — a
+    /// `let` with a default value would be excluded from the generated
+    /// init and no call site could ever fill it. Empty until a call site
+    /// passes real ids; everything still compiles either way.
+    var sourcePackId: String = ""
+    var sourceLessonId: String = ""
 
     @State private var isSaved = false
 

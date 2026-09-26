@@ -12,4 +12,9 @@ xcrun swiftc \
   "$project_root/tools/check_packs.swift" \
   -o "$check_dir/check-packs"
 ln -s "$project_root/Condisco/Content" "$check_dir/Content"
-"$check_dir/check-packs" "$project_root/Condisco/Content/packs"
+# The checker derives packs/ and listen-tracks/ from the Content root and
+# consults the checked-in allowlist for intentionally missing (device-speech)
+# assets.
+"$check_dir/check-packs" \
+  "$project_root/Condisco/Content" \
+  "$project_root/tools/device-speech-media.txt"

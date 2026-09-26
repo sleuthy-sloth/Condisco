@@ -3,6 +3,24 @@ import MediaPlayer
 import SwiftUI
 import UIKit
 
+// MARK: - Listen track source pack
+//
+// Audio tracks are authored against the same lesson ids as the packs
+// (`fr-identity-foundation` is both a bare-track lesson and a pack lesson),
+// so the pack a track belongs to can be located by lesson id — the same
+// lookup the phrasebook uses to open a saved phrase's origin lesson.
+// PackLoader caches its result, so this costs nothing after first load.
+
+extension ListenTrack {
+    /// The id of the pack that ships this track's lesson, when one exists.
+    /// Empty when the track's lesson id matches no bundled pack lesson.
+    var sourcePackId: String {
+        (try? PackLoader.loadPacks())?
+            .first { $0.lessons.contains { $0.id == lessonId } }?
+            .id ?? ""
+    }
+}
+
 // MARK: - Listen player model
 //
 // Audio-only lesson playback: play/pause, ±15s, scrubber, speed, and a
@@ -522,7 +540,9 @@ struct ListenPlayerView: View {
                         PhraseSaveButton(
                             phrase: phrase,
                             languageSlug: track.courseSlug,
-                            source: track.lessonTitle)
+                            source: track.lessonTitle,
+                            sourcePackId: track.sourcePackId,
+                            sourceLessonId: track.lessonId)
                         PhraseShareButton(phrase: phrase)
                         RecordCompareButton(
                             target: target.text,

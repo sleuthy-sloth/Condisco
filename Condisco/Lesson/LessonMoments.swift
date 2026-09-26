@@ -213,6 +213,35 @@ struct LessonBriefingView: View {
 
 // MARK: - Recap
 
+/// Everything the recap's save buttons hand the phrasebook for one
+/// example pair, resolved from the lesson it came from. Carries the
+/// pack and lesson ids so Saved rows can open their origin lesson —
+/// the recap's `pack` and `lesson` are in scope at both call sites.
+struct RecapPhraseSave {
+    let phrase: ShareablePhrase
+    let languageSlug: String
+    let source: String
+    let sourcePackId: String
+    let sourceLessonId: String
+}
+
+/// Builds the recap save payload for a phrase pair. Pure, so the tests
+/// can pin that phrases saved from the recap always carry the pack and
+/// lesson ids that let phrasebook navigation route back to the lesson.
+func recapPhraseSave(
+    target: String, meaning: String, pack: CoursePack, lesson: Lesson
+) -> RecapPhraseSave {
+    RecapPhraseSave(
+        phrase: ShareablePhrase(
+            target: target,
+            meaning: meaning,
+            languageName: pack.language.displayName),
+        languageSlug: pack.language.slug,
+        source: lesson.title,
+        sourcePackId: pack.id,
+        sourceLessonId: lesson.id)
+}
+
 /// The landing after the last step: what was practiced, the phrases now
 /// in hand, trouble spots offered for one more try, role-play for
 /// conversation lessons, and the way onward.
@@ -271,7 +300,10 @@ struct LessonRecapView: View {
     }
 
     private func recapWordRow(_ item: VocabularyItem) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        let save = recapPhraseSave(
+            target: item.word, meaning: item.meaning,
+            pack: pack, lesson: lesson)
+        return HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.word)
                     .font(DesignTokens.text(16, weight: .medium))
@@ -282,12 +314,11 @@ struct LessonRecapView: View {
             }
             Spacer()
             PhraseSaveButton(
-                phrase: ShareablePhrase(
-                    target: item.word,
-                    meaning: item.meaning,
-                    languageName: pack.language.displayName),
-                languageSlug: pack.language.slug,
-                source: lesson.title)
+                phrase: save.phrase,
+                languageSlug: save.languageSlug,
+                source: save.source,
+                sourcePackId: save.sourcePackId,
+                sourceLessonId: save.sourceLessonId)
         }
     }
 
@@ -320,13 +351,15 @@ struct LessonRecapView: View {
                             .foregroundStyle(DesignTokens.muted)
                     }
                     Spacer()
+                    let save = recapPhraseSave(
+                        target: pair.target, meaning: pair.meaning,
+                        pack: pack, lesson: lesson)
                     PhraseSaveButton(
-                        phrase: ShareablePhrase(
-                            target: pair.target,
-                            meaning: pair.meaning,
-                            languageName: pack.language.displayName),
-                        languageSlug: pack.language.slug,
-                        source: lesson.title)
+                        phrase: save.phrase,
+                        languageSlug: save.languageSlug,
+                        source: save.source,
+                        sourcePackId: save.sourcePackId,
+                        sourceLessonId: save.sourceLessonId)
                 }
                 Divider()
                     .overlay(DesignTokens.edgeSoft)

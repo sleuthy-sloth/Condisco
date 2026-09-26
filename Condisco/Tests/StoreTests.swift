@@ -541,6 +541,76 @@ final class LearningStoreTests: XCTestCase {
         XCTAssertEqual(id1, id2)
         XCTAssertFalse(id1.isEmpty)
     }
+
+    // MARK: Mission "I tried it" marker (kv-backed reflection, not evidence)
+
+    /// The marker's key format, shared by the recap card and these tests:
+    /// `condisco.mission-tried:<packId>:<lessonId>`.
+    private func missionTriedKey(pack: CoursePack, lessonId: String) -> String {
+        "condisco.mission-tried:\(pack.id):\(lessonId)"
+    }
+
+    func testMissionTriedMarkerRoundTrip() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let key = missionTriedKey(pack: pack, lessonId: lesson.id)
+
+        try store.kvSet(key, "1")
+        XCTAssertEqual(try store.kvGet(key), "1")
+    }
+
+    func testMissionTriedMarkerMissingKeyIsUntried() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let key = missionTriedKey(pack: pack, lessonId: lesson.id)
+
+        // No row at all: untried.
+        XCTAssertNil(try store.kvGet(key))
+    }
+
+    func testMissionTriedMarkerEmptyValueIsUntried() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let key = missionTriedKey(pack: pack, lessonId: lesson.id)
+
+        // An empty row is not the literal "1" the marker reads as tried.
+        try store.kvSet(key, "")
+        XCTAssertEqual(try store.kvGet(key), "")
+        XCTAssertNotEqual(try store.kvGet(key), "1")
+    }
+
+    func testMissionTriedMarkerUnmarkViaDelete() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let key = missionTriedKey(pack: pack, lessonId: lesson.id)
+
+        try store.kvSet(key, "1")
+        try store.kvDelete(key)
+        XCTAssertNil(try store.kvGet(key), "un-marking must return to untried")
+    }
+
+    /// Using the marker must not touch the phrasebook: no schema drift, no
+    /// phantom saved phrases.
+    func testMissionTriedMarkerLeavesSavedPhrasesUntouched() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let key = missionTriedKey(pack: pack, lessonId: lesson.id)
+
+        XCTAssertTrue(try store.savedPhrases().isEmpty)
+        try store.kvSet(key, "1")
+        try store.kvDelete(key)
+        try store.kvSet(key, "1")
+
+        let phrases = try store.savedPhrases()
+        XCTAssertTrue(
+            phrases.isEmpty,
+            "the marker lives in kv only; savedPhrases() must be unchanged")
+    }
 }
 
 // MARK: - FsrsState
@@ -1741,21 +1811,33 @@ extension LearningStoreTests {
             ("fr-numbers-foundation", "fr-numbers-foundation-cloze"),
         ]
         for (i, entry) in warmUp.enumerated() {
-            try store.record(.attempt(ActivityAttempt(
-                id: "warm-up-\(entry.key)",
+            // Record exactly as production does: a ReviewItem resolved from
+            // the earlier lesson's authored step (like ReviewCatalog.makeItem)
+            // written via ReviewItem.makeAttempt. Synthetic step/activity ids
+            // would be quarantined by projection — the verdict would then be
+            // silently discarded and never reschedule FSRS.
+            let at = at.addingTimeInterval(Double(i) * 10)
+            let earlierLesson = try XCTUnwrap(pack.lesson(id: entry.lessonId))
+            let step = try XCTUnwrap(earlierLesson.steps.first {
+                pack.activity(id: $0.activityId)?.evidenceKey == entry.key
+            })
+            let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+            let item = ReviewItem(
+                evidenceKey: entry.key,
                 packId: pack.id,
                 packVersion: pack.version,
-                lessonId: entry.lessonId,
-                lessonRevision: 1,
-                stepId: "warm-up-step",
-                activityId: "warm-up-activity",
-                activityRevision: 1,
-                evidenceKey: entry.key,
-                response: .selfRating(.good),
-                assistance: [],
-                evaluation: AttemptEvaluation(
-                    outcome: .correct, independent: true, feedback: ""),
-                at: at.addingTimeInterval(Double(i) * 10))))
+                courseTitle: pack.title,
+                lessonId: earlierLesson.id,
+                lessonTitle: earlierLesson.title,
+                lessonRevision: earlierLesson.revision,
+                stepId: step.id,
+                activityId: activity.id,
+                activityRevision: activity.revision,
+                prompt: "Warm-up prompt",
+                answerText: "Warm-up answer",
+                feedback: "Warm-up feedback",
+                dueAt: at)
+            try store.record(.attempt(item.makeAttempt(verdict: .exact, at: at)))
         }
 
         // The checkpoint is byte-for-byte untouched.
@@ -1780,12 +1862,99 @@ extension LearningStoreTests {
         XCTAssertEqual(session.activeStepId, lesson.entryStepId)
         XCTAssertTrue(session.completedStepIds.isEmpty)
 
-        // The warm-up evidence recorded — but nothing for the current
-        // lesson's evidence set.
+        // The warm-up attempts were accepted by projection — nothing
+        // quarantined and silently discarded, so the verdicts genuinely
+        // reschedule FSRS — and their evidence landed under the earlier
+        // lessons' real evidence keys, while the current lesson's evidence
+        // set stays untouched.
         let progress = try store.project(pack: pack)
+        XCTAssertTrue(progress.quarantined.isEmpty,
+                      "warm-up attempts must survive projection, not be discarded")
         for (_, key) in warmUp {
-            XCTAssertNotNil(progress.evidence[key])
+            XCTAssertNotNil(progress.evidence[key],
+                            "warm-up must surface evidence for \(key)")
         }
+        let currentLessonKeys = Set(lesson.steps.compactMap {
+            pack.activity(id: $0.activityId)?.evidenceKey
+        })
+        XCTAssertTrue(
+            Set(progress.evidence.keys).isDisjoint(with: currentLessonKeys),
+            "warm-up must never produce evidence for the lesson being opened")
         XCTAssertNil(progress.evidence["fr-home-foundation-meet"])
+    }
+}
+
+// MARK: - Pair practice card (P3.4)
+
+/// Local pair role-play card prototype: dialogue turn extraction and the
+/// share caption. Purely local — the caption must stay course content and
+/// never leak a pack, lesson, or device identifier.
+final class PairPracticeCardTests: XCTestCase {
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    /// The dialogue turns for a real conversation lesson come back in
+    /// authored order with both speakers — the shopkeeper opens, the
+    /// learner ("Toi") answers, the shopkeeper closes.
+    func testDialogueTurnsReturnOrderedTwoSpeakerTurnsForConversationLesson() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-requests-foundation"))
+        XCTAssertEqual(lesson.family, .conversation)
+
+        let turns = dialogueTurns(for: lesson, pack: pack)
+        XCTAssertFalse(turns.isEmpty, "conversation lesson must carry dialogue")
+
+        XCTAssertEqual(turns.count, 3)
+        XCTAssertEqual(turns.map(\.speaker), ["Vendeuse", "Toi", "Vendeuse"])
+        XCTAssertEqual(Set(turns.map(\.speaker)).count, 2,
+                       "expected a two-speaker dialogue")
+        XCTAssertEqual(turns[0].text, "Bonjour ! Je peux vous aider ?")
+        XCTAssertEqual(turns[0].meaning, "Hello! Can I help you?")
+        XCTAssertEqual(turns[1].text, "Je peux prendre un café, s'il vous plaît ?")
+        XCTAssertEqual(turns[2].text, "Bien sûr. Autre chose ?")
+    }
+
+    /// Non-dialogue lessons return no turns, so the card degrades to its
+    /// empty state instead of rendering garbage.
+    func testDialogueTurnsEmptyForStoryLesson() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        XCTAssertNotEqual(lesson.family, .conversation)
+        XCTAssertTrue(dialogueTurns(for: lesson, pack: pack).isEmpty)
+    }
+
+    /// The shared card's caption is built by `pairCardCaption`, which is
+    /// what `PairPracticeView.makeSharedCard` passes into `SharedCard` as
+    /// the SharePreview caption. Assert it carries the course content and
+    /// nothing identifiable: no pack id, lesson id, `fr-`-prefixed content
+    /// key, or UUID-shaped string. (The card text itself comes from the
+    /// same dialogue turns, so this guards the whole share surface.)
+    func testPairCardCaptionContainsCourseContentOnly() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-requests-foundation"))
+        let turns = dialogueTurns(for: lesson, pack: pack)
+        let caption = pairCardCaption(
+            turns: turns, languageName: pack.language.displayName)
+
+        // Course content is still there.
+        XCTAssertTrue(caption.contains("French"))
+        XCTAssertTrue(caption.contains("Vendeuse"))
+        XCTAssertTrue(caption.contains("Toi"))
+        XCTAssertTrue(caption.contains("Bonjour ! Je peux vous aider ?"))
+        XCTAssertTrue(caption.contains("Je peux prendre un café, s'il vous plaît ?"))
+
+        // No identifiers of any kind.
+        XCTAssertFalse(caption.contains(pack.id))
+        XCTAssertFalse(caption.contains(lesson.id))
+        XCTAssertFalse(caption.contains("fr-"),
+                       "no lesson/activity/stimulus id may leak into the caption")
+        XCTAssertNil(
+            caption.range(
+                of: #"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"#,
+                options: .regularExpression),
+            "no UUID (device id) may leak into the caption")
     }
 }

@@ -1,6 +1,7 @@
 import CloudKit
 import CryptoKit
 import Foundation
+import os
 
 // MARK: - Sync issues
 
@@ -82,6 +83,13 @@ final class CloudKitSync: ObservableObject {
         isSyncing = true
         defer { isSyncing = false }
         do {
+            // Observability: surface undecodable stored rows at sync time so
+            // local corruption is visible even when no lesson or review
+            // surface runs. Non-fatal — upload proceeds with the good rows.
+            let corruptIds = try store.corruptEventIds()
+            if !corruptIds.isEmpty {
+                LearningStore.logCorruptRows(corruptIds)
+            }
             // 1. Events: upload new, then delta-pull by server change token.
             let toUpload = try store.unsyncedEvents()
             let uploadedIds = try await Self.push(events: toUpload)
@@ -100,8 +108,11 @@ final class CloudKitSync: ObservableObject {
                     throw error
                 }
             }
-            try store.ingestSynced(
+            let skippedConflicts = try store.ingestSynced(
                 downloaded: downloaded, uploadedIds: uploadedIds)
+            if !skippedConflicts.isEmpty {
+                Self.logSkippedConflicts(skippedConflicts)
+            }
             try Self.saveChangeToken(newToken, store: store)
             // 2. Checkpoints + listen state + phrasebook: last-write-wins merge.
             try await Self.syncCheckpoints(store: store)
@@ -126,6 +137,18 @@ final class CloudKitSync: ObservableObject {
     @MainActor
     func clearError() {
         lastErrorMessage = nil
+    }
+
+    private static let log = Logger(
+        subsystem: "com.sleuthysloth.condisco", category: "CloudKitSync")
+
+    /// Logs downloaded events that `ingestSynced` skipped as `.conflict` —
+    /// ids the server holds that differ from local rows. Warning-level so a
+    /// genuine id collision is never silently lost.
+    private static func logSkippedConflicts(_ ids: Set<String>) {
+        guard !ids.isEmpty else { return }
+        log.warning(
+            "Sync skipped \(ids.count, privacy: .public) conflicting downloaded event(s): \(ids.sorted().joined(separator: ", "), privacy: .public)")
     }
 }
 

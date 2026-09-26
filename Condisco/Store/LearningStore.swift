@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import os
 
 // MARK: - Projection output
 
@@ -32,7 +33,9 @@ struct PackProgress {
     var evidence: [String: EvidenceRecord] = [:]
     /// Correct attempts per skill, split by independence.
     var skillCounts: [Skill: SkillCount] = [:]
-    /// Event ids held out of projection (revision drift, retired targets).
+    /// Event ids held out of projection: stored rows whose payload could
+    /// not be decoded (kept observable, never failing the read), plus
+    /// revision drift and retired targets.
     var quarantined: [String] = []
 }
 
@@ -207,6 +210,15 @@ final class LearningStore: ObservableObject {
     private let db: Database
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
+    /// Canonical payload encoder for the duplicate check. `.sortedKeys`
+    /// makes equal content compare equal regardless of JSON key order, so a
+    /// semantically identical re-record (or CloudKit replay) is a no-op
+    /// instead of a spurious `.conflict`.
+    private let canonicalJsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        return encoder
+    }()
 
     init(path: String) throws {
         db = try Database(path: path)
@@ -281,6 +293,14 @@ final class LearningStore: ObservableObject {
                     "ALTER TABLE saved_phrases ADD COLUMN \(column) TEXT NOT NULL DEFAULT '';")
             }
         }
+
+        // Observability (non-fatal): surface any undecodable stored event
+        // rows at open, so local corruption is visible even before the first
+        // sync runs. The resilient reads skip these rows and keep the app —
+        // lessons, review, export — fully usable.
+        if let corruptIds = try? corruptEventIds(), !corruptIds.isEmpty {
+            Self.logCorruptRows(corruptIds)
+        }
     }
 
     static func inDocuments() throws -> LearningStore {
@@ -301,13 +321,48 @@ final class LearningStore: ObservableObject {
         Date(timeIntervalSince1970: Double(millis) / 1_000)
     }
 
+    /// Order-stable JSON for an event, used by `record()`'s duplicate
+    /// check. JSONEncoder does not guarantee key order across encodes, so
+    /// two encodings of the same semantic event can differ byte-for-byte;
+    /// sorting keys makes the comparison insensitive to key order.
+    private func canonicalPayloadJSON(for event: LearningEvent) throws -> String {
+        let data = try canonicalJsonEncoder.encode(event)
+        guard let string = String(data: data, encoding: .utf8) else {
+            throw StoreError.corruptPayload(event.id)
+        }
+        return string
+    }
+
+    /// Canonical form of a stored payload. Decodes and re-encodes with
+    /// sorted keys so it compares cleanly against a freshly encoded event;
+    /// falls back to the raw string when the stored payload cannot be
+    /// decoded, keeping the comparison safe for corrupt rows.
+    ///
+    /// Accepted behavior: payloads that differ only in fields the schema
+    /// does not know about compare equal ("lenient dedup"). Unknown fields
+    /// are dropped by the decode and never enter the canonical form, so a
+    /// semantically identical duplicate is a no-op even when the raw bytes
+    /// carry extra keys — nothing is lost from storage either way.
+    private func canonicalPayloadJSON(stored: String) -> String {
+        guard let data = stored.data(using: .utf8),
+              let event = try? jsonDecoder.decode(LearningEvent.self, from: data),
+              let reencoded = try? canonicalJsonEncoder.encode(event),
+              let string = String(data: reencoded, encoding: .utf8)
+        else { return stored }
+        return string
+    }
+
     /// Appends an event. A duplicate id with identical content is a no-op;
-    /// a duplicate id with different content throws.
+    /// a duplicate id with different content throws. Content is compared in
+    /// canonical (key-sorted) JSON form, so JSON key order never decides
+    /// the outcome.
     func record(_ event: LearningEvent) throws {
         let payloadData = try jsonEncoder.encode(event)
         guard let payload = String(data: payloadData, encoding: .utf8) else {
             throw StoreError.corruptPayload(event.id)
         }
+        // Canonical form of the incoming content for the duplicate check.
+        let canonicalPayload = try canonicalPayloadJSON(for: event)
         let atMs = LearningStore.millis(event.at)
         let version: Int
         let type: String
@@ -336,7 +391,11 @@ final class LearningStore: ObservableObject {
                 bind: { try $0.bindText(1, event.id) },
                 row: { existing = $0.text(0) })
             if let old = existing {
-                if old != payload { throw StoreError.conflict(event.id) }
+                // Compare content, not raw bytes: identical semantics in
+                // any JSON key order is a no-op; different content conflicts.
+                if canonicalPayloadJSON(stored: old) != canonicalPayload {
+                    throw StoreError.conflict(event.id)
+                }
                 return
             }
             try self.db.execute(
@@ -359,71 +418,116 @@ final class LearningStore: ObservableObject {
         }
     }
 
-    /// All events for a pack, merged and sorted by (at, id).
-    /// A corrupt stored payload throws rather than silently dropping history.
-    func learningEvents(packId: String) throws -> [LearningEvent] {
+    /// Decodes stored event rows, returning the decodable events in query
+    /// order together with the ids of rows whose payload cannot be decoded,
+    /// in the order they were encountered. An undecodable row is skipped,
+    /// never failing the read, so a single corrupt row cannot wedge
+    /// projection or sync; the skipped ids surface the corruption instead
+    /// of hiding it.
+    ///
+    /// - Precondition: the SQL must select the row id as column 0 and the
+    ///   payload as column 1.
+    private func decodeEventRows(
+        sql: String,
+        bind: ((Statement) throws -> Void)? = nil
+    ) throws -> (events: [LearningEvent], skipped: [String]) {
         var events: [LearningEvent] = []
-        try db.query(
-            "SELECT id, payload FROM events WHERE pack_id = ? ORDER BY at_ms, id;",
-            bind: { try $0.bindText(1, packId) },
-            row: { statement in
-                guard let payload = statement.text(1),
-                      let data = payload.data(using: .utf8) else {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-                do {
-                    events.append(try self.jsonDecoder.decode(LearningEvent.self, from: data))
-                } catch {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-            })
+        var skipped: [String] = []
+        try db.query(sql, bind: bind, row: { statement in
+            let id = statement.text(0) ?? "?"
+            guard let payload = statement.text(1),
+                  let data = payload.data(using: .utf8),
+                  let event = try? self.jsonDecoder.decode(
+                      LearningEvent.self, from: data)
+            else {
+                if !skipped.contains(id) { skipped.append(id) }
+                return
+            }
+            events.append(event)
+        })
+        return (events, skipped)
+    }
+
+    /// All events for a pack, merged and sorted by (at, id).
+    ///
+    /// Fail-loud raw-log read: a corrupt stored payload throws
+    /// `StoreError.corruptPayload` naming the first offending id rather
+    /// than silently dropping history. Projection and lesson boot use the
+    /// tolerant paths instead — `project(pack:)` reports such ids in
+    /// `PackProgress.quarantined`, `learningEventsWithQuarantine(packId:)`
+    /// returns them alongside the decodable events, and `unsyncedEvents()`
+    /// skips them (ids via `corruptEventIds()`).
+    func learningEvents(packId: String) throws -> [LearningEvent] {
+        let (events, skipped) = try decodeEventRows(
+            sql: "SELECT id, payload FROM events WHERE pack_id = ? ORDER BY at_ms, id;",
+            bind: { try $0.bindText(1, packId) })
+        if let firstBad = skipped.first {
+            throw StoreError.corruptPayload(firstBad)
+        }
         return events
+    }
+
+    /// All events for a pack, merged and sorted by (at, id), together with
+    /// the ids of stored rows whose payload could not be decoded.
+    ///
+    /// Tolerant pack-scoped read for lesson boot: an undecodable row is
+    /// skipped and reported in the returned `skipped` list instead of
+    /// failing the read, so one corrupt row can never block opening or
+    /// resuming a lesson in that pack. Callers that need the fail-loud
+    /// raw-log read use `learningEvents(packId:)`.
+    func learningEventsWithQuarantine(packId: String) throws
+        -> (events: [LearningEvent], skipped: [String]) {
+        try decodeEventRows(
+            sql: "SELECT id, payload FROM events WHERE pack_id = ? ORDER BY at_ms, id;",
+            bind: { try $0.bindText(1, packId) })
     }
 
     // MARK: - Sync bookkeeping
 
     /// Events the server has not acknowledged yet, oldest first.
     /// Downloaded events are marked on ingest, so each event uploads once.
+    ///
+    /// Resilient read: rows whose stored payload cannot be decoded are
+    /// skipped so a single corrupt row cannot wedge the upload; their ids
+    /// stay observable via `corruptEventIds()`.
     func unsyncedEvents() throws -> [LearningEvent] {
-        var events: [LearningEvent] = []
-        try db.query(
-            """
+        try decodeEventRows(sql: """
             SELECT id, payload FROM events
             WHERE id NOT IN (SELECT event_id FROM sync_uploads)
             ORDER BY at_ms, id;
-            """,
-            row: { statement in
-                guard let payload = statement.text(1),
-                      let data = payload.data(using: .utf8)
-                else {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-                do {
-                    events.append(try self.jsonDecoder.decode(
-                        LearningEvent.self, from: data))
-                } catch {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-            })
-        return events
+            """).events
     }
 
     /// Records downloaded events and marks everything the server now holds.
     /// Downloads feed through the idempotent insert, so events already on
     /// this device are no-ops; a conflicting id (same id, other payload) is
     /// skipped rather than failing the whole sync.
+    ///
+    /// - Returns: the ids of downloaded events that `record()` rejected as
+    ///   `.conflict`. Behavior otherwise is unchanged — the ids are still
+    ///   marked uploaded (pre-existing behavior; the server holds them) —
+    ///   but the returned set makes skipped conflicts observable instead of
+    ///   silently lost.
+    @discardableResult
     func ingestSynced(
         downloaded: [LearningEvent], uploadedIds: [String]
-    ) throws {
+    ) throws -> Set<String> {
+        var skippedConflicts: Set<String> = []
         for event in downloaded {
             do {
                 try record(event)
             } catch {
+                // Keep catch-and-continue for every error so one bad row
+                // never fails the whole sync; surface genuine conflicts so
+                // callers can count what was skipped.
+                if case StoreError.conflict = error {
+                    skippedConflicts.insert(event.id)
+                }
                 continue
             }
         }
         let ids = Set(uploadedIds + downloaded.map(\.id))
-        guard !ids.isEmpty else { return }
+        guard !ids.isEmpty else { return skippedConflicts }
         let nowMs = Self.millis(Date())
         try db.transaction {
             for id in ids {
@@ -438,6 +542,7 @@ final class LearningStore: ObservableObject {
                     })
             }
         }
+        return skippedConflicts
     }
 
     /// Distinct UTC days with at least one recorded event.
@@ -830,24 +935,64 @@ final class LearningStore: ObservableObject {
     }
 
     /// The full immutable event log, oldest first, for data export.
+    ///
+    /// Fail-loud raw-log read like `learningEvents(packId:)`: throws
+    /// `StoreError.corruptPayload` on the first undecodable row, because an
+    /// export must not silently lose history. Tolerant consumers use
+    /// `unsyncedEvents()` / `project(pack:)`, `allEventsWithQuarantine()`,
+    /// or read `corruptEventIds()`.
     func allEvents() throws -> [LearningEvent] {
-        var events: [LearningEvent] = []
-        try db.query(
-            "SELECT id, payload FROM events ORDER BY at_ms, id;",
-            row: { statement in
-                guard let payload = statement.text(1),
-                      let data = payload.data(using: .utf8)
-                else {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-                do {
-                    events.append(try self.jsonDecoder.decode(
-                        LearningEvent.self, from: data))
-                } catch {
-                    throw StoreError.corruptPayload(statement.text(0) ?? "?")
-                }
-            })
+        let (events, skipped) = try decodeEventRows(
+            sql: "SELECT id, payload FROM events ORDER BY at_ms, id;")
+        if let firstBad = skipped.first {
+            throw StoreError.corruptPayload(firstBad)
+        }
         return events
+    }
+
+    /// The full immutable event log, oldest first, together with the ids of
+    /// stored rows whose payload could not be decoded.
+    ///
+    /// Tolerant global read for review feeds: an undecodable row is skipped
+    /// and reported in the returned `skipped` list instead of failing the
+    /// whole Review tab, so a corrupt row in any pack — even one never
+    /// opened — cannot degrade review. Data export still uses the fail-loud
+    /// `allEvents()`, which must never silently drop history.
+    func allEventsWithQuarantine() throws
+        -> (events: [LearningEvent], skipped: [String]) {
+        try decodeEventRows(
+            sql: "SELECT id, payload FROM events ORDER BY at_ms, id;")
+    }
+
+    /// Ids of stored event rows whose payload cannot be decoded, oldest
+    /// first. The resilient reads skip these rows instead of failing —
+    /// `project(pack:)` reports the pack-scoped subset in
+    /// `PackProgress.quarantined`, while `unsyncedEvents()` drops them from
+    /// the pending upload — so this accessor (alongside the two raw-log
+    /// reads above, which throw) keeps local corruption observable.
+    ///
+    /// Follow-up only (deliberately not implemented here): self-healing a
+    /// corrupt row by replacing it with the server's copy. Until a repair
+    /// pass can prove which copy is authoritative, the row stays skipped and
+    /// observable rather than silently rewritten.
+    func corruptEventIds() throws -> [String] {
+        try decodeEventRows(
+            sql: "SELECT id, payload FROM events ORDER BY at_ms, id;").skipped
+    }
+
+    // MARK: - Observability
+
+    private static let corruptRowsLog = Logger(
+        subsystem: "com.sleuthysloth.condisco", category: "LearningStore")
+
+    /// Logs ids of stored event rows that the resilient reads skipped, for
+    /// every surface that observes local corruption: store open, sync, and
+    /// the review catalog. Non-fatal by design — the rows stay skipped so
+    /// the rest of the log keeps working.
+    static func logCorruptRows(_ ids: [String]) {
+        guard !ids.isEmpty else { return }
+        corruptRowsLog.error(
+            "Skipped \(ids.count, privacy: .public) undecodable stored event row(s): \(ids.joined(separator: ", "), privacy: .public)")
     }
 
     // MARK: - Listen state
@@ -1023,6 +1168,15 @@ final class LearningStore: ObservableObject {
             })
     }
 
+    /// Removes a kv row entirely. Used by local-only markers to un-mark
+    /// them — the row's absence (like an empty value) reads as "not set",
+    /// so a delete and a clear are indistinguishable to `kvGet`.
+    func kvDelete(_ key: String) throws {
+        try db.execute(
+            "DELETE FROM kv WHERE key = ?;",
+            bind: { try $0.bindText(1, key) })
+    }
+
     /// Stable per-install device id for future sync. Created once, never reset.
     func deviceId() throws -> String {
         if let existing = try kvGet("device_id") { return existing }
@@ -1040,7 +1194,11 @@ final class LearningStore: ObservableObject {
     /// responses) is enforced by the lesson engine at record time, so the
     /// store validates structure, identity, and revisions here.
     func project(pack: CoursePack) throws -> PackProgress {
-        let events = try learningEvents(packId: pack.id)
+        // Tolerant read: an undecodable stored row is skipped and its id
+        // lands in `quarantined` below instead of failing the whole pack.
+        let (events, skipped) = try decodeEventRows(
+            sql: "SELECT id, payload FROM events WHERE pack_id = ? ORDER BY at_ms, id;",
+            bind: { try $0.bindText(1, pack.id) })
 
         var v1: [PracticeEventV1] = []
         var attempts: [ActivityAttempt] = []
@@ -1061,6 +1219,10 @@ final class LearningStore: ObservableObject {
             uniqueKeysWithValues: pack.lessons.flatMap { $0.legacyExercises }.map { ($0.id, $0) })
 
         var quarantined: [String] = []
+        // Undecodable stored rows are held out of projection entirely; their
+        // ids ride along in `quarantined` (stable query order, deduped) so
+        // the corruption stays observable without failing the whole pack.
+        quarantined.append(contentsOf: skipped)
 
         // Valid attempts: reference an existing lesson/step/activity with
         // matching revisions and the activity's own evidence key.

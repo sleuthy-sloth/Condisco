@@ -45,6 +45,7 @@ struct ContentView: View {
     @ObservedObject private var a11y = A11ySettings.shared
     @State private var selection: AppTab = .home
     @State private var reviewSection: ReviewSection = .review
+    @State private var reviewSessionLength: ReviewSessionLength = .all
     @AppStorage("condisco.hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var pendingLesson: PendingLesson?
 
@@ -83,6 +84,8 @@ struct ContentView: View {
         .onChange(of: deepLink.reviewToken) { _, token in
             if token != nil {
                 reviewSection = .review
+                reviewSessionLength = resolveReviewSessionLength(
+                    for: .deepLink, current: reviewSessionLength)
                 selection = .review
                 deepLink.reviewToken = nil
             }
@@ -124,6 +127,8 @@ struct ContentView: View {
         TabView(selection: $selection) {
             HomeView(onOpenReview: {
                 reviewSection = .review
+                reviewSessionLength = resolveReviewSessionLength(
+                    for: .homeInvitation, current: reviewSessionLength)
                 selection = .review
             })
                 .tabItem { Label("Home", systemImage: "house") }
@@ -137,7 +142,7 @@ struct ContentView: View {
             Group {
                 switch reviewSection {
                 case .review:
-                    ReviewView(section: $reviewSection)
+                    ReviewView(section: $reviewSection, sessionLength: $reviewSessionLength)
                 case .saved:
                     SavedView(section: $reviewSection)
                 }

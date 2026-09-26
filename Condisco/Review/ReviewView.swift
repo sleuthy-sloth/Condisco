@@ -50,24 +50,7 @@ final class ReviewModel: ObservableObject {
     /// SRS reschedules this evidence key exactly like a lesson attempt.
     func recordVerdict(_ verdict: ReviewVerdict, for item: ReviewItem) throws {
         guard let store else { return }
-        let attempt = ActivityAttempt(
-            id: UUID().uuidString,
-            packId: item.packId,
-            packVersion: item.packVersion,
-            lessonId: item.lessonId,
-            lessonRevision: item.lessonRevision,
-            stepId: item.stepId,
-            activityId: item.activityId,
-            activityRevision: item.activityRevision,
-            evidenceKey: item.evidenceKey,
-            response: verdict.response,
-            assistance: [],
-            evaluation: AttemptEvaluation(
-                outcome: verdict.outcome,
-                independent: verdict.independent,
-                feedback: ""),
-            at: Date())
-        try store.record(.attempt(attempt))
+        try store.record(.attempt(item.makeAttempt(verdict: verdict)))
         // A verdict reschedules this evidence key, so the widget's
         // reviews-due count is stale from here on.
         if let packs = try? PackLoader.loadPacks() {
@@ -98,9 +81,9 @@ final class ReviewModel: ObservableObject {
 
 struct ReviewView: View {
     @Binding var section: ReviewSection
+    @Binding var sessionLength: ReviewSessionLength
     @StateObject private var model = ReviewModel()
     @State private var session: ReviewSessionRoute?
-    @State private var sessionLength = ReviewSessionLength.all
 
     /// The session queue: the due list capped to the chosen session size,
     /// oldest first either way.
@@ -216,6 +199,7 @@ struct ReviewView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(DesignTokens.primary, lineWidth: 1)
                                 )
+                                .frame(minHeight: 44)
                         }
                         Button {
                             session = ReviewSessionRoute(items: sessionItems, mode: .handsfree)
@@ -229,6 +213,7 @@ struct ReviewView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(DesignTokens.primary, lineWidth: 1)
                                 )
+                                .frame(minHeight: 44)
                         }
                     }
                 }
@@ -239,6 +224,7 @@ struct ReviewView: View {
                                 Text("Tricky list")
                                     .font(DesignTokens.text(16, weight: .semibold))
                                     .foregroundStyle(DesignTokens.inkDeep)
+                                    .accessibilityAddTraits(.isHeader)
                                 Spacer()
                                 Text("\(model.tricky.count)")
                                     .font(DesignTokens.text(16, weight: .semibold))
@@ -260,6 +246,7 @@ struct ReviewView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .stroke(DesignTokens.primary, lineWidth: 1)
                                     )
+                                    .frame(minHeight: 44)
                             }
                             .padding(.top, 2)
                         }
@@ -327,6 +314,34 @@ enum ReviewSessionLength: Int, CaseIterable {
         case .ten: return 10
         case .all: return nil
         }
+    }
+}
+
+// MARK: - Review entry points
+//
+// How a learner reaches the Review tab decides the session size:
+// Home's Today invitation promises "Up to 5 reviews", an external deep
+// link (widget, Siri) asks for everything due, and the tab itself keeps
+// whatever the learner last chose.
+
+enum ReviewEntryPoint {
+    case homeInvitation
+    case tab
+    case deepLink
+}
+
+/// Resolves the session size a review entry point should apply.
+/// Home's invitation always preselects `.five` — the short sitting its
+/// copy promises; the tab keeps the learner's current choice (the
+/// shared binding is the single source of truth, so picker changes
+/// persist across tab switches); a deep link requests everything due.
+func resolveReviewSessionLength(
+    for entry: ReviewEntryPoint, current: ReviewSessionLength
+) -> ReviewSessionLength {
+    switch entry {
+    case .homeInvitation: return .five
+    case .tab: return current
+    case .deepLink: return .all
     }
 }
 
@@ -455,6 +470,7 @@ struct ReviewSessionView: View {
                 Button("Undo last rating") { undoLast() }
                     .font(DesignTokens.text(15, weight: .semibold))
                     .foregroundStyle(DesignTokens.primary)
+                    .frame(minHeight: 44)
             }
             Button("Done") { onDone() }
                 .font(DesignTokens.text(16, weight: .semibold))
@@ -463,6 +479,7 @@ struct ReviewSessionView: View {
                 .padding(.vertical, 12)
                 .background(DesignTokens.primary)
                 .cornerRadius(10)
+                .frame(minHeight: 44)
         }
     }
 
@@ -561,6 +578,7 @@ struct ReviewCardView: View {
                                 .font(DesignTokens.text(15, weight: .semibold))
                                 .foregroundStyle(DesignTokens.primary)
                                 .padding(.top, 2)
+                                .frame(minHeight: 44)
                         }
                     }
                 }

@@ -53,6 +53,7 @@ struct StudioSecondaryButton: View {
                 .foregroundStyle(DesignTokens.ink)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 16)
+                .frame(minHeight: 44)
                 .background(DesignTokens.stock)
                 .cornerRadius(8)
                 .overlay(

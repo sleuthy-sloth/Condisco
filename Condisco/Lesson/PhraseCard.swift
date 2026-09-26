@@ -67,6 +67,13 @@ struct SharedCard: Identifiable {
     let image: Image
     let caption: String
 
+    /// Wraps an already-rendered card image, for callers that draw their own
+    /// card (e.g. the pair-practice card) and only need the ShareLink wrapper.
+    init(image: Image, caption: String) {
+        self.image = image
+        self.caption = caption
+    }
+
     @MainActor
     init(phrase: ShareablePhrase) {
         self.caption = "\(phrase.target) — \(phrase.meaning)"

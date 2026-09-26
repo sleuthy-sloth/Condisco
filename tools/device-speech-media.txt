@@ -1,0 +1,41 @@
+# device-speech-media.txt
+# Declared course media that is intentionally NOT shipped as a recording yet.
+#
+# Each entry is a declared media `id` (a `url` also works). Every missing
+# asset listed here is reported by tools/check_packs.sh as
+# "device-speech (intentional)" instead of an ERROR: the referring lesson
+# step degrades to the on-device synthesized course voice (see
+# AudioStimulusView in Condisco/Lesson/StimulusViews.swift).
+#
+# Update policy:
+#   - When a reviewed recording ships for one of these, remove its line here
+#     (a stale entry is reported as a WARNING).
+#   - Any *other* missing asset is an ERROR — no silent gaps.
+#
+# The 21 entries below are the pre-review Kokoro "model"/"answer" audio
+# (16 italian + 5 french) with no reviewed recording in the repo yet.
+
+# --- Italian (16) ---
+it-polite-coffee-audio         # /audio/italian/it-ordering-politely-answer.wav
+it-identity-foundation-model   # /audio/italian-foundations/it-identity-foundation-model.wav
+it-people-foundation-model     # /audio/italian-foundations/it-people-foundation-model.wav
+it-family-foundation-model     # /audio/italian-foundations/it-family-foundation-model.wav
+it-numbers-foundation-model    # /audio/italian-foundations/it-numbers-foundation-model.wav
+it-descriptions-foundation-model  # /audio/italian-foundations/it-descriptions-foundation-model.wav
+it-plural-foundation-model     # /audio/italian-foundations/it-plural-foundation-model.wav
+it-negation-foundation-model   # /audio/italian-foundations/it-negation-foundation-model.wav
+it-food-foundation-model       # /audio/italian-foundations/it-food-foundation-model.wav
+it-possession-foundation-model # /audio/italian-foundations/it-possession-foundation-model.wav
+it-requests-foundation-model   # /audio/italian-foundations/it-requests-foundation-model.wav
+it-past-foundation-model       # /audio/italian-foundations/it-past-foundation-model.wav
+it-plans-foundation-model      # /audio/italian-foundations/it-plans-foundation-model.wav
+it-days-foundation-model       # /audio/italian-foundations/it-days-foundation-model.wav
+it-market-foundation-model     # /audio/italian-foundations/it-market-foundation-model.wav
+it-emergency-foundation-model  # /audio/italian-foundations/it-emergency-foundation-model.wav
+
+# --- French (5) ---
+fr-polite-coffee-audio         # /audio/french-ordering/fr-ordering-politely-answer.wav
+fr-identity-foundation-model   # /audio/french-foundations/fr-identity-foundation-model.wav
+fr-people-foundation-model     # /audio/french-foundations/fr-people-foundation-model.wav
+fr-family-foundation-model     # /audio/french-foundations/fr-family-foundation-model.wav
+fr-numbers-foundation-model    # /audio/french-foundations/fr-numbers-foundation-model.wav

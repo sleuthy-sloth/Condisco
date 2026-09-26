@@ -279,8 +279,9 @@ enum ResumeResult {
 /// Rebuild a session from a saved checkpoint and the event log. Mirrors the
 /// web `resumeSession`: the checkpoint wins when it is still valid, otherwise
 /// the lesson restarts with attempts and completion credits preserved.
-/// `quarantined` holds event ids the store projection held out (revision
-/// drift, retired targets); callers get it from `LearningStore.project`.
+/// `quarantined` holds event ids the store projection held out (rows whose
+/// payload could not be decoded, revision drift, retired targets); callers
+/// get it from `LearningStore.project`.
 func resumeSession(pack: CoursePack,
                    checkpoint: LessonCheckpoint,
                    events: [LearningEvent],

@@ -195,7 +195,13 @@ struct VocabularyDetailView: View {
                                         PhraseSaveButton(
                                             phrase: exampleShareable,
                                             languageSlug: pack.language.slug,
-                                            source: "Vocabulary")
+                                            source: "Vocabulary",
+                                            // The browser spans the whole pack: a
+                                            // vocabulary item is not bound to a single
+                                            // lesson (it can appear in several), so no
+                                            // lesson id exists here — only the pack id
+                                            // is genuine.
+                                            sourcePackId: pack.id)
                                         PhraseShareButton(phrase: exampleShareable)
                                     }
                                 }

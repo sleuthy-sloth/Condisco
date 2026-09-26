@@ -64,6 +64,16 @@ enum PackLoader {
     }
 
     private static func loadPacksUncached() throws -> [CoursePack] {
+        // DEBUG-only timing: Instruments reads the "PackLoad" signpost
+        // (I/O + JSON decode + validation across all five packs). In Release
+        // PerfSignpost compiles to inline no-ops, so this is zero-cost.
+#if DEBUG
+        // Guarded so the standalone content validator (`tools/check_packs.sh`),
+        // which compiles this file with swiftc outside the app target, never
+        // needs `PerfSignpost` (defined in CondiscoApp.swift).
+        let measurement = PerfSignpost.begin("PackLoad")
+        defer { PerfSignpost.end("PackLoad", measurement) }
+#endif
         guard let content = contentDirectory() else {
             throw PackLoadError.missingContentFolder
         }

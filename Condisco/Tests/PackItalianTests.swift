@@ -644,4 +644,323 @@ final class PackItalianTests: XCTestCase {
         XCTAssertFalse(doubleVerb.accepted)
         XCTAssertEqual(doubleVerb.category, "wrong conjugation")
     }
+
+    // MARK: - Wave D discovery lessons (units 3–6, 12–13; family == "discovery")
+
+    /// The nine in-scope Wave D discovery lessons must ship an authored,
+    /// non-generic hint on every graded path step (rubric H4).
+    func testWaveDDiscoveriesHaveAuthoredStepHints() throws {
+        let pack = try italianPack()
+        let lessonIds = ["it-negation-foundation", "it-food-foundation",
+                         "it-possession-foundation", "it-past-foundation",
+                         "it-plans-foundation", "it-days-foundation",
+                         "it-emergency-foundation", "it-a2-congiuntivo",
+                         "it-a2-comparativi"]
+        let generic: Set<String> = ["Try it", "Try again", "Not quite — try again.",
+            "That selection is not valid. Try again.", "The order is not right yet. Try again.",
+            "Some pairs are off. Try again.", "Place every token exactly once.",
+            "Each pairing must use listed items exactly once.",
+            "Each region counts once. Try again."]
+        for lessonId in lessonIds {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), "missing \(lessonId)")
+            for step in lesson.steps {
+                guard let activity = pack.activity(id: step.activityId),
+                      let base = activity.base else { continue }
+                XCTAssertFalse(base.hints.isEmpty,
+                               "\(lessonId) step \(step.id) has no authored hint")
+                XCTAssertFalse(base.hints.allSatisfy(generic.contains),
+                               "\(lessonId) step \(step.id) has only generic hints")
+            }
+        }
+    }
+
+    /// Every text answer and cloze blank in the Wave D set carries authored
+    /// errors, so the wrong-answer path never falls back to the generic
+    /// string on those surfaces (rubric H3).
+    func testWaveDDiscoveriesHaveAuthoredErrors() throws {
+        let pack = try italianPack()
+        let lessonIds = ["it-negation-foundation", "it-food-foundation",
+                         "it-possession-foundation", "it-past-foundation",
+                         "it-plans-foundation", "it-days-foundation",
+                         "it-emergency-foundation", "it-a2-congiuntivo",
+                         "it-a2-comparativi"]
+        for lessonId in lessonIds {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), "missing \(lessonId)")
+            for step in lesson.steps {
+                for activityID in [step.activityId, step.supportActivityId].compactMap({ $0 }) {
+                    guard let activity = pack.activity(id: activityID) else { continue }
+                    switch activity {
+                    case .text(let spec):
+                        XCTAssertFalse(spec.answer.errors.isEmpty,
+                                       "\(lessonId) \(activityID) text has no authored errors")
+                    case .cloze(let spec):
+                        for (name, blank) in spec.blanks {
+                            XCTAssertFalse(blank.errors.isEmpty,
+                                           "\(lessonId) \(activityID) blank \(name) has no authored errors")
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    /// it-negation-foundation-cloze b1: the negation before a verb is non;
+    /// no (the standalone answer word) and sì are authored errors.
+    func testNegationClozeNonBeforeVerb() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-negation-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Non", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "non", spec: spec).accepted)
+        let no = AnswerEngine.evaluate(response: "No", spec: spec)
+        XCTAssertFalse(no.accepted)
+        XCTAssertEqual(no.category, "incorrect answer")
+        let si = AnswerEngine.evaluate(response: "Sì", spec: spec)
+        XCTAssertFalse(si.accepted)
+        XCTAssertEqual(si.category, "incorrect answer")
+    }
+
+    /// it-negation-foundation-produce: the dropped pronoun is a natural
+    /// alternative; no (not non) before the verb is an authored error.
+    func testNegationProduceAcceptsDroppedPronoun() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-negation-foundation-produce")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Non lavoro in casa.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Io non lavoro in casa.", spec: spec).accepted)
+        let conjug = AnswerEngine.evaluate(response: "Io non lavori in casa.", spec: spec)
+        XCTAssertFalse(conjug.accepted)
+        XCTAssertEqual(conjug.category, "wrong conjugation")
+        let no = AnswerEngine.evaluate(response: "No lavoro in casa.", spec: spec)
+        XCTAssertFalse(no.accepted)
+        XCTAssertEqual(no.category, "incorrect answer")
+    }
+
+    /// it-food-foundation-cloze b1: io pairs with prendo; the tu form and the
+    /// infinitive are authored wrong-conjugation errors.
+    func testFoodClozeIoFormPrendo() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-food-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "prendo", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Prendo", spec: spec).accepted)
+        let tu = AnswerEngine.evaluate(response: "prendi", spec: spec)
+        XCTAssertFalse(tu.accepted)
+        XCTAssertEqual(tu.category, "wrong conjugation")
+        let infinitive = AnswerEngine.evaluate(response: "prendere", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+    }
+
+    /// it-food-story-transfer: the café request accepts all three taught
+    /// polite forms plus the already-polite Vorrei alone; voglio's blunt
+    /// register and a bare order without per favore are authored errors.
+    func testFoodStoryTransferPoliteRegister() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-food-story-transfer")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vorrei un caffè, per favore.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Prendo un caffè, per favore.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Un caffè, per favore.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vorrei un caffè.", spec: spec).accepted)
+        let voglio = AnswerEngine.evaluate(response: "Voglio un caffè, per favore.", spec: spec)
+        XCTAssertFalse(voglio.accepted)
+        XCTAssertEqual(voglio.category, "incorrect answer")
+        let bare = AnswerEngine.evaluate(response: "Un caffè.", spec: spec)
+        XCTAssertFalse(bare.accepted)
+        XCTAssertEqual(bare.category, "incorrect answer")
+    }
+
+    /// it-possession-foundation-cloze b1: casa is feminine singular, so the
+    /// possessive is mia; mio and miei are authored gender/number errors.
+    func testPossessionClozeFeminineMia() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-possession-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "mia", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Mia", spec: spec).accepted)
+        let masculine = AnswerEngine.evaluate(response: "mio", spec: spec)
+        XCTAssertFalse(masculine.accepted)
+        XCTAssertEqual(masculine.category, "wrong gender")
+        let plural = AnswerEngine.evaluate(response: "miei", spec: spec)
+        XCTAssertFalse(plural.accepted)
+        XCTAssertEqual(plural.category, "wrong number")
+    }
+
+    /// it-possession-foundation-produce: è keeps its accent and the article
+    /// stays; the accent slip and dropped-article forms are authored errors.
+    func testPossessionProduceAccentAndArticle() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-possession-foundation-produce")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "La mia casa è bianca.", spec: spec).accepted)
+        let accent = AnswerEngine.evaluate(response: "La mia casa e bianca.", spec: spec)
+        XCTAssertFalse(accent.accepted)
+        XCTAssertEqual(accent.category, "accent/diacritic issue")
+        let noArticle = AnswerEngine.evaluate(response: "Mia casa è bianca.", spec: spec)
+        XCTAssertFalse(noArticle.accepted)
+        XCTAssertEqual(noArticle.category, "missing word")
+    }
+
+    /// it-past-foundation-cloze b1: the past helper with io is ho; ha and the
+    /// essere auxiliary are authored errors.
+    func testPastClozeAvereHelper() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-past-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "ho", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Ho", spec: spec).accepted)
+        let ha = AnswerEngine.evaluate(response: "ha", spec: spec)
+        XCTAssertFalse(ha.accepted)
+        XCTAssertEqual(ha.category, "wrong conjugation")
+        let sono = AnswerEngine.evaluate(response: "sono", spec: spec)
+        XCTAssertFalse(sono.accepted)
+        XCTAssertEqual(sono.category, "wrong auxiliary")
+    }
+
+    /// it-past-foundation-meaning: ho studiato renders as both simple past and
+    /// present perfect; the present-tense translation is an authored error.
+    func testPastMeaningAcceptsHaveStudied() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-past-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "I studied at home.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "I have studied at home.", spec: spec).accepted)
+        let present = AnswerEngine.evaluate(response: "I study at home.", spec: spec)
+        XCTAssertFalse(present.accepted)
+        XCTAssertEqual(present.category, "wrong tense")
+        let future = AnswerEngine.evaluate(response: "I will study at home.", spec: spec)
+        XCTAssertFalse(future.accepted)
+        XCTAssertEqual(future.category, "wrong tense")
+    }
+
+    /// it-plans-foundation-cloze b1: the io form of andare is vado; the
+    /// lui/lei va, tu vai and the infinitive are authored errors.
+    func testPlansClozeAndareIoForm() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-plans-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "vado", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vado", spec: spec).accepted)
+        let va = AnswerEngine.evaluate(response: "va", spec: spec)
+        XCTAssertFalse(va.accepted)
+        XCTAssertEqual(va.category, "wrong conjugation")
+        let infinitive = AnswerEngine.evaluate(response: "andare", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong conjugation")
+    }
+
+    /// it-days-foundation-cloze b1: dates use the cardinal number (il tre
+    /// maggio); tredici and the ordinal terzo are authored errors.
+    func testDaysClozeCardinalDate() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-days-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "tre", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Tre", spec: spec).accepted)
+        let tredici = AnswerEngine.evaluate(response: "tredici", spec: spec)
+        XCTAssertFalse(tredici.accepted)
+        XCTAssertEqual(tredici.category, "incorrect answer")
+        let ordinal = AnswerEngine.evaluate(response: "terzo", spec: spec)
+        XCTAssertFalse(ordinal.accepted)
+        XCTAssertEqual(ordinal.category, "incorrect answer")
+    }
+
+    /// it-days-foundation-listen-model: both accents (è, lunedì) are dictated
+    /// by the audio model; the accent-less e and the domani mix-up are errors.
+    func testDaysListenModelAccents() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-days-foundation-listen-model")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Oggi è lunedì.", spec: spec).accepted)
+        let accent = AnswerEngine.evaluate(response: "Oggi e lunedì.", spec: spec)
+        XCTAssertFalse(accent.accepted)
+        XCTAssertEqual(accent.category, "accent/diacritic issue")
+        let domani = AnswerEngine.evaluate(response: "Domani è lunedì.", spec: spec)
+        XCTAssertFalse(domani.accepted)
+        XCTAssertEqual(domani.category, "incorrect answer")
+    }
+
+    /// it-emergency-foundation-cloze b1: the feminine article elides
+    /// (un'ambulanza) in the dictated call; the un-elided and article-less
+    /// forms are authored errors.
+    func testEmergencyClozeElision() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-emergency-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "un’ambulanza", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "un'ambulanza", spec: spec).accepted)
+        let unelided = AnswerEngine.evaluate(response: "un ambulanza", spec: spec)
+        XCTAssertFalse(unelided.accepted)
+        XCTAssertEqual(unelided.category, "accent/diacritic issue")
+        let bare = AnswerEngine.evaluate(response: "ambulanza", spec: spec)
+        XCTAssertFalse(bare.accepted)
+        XCTAssertEqual(bare.category, "missing word")
+    }
+
+    /// it-emergency-foundation-produce: the lesson's request form is the
+    /// polite chiami; the blunt tu-imperative chiama is an authored error.
+    func testEmergencyProduceRequestForm() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-emergency-foundation-produce")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Aiuto! Chiami un’ambulanza!", spec: spec).accepted)
+        let chiama = AnswerEngine.evaluate(response: "Aiuto! Chiama un’ambulanza!", spec: spec)
+        XCTAssertFalse(chiama.accepted)
+        XCTAssertEqual(chiama.category, "wrong conjugation")
+        let chiamo = AnswerEngine.evaluate(response: "Aiuto! Chiamo un’ambulanza!", spec: spec)
+        XCTAssertFalse(chiamo.accepted)
+        XCTAssertEqual(chiamo.category, "incorrect answer")
+    }
+
+    /// it-a2-congiuntivo-cloze b1: after spero che, fare becomes the
+    /// congiuntivo faccia; fa (indicative) and farà (future) are authored
+    /// wrong-conjugation errors.
+    func testCongiuntivoClozeFareForm() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-a2-congiuntivo-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "faccia", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Faccia", spec: spec).accepted)
+        let fa = AnswerEngine.evaluate(response: "fa", spec: spec)
+        XCTAssertFalse(fa.accepted)
+        XCTAssertEqual(fa.category, "wrong conjugation")
+        let future = AnswerEngine.evaluate(response: "farà", spec: spec)
+        XCTAssertFalse(future.accepted)
+        XCTAssertEqual(future.category, "wrong conjugation")
+    }
+
+    /// it-a2-congiuntivo-vary: doubt lives in the main clause (Non credo che
+    /// sia vero); the indicative è and the shifted "Credo che non sia vero"
+    /// are authored errors.
+    func testCongiuntivoVaryDoubtPlacement() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-congiuntivo-vary")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Non credo che sia vero.", spec: spec).accepted)
+        let indicative = AnswerEngine.evaluate(response: "Non credo che è vero.", spec: spec)
+        XCTAssertFalse(indicative.accepted)
+        XCTAssertEqual(indicative.category, "wrong conjugation")
+        let shifted = AnswerEngine.evaluate(response: "Credo che non sia vero.", spec: spec)
+        XCTAssertFalse(shifted.accepted)
+        XCTAssertEqual(shifted.category, "incorrect answer")
+    }
+
+    /// it-a2-comparativi-cloze b1: the comparative needs più + aggettivo + di;
+    /// molto and the superlative il più are authored errors.
+    func testComparativiClozePiu() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-a2-comparativi-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "più", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Più", spec: spec).accepted)
+        let molto = AnswerEngine.evaluate(response: "molto", spec: spec)
+        XCTAssertFalse(molto.accepted)
+        XCTAssertEqual(molto.category, "incorrect answer")
+        let ilPiu = AnswerEngine.evaluate(response: "il più", spec: spec)
+        XCTAssertFalse(ilPiu.accepted)
+        XCTAssertEqual(ilPiu.category, "incorrect answer")
+    }
+
+    /// it-a2-comparativi-think: the second term keeps its article and agrees
+    /// with casa (della tua); the article-less di tua is an authored
+    /// missing-word error.
+    func testComparativiThinkConcordance() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-comparativi-think")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "La mia casa è più grande della tua.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "La mia casa è più grande della tua casa.", spec: spec).accepted)
+        let noArticle = AnswerEngine.evaluate(response: "La mia casa è più grande di tua.", spec: spec)
+        XCTAssertFalse(noArticle.accepted)
+        XCTAssertEqual(noArticle.category, "missing word")
+        let che = AnswerEngine.evaluate(response: "La mia casa è più grande che tua.", spec: spec)
+        XCTAssertFalse(che.accepted)
+        XCTAssertEqual(che.category, "incorrect answer")
+    }
 }

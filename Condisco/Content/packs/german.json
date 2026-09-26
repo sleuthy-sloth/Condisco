@@ -5166,7 +5166,9 @@
         "vocabulary"
       ],
       "prompt": "A Berlin calendar marks each day with one word. Which is the word for today?",
-      "hints": [],
+      "hints": [
+        "Look for the day you are living in right now — heute. The options also include the day after (morgen) and the name of the week itself (Woche)."
+      ],
       "feedback": "Heute is the one. Morgen, Mittwoch and Woche name tomorrow, Wednesday and the week.",
       "evidenceKey": "de-time-days-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5211,7 +5213,9 @@
         "vocabulary"
       ],
       "prompt": "Most German weekdays carry a sun, a moon or a god. Which one names nobody and simply marks the middle of the week?",
-      "hints": [],
+      "hints": [
+        "Think of the literal meaning: mid-week. Donnerstag is named for the god Donar and Sonntag belongs to the sun — only Mittwoch is a plain label for the middle."
+      ],
       "feedback": "Mittwoch is literally mid-week. Donnerstag thunders with Donar and Sonntag belongs to the sun.",
       "evidenceKey": "de-time-days-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5253,7 +5257,9 @@
         "vocabulary"
       ],
       "prompt": "Read the week. Which day does the passage place in the middle?",
-      "hints": [],
+      "hints": [
+        "The passage says it outright in the fourth sentence: Mittwoch ist die Mitte der Woche. Name that day in German or in English."
+      ],
       "feedback": "The fourth sentence says it outright: Mittwoch ist die Mitte der Woche.",
       "evidenceKey": "de-time-days-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5269,7 +5275,18 @@
           "Wednesday"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Donnerstag",
+            "category": "incorrect answer",
+            "explanation": "Donnerstag thunders for Donar and appears last in the passage as the rainy day. The middle of the week is Mittwoch."
+          },
+          {
+            "answer": "Sonntag",
+            "category": "incorrect answer",
+            "explanation": "Sonntag opens the passage as the sun's day. Only one sentence calls a day die Mitte der Woche — the one naming Mittwoch."
+          }
+        ]
       }
     },
     {
@@ -5285,7 +5302,9 @@
         "grammar"
       ],
       "prompt": "Build the German sentence for on Monday I work, with the day in first position.",
-      "hints": [],
+      "hints": [
+        "Open with Am Montag — the day takes the first position — then the verb arbeite, and only after it ich."
+      ],
       "feedback": "German likes the day in front: Am Montag, then the verb arbeite, then ich.",
       "evidenceKey": "de-time-days-foundation-build",
       "assistanceAffectsEvidence": [
@@ -5334,7 +5353,9 @@
         "grammar"
       ],
       "prompt": "Complete with the noun for the morning, not the word for tomorrow: Der ___ ist kalt.",
-      "hints": [],
+      "hints": [
+        "The article Der demands a noun, and German nouns are capitalized. The uncapitalised morgen is the adverb for tomorrow."
+      ],
       "feedback": "Der Morgen, with the capital letter and the article, is the morning; morgen alone means tomorrow.",
       "evidenceKey": "de-time-days-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5364,7 +5385,18 @@
             "Morgen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "morgens",
+              "category": "incorrect answer",
+              "explanation": "Morgens with -s is the adverb meaning 'in the mornings'. The noun for the morning is der Morgen."
+            },
+            {
+              "answer": "Abend",
+              "category": "incorrect answer",
+              "explanation": "Abend is the evening — the prompt asks for the morning: der Morgen."
+            }
+          ]
         }
       }
     },
@@ -5381,7 +5413,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: today is Sunday.",
-      "hints": [],
+      "hints": [
+        "Open with Heute, then ist, then the sun's day — Sonntag, with a capital S."
+      ],
       "feedback": "Heute ist plus the day. Sonntag is the sun's day, the name sitting in plain sight.",
       "evidenceKey": "de-time-days-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5395,7 +5429,18 @@
           "Heute ist Sonntag."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Heute ist Montag.",
+            "category": "incorrect answer",
+            "explanation": "The line says today is the sun's day — Sonntag — not Montag (Monday)."
+          },
+          {
+            "answer": "Heute Sonntag ist.",
+            "category": "word-order problem",
+            "explanation": "German keeps the verb in second position after the time word: Heute ist Sonntag."
+          }
+        ]
       }
     },
     {
@@ -5411,7 +5456,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Am Montag arbeite ich.",
-      "hints": [],
+      "hints": [
+        "Am Montag is 'on Monday'; arbeite ich is 'I work', with the verb pulled up because the day phrase opened the sentence."
+      ],
       "feedback": "German opens with the day and puts the verb straight after it: am Montag, then arbeite.",
       "evidenceKey": "de-time-days-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5426,7 +5473,18 @@
           "I work on Monday."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I work Monday.",
+            "category": "missing word",
+            "explanation": "Am means on here — the day phrase keeps its preposition: On Monday I work."
+          },
+          {
+            "answer": "Monday I work on.",
+            "category": "word-order problem",
+            "explanation": "English leads with the time phrase, then subject and verb: On Monday I work."
+          }
+        ]
       }
     },
     {
@@ -8303,7 +8361,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is the kitchen?",
-      "hints": [],
+      "hints": [
+        "The kitchen is a feminine noun that takes die. The two masculine options are Tisch and Stuhl, and Bett is neuter — only one option carries die."
+      ],
       "feedback": "Küche is feminine, so it takes die: die Küche. Tisch and Stuhl are masculine (der), Bett is neuter (das).",
       "evidenceKey": "de-home-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8348,7 +8408,9 @@
         "grammar"
       ],
       "prompt": "Predict the article before you write it: That is a chair.",
-      "hints": [],
+      "hints": [
+        "Stuhl is masculine, and masculine nouns take ein after ist: Das ist ein Stuhl."
+      ],
       "feedback": "Stuhl is masculine, and masculine nouns take ein: Das ist ein Stuhl.",
       "evidenceKey": "de-home-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8362,7 +8424,18 @@
           "Das ist ein Stuhl."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist eine Stuhl.",
+            "category": "wrong article",
+            "explanation": "Stuhl is masculine, so the indefinite article is ein. Eine belongs to feminine nouns like die Küche."
+          },
+          {
+            "answer": "Das ist einen Stuhl.",
+            "category": "wrong article",
+            "explanation": "Einen is the accusative form; after ist the noun stays nominative: Das ist ein Stuhl."
+          }
+        ]
       }
     },
     {
@@ -8378,7 +8451,9 @@
         "vocabulary"
       ],
       "prompt": "Tisch is masculine. Pick the sentence that says that is a table.",
-      "hints": [],
+      "hints": [
+        "Masculine Tisch keeps the bare ein — not the feminine eine and not the accusative einen. Pick that sentence."
+      ],
       "feedback": "Masculine Tisch takes ein. Eine is only for feminine nouns, and einen is the accusative form — not needed after ist.",
       "evidenceKey": "de-home-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8419,7 +8494,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say that is a kitchen.",
-      "hints": [],
+      "hints": [
+        "Start with Das, then ist, then the feminine article eine, and put the kitchen itself last."
+      ],
       "feedback": "Küche is feminine, so the article is eine: Das ist eine Küche.",
       "evidenceKey": "de-home-foundation-build",
       "assistanceAffectsEvidence": [
@@ -8469,7 +8546,9 @@
         "grammar"
       ],
       "prompt": "Make it about the bed: Das ist ein Stuhl.",
-      "hints": [],
+      "hints": [
+        "Keep the frame Das ist ein … and swap Stuhl for the neuter noun Bett — neuter takes ein, so nothing else changes."
+      ],
       "feedback": "Bett is neuter, and neuter nouns take ein just like masculine ones: Das ist ein Bett.",
       "evidenceKey": "de-home-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -8483,7 +8562,18 @@
           "Das ist ein Bett."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist eine Bett.",
+            "category": "wrong article",
+            "explanation": "Bett is neuter, so it takes ein — eine is reserved for feminine nouns."
+          },
+          {
+            "answer": "Das ist Bett.",
+            "category": "missing word",
+            "explanation": "The sentence needs its article with neuter Bett: Das ist ein Bett."
+          }
+        ]
       }
     },
     {
@@ -8499,7 +8589,9 @@
         "grammar"
       ],
       "prompt": "Zimmer is neuter. Fill in the article: Das ist ___ Zimmer.",
-      "hints": [],
+      "hints": [
+        "Zimmer is neuter, and neuter nouns take ein just like masculine ones: ein Zimmer."
+      ],
       "feedback": "Zimmer is neuter, so the article is ein: Das ist ein Zimmer.",
       "evidenceKey": "de-home-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8529,7 +8621,18 @@
             "ein"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "eine",
+              "category": "wrong article",
+              "explanation": "Zimmer is neuter, so the indefinite article is ein. Eine belongs to feminine nouns."
+            },
+            {
+              "answer": "einen",
+              "category": "wrong article",
+              "explanation": "Einen is the accusative form; after ist the noun is nominative: Das ist ein Zimmer."
+            }
+          ]
         }
       }
     },
@@ -8547,7 +8650,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note about a small apartment. Which room is new?",
-      "hints": [],
+      "hints": [
+        "The note marks exactly one room as neu — the others are klein or alt. Answer with that room and its article."
+      ],
       "feedback": "The note calls the kitchen neu and everything else klein or alt: Die Küche ist neu.",
       "evidenceKey": "de-home-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8564,7 +8669,18 @@
           "Küche"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Zimmer.",
+            "category": "incorrect answer",
+            "explanation": "The note's Zimmer is klein (and the Bett ist alt). The room that is neu is the kitchen: Die Küche ist neu."
+          },
+          {
+            "answer": "Der Tisch.",
+            "category": "incorrect answer",
+            "explanation": "Der Tisch is described as groß, not new. The new room is Die Küche."
+          }
+        ]
       }
     },
     {
@@ -8589,7 +8705,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘the house is big’?",
-      "hints": [],
+      "hints": [
+        "Groß is big, klein is small, neu is new. The house is big — and the last option talks about the room instead of the house."
+      ],
       "feedback": "Groß is big, so das Haus ist groß is the house is big. Klein is small, neu is new, and the last option describes the room, not the house.",
       "evidenceKey": "de-descriptions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8634,7 +8752,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: The room is small.",
-      "hints": [],
+      "hints": [
+        "Zimmer is neuter, but the adjective after ist does not change: Das Zimmer ist klein."
+      ],
       "feedback": "Zimmer is neuter but the adjective does not care: Das Zimmer ist klein.",
       "evidenceKey": "de-descriptions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8648,7 +8768,18 @@
           "Das Zimmer ist klein."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Zimmer ist kleine.",
+            "category": "incorrect answer",
+            "explanation": "After ist the adjective stays plain: klein, not kleine — an ending appears only when the adjective stands before the noun."
+          },
+          {
+            "answer": "Das Zimmer klein ist.",
+            "category": "word-order problem",
+            "explanation": "The verb ist takes second position: Das Zimmer ist klein."
+          }
+        ]
       }
     },
     {
@@ -8665,7 +8796,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the sentence that is correct German.",
-      "hints": [],
+      "hints": [
+        "After ist the adjective keeps its plain form (groß), and sehr stands directly in front of the adjective — not before ist."
+      ],
       "feedback": "After ist the adjective keeps its plain form — große is wrong — and sehr must stand before the adjective, not before ist.",
       "evidenceKey": "de-descriptions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8706,7 +8839,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say the kitchen is new.",
-      "hints": [],
+      "hints": [
+        "Die Küche first, then ist, then the plain adjective neu — no ending after ist."
+      ],
       "feedback": "Die Küche ist neu: the adjective neu needs no ending after ist.",
       "evidenceKey": "de-descriptions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -8756,7 +8891,9 @@
         "grammar"
       ],
       "prompt": "Make it old instead of new: Das Auto ist neu.",
-      "hints": [],
+      "hints": [
+        "Swap neu for its opposite, alt; the sentence frame does not move: Das Auto ist alt."
+      ],
       "feedback": "Swap neu for alt and nothing else moves: Das Auto ist alt.",
       "evidenceKey": "de-descriptions-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -8770,7 +8907,18 @@
           "Das Auto ist alt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Auto ist neu.",
+            "category": "incorrect answer",
+            "explanation": "The step asks you to change the description: old is alt, so the sentence reads Das Auto ist alt."
+          },
+          {
+            "answer": "Das Auto ist sehr alt.",
+            "category": "extra word",
+            "explanation": "Sehr is not part of the target line — the prompt only swaps neue for old: Das Auto ist alt."
+          }
+        ]
       }
     },
     {
@@ -8787,7 +8935,9 @@
         "grammar"
       ],
       "prompt": "Complete with the word for very: Das Haus ist ___ groß.",
-      "hints": [],
+      "hints": [
+        "The word for very sits immediately before the adjective it strengthens: sehr groß."
+      ],
       "feedback": "Sehr sits directly before the adjective: Das Haus ist sehr groß.",
       "evidenceKey": "de-descriptions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8817,7 +8967,18 @@
             "sehr"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "so",
+              "category": "incorrect answer",
+              "explanation": "So means 'so' — the prompt asks for the word for very, which is sehr: sehr groß."
+            },
+            {
+              "answer": "sehr groß",
+              "category": "extra word",
+              "explanation": "Only the word for very goes in the gap — groß is already in the sentence: Das Haus ist sehr groß."
+            }
+          ]
         }
       }
     },
@@ -8835,7 +8996,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note. Which room is new and very big?",
-      "hints": [],
+      "hints": [
+        "Only the kitchen gets both neu and sehr groß in the note. Answer with that room and its article."
+      ],
       "feedback": "Only the kitchen gets both neu and sehr groß: Die Küche ist neu und sehr groß.",
       "evidenceKey": "de-descriptions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8852,7 +9015,18 @@
           "Küche"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Zimmer.",
+            "category": "incorrect answer",
+            "explanation": "The note's Zimmer is klein und sehr alt. The room that is neu und sehr groß is Die Küche."
+          },
+          {
+            "answer": "Das Haus.",
+            "category": "incorrect answer",
+            "explanation": "The house is alt — only the kitchen is new and very big: Die Küche ist neu und sehr groß."
+          }
+        ]
       }
     },
     {
@@ -9129,7 +9303,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘to work’?",
-      "hints": [],
+      "hints": [
+        "Arbeiten is to work — lernen is to learn, wohnen is to live and lesen is to read."
+      ],
       "feedback": "Arbeiten is to work. Lernen is to learn, wohnen is to live, lesen is to read.",
       "evidenceKey": "de-routine-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9175,7 +9351,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I learn in the evening.",
-      "hints": [],
+      "hints": [
+        "Ich, then the ich-form lerne, then the when-word abends right behind the verb: Ich lerne abends."
+      ],
       "feedback": "Lernen drops the -n for ich, and abends sits right after the verb: Ich lerne abends.",
       "evidenceKey": "de-routine-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9189,7 +9367,18 @@
           "Ich lerne abends."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich abends lerne.",
+            "category": "word-order problem",
+            "explanation": "The when-word follows the verb; it does not push the verb out of second position: Ich lerne abends."
+          },
+          {
+            "answer": "Ich lernen abends.",
+            "category": "wrong conjugation",
+            "explanation": "Lernen is the dictionary form; with ich it drops the -n: Ich lerne abends."
+          }
+        ]
       }
     },
     {
@@ -9206,7 +9395,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the sentence with the verb and the time word in the right places.",
-      "hints": [],
+      "hints": [
+        "The verb keeps second position with its ich-form (arbeite), and the when-word morgens comes right after it."
+      ],
       "feedback": "The verb comes second and keeps its ich-form arbeite; morgens follows it. The other two break the verb or the order.",
       "evidenceKey": "de-routine-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9248,7 +9439,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say I learn at midday.",
-      "hints": [],
+      "hints": [
+        "Ich first, then the ich-form lerne, then the time word mittags last — the when-word trails the verb."
+      ],
       "feedback": "Ich lerne mittags: ich-form of the verb, then the when-word.",
       "evidenceKey": "de-routine-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9294,7 +9487,9 @@
         "grammar"
       ],
       "prompt": "Change the verb to work: Ich lerne abends.",
-      "hints": [],
+      "hints": [
+        "Only the verb changes: lerne becomes the ich-form of arbeiten — arbeite — and abends stays where it is."
+      ],
       "feedback": "Swap lerne for arbeite and keep abends where it is: Ich arbeite abends.",
       "evidenceKey": "de-routine-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9308,7 +9503,18 @@
           "Ich arbeite abends."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich arbeite morgens.",
+            "category": "incorrect answer",
+            "explanation": "The when-word must stay abends — only the verb changes: Ich arbeite abends."
+          },
+          {
+            "answer": "Ich arbeitet abends.",
+            "category": "wrong conjugation",
+            "explanation": "With ich the verb is arbeite; arbeitet is the er/sie form."
+          }
+        ]
       }
     },
     {
@@ -9325,7 +9531,9 @@
         "grammar"
       ],
       "prompt": "Complete with the ich-form of arbeiten: Ich ___ morgens.",
-      "hints": [],
+      "hints": [
+        "With ich, arbeiten strips its ending down to arbeite: Ich arbeite morgens."
+      ],
       "feedback": "Arbeiten becomes arbeite with ich: Ich arbeite morgens.",
       "evidenceKey": "de-routine-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9355,7 +9563,18 @@
             "arbeite"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "arbeitet",
+              "category": "wrong conjugation",
+              "explanation": "Arbeitet is the er/sie/es form. With ich the verb is arbeite."
+            },
+            {
+              "answer": "arbeiten",
+              "category": "wrong conjugation",
+              "explanation": "Arbeiten is the infinitive. With ich it becomes arbeite."
+            }
+          ]
         }
       }
     },
@@ -9374,7 +9593,9 @@
         "vocabulary"
       ],
       "prompt": "Read the day plan. When does the writer eat?",
-      "hints": [],
+      "hints": [
+        "Find the sentence built on the eating verb esse — the time word in front of it is the answer."
+      ],
       "feedback": "The plan puts eating at midday: Mittags esse ich.",
       "evidenceKey": "de-routine-foundation-read",
       "assistanceAffectsEvidence": [
@@ -9391,7 +9612,18 @@
           "Mittags"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Abends",
+            "category": "incorrect answer",
+            "explanation": "Abends is when the writer learns. Eating happens at midday: Mittags esse ich."
+          },
+          {
+            "answer": "Morgens",
+            "category": "incorrect answer",
+            "explanation": "Morgens the writer works. The eating sentence is Mittags esse ich."
+          }
+        ]
       }
     },
     {
@@ -9852,7 +10084,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is the cheese?",
-      "hints": [],
+      "hints": [
+        "The dairy word is der Käse — bread, apple and water are the other options."
+      ],
       "feedback": "Käse is masculine: der Käse. Brot and Wasser are neuter (das), Apfel is masculine too but it is the apple.",
       "evidenceKey": "de-food-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9898,7 +10132,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I eat bread.",
-      "hints": [],
+      "hints": [
+        "Essen becomes esse with ich — the plain -e ending — and Brot follows it: Ich esse Brot."
+      ],
       "feedback": "Essen becomes esse for ich: Ich esse Brot.",
       "evidenceKey": "de-food-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9912,7 +10148,18 @@
           "Ich esse Brot."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich essen Brot.",
+            "category": "wrong conjugation",
+            "explanation": "Essen is the dictionary form; with ich it becomes esse: Ich esse Brot."
+          },
+          {
+            "answer": "Ich isst Brot.",
+            "category": "wrong conjugation",
+            "explanation": "Isst is the er/sie form; with ich the verb is esse: Ich esse Brot."
+          }
+        ]
       }
     },
     {
@@ -9929,7 +10176,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct sentence.",
-      "hints": [],
+      "hints": [
+        "Trinken takes the ich-form trinke — trinkst belongs to du, and the bare infinitive cannot follow ich."
+      ],
       "feedback": "Trinken becomes trinke for ich. Trinkst belongs to du, and the infinitive cannot follow ich.",
       "evidenceKey": "de-food-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9970,7 +10219,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say I like cheese.",
-      "hints": [],
+      "hints": [
+        "Ich, then the ich-form of mögen — mag — then the cheese straight after it, no preposition needed."
+      ],
       "feedback": "Ich mag Käse: mögen takes the noun directly, no preposition needed.",
       "evidenceKey": "de-food-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10015,7 +10266,9 @@
         "grammar"
       ],
       "prompt": "Change the verb to like: Ich esse Brot.",
-      "hints": [],
+      "hints": [
+        "Keep Brot where it is and swap esse for the ich-form of mögen — mag: Ich mag Brot."
+      ],
       "feedback": "Esse becomes mag, and Brot stays right where it is: Ich mag Brot.",
       "evidenceKey": "de-food-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10029,7 +10282,18 @@
           "Ich mag Brot."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich mag Käse.",
+            "category": "incorrect answer",
+            "explanation": "The object stays Brot — only the verb changes: Ich mag Brot."
+          },
+          {
+            "answer": "Ich mögen Brot.",
+            "category": "wrong conjugation",
+            "explanation": "Mögen is the dictionary form; with ich it becomes mag."
+          }
+        ]
       }
     },
     {
@@ -10046,7 +10310,9 @@
         "grammar"
       ],
       "prompt": "Apfel is masculine and the direct object. Fill in the article: Ich esse ___ Apfel.",
-      "hints": [],
+      "hints": [
+        "The apple is the direct object of eating, and masculine objects take the accusative article: einen Apfel."
+      ],
       "feedback": "Masculine accusative: einen Apfel — the einen you met with einen Bruder.",
       "evidenceKey": "de-food-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10076,7 +10342,18 @@
             "einen"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ein",
+              "category": "wrong article",
+              "explanation": "The apple is the object being eaten, so the masculine article takes its accusative form: einen Apfel."
+            },
+            {
+              "answer": "eine",
+              "category": "wrong article",
+              "explanation": "Apfel is masculine — eine belongs to feminine nouns. The object form is einen."
+            }
+          ]
         }
       }
     },
@@ -10095,7 +10372,9 @@
         "vocabulary"
       ],
       "prompt": "Read the food diary. What does the writer drink in the morning?",
-      "hints": [],
+      "hints": [
+        "The first sentence pairs morgens with Brot und Wasser — the drink of the morning is named there."
+      ],
       "feedback": "Morgens pairs Brot with Wasser: Ich trinke Wasser.",
       "evidenceKey": "de-food-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10112,7 +10391,18 @@
           "wasser"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Brot",
+            "category": "incorrect answer",
+            "explanation": "Brot is what the writer eats in the morning. The drink is Wasser: Ich trinke Wasser."
+          },
+          {
+            "answer": "Käse",
+            "category": "incorrect answer",
+            "explanation": "Käse is the midday meal. The morning drink is Wasser."
+          }
+        ]
       }
     },
     {
@@ -10138,7 +10428,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘your’ (informal)?",
-      "hints": [],
+      "hints": [
+        "Dein is 'your' — mein is my, sein is his, and ihr is her."
+      ],
       "feedback": "Dein is your. Mein is my, sein is his, ihr is her.",
       "evidenceKey": "de-possession-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10184,7 +10476,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: That is my bag.",
-      "hints": [],
+      "hints": [
+        "Tasche is feminine, so mein gains the -e: Das ist meine Tasche."
+      ],
       "feedback": "Tasche is feminine, so mein becomes meine: Das ist meine Tasche.",
       "evidenceKey": "de-possession-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10198,7 +10492,18 @@
           "Das ist meine Tasche."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist mein Tasche.",
+            "category": "wrong article",
+            "explanation": "Feminine nouns pull the -e onto the possessive: meine Tasche."
+          },
+          {
+            "answer": "Das ist meinen Tasche.",
+            "category": "wrong article",
+            "explanation": "Meinen is the accusative masculine form; after ist with feminine Tasche it is meine."
+          }
+        ]
       }
     },
     {
@@ -10215,7 +10520,9 @@
         "vocabulary"
       ],
       "prompt": "Tasche is feminine. Pick the correct sentence.",
-      "hints": [],
+      "hints": [
+        "Feminine nouns pull the -e onto the possessive: meine — not the bare mein and not the accusative meinen."
+      ],
       "feedback": "Feminine nouns need the -e: meine Tasche. Meinen is accusative masculine — wrong noun, wrong case.",
       "evidenceKey": "de-possession-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10256,7 +10563,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say that is his car.",
-      "hints": [],
+      "hints": [
+        "Das, then ist, then sein — Auto is neuter, so sein appears without an ending."
+      ],
       "feedback": "Auto is neuter, so sein stays bare: Das ist sein Auto.",
       "evidenceKey": "de-possession-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10306,7 +10615,9 @@
         "grammar"
       ],
       "prompt": "Make it her car: Das ist sein Auto.",
-      "hints": [],
+      "hints": [
+        "Swap sein for the her-word ihr; the neuter noun adds no ending: Das ist ihr Auto."
+      ],
       "feedback": "Sein becomes ihr; Auto is neuter so no ending appears: Das ist ihr Auto.",
       "evidenceKey": "de-possession-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10320,7 +10631,18 @@
           "Das ist ihr Auto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das ist ihre Auto.",
+            "category": "wrong article",
+            "explanation": "Auto is neuter, so ihr stays bare — the -e appears only with feminine nouns."
+          },
+          {
+            "answer": "Das ist sein Auto.",
+            "category": "incorrect answer",
+            "explanation": "The step asks to make it her car: sein becomes ihr."
+          }
+        ]
       }
     },
     {
@@ -10336,7 +10658,9 @@
         "grammar"
       ],
       "prompt": "Fill in the possessive for ‘your’: Das ist ___ Bruder.",
-      "hints": [],
+      "hints": [
+        "Your is dein, and Bruder is masculine — the possessive stays bare: dein Bruder."
+      ],
       "feedback": "Your is dein, and Bruder is masculine so it stays bare: Das ist dein Bruder.",
       "evidenceKey": "de-possession-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10366,7 +10690,18 @@
             "dein"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "deine",
+              "category": "wrong article",
+              "explanation": "Bruder is masculine, so the possessive keeps its bare form: dein Bruder."
+            },
+            {
+              "answer": "deinen",
+              "category": "wrong article",
+              "explanation": "Deinen is the accusative form; after ist the noun is nominative: dein Bruder."
+            }
+          ]
         }
       }
     },
@@ -10385,7 +10720,9 @@
         "vocabulary"
       ],
       "prompt": "Read the introductions. Whose bag is small?",
-      "hints": [],
+      "hints": [
+        "The small bag is ihre Tasche, and ihre points back to the person the note introduced just before — the sister."
+      ],
       "feedback": "Ihre Tasche points back to the sister: meine Schwester.",
       "evidenceKey": "de-possession-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10402,7 +10739,18 @@
           "Meine Schwester."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "mein Bruder",
+            "category": "incorrect answer",
+            "explanation": "The brother owns the new car (sein Auto). The small bag belongs to meine Schwester."
+          },
+          {
+            "answer": "ihre Tasche",
+            "category": "incorrect answer",
+            "explanation": "Ihre Tasche is the thing that is small — the question asks whose bag it is, so name the person: meine Schwester."
+          }
+        ]
       }
     },
     {
@@ -11026,7 +11374,9 @@
         "vocabulary"
       ],
       "prompt": "Which one means ‘next week’?",
-      "hints": [],
+      "hints": [
+        "Next week is nächste Woche — letzte is last, diese is this and jede is every."
+      ],
       "feedback": "Nächste Woche is next week. Letzte is last, diese is this, jede is every.",
       "evidenceKey": "de-plans-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11071,7 +11421,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: Tomorrow I am working.",
-      "hints": [],
+      "hints": [
+        "Time word first (Morgen), verb second (arbeite), then the subject: ich."
+      ],
       "feedback": "Morgen first, verb second, subject after: Morgen arbeite ich.",
       "evidenceKey": "de-plans-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11085,7 +11437,18 @@
           "Morgen arbeite ich."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Morgen ich arbeite.",
+            "category": "word-order problem",
+            "explanation": "After the time word the verb keeps second position: Morgen arbeite ich."
+          },
+          {
+            "answer": "Morgen arbeiten ich.",
+            "category": "wrong conjugation",
+            "explanation": "With ich the verb is arbeite, not the infinitive arbeiten: Morgen arbeite ich."
+          }
+        ]
       }
     },
     {
@@ -11101,7 +11464,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct sentence for ‘Next week I’m flying to Berlin’.",
-      "hints": [],
+      "hints": [
+        "After the time phrase Nächste Woche the verb stays second — fliege — then ich nach Berlin."
+      ],
       "feedback": "The verb stays second even after a time phrase: Nächste Woche fliege ich nach Berlin.",
       "evidenceKey": "de-plans-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11142,7 +11507,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say tomorrow I’m learning.",
-      "hints": [],
+      "hints": [
+        "Morgen (time word, first), then the ich-form lerne, then ich at the end."
+      ],
       "feedback": "Morgen lerne ich: time first, verb second, subject third.",
       "evidenceKey": "de-plans-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11187,7 +11554,9 @@
         "grammar"
       ],
       "prompt": "Move the plan to next week: Morgen arbeite ich.",
-      "hints": [],
+      "hints": [
+        "Trade the time word for nächste Woche; the verb keeps its second slot: Nächste Woche arbeite ich."
+      ],
       "feedback": "Swap the time word; the verb keeps second place: Nächste Woche arbeite ich.",
       "evidenceKey": "de-plans-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11201,7 +11570,18 @@
           "Nächste Woche arbeite ich."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Nächste Wochen arbeite ich.",
+            "category": "wrong number",
+            "explanation": "With nächste the noun stays singular: nächste Woche."
+          },
+          {
+            "answer": "Nächste Woche ich arbeite.",
+            "category": "word-order problem",
+            "explanation": "After the time phrase the verb keeps second position: Nächste Woche arbeite ich."
+          }
+        ]
       }
     },
     {
@@ -11218,7 +11598,9 @@
         "grammar"
       ],
       "prompt": "Complete with the word for ‘soon’: ___ besuche ich meine Eltern.",
-      "hints": [],
+      "hints": [
+        "The word for soon opens the sentence in first position: Bald besuche ich meine Eltern."
+      ],
       "feedback": "Bald means soon and takes first position: Bald besuche ich meine Eltern.",
       "evidenceKey": "de-plans-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11248,7 +11630,18 @@
             "Bald"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Morgen",
+              "category": "incorrect answer",
+              "explanation": "Morgen means tomorrow — the prompt asks for the word for soon, which is bald."
+            },
+            {
+              "answer": "Nächste Woche",
+              "category": "incorrect answer",
+              "explanation": "Nächste Woche is a different time phrase; the word for soon is bald."
+            }
+          ]
         }
       }
     },
@@ -11268,7 +11661,9 @@
         "vocabulary"
       ],
       "prompt": "Read the plan. When does the writer visit the parents?",
-      "hints": [],
+      "hints": [
+        "Find the sentence about the parents (meine Eltern) — the time phrase in front of it is the answer."
+      ],
       "feedback": "The parents get nächste Woche: nächste Woche besuche ich meine Eltern.",
       "evidenceKey": "de-plans-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11285,7 +11680,18 @@
           "naechste Woche"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Morgen",
+            "category": "incorrect answer",
+            "explanation": "Morgen the writer learns. The parents are visited nächste Woche."
+          },
+          {
+            "answer": "Bald",
+            "category": "incorrect answer",
+            "explanation": "Bald the writer flies to Vienna. The parents get the visit nächste Woche."
+          }
+        ]
       }
     },
     {
@@ -11309,7 +11715,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is ‘May’?",
-      "hints": [],
+      "hints": [
+        "May is Mai — März, Juni and Juli are the other months, and only one of them means May."
+      ],
       "feedback": "Mai is May. März is March, Juni is June, Juli is July.",
       "evidenceKey": "de-months-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11355,7 +11763,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: My birthday is in May.",
-      "hints": [],
+      "hints": [
+        "Mein Geburtstag, then ist, then im Mai — in plus dem, contracted."
+      ],
       "feedback": "In a month is im — in plus dem contracted: Mein Geburtstag ist im Mai.",
       "evidenceKey": "de-months-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11369,7 +11779,18 @@
           "Mein Geburtstag ist im Mai."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mein Geburtstag ist in Mai.",
+            "category": "incorrect answer",
+            "explanation": "Inside a month, in contracts to im — in Mai is not German: im Mai."
+          },
+          {
+            "answer": "Mein Geburtstag ist am Mai.",
+            "category": "incorrect answer",
+            "explanation": "Am marks a full date (am 3. Mai); a bare month takes im: im Mai."
+          }
+        ]
       }
     },
     {
@@ -11385,7 +11806,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct date.",
-      "hints": [],
+      "hints": [
+        "Dates take am — not an — and the month keeps its plain form Mai."
+      ],
       "feedback": "Dates take am, and the month never changes its form: am 3. Mai.",
       "evidenceKey": "de-months-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11426,7 +11849,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say winter is cold.",
-      "hints": [],
+      "hints": [
+        "Der Winter — seasons are masculine — then ist, then the plain adjective kalt."
+      ],
       "feedback": "Der Winter ist kalt: seasons are masculine, so der.",
       "evidenceKey": "de-months-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11476,7 +11901,9 @@
         "grammar"
       ],
       "prompt": "Change the season: Der Sommer ist warm.",
-      "hints": [],
+      "hints": [
+        "Swap the season and its description together: Sommer/Warm becomes Winter/Kalt: Der Winter ist kalt."
+      ],
       "feedback": "Sommer becomes Winter and warm becomes kalt: Der Winter ist kalt.",
       "evidenceKey": "de-months-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11490,7 +11917,18 @@
           "Der Winter ist kalt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Der Sommer ist kalt.",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks to change the season: Sommer becomes Winter — and warm becomes kalt."
+          },
+          {
+            "answer": "Der Winter ist warm.",
+            "category": "incorrect answer",
+            "explanation": "Both parts change: winter is cold, so the line is Der Winter ist kalt."
+          }
+        ]
       }
     },
     {
@@ -11507,7 +11945,9 @@
         "grammar"
       ],
       "prompt": "Complete with the word for ‘in’ (a month): Mein Geburtstag ist ___ Mai.",
-      "hints": [],
+      "hints": [
+        "Inside a month, in contracts with the masculine article to im: im Mai."
+      ],
       "feedback": "In plus dem contracts to im: Mein Geburtstag ist im Mai.",
       "evidenceKey": "de-months-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11537,7 +11977,18 @@
             "im"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "in",
+              "category": "incorrect answer",
+              "explanation": "With a month, in contracts with the masculine article to im: im Mai."
+            },
+            {
+              "answer": "am",
+              "category": "incorrect answer",
+              "explanation": "Am belongs to dates with a day number (am 3. Mai). Inside a bare month it is im: im Mai."
+            }
+          ]
         }
       }
     },
@@ -11556,7 +12007,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note. When is the writer’s birthday?",
-      "hints": [],
+      "hints": [
+        "The very first sentence names the birthday date with am — answer with the full date."
+      ],
       "feedback": "The date sits in the first sentence: Mein Geburtstag ist am 3. Mai.",
       "evidenceKey": "de-months-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11573,7 +12026,18 @@
           "3. Mai"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Am 3. März",
+            "category": "incorrect answer",
+            "explanation": "The birthday is am 3. Mai — März is March."
+          },
+          {
+            "answer": "Im Sommer",
+            "category": "incorrect answer",
+            "explanation": "Im Sommer is when the family gets visited. The birthday is the date am 3. Mai."
+          }
+        ]
       }
     },
     {
@@ -14616,7 +15080,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Würde pairs with the bare infinitive at the end: Ich würde gern helfen — helfe has no place here, and werde is future, not 'would'."
+      ],
       "feedback": "Ich würde gern helfen — würde + gern + infinitive. Ich würde gern helfe breaks the infinitive, and ich werde is future, not 'would'.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-meet",
       "assistanceAffectsEvidence": [
@@ -14661,7 +15127,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: I would like to travel.",
-      "hints": [],
+      "hints": [
+        "Ich + würde + gern + the infinitive at the end: reisen."
+      ],
       "feedback": "Ich würde gern reisen.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-think",
       "assistanceAffectsEvidence": [
@@ -14675,7 +15143,18 @@
           "Ich würde gern reisen."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich würde gern reise.",
+            "category": "wrong conjugation",
+            "explanation": "After würde the main verb stays an infinitive: reisen, not reise."
+          },
+          {
+            "answer": "Ich werde gern reisen.",
+            "category": "wrong tense",
+            "explanation": "Werden turns it into a future statement ('I will travel'); the wish uses würde."
+          }
+        ]
       }
     },
     {
@@ -14691,7 +15170,9 @@
         "vocabulary"
       ],
       "prompt": "Which form belongs to du?",
-      "hints": [],
+      "hints": [
+        "The du-form of würde carries -st: würdest. Würde pairs with ich and er, würden with wir and sie, würdet with ihr."
+      ],
       "feedback": "Du würdest — the -st ending. Würde is ich and er, würden is wir and sie.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-notice",
       "assistanceAffectsEvidence": [
@@ -14736,7 +15217,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: would you help me?",
-      "hints": [],
+      "hints": [
+        "The du-form leads — Würdest — then du, then mir, and the infinitive helfen? closes the question."
+      ],
       "feedback": "Würdest du mir helfen?",
       "evidenceKey": "de-a2-konjunktiv-wuerde-build",
       "assistanceAffectsEvidence": [
@@ -14785,7 +15268,9 @@
         "grammar"
       ],
       "prompt": "Soften the command: Hilf mir!",
-      "hints": [],
+      "hints": [
+        "Turn the command into a polite question: Würdest du mir helfen? — the du-form würdest plus the infinitive."
+      ],
       "feedback": "Würdest du mir helfen? — the polite upgrade.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-vary",
       "assistanceAffectsEvidence": [
@@ -14799,7 +15284,18 @@
           "Würdest du mir helfen?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Würde du mir helfen?",
+            "category": "wrong conjugation",
+            "explanation": "The polite offer addresses du, so the verb takes the -st: Würdest du mir helfen?"
+          },
+          {
+            "answer": "Würdest du mir helfe?",
+            "category": "wrong conjugation",
+            "explanation": "After würdest the main verb stays an infinitive: helfen, not helfe."
+          }
+        ]
       }
     },
     {
@@ -14816,7 +15312,9 @@
         "grammar"
       ],
       "prompt": "Complete the wish: Ich ___ gern nach Italien reisen.",
-      "hints": [],
+      "hints": [
+        "The wish needs the würde form that goes with ich — würde — placed before gern."
+      ],
       "feedback": "Würde: Ich würde gern nach Italien reisen.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-cloze",
       "assistanceAffectsEvidence": [
@@ -14846,7 +15344,18 @@
             "würde"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "werde",
+              "category": "wrong tense",
+              "explanation": "Werden is the future helper (ich werde reisen = I will travel). A wish uses würde: Ich würde gern reisen."
+            },
+            {
+              "answer": "würdest",
+              "category": "wrong conjugation",
+              "explanation": "Würdest pairs with du; with ich the form is würde."
+            }
+          ]
         }
       }
     },
@@ -14864,7 +15373,9 @@
         "vocabulary"
       ],
       "prompt": "Read the wishes. Where would the speaker like to live?",
-      "hints": [],
+      "hints": [
+        "The sentence built on leben names the place the speaker would choose — answer with that place."
+      ],
       "feedback": "In Italien — Eigentlich würde ich gern in Italien leben.",
       "evidenceKey": "de-a2-konjunktiv-wuerde-read",
       "assistanceAffectsEvidence": [
@@ -14879,7 +15390,18 @@
           "Italien"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mehr reisen",
+            "category": "incorrect answer",
+            "explanation": "Reisen is what the speaker would like to do more of — the question asks where to live: in Italien."
+          },
+          {
+            "answer": "Mitkommen",
+            "category": "incorrect answer",
+            "explanation": "Mitkommen is the invitation to you; the place the speaker would like to live is in Italien."
+          }
+        ]
       },
       "stimulusId": "de-a2-konjunktiv-wuerde-stim-2"
     },
@@ -15581,7 +16103,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'cheaper than'?",
-      "hints": [],
+      "hints": [
+        "-er on the adjective plus als: billiger als. Wie breaks the als-rule, and am billigsten is the superlative."
+      ],
       "feedback": "Billiger als — -er plus als. Billiger wie breaks the als-rule.",
       "evidenceKey": "de-a2-komparativ-meet",
       "assistanceAffectsEvidence": [
@@ -15627,7 +16151,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: Berlin is bigger than Munich.",
-      "hints": [],
+      "hints": [
+        "Groß grows to größer with an umlaut, then als: Berlin ist größer als München."
+      ],
       "feedback": "Berlin ist größer als München.",
       "evidenceKey": "de-a2-komparativ-think",
       "assistanceAffectsEvidence": [
@@ -15641,7 +16167,18 @@
           "Berlin ist größer als München."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Berlin ist größer wie München.",
+            "category": "wrong preposition",
+            "explanation": "Comparisons take als, never wie: größer als München."
+          },
+          {
+            "answer": "Berlin ist größer München.",
+            "category": "missing word",
+            "explanation": "The comparison needs als between the two cities: größer als München."
+          }
+        ]
       }
     },
     {
@@ -15657,7 +16194,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the comparative of gut?",
-      "hints": [],
+      "hints": [
+        "Gut's comparative is the irregular besser — guter is a declined form and am besten is the superlative."
+      ],
       "feedback": "Besser — the rebel. Guter is just declined gut.",
       "evidenceKey": "de-a2-komparativ-notice",
       "assistanceAffectsEvidence": [
@@ -15702,7 +16241,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: tea is healthier than coffee.",
-      "hints": [],
+      "hints": [
+        "Tee first, then ist, the umlaut comparative gesünder, then als, then Kaffee last."
+      ],
       "feedback": "Tee ist gesünder als Kaffee.",
       "evidenceKey": "de-a2-komparativ-build",
       "assistanceAffectsEvidence": [
@@ -15757,7 +16298,9 @@
         "grammar"
       ],
       "prompt": "Compare the two: Das Hotel ist teuer. Das Hostel ist billig.",
-      "hints": [],
+      "hints": [
+        "Teuer keeps its -er: teurer, then als, then das Hostel: Das Hotel ist teurer als das Hostel."
+      ],
       "feedback": "Das Hotel ist teurer als das Hostel.",
       "evidenceKey": "de-a2-komparativ-vary",
       "assistanceAffectsEvidence": [
@@ -15771,7 +16314,18 @@
           "Das Hotel ist teurer als das Hostel."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Hostel ist teurer als das Hotel.",
+            "category": "incorrect answer",
+            "explanation": "The hotel is the expensive one — the sentence opens Das Hotel ist teurer …."
+          },
+          {
+            "answer": "Das Hotel ist teuer als das Hostel.",
+            "category": "incorrect answer",
+            "explanation": "The comparative adds -er: teuer becomes teurer — Das Hotel ist teurer als das Hostel."
+          }
+        ]
       }
     },
     {
@@ -15788,7 +16342,9 @@
         "grammar"
       ],
       "prompt": "Complete the comparison: Mein Auto ist schneller ___ dein Auto.",
-      "hints": [],
+      "hints": [
+        "The comparison word after an -er adjective is als: schneller als."
+      ],
       "feedback": "Als — schneller als.",
       "evidenceKey": "de-a2-komparativ-cloze",
       "assistanceAffectsEvidence": [
@@ -15818,7 +16374,18 @@
             "als"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "wie",
+              "category": "incorrect answer",
+              "explanation": "Wie is a common learner slip for comparisons — after -er German takes als: schneller als."
+            },
+            {
+              "answer": "als wie",
+              "category": "extra word",
+              "explanation": "Als alone carries the comparison — als wie is a dialect form to avoid: schneller als."
+            }
+          ]
         }
       }
     },
@@ -15837,7 +16404,9 @@
         "vocabulary"
       ],
       "prompt": "Read the comparison. What is cheaper than in town?",
-      "hints": [],
+      "hints": [
+        "Find the -er phrase with billiger — the thing that is billiger als in der Stadt is the answer."
+      ],
       "feedback": "Das Frühstück — breakfast is billiger als in der Stadt.",
       "evidenceKey": "de-a2-komparativ-read",
       "assistanceAffectsEvidence": [
@@ -15853,7 +16422,18 @@
           "Frühstück"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Hostel",
+            "category": "incorrect answer",
+            "explanation": "The hostel is better than its reputation (besser) — the thing cheaper than in town is das Frühstück."
+          },
+          {
+            "answer": "Die Zimmer",
+            "category": "incorrect answer",
+            "explanation": "The rooms are bigger (größer), not cheaper. Breakfast is billiger als in der Stadt."
+          }
+        ]
       },
       "stimulusId": "de-a2-komparativ-stim-2"
     },
@@ -16085,7 +16665,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence answers 'wohin?'?",
-      "hints": [],
+      "hints": [
+        "Wohin (moving there) takes the accusative article: in die Küche. The wo-form would be in der Küche."
+      ],
       "feedback": "Ich gehe in die Küche — wohin takes Akkusativ. Ich bin in der Küche answers wo.",
       "evidenceKey": "de-a2-wechselpraepositionen-meet",
       "assistanceAffectsEvidence": [
@@ -16130,7 +16712,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: The book is on the table. (wo?)",
-      "hints": [],
+      "hints": [
+        "Resting on the table answers wo, so auf takes Dativ: auf dem Tisch. Natural verb for a book at rest: liegt."
+      ],
       "feedback": "Das Buch liegt auf dem Tisch — wo takes Dativ.",
       "evidenceKey": "de-a2-wechselpraepositionen-think",
       "assistanceAffectsEvidence": [
@@ -16145,7 +16729,18 @@
           "Das Buch ist auf dem Tisch."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Buch liegt auf den Tisch.",
+            "category": "wrong article",
+            "explanation": "Lying on the table is a position (wo), so auf takes the Dativ article dem: auf dem Tisch."
+          },
+          {
+            "answer": "Das Buch liegt auf der Tisch.",
+            "category": "wrong article",
+            "explanation": "Tisch is masculine — its Dativ article is dem, not der (which is feminine): auf dem Tisch."
+          }
+        ]
       }
     },
     {
@@ -16161,7 +16756,9 @@
         "vocabulary"
       ],
       "prompt": "Complete the wo-sentence: Ich sitze auf ___ Stuhl.",
-      "hints": [],
+      "hints": [
+        "Sitting is a position — wo — so auf takes the Dativ article: auf dem Stuhl."
+      ],
       "feedback": "Dem — auf + Dativ masculine: auf dem Stuhl.",
       "evidenceKey": "de-a2-wechselpraepositionen-notice",
       "assistanceAffectsEvidence": [
@@ -16206,7 +16803,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: I'm putting the book on the table.",
-      "hints": [],
+      "hints": [
+        "Ich lege (putting — movement), then das Buch, then auf den Tisch: wohin takes the accusative den."
+      ],
       "feedback": "Ich lege das Buch auf den Tisch — wohin takes Akkusativ.",
       "evidenceKey": "de-a2-wechselpraepositionen-build",
       "assistanceAffectsEvidence": [
@@ -16270,7 +16869,9 @@
         "grammar"
       ],
       "prompt": "Answer 'wohin': Das Bild hängt an der Wand.",
-      "hints": [],
+      "hints": [
+        "With a person doing the hanging it is movement (wohin): an + accusative die — Ich hänge das Bild an die Wand."
+      ],
       "feedback": "Ich hänge das Bild an die Wand.",
       "evidenceKey": "de-a2-wechselpraepositionen-vary",
       "assistanceAffectsEvidence": [
@@ -16284,7 +16885,18 @@
           "Ich hänge das Bild an die Wand."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich hänge das Bild an der Wand.",
+            "category": "wrong article",
+            "explanation": "Moving the picture onto the wall is wohin, so an takes the accusative: an die Wand."
+          },
+          {
+            "answer": "Das Bild hängt an die Wand.",
+            "category": "incorrect answer",
+            "explanation": "That stays a wo-statement about where it hangs. The wohin version uses the active verb: Ich hänge das Bild an die Wand."
+          }
+        ]
       }
     },
     {
@@ -16300,7 +16912,9 @@
         "grammar"
       ],
       "prompt": "Complete the direction: Wir gehen in ___ Park.",
-      "hints": [],
+      "hints": [
+        "Going into the park is wohin — movement — so the masculine article takes the accusative: in den Park."
+      ],
       "feedback": "Den — wohin takes Akkusativ: in den Park.",
       "evidenceKey": "de-a2-wechselpraepositionen-cloze",
       "assistanceAffectsEvidence": [
@@ -16330,7 +16944,18 @@
             "den"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "dem",
+              "category": "wrong article",
+              "explanation": "Dem is the Dativ article for a position (wo). Going into the park is wohin, so it is den: in den Park."
+            },
+            {
+              "answer": "der",
+              "category": "wrong article",
+              "explanation": "Park is masculine — the accusative form is den, not der (which is feminine)."
+            }
+          ]
         }
       }
     },
@@ -16348,7 +16973,9 @@
         "vocabulary"
       ],
       "prompt": "Read the move. Where does the picture hang?",
-      "hints": [],
+      "hints": [
+        "Find the sentence with the hanging picture — the wo phrase above it is the answer: über dem Sofa."
+      ],
       "feedback": "Über dem Sofa — above the sofa.",
       "evidenceKey": "de-a2-wechselpraepositionen-read",
       "assistanceAffectsEvidence": [
@@ -16363,7 +16990,18 @@
           "über dem Sofa"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "An der Wand",
+            "category": "incorrect answer",
+            "explanation": "The passage never places the picture on the wall — it hangs über dem Sofa."
+          },
+          {
+            "answer": "Auf dem Boden",
+            "category": "incorrect answer",
+            "explanation": "The lamp lies on the floor; the picture hangs über dem Sofa."
+          }
+        ]
       },
       "stimulusId": "de-a2-wechselpraepositionen-stim-2"
     },
@@ -16398,7 +17036,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is passive?",
-      "hints": [],
+      "hints": [
+        "Passive is werden + participle: Die Briefe werden geschrieben. Werden schreiben would be future, schreibt er active."
+      ],
       "feedback": "Die Briefe werden geschrieben — werden + participle. Werden schreiben is future; schreibt er is active.",
       "evidenceKey": "de-a2-passiv-intro-meet",
       "assistanceAffectsEvidence": [
@@ -16443,7 +17083,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: The car is being repaired.",
-      "hints": [],
+      "hints": [
+        "Das Auto + wird + the participle repariert at the end."
+      ],
       "feedback": "Das Auto wird repariert.",
       "evidenceKey": "de-a2-passiv-intro-think",
       "assistanceAffectsEvidence": [
@@ -16457,7 +17099,18 @@
           "Das Auto wird repariert."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Auto wird reparieren.",
+            "category": "wrong conjugation",
+            "explanation": "The passive takes the participle repariert — reparieren is the infinitive and would read as future."
+          },
+          {
+            "answer": "Das Auto ist repariert.",
+            "category": "wrong tense",
+            "explanation": "Ist repariert names the finished state 'is repaired'; the ongoing process uses wird: Das Auto wird repariert."
+          }
+        ]
       }
     },
     {
@@ -16473,7 +17126,9 @@
         "vocabulary"
       ],
       "prompt": "Complete the passive: Das Haus ___ gebaut.",
-      "hints": [],
+      "hints": [
+        "Das Haus is singular, so the werden-form is wird: Das Haus wird gebaut."
+      ],
       "feedback": "Wird — singular: Das Haus wird gebaut. Wurde is past.",
       "evidenceKey": "de-a2-passiv-intro-notice",
       "assistanceAffectsEvidence": [
@@ -16518,7 +17173,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: German is spoken here.",
-      "hints": [],
+      "hints": [
+        "Hier, then wird, then Deutsch, and the participle gesprochen closes the sentence."
+      ],
       "feedback": "Hier wird Deutsch gesprochen.",
       "evidenceKey": "de-a2-passiv-intro-build",
       "assistanceAffectsEvidence": [
@@ -16567,7 +17224,9 @@
         "grammar"
       ],
       "prompt": "Rewrite in the passive: Man repariert das Auto.",
-      "hints": [],
+      "hints": [
+        "Make the car the subject and rebuild with wird + participle: Das Auto wird repariert."
+      ],
       "feedback": "Das Auto wird repariert.",
       "evidenceKey": "de-a2-passiv-intro-vary",
       "assistanceAffectsEvidence": [
@@ -16581,7 +17240,18 @@
           "Das Auto wird repariert."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Man wird das Auto repariert.",
+            "category": "incorrect answer",
+            "explanation": "In the passive, Man drops out and the car moves to the front: Das Auto wird repariert."
+          },
+          {
+            "answer": "Das Auto wird reparieren.",
+            "category": "wrong conjugation",
+            "explanation": "The passive needs the participle repariert, not the infinitive reparieren."
+          }
+        ]
       }
     },
     {
@@ -16597,7 +17267,9 @@
         "grammar"
       ],
       "prompt": "Complete the notice: Die Pakete werden morgen ___.",
-      "hints": [],
+      "hints": [
+        "The notice is passive: werden + the participle of liefern — geliefert — at the end of the sentence."
+      ],
       "feedback": "Geliefert: Die Pakete werden morgen geliefert.",
       "evidenceKey": "de-a2-passiv-intro-cloze",
       "assistanceAffectsEvidence": [
@@ -16627,7 +17299,18 @@
             "geliefert"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "liefern",
+              "category": "wrong conjugation",
+              "explanation": "Liefern is the infinitive; the passive needs the participle geliefert."
+            },
+            {
+              "answer": "werden geliefert",
+              "category": "extra word",
+              "explanation": "Werden is already in the sentence — complete it with the participle alone: geliefert."
+            }
+          ]
         }
       }
     },
@@ -16646,7 +17329,9 @@
         "vocabulary"
       ],
       "prompt": "Read the factory tour. What happens to the products here?",
-      "hints": [],
+      "hints": [
+        "The second sentence states what happens to the products — report it with its passive forms."
+      ],
       "feedback": "Sie werden gebaut und verkauft — built and sold here.",
       "evidenceKey": "de-a2-passiv-intro-read",
       "assistanceAffectsEvidence": [
@@ -16661,7 +17346,18 @@
           "gebaut und verkauft"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sie werden geliefert.",
+            "category": "incorrect answer",
+            "explanation": "Geliefert applies to the thousand parcels delivered each day. The products themselves are gebaut und verkauft."
+          },
+          {
+            "answer": "Deutsch wird gesprochen.",
+            "category": "incorrect answer",
+            "explanation": "That is the closing line about language in the factory. The products are gebaut und verkauft."
+          }
+        ]
       },
       "stimulusId": "de-a2-passiv-intro-stim-2"
     },
@@ -16696,7 +17392,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'the job interview'?",
-      "hints": [],
+      "hints": [
+        "The interview is the long compound das Vorstellungsgespräch — Stelle is the position and Beruf the profession."
+      ],
       "feedback": "Das Vorstellungsgespräch. Die Stelle is the position, der Beruf the profession.",
       "evidenceKey": "de-a2-berufsvokabular-meet",
       "assistanceAffectsEvidence": [
@@ -16741,7 +17439,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: The interview is on Monday.",
-      "hints": [],
+      "hints": [
+        "Das Vorstellungsgespräch + ist + am Montag — am is the weekday preposition."
+      ],
       "feedback": "Das Vorstellungsgespräch ist am Montag.",
       "evidenceKey": "de-a2-berufsvokabular-think",
       "assistanceAffectsEvidence": [
@@ -16755,7 +17455,18 @@
           "Das Vorstellungsgespräch ist am Montag."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Vorstellungsgespräch ist in Montag.",
+            "category": "wrong preposition",
+            "explanation": "Weekdays take am, not in: am Montag."
+          },
+          {
+            "answer": "Die Vorstellungsgespräch ist am Montag.",
+            "category": "wrong article",
+            "explanation": "Gespräch is neuter — the article is das: das Vorstellungsgespräch."
+          }
+        ]
       }
     },
     {
@@ -16772,7 +17483,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Bewerben must keep both mich and um — the other options drop mich, use mir, or scramble the order."
+      ],
       "feedback": "Ich bewerbe mich um eine Stelle — bewerben needs mich + um. The others drop or scramble the mich.",
       "evidenceKey": "de-a2-berufsvokabular-notice",
       "assistanceAffectsEvidence": [
@@ -16818,7 +17531,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words: I am applying for a position.",
-      "hints": [],
+      "hints": [
+        "Ich bewerbe, then mich um, then eine Stelle — bewerben needs the reflexive mich plus um."
+      ],
       "feedback": "Ich bewerbe mich um eine Stelle.",
       "evidenceKey": "de-a2-berufsvokabular-build",
       "assistanceAffectsEvidence": [
@@ -16878,7 +17593,9 @@
         "grammar"
       ],
       "prompt": "Say it with bewerben: Ich will die Stelle.",
-      "hints": [],
+      "hints": [
+        "Rebuild the sentence with the reflexive verb: Ich bewerbe mich um die Stelle."
+      ],
       "feedback": "Ich bewerbe mich um die Stelle.",
       "evidenceKey": "de-a2-berufsvokabular-vary",
       "assistanceAffectsEvidence": [
@@ -16892,7 +17609,18 @@
           "Ich bewerbe mich um die Stelle."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich bewerbe um die Stelle.",
+            "category": "missing word",
+            "explanation": "Bewerben needs the reflexive mich: Ich bewerbe mich um die Stelle."
+          },
+          {
+            "answer": "Ich bewerbe mir um die Stelle.",
+            "category": "incorrect answer",
+            "explanation": "Mir is the dative 'to me' — the reflexive for bewerben is mich: Ich bewerbe mich um die Stelle."
+          }
+        ]
       }
     },
     {
@@ -16909,7 +17637,9 @@
         "grammar"
       ],
       "prompt": "Complete the application: Ich bewerbe mich ___ eine Stelle als Lehrer.",
-      "hints": [],
+      "hints": [
+        "Bewerben always comes as bewerben + mich + um: Ich bewerbe mich um eine Stelle."
+      ],
       "feedback": "Um: Ich bewerbe mich um eine Stelle als Lehrer.",
       "evidenceKey": "de-a2-berufsvokabular-cloze",
       "assistanceAffectsEvidence": [
@@ -16939,7 +17669,18 @@
             "um"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "für",
+              "category": "wrong preposition",
+              "explanation": "Applying for a job is sich bewerben um — für ('for') is not the preposition bewerben takes."
+            },
+            {
+              "answer": "bei",
+              "category": "wrong preposition",
+              "explanation": "Bei means 'at/with' a company; the application formula is sich bewerben um eine Stelle."
+            }
+          ]
         }
       }
     },
@@ -16958,7 +17699,9 @@
         "vocabulary"
       ],
       "prompt": "Read the job ad. What should you send?",
-      "hints": [],
+      "hints": [
+        "The polite instruction in the ad names the thing to send — answer with exactly that."
+      ],
       "feedback": "Ihren Lebenslauf — your CV.",
       "evidenceKey": "de-a2-berufsvokabular-read",
       "assistanceAffectsEvidence": [
@@ -16974,7 +17717,18 @@
           "Ihren Lebenslauf."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Das Gehalt",
+            "category": "incorrect answer",
+            "explanation": "Das Gehalt is the salary the ad calls good — what you send is Ihren Lebenslauf."
+          },
+          {
+            "answer": "Die Stelle",
+            "category": "incorrect answer",
+            "explanation": "Die Stelle is the position being offered, not the thing to send — send Ihren Lebenslauf."
+          }
+        ]
       },
       "stimulusId": "de-a2-berufsvokabular-stim-2"
     },

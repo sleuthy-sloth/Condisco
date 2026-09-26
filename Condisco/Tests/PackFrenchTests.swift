@@ -726,4 +726,367 @@ final class PackFrenchTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Wave D (the ten remaining French A2 discovery lessons)
+
+    /// The ten French discovery lessons of Wave D (fr-units 9–13), keyed by
+    /// the path activity ids each lesson references (graded steps only).
+    /// These cover the passé composé, the imparfait and their choice, the
+    /// futur simple, the conditional of politeness, y/en, qui/que/où,
+    /// comparatives, superlatives, and the subjunctive after il faut que.
+    private static let batch4Lessons: [String: [String]] = [
+        "fr-a2-passe-compose-formation": [
+            "fr-a2-passe-compose-formation-meet", "fr-a2-passe-compose-formation-think",
+            "fr-a2-passe-compose-formation-cloze", "fr-a2-passe-compose-formation-notice",
+            "fr-a2-passe-compose-formation-build", "fr-a2-passe-compose-formation-vary",
+            "fr-a2-passe-compose-formation-read",
+        ],
+        "fr-a2-imparfait-formation": [
+            "fr-a2-imparfait-formation-think", "fr-a2-imparfait-formation-meet",
+            "fr-a2-imparfait-formation-build", "fr-a2-imparfait-formation-notice",
+            "fr-a2-imparfait-formation-vary", "fr-a2-imparfait-formation-cloze",
+        ],
+        "fr-a2-passe-imparfait-choix": [
+            "fr-a2-passe-imparfait-choix-meet", "fr-a2-passe-imparfait-choix-notice",
+            "fr-a2-passe-imparfait-choix-think", "fr-a2-passe-imparfait-choix-match",
+            "fr-a2-passe-imparfait-choix-cloze", "fr-a2-passe-imparfait-choix-vary",
+            "fr-a2-passe-imparfait-choix-read",
+        ],
+        "fr-a2-futur-formation": [
+            "fr-a2-futur-formation-meet", "fr-a2-futur-formation-cloze",
+            "fr-a2-futur-formation-think", "fr-a2-futur-formation-notice",
+            "fr-a2-futur-formation-vary", "fr-a2-futur-formation-build",
+            "fr-a2-futur-formation-read",
+        ],
+        "fr-a2-conditionnel-politesse": [
+            "fr-a2-conditionnel-politesse-meet", "fr-a2-conditionnel-politesse-think",
+            "fr-a2-conditionnel-politesse-cloze", "fr-a2-conditionnel-politesse-notice",
+            "fr-a2-conditionnel-politesse-vary", "fr-a2-conditionnel-politesse-build",
+            "fr-a2-conditionnel-politesse-read",
+        ],
+        "fr-a2-pronoms-y-en": [
+            "fr-a2-pronoms-y-en-meet", "fr-a2-pronoms-y-en-match",
+            "fr-a2-pronoms-y-en-think", "fr-a2-pronoms-y-en-notice",
+            "fr-a2-pronoms-y-en-cloze", "fr-a2-pronoms-y-en-vary",
+        ],
+        "fr-a2-relatifs-qui-que-ou": [
+            "fr-a2-relatifs-qui-que-ou-think", "fr-a2-relatifs-qui-que-ou-meet",
+            "fr-a2-relatifs-qui-que-ou-notice", "fr-a2-relatifs-qui-que-ou-build",
+            "fr-a2-relatifs-qui-que-ou-cloze", "fr-a2-relatifs-qui-que-ou-vary",
+            "fr-a2-relatifs-qui-que-ou-read",
+        ],
+        "fr-a2-comparatifs": [
+            "fr-a2-comparatifs-meet", "fr-a2-comparatifs-think",
+            "fr-a2-comparatifs-notice", "fr-a2-comparatifs-cloze",
+            "fr-a2-comparatifs-build", "fr-a2-comparatifs-vary",
+        ],
+        "fr-a2-superlatifs": [
+            "fr-a2-superlatifs-meet", "fr-a2-superlatifs-think",
+            "fr-a2-superlatifs-notice", "fr-a2-superlatifs-vary",
+            "fr-a2-superlatifs-match", "fr-a2-superlatifs-cloze",
+            "fr-a2-superlatifs-read",
+        ],
+        "fr-a2-subjonctif-intro": [
+            "fr-a2-subjonctif-intro-meet", "fr-a2-subjonctif-intro-think",
+            "fr-a2-subjonctif-intro-notice", "fr-a2-subjonctif-intro-build",
+            "fr-a2-subjonctif-intro-cloze", "fr-a2-subjonctif-intro-vary",
+        ],
+    ]
+
+    /// Every graded step in the ten Wave D discovery lessons has a real
+    /// authored hint, not the runtime generic fallbacks.
+    func testBatch4GradedStepsHaveAuthoredHints() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch4Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text activity and cloze blank in the Wave D discovery lessons
+    /// authors error-specific feedback.
+    func testBatch4TextActivitiesAuthorErrors() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch4Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in the Wave D discovery lessons hit their
+    /// authored category + explanation and are never accepted.
+    func testBatch4ErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try frenchPack()
+
+        // fr-a2-passe-compose-formation
+        var result = try gradeText("fr-a2-passe-compose-formation-think", in: pack, "J'ai finir.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-passe-compose-formation-think", in: pack, "Je fini.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-passe-compose-formation-think", in: pack, "Je ai fini.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-passe-compose-formation-cloze", blank: "b1", in: pack, "sommes")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeBlank("fr-a2-passe-compose-formation-cloze", blank: "b1", in: pack, "avions")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-passe-compose-formation-vary", in: pack, "Tu as parler.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-passe-compose-formation-vary", in: pack, "Tu a parlé.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-passe-compose-formation-vary", in: pack, "Tu es parlé.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeText("fr-a2-passe-compose-formation-read", in: pack, "Le menu")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-passe-compose-formation-read", in: pack, "La pizza")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-imparfait-formation
+        result = try gradeText("fr-a2-imparfait-formation-think", in: pack, "J'ai fini.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-imparfait-formation-think", in: pack, "Je finisais.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-imparfait-formation-think", in: pack, "Je finissait.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-imparfait-formation-vary", in: pack, "Ils prennent.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-imparfait-formation-vary", in: pack, "Ils prenait.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-imparfait-formation-cloze", blank: "b1", in: pack, "allons")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-imparfait-formation-cloze", blank: "b1", in: pack, "irons")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // fr-a2-passe-imparfait-choix
+        result = try gradeText("fr-a2-passe-imparfait-choix-think", in: pack, "Le téléphone sonnait.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-passe-imparfait-choix-think", in: pack, "Le téléphone a sonner.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-passe-imparfait-choix-think", in: pack, "Le téléphone est sonné.")
+        XCTAssertEqual(result.category, "wrong auxiliary")
+        result = try gradeBlank("fr-a2-passe-imparfait-choix-cloze", blank: "b1", in: pack, "avait")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeBlank("fr-a2-passe-imparfait-choix-cloze", blank: "b1", in: pack, "a")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-passe-imparfait-choix-vary", in: pack, "Nous avons mangé à midi.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-passe-imparfait-choix-vary", in: pack, "Nous mangions à le midi.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-a2-passe-imparfait-choix-read", in: pack, "Le téléphone")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-passe-imparfait-choix-read", in: pack, "Médecin")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-futur-formation
+        result = try gradeText("fr-a2-futur-formation-think", in: pack, "Tu finis.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-futur-formation-think", in: pack, "Tu finissais.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeBlank("fr-a2-futur-formation-cloze", blank: "b1", in: pack, "travailles")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-futur-formation-cloze", blank: "b1", in: pack, "travaillera")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-futur-formation-vary", in: pack, "Je serai la.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        XCTAssertFalse(result.accepted, "la without the accent is not 'there'")
+        result = try gradeText("fr-a2-futur-formation-vary", in: pack, "Je serais là.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("fr-a2-futur-formation-read", in: pack, "À neuf heures")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-futur-formation-read", in: pack, "Dix heures")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-conditionnel-politesse
+        result = try gradeText("fr-a2-conditionnel-politesse-think", in: pack, "Pouvez-vous m'aider ?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-conditionnel-politesse-think", in: pack, "Pourriez-vous me aider ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-conditionnel-politesse-cloze", blank: "b1", in: pack, "veux")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-conditionnel-politesse-cloze", blank: "b1", in: pack, "voudrai")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-conditionnel-politesse-vary", in: pack, "Pourriez-vous montrer moi ?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Une nuit")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Two.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-pronoms-y-en
+        result = try gradeText("fr-a2-pronoms-y-en-think", in: pack, "Tu veux du gâteau ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-pronoms-y-en-think", in: pack, "Tu en veux du gâteau ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-pronoms-y-en-think", in: pack, "Tu veux en ?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeBlank("fr-a2-pronoms-y-en-cloze", blank: "b1", in: pack, "y")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-pronoms-y-en-vary", in: pack, "Je vais au café.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-pronoms-y-en-vary", in: pack, "Je vais y.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-a2-pronoms-y-en-vary", in: pack, "Je y vais.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-relatifs-qui-que-ou
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-think", in: pack, "Le rapport qui j'écris.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-think", in: pack, "Le rapport que je écris.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-think", in: pack, "Je écris le rapport.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeBlank("fr-a2-relatifs-qui-que-ou-cloze", blank: "b1", in: pack, "qui")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-relatifs-qui-que-ou-cloze", blank: "b1", in: pack, "où")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-vary", in: pack, "Le collègue que m'aide est sympa.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-vary", in: pack, "Le collègue qui aide moi est sympa.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-read", in: pack, "Le rapport")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-read", in: pack, "Une fenêtre")
+        XCTAssertEqual(result.category, "missing word")
+
+        // fr-a2-comparatifs
+        result = try gradeText("fr-a2-comparatifs-think", in: pack, "Le train est moins chère.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-a2-comparatifs-think", in: pack, "Le train est moins.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-comparatifs-think", in: pack, "Le train coûte moins cher.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-comparatifs-cloze", blank: "b1", in: pack, "moins")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-comparatifs-cloze", blank: "b1", in: pack, "aussi")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-comparatifs-vary", in: pack, "L'avion est plus rapide que la train.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-a2-comparatifs-vary", in: pack, "L'avion est plus rapide le train.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-comparatifs-vary", in: pack, "L'avion est plus vite que le train.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-superlatifs
+        result = try gradeText("fr-a2-superlatifs-think", in: pack, "C'est le moins chère.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-a2-superlatifs-think", in: pack, "C'est la moins cher.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-a2-superlatifs-think", in: pack, "C'est la plus chère.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-superlatifs-cloze", blank: "b1", in: pack, "le plus bon")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-a2-superlatifs-cloze", blank: "b1", in: pack, "la meilleure")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-a2-superlatifs-vary", in: pack, "Le plus célèbre monument.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-a2-superlatifs-vary", in: pack, "La monument le plus célèbre.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-a2-superlatifs-read", in: pack, "Le monument le plus célèbre")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-superlatifs-read", in: pack, "The most beautiful view.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-a2-subjonctif-intro
+        result = try gradeText("fr-a2-subjonctif-intro-think", in: pack, "Il faut que tu bois de l'eau.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-subjonctif-intro-think", in: pack, "Il faut que tu boire de l'eau.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-subjonctif-intro-think", in: pack, "Il faut tu boives de l'eau.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeBlank("fr-a2-subjonctif-intro-cloze", blank: "b1", in: pack, "prends")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeBlank("fr-a2-subjonctif-intro-cloze", blank: "b1", in: pack, "prenne")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-a2-subjonctif-intro-vary", in: pack, "Il faut que elle dorme huit heures.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-a2-subjonctif-intro-vary", in: pack, "Il faut qu'elle dort huit heures.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+    }
+
+    /// Wave D alignment fixes (H1): natural alternatives accepted where the
+    /// prompt legitimately allows them.
+    func testBatch4AcceptsNaturalAlternatives() throws {
+        let pack = try frenchPack()
+
+        // Reading comprehension — full natural English answers.
+        var result = try gradeText("fr-a2-passe-compose-formation-read", in: pack, "The menu of the day.")
+        XCTAssertTrue(result.accepted, "full English set-menu answer must be accepted")
+        result = try gradeText("fr-a2-passe-compose-formation-read", in: pack, "The set menu.")
+        XCTAssertTrue(result.accepted, "'the set menu' is the natural rendering of le menu du jour")
+
+        // The full adjective is standard French alongside the colloquial sympa.
+        result = try gradeText("fr-a2-relatifs-qui-que-ou-vary", in: pack, "Le collègue qui m'aide est sympathique.")
+        XCTAssertTrue(result.accepted, "sympathique must be accepted alongside sympa")
+
+        // The dictated future form is the only accepted rendering.
+        result = try gradeText("fr-a2-futur-formation-vary", in: pack, "Je serai là.")
+        XCTAssertTrue(result.accepted)
+    }
+
+    /// Wave D prompt/answer alignment (H1): the cloze prompts that previously
+    /// left the tense or direction under-determined now dictate the target,
+    /// and the dictation no longer accepts a wrong word for a dictated one.
+    func testBatch4PromptNarrowingHolds() throws {
+        let pack = try frenchPack()
+
+        // The comparative cloze now dictates "more", so moins/aussi are
+        // rejectable without being arbitrary.
+        var base = try XCTUnwrap(pack.activity(id: "fr-a2-comparatifs-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("more comfortable"),
+                      "comparatives cloze must dictate the comparison direction")
+
+        // The tense-naming cloze prompts now name the tense under test.
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-passe-compose-formation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("passé composé"),
+                      "passé composé cloze must dictate the tense")
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-imparfait-formation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("imparfait"),
+                      "imparfait cloze must dictate the tense")
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-futur-formation-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("futur"),
+                      "futur cloze must dictate the tense")
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-subjonctif-intro-cloze")?.base)
+        XCTAssertTrue(base.prompt.contains("subjonctif"),
+                      "subjunctive cloze must dictate the mood")
+
+        // The superlative think step previously glossed "(hotel)" while
+        // drilling the feminine crown — incoherent; it now dictates feminine.
+        base = try XCTUnwrap(pack.activity(id: "fr-a2-superlatifs-think")?.base)
+        XCTAssertFalse(base.prompt.contains("hotel"),
+                       "superlatives think must not contradict its feminine answer")
+        XCTAssertTrue(base.prompt.contains("cheapest"),
+                      "superlatives think must keep the cheapest direction")
+
+        // The dictation "I will be there" accepts only là; the accentless la
+        // (the article) is an authored accent error, not an accepted answer.
+        let spec = try gradeText("fr-a2-futur-formation-vary", in: pack, "Je serai la.")
+        XCTAssertEqual(spec.category, "accent/diacritic issue")
+        XCTAssertFalse(spec.accepted, "accentless la must not be silently accepted")
+        let accepted = try activity("fr-a2-futur-formation-vary", in: pack)
+        guard case .text(let textSpec) = accepted else {
+            return XCTFail("fr-a2-futur-formation-vary must be a text activity")
+        }
+        XCTAssertFalse(
+            textSpec.answer.answers.contains { $0.hasSuffix("la.") },
+            "the accentless la must not sit in the accepted list")
+    }
 }

@@ -5480,7 +5480,9 @@
         "vocabulary"
       ],
       "prompt": "Your Madrid phone writes a label above the date. Tap the label for today.",
-      "hints": [],
+      "hints": [
+        "Hoy is the label for today. Mañana is tomorrow, lunes a weekday and semana the week — the phone's label for the current day is hoy."
+      ],
       "feedback": "That is hoy. The decoys mean tomorrow, Monday and the week.",
       "evidenceKey": "es-time-days-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5525,7 +5527,9 @@
         "grammar"
       ],
       "prompt": "Build the Spanish sentence for on Monday I work; the article carries the on.",
-      "hints": [],
+      "hints": [
+        "The article El carries the 'on' and sits first, then the day lunes, then the verb trabajo: El lunes trabajo."
+      ],
       "feedback": "El sits in front of the day and means on: el lunes, on Monday.",
       "evidenceKey": "es-time-days-foundation-build",
       "assistanceAffectsEvidence": [
@@ -5569,7 +5573,9 @@
         "grammar"
       ],
       "prompt": "Complete the Spanish for on Mondays, meaning every Monday: ___ lunes trabajo.",
-      "hints": [],
+      "hints": [
+        "The plural article Los makes it 'on Mondays' — every Monday, a habit. El would mean one single Monday; the prompt says every Monday."
+      ],
       "feedback": "Spanish uses the plural article for a repeated day: los lunes, on Mondays.",
       "evidenceKey": "es-time-days-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5599,7 +5605,23 @@
             "Los"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "El",
+              "category": "wrong number",
+              "explanation": "El lunes means one single Monday. 'On Mondays', every Monday, needs the plural: los lunes."
+            },
+            {
+              "answer": "Las",
+              "category": "wrong article",
+              "explanation": "Lunes is masculine, so the plural article is los, never las."
+            },
+            {
+              "answer": "La",
+              "category": "wrong article",
+              "explanation": "La is feminine and singular; the repeated-day habit needs the masculine plural: los lunes."
+            }
+          ]
         }
       }
     },
@@ -5616,7 +5638,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: today is Friday.",
-      "hints": [],
+      "hints": [
+        "Dates and days ride ser, not estar: Hoy es … Then the day, lower-case as the intro taught: viernes."
+      ],
       "feedback": "Hoy es plus the day. Viernes still carries the name of Venus.",
       "evidenceKey": "es-time-days-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5630,7 +5654,23 @@
           "Hoy es viernes."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hoy está viernes.",
+            "category": "wrong conjugation",
+            "explanation": "Days and dates ride ser, not estar — the day is what it is: Hoy es viernes."
+          },
+          {
+            "answer": "Hoy es martes.",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for Friday — hoy es viernes. Martes is the day of Mars, not the answer."
+          },
+          {
+            "answer": "Es viernes hoy.",
+            "category": "word-order problem",
+            "explanation": "The time word hoy leads in Spanish: Hoy es viernes."
+          }
+        ]
       }
     },
     {
@@ -5646,7 +5686,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: El lunes trabajo.",
-      "hints": [],
+      "hints": [
+        "El in front of a weekday carries the 'on' — there is no separate word for it. Read the article with the day, then the work: On Monday I work."
+      ],
       "feedback": "There is no separate word for on here; the article el does that work in front of the day.",
       "evidenceKey": "es-time-days-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5661,7 +5703,23 @@
           "I work on Monday."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Monday I work.",
+            "category": "missing word",
+            "explanation": "The little 'on' is hiding in the article el — 'on Monday' is part of the sentence: On Monday I work."
+          },
+          {
+            "answer": "On Monday I worked.",
+            "category": "wrong tense",
+            "explanation": "Trabajo is the present 'I work'. The sentence is about a habit, not a finished past: On Monday I work."
+          },
+          {
+            "answer": "I work the Monday.",
+            "category": "extra word",
+            "explanation": "The article el means 'on' here; English needs no extra article with the day: I work on Monday."
+          }
+        ]
       }
     },
     {
@@ -5677,7 +5735,9 @@
         "vocabulary"
       ],
       "prompt": "Five Spanish weekdays carry the name of a planet or a god. Which pair leaves that company?",
-      "hints": [],
+      "hints": [
+        "The prompt asks which pair does NOT follow the sky names. Sábado came from the Sabbath and domingo from the Lord's day — those two broke away, so they are the odd pair out."
+      ],
       "feedback": "Sábado comes from the Sabbath and domingo from the Lord's day; lunes to viernes are the old sky names.",
       "evidenceKey": "es-time-days-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5718,7 +5778,9 @@
         "vocabulary"
       ],
       "prompt": "Read the week. Which day does the passage name after the moon?",
-      "hints": [],
+      "hints": [
+        "The passage's first line names the day: El lunes es el día de la Luna. Which weekday is the day of the moon?"
+      ],
       "feedback": "The first line says it: el lunes is the day of la Luna, the moon.",
       "evidenceKey": "es-time-days-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5734,7 +5796,23 @@
           "Monday"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Martes.",
+            "category": "incorrect answer",
+            "explanation": "Martes is the day the writer works — the moon day is lunes."
+          },
+          {
+            "answer": "Viernes.",
+            "category": "incorrect answer",
+            "explanation": "Viernes is the rest day; the moon gets lunes: El lunes es el día de la Luna."
+          },
+          {
+            "answer": "La Luna.",
+            "category": "incorrect answer",
+            "explanation": "The moon is what the day is NAMED after — the question asks for the day itself: lunes."
+          }
+        ]
       }
     },
     {
@@ -8684,7 +8762,9 @@
         "vocabulary"
       ],
       "prompt": "Mesa is feminine. Which line describes it correctly?",
-      "hints": [],
+      "hints": [
+        "Mesa is feminine and singular, so the whole line mirrors it: la mesa es nueva. Nuevo on a feminine noun, or the masculine article el, breaks the mirror."
+      ],
       "feedback": "Mesa is feminine and singular, so both the article and the adjective stay feminine: la mesa es nueva.",
       "evidenceKey": "es-descriptions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8729,7 +8809,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: the house is big.",
-      "hints": [],
+      "hints": [
+        "Ser carries the description and casa is feminine, but grande never changes for gender — it only grows a plural: La casa es grande."
+      ],
       "feedback": "Casa is feminine, but grande is one of the adjectives that doesn't change for gender — only for number: La casa es grande.",
       "evidenceKey": "es-descriptions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8743,7 +8825,23 @@
           "La casa es grande."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "El casa es grande.",
+            "category": "wrong article",
+            "explanation": "Casa is feminine, so the article is la: La casa es grande."
+          },
+          {
+            "answer": "La casa son grande.",
+            "category": "wrong conjugation",
+            "explanation": "Son is the plural 'are'; one house is es: La casa es grande."
+          },
+          {
+            "answer": "La casa es muy grande.",
+            "category": "extra word",
+            "explanation": "Muy means 'very' — the prompt just says big: La casa es grande."
+          }
+        ]
       }
     },
     {
@@ -8760,7 +8858,9 @@
         "vocabulary"
       ],
       "prompt": "Muy always stands right before the adjective. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "Muy must stand directly before the adjective: Él es muy alto. Él muy es alto and es alto muy both put it in the wrong seat."
+      ],
       "feedback": "Muy hugs the adjective it strengthens: es muy alto.",
       "evidenceKey": "es-descriptions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8806,7 +8906,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: the house is very big.",
-      "hints": [],
+      "hints": [
+        "Open with the article La, then casa, then es; muy hugs the adjective it strengthens and stands right before grande: La casa es muy grande."
+      ],
       "feedback": "Ser carries the description, and muy stands before grande: La casa es muy grande.",
       "evidenceKey": "es-descriptions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -8860,7 +8962,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: They are tall. (masculine)",
-      "hints": [],
+      "hints": [
+        "Ser's plural is son ('they are'), and the adjective joins the masculine plural: altos. And it is a description, so ser, not estar."
+      ],
       "feedback": "Ser in the plural is son, and alto copies the masculine plural: Son altos.",
       "evidenceKey": "es-descriptions-foundation-write",
       "assistanceAffectsEvidence": [
@@ -8874,7 +8978,23 @@
           "Son altos."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Son alto.",
+            "category": "wrong number",
+            "explanation": "'They' is plural, so the adjective must be plural too: Son altos."
+          },
+          {
+            "answer": "Son alta.",
+            "category": "wrong gender",
+            "explanation": "The prompt says masculine — the adjective is altos, not the feminine alta."
+          },
+          {
+            "answer": "Están altos.",
+            "category": "wrong conjugation",
+            "explanation": "Being tall is a description, not a temporary state — the verb is son, not están: Son altos."
+          }
+        ]
       }
     },
     {
@@ -8890,7 +9010,9 @@
         "grammar"
       ],
       "prompt": "Libro is masculine and singular. Fill the gap: El libro es ___.",
-      "hints": [],
+      "hints": [
+        "Libro is masculine and singular, and the adjective copies it exactly: nuevo. Nueva, nuevos or nuevas would break the mirror."
+      ],
       "feedback": "Libro is masculine and singular, so the adjective stays nuevo: El libro es nuevo.",
       "evidenceKey": "es-descriptions-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -8920,7 +9042,23 @@
             "nuevo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "nueva",
+              "category": "wrong gender",
+              "explanation": "Libro is masculine, so the adjective stays nuevo, not nueva."
+            },
+            {
+              "answer": "nuevos",
+              "category": "wrong number",
+              "explanation": "Es is singular — one book — so the adjective is singular too: nuevo."
+            },
+            {
+              "answer": "nuevas",
+              "category": "wrong gender",
+              "explanation": "Nuevas is feminine plural; libro is masculine singular: nuevo."
+            }
+          ]
         }
       }
     },
@@ -8937,7 +9075,9 @@
         "vocabulary"
       ],
       "prompt": "Read the description. Which adjective describes the lamp?",
-      "hints": [],
+      "hints": [
+        "The last sentence of the description is about the lamp: La lámpara es alta. That sentence hands you the adjective."
+      ],
       "feedback": "The last sentence gives it: la lámpara es alta.",
       "evidenceKey": "es-descriptions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8953,7 +9093,23 @@
           "Tall."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Nueva.",
+            "category": "incorrect answer",
+            "explanation": "La cama es nueva — the bed is new. The lamp is the tall one: alta."
+          },
+          {
+            "answer": "Grande.",
+            "category": "incorrect answer",
+            "explanation": "Grande describes the table, la mesa es grande. The lamp is alta."
+          },
+          {
+            "answer": "Bonito.",
+            "category": "incorrect answer",
+            "explanation": "Bonito describes the bedroom, mi dormitorio es pequeño pero bonito. The lamp is alta."
+          }
+        ]
       }
     },
     {
@@ -10823,7 +10979,9 @@
         "vocabulary"
       ],
       "prompt": "Which line says I spoke with Ana yesterday?",
-      "hints": [],
+      "hints": [
+        "The I-form of the past ends in -é with its accent: hablé. Hablo is present 'I speak', hablar the infinitive and hablado the participle — only hablé fits yesterday."
+      ],
       "feedback": "The -é ending with its accent is the I form of the past: Ayer hablé con Ana.",
       "evidenceKey": "es-past-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10868,7 +11026,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I ate bread.",
-      "hints": [],
+      "hints": [
+        "Comer is an -er verb, so 'I' in the past ends in -í: comí. The accent lands on the final vowel."
+      ],
       "feedback": "Comer is an -er verb, so the I past ends in -í: Comí pan.",
       "evidenceKey": "es-past-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10882,7 +11042,23 @@
           "Comí pan."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Como pan.",
+            "category": "wrong tense",
+            "explanation": "Como is the present 'I eat'; the story is in the past — Comí pan."
+          },
+          {
+            "answer": "Comer pan.",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the untouched infinitive; the sentence needs the past I-form: Comí pan."
+          },
+          {
+            "answer": "Comí el pan.",
+            "category": "extra word",
+            "explanation": "The dictated sentence is bare — no article before pan: Comí pan."
+          }
+        ]
       }
     },
     {
@@ -10898,7 +11074,9 @@
         "vocabulary"
       ],
       "prompt": "Fue means was here. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "Fue already means 'was' — it never needs a helper verb. Es fue, era fue and fui all pile up verbs; the single word fue carries the whole meaning."
+      ],
       "feedback": "Fue already means was — no helper verb needed: La película fue muy buena.",
       "evidenceKey": "es-past-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10943,7 +11121,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: last night I studied Spanish.",
-      "hints": [],
+      "hints": [
+        "Time expression first — Anoche — then the past verb estudié, then what was studied: español. Anoche estudié español."
+      ],
       "feedback": "Time first, then the past verb: Anoche estudié español.",
       "evidenceKey": "es-past-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10987,7 +11167,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: Yesterday I worked a lot.",
-      "hints": [],
+      "hints": [
+        "Ayer sets the scene first, then the past verb trabajé with its accent, then mucho: time first, verb second."
+      ],
       "feedback": "Ayer sets the past, and trabajé carries the accent: Ayer trabajé mucho.",
       "evidenceKey": "es-past-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11001,7 +11183,23 @@
           "Ayer trabajé mucho."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ayer trabajo mucho.",
+            "category": "wrong tense",
+            "explanation": "Trabajo is the present; the sentence is about yesterday — Ayer trabajé mucho."
+          },
+          {
+            "answer": "Ayer trabajó mucho.",
+            "category": "wrong conjugation",
+            "explanation": "Trabajó is 'he/she worked'; the prompt says 'I' — Ayer trabajé mucho."
+          },
+          {
+            "answer": "Trabajé mucho ayer.",
+            "category": "word-order problem",
+            "explanation": "The lesson's rule puts time first: Ayer trabajé mucho."
+          }
+        ]
       }
     },
     {
@@ -11018,7 +11216,9 @@
         "grammar"
       ],
       "prompt": "The subject is yo, so the past of hablar ends in -é. Fill the gap: Ayer ___ con mi madre.",
-      "hints": [],
+      "hints": [
+        "The prompt says the subject is yo: hablar's yo past is hablé — the -é with its accent. Hablo would be the present."
+      ],
       "feedback": "The I past of hablar is hablé: Ayer hablé con mi madre.",
       "evidenceKey": "es-past-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11048,7 +11248,23 @@
             "hablé"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "hablo",
+              "category": "wrong tense",
+              "explanation": "Hablo is the present 'I speak'; yesterday calls the past form hablé."
+            },
+            {
+              "answer": "hablaba",
+              "category": "wrong tense",
+              "explanation": "Hablaba is the stretched habit-tense; a done-and-dusted single action takes hablé."
+            },
+            {
+              "answer": "hable",
+              "category": "accent/diacritic issue",
+              "explanation": "The yo past carries its accent: hablé."
+            }
+          ]
         }
       }
     },
@@ -11066,7 +11282,9 @@
         "vocabulary"
       ],
       "prompt": "Read about yesterday. Who did the writer speak with?",
-      "hints": [],
+      "hints": [
+        "The passage says it in the afternoon line: Por la tarde hablé con Ana. The writer spoke with Ana — not with the family they ate with."
+      ],
       "feedback": "The third sentence names her: hablé con Ana.",
       "evidenceKey": "es-past-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11083,7 +11301,23 @@
           "With Ana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Con mi familia.",
+            "category": "incorrect answer",
+            "explanation": "The writer ATE with the family — Comí con mi familia. The speaking partner was Ana."
+          },
+          {
+            "answer": "Con mi madre.",
+            "category": "incorrect answer",
+            "explanation": "No one speaks with a mother here — the passage names Ana: hablé con Ana."
+          },
+          {
+            "answer": "Estudié.",
+            "category": "incorrect answer",
+            "explanation": "The writer studied a little at night, but the question asks who they spoke with: Ana."
+          }
+        ]
       }
     },
     {
@@ -11370,7 +11604,9 @@
         "vocabulary"
       ],
       "prompt": "Which line writes the date correctly?",
-      "hints": [],
+      "hints": [
+        "A Spanish date needs its el before the day and de before the month: el 3 de mayo. Missing either piece, or flipping the order, breaks the frame."
+      ],
       "feedback": "The day needs its el and the month its de: el 3 de mayo.",
       "evidenceKey": "es-months-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11415,7 +11651,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: my birthday is in June.",
-      "hints": [],
+      "hints": [
+        "For the month alone, en is enough: en junio. The birthday equals a date, so it rides ser: Mi cumpleaños es en junio."
+      ],
       "feedback": "For the month alone, en is enough: Mi cumpleaños es en junio.",
       "evidenceKey": "es-months-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11429,7 +11667,23 @@
           "Mi cumpleaños es en junio."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mi cumpleaños es junio.",
+            "category": "missing word",
+            "explanation": "The month needs its preposition en: es en junio."
+          },
+          {
+            "answer": "Mi cumpleaños está en junio.",
+            "category": "wrong conjugation",
+            "explanation": "Birthdays and dates ride ser — es, not está."
+          },
+          {
+            "answer": "Mi cumpleaños es en enero.",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for June; enero is a different month — Mi cumpleaños es en junio."
+          }
+        ]
       }
     },
     {
@@ -11445,7 +11699,9 @@
         "vocabulary"
       ],
       "prompt": "Months stay lowercase. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "Months never take a capital in Spanish: diciembre. The correct line writes it lower-case and needs no el after en."
+      ],
       "feedback": "Diciembre never takes a capital: La fiesta es en diciembre.",
       "evidenceKey": "es-months-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11491,7 +11747,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: my birthday is January 5th.",
-      "hints": [],
+      "hints": [
+        "Possessor first — Mi cumpleaños — then es, then the date frame el + cinco + de + enero. Day before month: el cinco de enero."
+      ],
       "feedback": "El 5 de enero — day first: Mi cumpleaños es el cinco de enero.",
       "evidenceKey": "es-months-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11556,7 +11814,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: Today is May 3rd.",
-      "hints": [],
+      "hints": [
+        "Hoy es, then the date with its el and de: el tres de mayo. The day comes first, the month after de — never the English order."
+      ],
       "feedback": "Day with el, month with de: Hoy es el tres de mayo.",
       "evidenceKey": "es-months-foundation-write",
       "assistanceAffectsEvidence": [
@@ -11571,7 +11831,23 @@
           "Hoy es el 3 de mayo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hoy es el 3 mayo.",
+            "category": "missing word",
+            "explanation": "The month needs its de: el 3 de mayo."
+          },
+          {
+            "answer": "Hoy es mayo 3.",
+            "category": "word-order problem",
+            "explanation": "Spanish dates put the day first with el, then de, then the month: el 3 de mayo."
+          },
+          {
+            "answer": "Hoy es tres de mayo.",
+            "category": "missing word",
+            "explanation": "The date frame carries its el: Hoy es el tres de mayo."
+          }
+        ]
       }
     },
     {
@@ -11587,7 +11863,9 @@
         "grammar"
       ],
       "prompt": "The month is June, always lowercase. Fill the gap: El concierto es el 20 de ___.",
-      "hints": [],
+      "hints": [
+        "The month stays lower-case — junio — and takes no article after de. The frame is el 20 de junio."
+      ],
       "feedback": "Lowercase, as always: El concierto es el 20 de junio.",
       "evidenceKey": "es-months-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -11617,7 +11895,23 @@
             "junio"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "enero",
+              "category": "incorrect answer",
+              "explanation": "The concert is June 20th — the month is junio, not enero."
+            },
+            {
+              "answer": "el junio",
+              "category": "extra word",
+              "explanation": "After de, the month walks alone — no article: el 20 de junio."
+            },
+            {
+              "answer": "julio",
+              "category": "incorrect answer",
+              "explanation": "Junio is June, the month in the prompt. Julio is July — a different date."
+            }
+          ]
         }
       }
     },
@@ -11635,7 +11929,9 @@
         "vocabulary"
       ],
       "prompt": "Read the birthday note. When is the writer's birthday?",
-      "hints": [],
+      "hints": [
+        "The note opens with the birthday: Mi cumpleaños es el 5 de enero. The party on the 10th and the family months are decoys."
+      ],
       "feedback": "The first sentence gives the date: el 5 de enero.",
       "evidenceKey": "es-months-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11652,7 +11948,23 @@
           "El cinco de enero."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "El 10 de enero.",
+            "category": "incorrect answer",
+            "explanation": "The 10th is the party, not the birthday. The birthday is el 5 de enero."
+          },
+          {
+            "answer": "En junio.",
+            "category": "incorrect answer",
+            "explanation": "June is the sister's birthday month. The writer's own birthday is el 5 de enero."
+          },
+          {
+            "answer": "En diciembre.",
+            "category": "incorrect answer",
+            "explanation": "December belongs to the parents. The writer's birthday is el 5 de enero."
+          }
+        ]
       }
     },
     {
@@ -12551,7 +12863,9 @@
         "vocabulary"
       ],
       "prompt": "Which line gives the formal command to call an ambulance?",
-      "hints": [],
+      "hints": [
+        "Emergencies use the formal command: Llame with -e. Llama is the tú form, Llame una drops the needed a, and Llamar is the bare infinitive."
+      ],
       "feedback": "Llame is the formal command, and llamar needs its a: Llame a una ambulancia.",
       "evidenceKey": "es-emergency-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12596,7 +12910,9 @@
         "grammar"
       ],
       "prompt": "Predict the question before you write it: where is the hospital?",
-      "hints": [],
+      "hints": [
+        "Dónde takes its accent, está says where something is, and the hospital needs its article: ¿Dónde está el hospital?"
+      ],
       "feedback": "Dónde with its accent, está for location: ¿Dónde está el hospital?",
       "evidenceKey": "es-emergency-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12610,7 +12926,23 @@
           "¿Dónde está el hospital?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Dónde es el hospital?",
+            "category": "wrong conjugation",
+            "explanation": "Location takes estar, not ser: ¿Dónde está el hospital?"
+          },
+          {
+            "answer": "¿Dónde está hospital?",
+            "category": "missing word",
+            "explanation": "The hospital needs its article el: ¿Dónde está el hospital?"
+          },
+          {
+            "answer": "¿Donde está el hospital?",
+            "category": "accent/diacritic issue",
+            "explanation": "Dónde carries its accent when it asks where: ¿Dónde está el hospital?"
+          }
+        ]
       }
     },
     {
@@ -12626,7 +12958,9 @@
         "vocabulary"
       ],
       "prompt": "Emergencies use the formal command. Choose the correct cry.",
-      "hints": [],
+      "hints": [
+        "The formal command is Llame — the usted form. Llamo means 'I call' (useless when asking for help), and Llamar/Llames are the wrong shape for a command."
+      ],
       "feedback": "Llame is the usted command — Llamo would mean I call, which helps nobody.",
       "evidenceKey": "es-emergency-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12672,7 +13006,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: call an ambulance, please.",
-      "hints": [],
+      "hints": [
+        "The formal command Llame leads, then a + una + ambulancia, then por favor to soften it: Llame a una ambulancia, por favor."
+      ],
       "feedback": "The command first, then a una ambulancia: Llame a una ambulancia, por favor.",
       "evidenceKey": "es-emergency-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12731,7 +13067,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I need help!",
-      "hints": [],
+      "hints": [
+        "Necesito + ayuda — no article in between — and the exclamation marks frame the cry: ¡Necesito ayuda!"
+      ],
       "feedback": "Necesito ayuda, with the marks that frame it: ¡Necesito ayuda!",
       "evidenceKey": "es-emergency-foundation-write",
       "assistanceAffectsEvidence": [
@@ -12745,7 +13083,23 @@
           "¡Necesito ayuda!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Necesito ayudas.",
+            "category": "wrong conjugation",
+            "explanation": "Ayudas is 'you help'; the noun is ayuda: ¡Necesito ayuda!"
+          },
+          {
+            "answer": "Necesito la ayuda.",
+            "category": "extra word",
+            "explanation": "The cry carries no article: Necesito ayuda. La ayuda would mean a specific help."
+          },
+          {
+            "answer": "Necesito un ayuda.",
+            "category": "wrong article",
+            "explanation": "Ayuda is feminine and takes no article in this cry: Necesito ayuda."
+          }
+        ]
       }
     },
     {
@@ -12761,7 +13115,9 @@
         "grammar"
       ],
       "prompt": "This is the cry for help. Fill the gap: ¡___!",
-      "hints": [],
+      "hints": [
+        "This is the standalone shout for help — the intro's very first phrase: ¡Socorro!"
+      ],
       "feedback": "¡Socorro! is the cry for help.",
       "evidenceKey": "es-emergency-foundation-fill",
       "assistanceAffectsEvidence": [
@@ -12791,7 +13147,23 @@
             "Socorro"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Ayuda",
+              "category": "incorrect answer",
+              "explanation": "¡Ayuda! is the other cry of the lesson, but the taught shout for help is ¡Socorro!."
+            },
+            {
+              "answer": "Llame",
+              "category": "incorrect answer",
+              "explanation": "Llame starts the command 'Llame a una ambulancia'; the bare cry for help is ¡Socorro!."
+            },
+            {
+              "answer": "Emergencia",
+              "category": "incorrect answer",
+              "explanation": "Emergencia names the situation, not the cry. The shout is ¡Socorro!."
+            }
+          ]
         }
       }
     },
@@ -12809,7 +13181,9 @@
         "vocabulary"
       ],
       "prompt": "Read the emergency. What does the woman call?",
-      "hints": [],
+      "hints": [
+        "The passage names her action: Una mujer llama a una ambulancia. The man shouts ¡Socorro! — the woman calls the ambulance."
+      ],
       "feedback": "The second sentence says it: llama a una ambulancia.",
       "evidenceKey": "es-emergency-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12826,7 +13200,23 @@
           "Llama a una ambulancia."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A la policía.",
+            "category": "incorrect answer",
+            "explanation": "No police here — the woman calls a una ambulancia."
+          },
+          {
+            "answer": "¡Socorro!",
+            "category": "incorrect answer",
+            "explanation": "Socorro is the man's shout; the woman calls an ambulance."
+          },
+          {
+            "answer": "Al 112.",
+            "category": "incorrect answer",
+            "explanation": "112 is the number to know, but the passage says the woman calls a una ambulancia."
+          }
+        ]
       }
     },
     {
@@ -13035,7 +13425,9 @@
         "vocabulary"
       ],
       "prompt": "Which ending marks the yo form of -ar verbs in the past?",
-      "hints": [],
+      "hints": [
+        "The yo past of -ar verbs ends in -é: trabajé. Trabajo is present, trabaja another person's present, trabajar the infinitive — only trabajé is the done-and-dusted I-form."
+      ],
       "feedback": "trabajé — the é is the I-did-it marker. trabajo is present (I work), trabaja is he/she present, trabajar is the untouched infinitive.",
       "evidenceKey": "es-a2-preterito-formacion-meet",
       "assistanceAffectsEvidence": [
@@ -13080,7 +13472,9 @@
         "grammar"
       ],
       "prompt": "Predict the yo past of comer: Yesterday I ate → Ayer ___ .",
-      "hints": [],
+      "hints": [
+        "Comer is an -er verb, so the yo past ends in -í: comí. The accent is part of the spelling."
+      ],
       "feedback": "-er/-ir verbs take -í for yo: comí. Keep the accent — comi without it is a spelling mistake, not a past tense.",
       "evidenceKey": "es-a2-preterito-formacion-think",
       "assistanceAffectsEvidence": [
@@ -13094,7 +13488,23 @@
           "comí"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "comi",
+            "category": "accent/diacritic issue",
+            "explanation": "The yo past carries its accent: comí."
+          },
+          {
+            "answer": "como",
+            "category": "wrong tense",
+            "explanation": "Como is the present 'I eat'; yesterday needs the past comí."
+          },
+          {
+            "answer": "comer",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the infinitive; the sentence needs the conjugated past form comí."
+          }
+        ]
       }
     },
     {
@@ -13110,7 +13520,9 @@
         "vocabulary"
       ],
       "prompt": "Estuvo enfermo ayer. Which verb is the rebel here?",
-      "hints": [],
+      "hints": [
+        "Estuvo is estar's past — it ignores the -ar pattern completely, so it is the rebel. Enfermo is an adjective, ayer a time word, and fue is not even in the sentence."
+      ],
       "feedback": "estuvo — estar's past ignores the -ar pattern completely (no *estó). enfermo is an adjective, ayer a time word, and fue isn't even in the sentence.",
       "evidenceKey": "es-a2-preterito-formacion-notice",
       "assistanceAffectsEvidence": [
@@ -13155,7 +13567,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: We ate paella on Sunday.",
-      "hints": [],
+      "hints": [
+        "Verb first, then what, then when: Comimos paella el domingo. The past verb Comimos leads the whole sentence."
+      ],
       "feedback": "Comimos paella el domingo — verb first, then what, then when. The past verb carries the whole sentence.",
       "evidenceKey": "es-a2-preterito-formacion-build",
       "assistanceAffectsEvidence": [
@@ -13204,7 +13618,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: He told me no.",
-      "hints": [],
+      "hints": [
+        "Decir's past is dijo ('he told'), and the que links the telling to the 'no': Me dijo que no. Me dije would be 'I told myself'."
+      ],
       "feedback": "decir → dijo in the past — one of the rebels. Me dijo que no: told-me that no.",
       "evidenceKey": "es-a2-preterito-formacion-write",
       "assistanceAffectsEvidence": [
@@ -13218,7 +13634,23 @@
           "Me dijo que no."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Me dijo no.",
+            "category": "missing word",
+            "explanation": "The told-me-that-no bridge needs que: Me dijo que no."
+          },
+          {
+            "answer": "Me dije que no.",
+            "category": "wrong conjugation",
+            "explanation": "Dije is 'I said'; the prompt says 'he told me' — Me dijo que no."
+          },
+          {
+            "answer": "Me decía que no.",
+            "category": "wrong tense",
+            "explanation": "Decía is the habit-tense; a single 'he told me' takes dijo: Me dijo que no."
+          }
+        ]
       }
     },
     {
@@ -13234,7 +13666,9 @@
         "grammar"
       ],
       "prompt": "Anoche ___ la tarea. (hacer, yo)",
-      "hints": [],
+      "hints": [
+        "Hacer's yo past is the rebel hice — no pattern, just a friend to memorize: Anoche hice la tarea."
+      ],
       "feedback": "hacer → hice. The yo past of hacer drops the pattern — memorize hice the way you memorized fue.",
       "evidenceKey": "es-a2-preterito-formacion-fill",
       "assistanceAffectsEvidence": [
@@ -13264,7 +13698,23 @@
             "hice"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "hago",
+              "category": "wrong tense",
+              "explanation": "Hago is the present 'I do'; anoche calls the past hice."
+            },
+            {
+              "answer": "hizo",
+              "category": "wrong conjugation",
+              "explanation": "Hizo is 'he/she did'; the prompt says yo — hice."
+            },
+            {
+              "answer": "hacía",
+              "category": "wrong tense",
+              "explanation": "Hacía is the habit-tense; a done-and-dusted task takes hice."
+            }
+          ]
         }
       }
     },
@@ -13279,7 +13729,9 @@
         "vocabulary"
       ],
       "prompt": "Read the day. What time did the narrator get home?",
-      "hints": [],
+      "hints": [
+        "The story's last sentence gives it: llegué a casa a las once. The time is a las once — not the seven o'clock of getting up."
+      ],
       "feedback": "Llegué a casa a las once — the last pretérito of the story, and your answer.",
       "evidenceKey": "es-a2-preterito-formacion-read",
       "assistanceAffectsEvidence": [
@@ -13296,7 +13748,23 @@
           "las once"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A las siete.",
+            "category": "incorrect answer",
+            "explanation": "Seven was when the narrator got UP; home came at a las once."
+          },
+          {
+            "answer": "Con amigos.",
+            "category": "incorrect answer",
+            "explanation": "Friends were the dinner company; the question asks the time he got home — a las once."
+          },
+          {
+            "answer": "El informe.",
+            "category": "incorrect answer",
+            "explanation": "The report was finished in the afternoon; getting home happened a las once."
+          }
+        ]
       }
     },
     {
@@ -13572,7 +14040,9 @@
         "vocabulary"
       ],
       "prompt": "How is the simple future formed?",
-      "hints": [],
+      "hints": [
+        "The future touches nothing: infinitive + endings. Hablar + é = hablaré — no stem change and nothing removed. -aba is the imperfecto, not the future."
+      ],
       "feedback": "infinitive + endings: hablar + é = hablaré. -aba is the imperfecto; the infinitive stays whole — nothing is removed.",
       "evidenceKey": "es-a2-futuro-formacion-meet",
       "assistanceAffectsEvidence": [
@@ -13615,7 +14085,9 @@
         "grammar"
       ],
       "prompt": "Predict the yo future of comer.",
-      "hints": [],
+      "hints": [
+        "comer + é = comeré. The future uses the same endings for every verb group — comer keeps its full infinitive."
+      ],
       "feedback": "comer + é = comeré. Same ending for -ar, -er and -ir — the future doesn't care about verb groups.",
       "evidenceKey": "es-a2-futuro-formacion-think",
       "assistanceAffectsEvidence": [
@@ -13629,7 +14101,23 @@
           "comeré"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "comere",
+            "category": "accent/diacritic issue",
+            "explanation": "The yo future carries its accent: comeré."
+          },
+          {
+            "answer": "comía",
+            "category": "wrong tense",
+            "explanation": "Comía is the imperfect habit-tense; the future of comer is comeré."
+          },
+          {
+            "answer": "comer",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the infinitive; the future yo form keeps it and adds -é: comeré."
+          }
+        ]
       }
     },
     {
@@ -13647,7 +14135,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb keeps a normal stem in the future?",
-      "hints": [],
+      "hints": [
+        "Hablar keeps its stem — hablaré is the regular one. Tendré, podré and diré all trade in new stems; only hablaré follows the pattern."
+      ],
       "feedback": "hablaré — hablar is regular. tener→tendré, poder→podré and decir→diré are three of the six rebel stems.",
       "evidenceKey": "es-a2-futuro-formacion-notice",
       "assistanceAffectsEvidence": [
@@ -13690,7 +14180,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Tomorrow I will speak with him.",
-      "hints": [],
+      "hints": [
+        "When comes first — Mañana — then the future verb hablaré, then with whom: con él. Mañana hablaré con él."
+      ],
       "feedback": "Mañana hablaré con él — when, what, with whom. The future verb carries the promise.",
       "evidenceKey": "es-a2-futuro-formacion-build",
       "assistanceAffectsEvidence": [
@@ -13737,7 +14229,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: We will eat at two.",
-      "hints": [],
+      "hints": [
+        "comer + emos = comeremos ('we will eat'), then the time with its las: a las dos. The nosotros ending stresses its own first syllable."
+      ],
       "feedback": "comer + emos = comeremos. The nosotros ending is the only one with the stress on the ending's first syllable.",
       "evidenceKey": "es-a2-futuro-formacion-write",
       "assistanceAffectsEvidence": [
@@ -13748,10 +14242,27 @@
       "id": "es-a2-futuro-formacion-write",
       "answer": {
         "answers": [
-          "Comeremos a las dos."
+          "Comeremos a las dos.",
+          "Comeremos a las 2."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Comemos a las dos.",
+            "category": "wrong tense",
+            "explanation": "Comemos is the present 'we eat'; the plan wears the future: Comeremos a las dos."
+          },
+          {
+            "answer": "Comeremos a dos.",
+            "category": "missing word",
+            "explanation": "The clock time needs its las — 'at two' is a las dos."
+          },
+          {
+            "answer": "Comeré a las dos.",
+            "category": "wrong conjugation",
+            "explanation": "Comeré is 'I will eat'; the prompt says 'we' — Comeremos a las dos."
+          }
+        ]
       }
     },
     {
@@ -13767,7 +14278,9 @@
         "grammar"
       ],
       "prompt": "El viernes ___ a cenar. (salir, nosotros)",
-      "hints": [],
+      "hints": [
+        "Salir is one of the six rebels: the stem becomes saldr-, and nosotros ends in -emos: saldremos."
+      ],
       "feedback": "salir → saldr-: saldremos. The d sneaks in — one of the six rebels.",
       "evidenceKey": "es-a2-futuro-formacion-fill",
       "assistanceAffectsEvidence": [
@@ -13797,7 +14310,23 @@
             "saldremos"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "salimos",
+              "category": "wrong tense",
+              "explanation": "Salimos is the present 'we leave'; the week ahead needs the future saldremos."
+            },
+            {
+              "answer": "saldrá",
+              "category": "wrong conjugation",
+              "explanation": "Saldrá is 'he/she will leave'; the prompt says nosotros — saldremos."
+            },
+            {
+              "answer": "saliremos",
+              "category": "incorrect answer",
+              "explanation": "Regular future would be saliremos, but salir is a rebel: its stem is saldr-, so saldremos."
+            }
+          ]
         }
       }
     },
@@ -13812,7 +14341,9 @@
         "vocabulary"
       ],
       "prompt": "Read the week ahead. When will the narrator travel to Barcelona?",
-      "hints": [],
+      "hints": [
+        "The first lines map the week: el lunes tendré una reunión, el martes viajaré a Barcelona. The Barcelona trip wears martes, not the meeting's lunes."
+      ],
       "feedback": "el martes viajaré — the future verb plus its day. Plans wear dates.",
       "evidenceKey": "es-a2-futuro-formacion-read",
       "assistanceAffectsEvidence": [
@@ -13829,7 +14360,23 @@
           "martes"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "El lunes.",
+            "category": "incorrect answer",
+            "explanation": "Monday holds the meeting; the trip to Barcelona is on martes."
+          },
+          {
+            "answer": "El miércoles.",
+            "category": "incorrect answer",
+            "explanation": "Wednesday holds the presentation; Barcelona is on martes."
+          },
+          {
+            "answer": "El viernes.",
+            "category": "incorrect answer",
+            "explanation": "Friday is the celebration dinner; the Barcelona trip is on martes."
+          }
+        ]
       }
     },
     {
@@ -14111,7 +14658,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence states a decided plan?",
-      "hints": [],
+      "hints": [
+        "Ir a carries a decided plan: Voy a estudiar medicina. Quizá is a maybe, estudiaba a past habit, estudié a finished past — none is a live plan."
+      ],
       "feedback": "Voy a = decided and happening. quizá = maybe; estudiaba = used to; estudié = finished. Only ir a carries a live plan.",
       "evidenceKey": "es-a2-planes-intenciones-meet",
       "assistanceAffectsEvidence": [
@@ -14156,7 +14705,9 @@
         "grammar"
       ],
       "prompt": "Predict: you (tú) are going to come → ___ a venir.",
-      "hints": [],
+      "hints": [
+        "Ir hands tú the form vas; the a is the bridge and the second verb stays untouched: vas a venir."
+      ],
       "feedback": "ir gives vas for tú — vas a venir. The a is the bridge; the second verb never changes.",
       "evidenceKey": "es-a2-planes-intenciones-think",
       "assistanceAffectsEvidence": [
@@ -14170,7 +14721,23 @@
           "Vas"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voy",
+            "category": "wrong conjugation",
+            "explanation": "Voy is 'I am going'; the prompt says you (tú) — vas."
+          },
+          {
+            "answer": "Va",
+            "category": "wrong conjugation",
+            "explanation": "Va is he/she; you-tú is vas a venir."
+          },
+          {
+            "answer": "Vamos",
+            "category": "wrong conjugation",
+            "explanation": "Vamos is 'we'; the prompt asks for tú — vas."
+          }
+        ]
       }
     },
     {
@@ -14186,7 +14753,9 @@
         "vocabulary"
       ],
       "prompt": "Vamos a comprar una casa. Who is 'we'?",
-      "hints": [],
+      "hints": [
+        "Vamos ends in -amos, the nosotros giveaway: we. The plan includes the speaker — that is the 'we'."
+      ],
       "feedback": "vamos = we (nosotros) — the plan includes me. The ending -amos is the giveaway.",
       "evidenceKey": "es-a2-planes-intenciones-notice",
       "assistanceAffectsEvidence": [
@@ -14231,7 +14800,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I am going to learn Italian.",
-      "hints": [],
+      "hints": [
+        "Conjugated ir first — Voy — then the bridge a, then the untouched infinitive aprender, then what: italiano. Voy a aprender italiano."
+      ],
       "feedback": "Voy a aprender italiano — conjugated ir, then a, then the untouched infinitive. That order never changes.",
       "evidenceKey": "es-a2-planes-intenciones-build",
       "assistanceAffectsEvidence": [
@@ -14280,7 +14851,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: We are going to travel in summer.",
-      "hints": [],
+      "hints": [
+        "We-plan = vamos + a + the infinitive: vamos a viajar. Then en verano pins the season. The bridge a never disappears."
+      ],
       "feedback": "Vamos a viajar — we-plan in four syllables. En verano pins down when.",
       "evidenceKey": "es-a2-planes-intenciones-write",
       "assistanceAffectsEvidence": [
@@ -14294,7 +14867,23 @@
           "Vamos a viajar en verano."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vamos viajar en verano.",
+            "category": "missing word",
+            "explanation": "Ir a needs its bridge a: Vamos a viajar en verano."
+          },
+          {
+            "answer": "Vamos a viajamos en verano.",
+            "category": "wrong conjugation",
+            "explanation": "Only the first verb conjugates — after a comes the bare infinitive: vamos a viajar."
+          },
+          {
+            "answer": "Voy a viajar en verano.",
+            "category": "wrong conjugation",
+            "explanation": "Voy is 'I'; the prompt says 'we' — Vamos a viajar en verano."
+          }
+        ]
       }
     },
     {
@@ -14310,7 +14899,9 @@
         "grammar"
       ],
       "prompt": "___ a venir a la fiesta? (tú, are you going to…)",
-      "hints": [],
+      "hints": [
+        "The invite checks the other person's plan: tú goes with vas. Vas a venir a la fiesta? — not voy."
+      ],
       "feedback": "¿Vas a venir? — the invitation check. Vas, not *voy: the plan is theirs, not yours.",
       "evidenceKey": "es-a2-planes-intenciones-fill",
       "assistanceAffectsEvidence": [
@@ -14340,7 +14931,23 @@
             "Vas"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Voy",
+              "category": "wrong conjugation",
+              "explanation": "The plan is yours, not mine — tú takes vas: ¿Vas a venir a la fiesta?"
+            },
+            {
+              "answer": "Va",
+              "category": "wrong conjugation",
+              "explanation": "Va is he/she; the question asks tú — vas."
+            },
+            {
+              "answer": "Vamos",
+              "category": "wrong conjugation",
+              "explanation": "Vamos is 'we'; the question asks you — vas."
+            }
+          ]
         }
       }
     },
@@ -14355,7 +14962,9 @@
         "vocabulary"
       ],
       "prompt": "Read the life plan. Who is going to live with the narrator?",
-      "hints": [],
+      "hints": [
+        "The passage's third sentence: Mi hermana va a venir a vivir conmigo. The sister moves in — the new job and the Italian are separate plans."
+      ],
       "feedback": "Mi hermana va a venir a vivir conmigo — va a, the third-person plan.",
       "evidenceKey": "es-a2-planes-intenciones-read",
       "assistanceAffectsEvidence": [
@@ -14373,7 +14982,23 @@
           "la hermana"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Un trabajo nuevo.",
+            "category": "incorrect answer",
+            "explanation": "The narrator is going to LOOK FOR a new job — the one moving in is the sister: mi hermana."
+          },
+          {
+            "answer": "Su madre.",
+            "category": "incorrect answer",
+            "explanation": "No mother appears here. The passage says mi hermana va a venir a vivir conmigo."
+          },
+          {
+            "answer": "En verano.",
+            "category": "incorrect answer",
+            "explanation": "Summer is when they travel together; the person coming to live is her sister."
+          }
+        ]
       }
     },
     {
@@ -14577,7 +15202,9 @@
         "vocabulary"
       ],
       "prompt": "Quiero que vengas. Why vengas and not vienes?",
-      "hints": [],
+      "hints": [
+        "Quiero que puts the wish on someone else, and the second verb flips into the subjunctive: vengas. Keep the same subject and it stays an infinitive — Quiero venir."
+      ],
       "feedback": "a wish on someone else — quiero que flips the second verb into the subjunctive. Same subject would stay infinitive: Quiero venir.",
       "evidenceKey": "es-a2-subjuntivo-intro-meet",
       "assistanceAffectsEvidence": [
@@ -14622,7 +15249,9 @@
         "grammar"
       ],
       "prompt": "Predict the subjunctive: quiero que ___ (hablar, tú).",
-      "hints": [],
+      "hints": [
+        "The recipe from the intro: hablo → drop the -o → hable → add the tú -s → hables. The -es ending is the opposite-conjugation tell."
+      ],
       "feedback": "hablo → hable → hables: drop the -o, add the opposite ending, then the tú -s. The recipe never changes.",
       "evidenceKey": "es-a2-subjuntivo-intro-think",
       "assistanceAffectsEvidence": [
@@ -14636,7 +15265,23 @@
           "hables"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "hablas",
+            "category": "wrong conjugation",
+            "explanation": "Hablas is the indicative; after a wish-trigger the verb flips to the subjunctive: hables."
+          },
+          {
+            "answer": "hable",
+            "category": "wrong conjugation",
+            "explanation": "Hable is the él/ella subjunctive; the tú form adds its -s: hables."
+          },
+          {
+            "answer": "hablo",
+            "category": "wrong conjugation",
+            "explanation": "Hablo is the yo present; the wish lands on tú, who takes hables."
+          }
+        ]
       }
     },
     {
@@ -14650,7 +15295,9 @@
         "vocabulary"
       ],
       "prompt": "Which trigger needs the subjunctive?",
-      "hints": [],
+      "hints": [
+        "Quiero que is a wish-trigger — it flips the next verb. Creo que, es verdad que and sé que keep the indicative: they state facts, not wishes."
+      ],
       "feedback": "quiero que — wanting triggers it. creer, saber and es verdad keep the indicative: Creo que viene (fact, not wish).",
       "evidenceKey": "es-a2-subjuntivo-intro-notice",
       "assistanceAffectsEvidence": [
@@ -14693,7 +15340,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I need you to help me.",
-      "hints": [],
+      "hints": [
+        "The trigger Necesito que leads, me rides before the subjunctive, then ayudes: Necesito que me ayudes."
+      ],
       "feedback": "Necesito que me ayudes — the need, the que-bridge, then the subjunctive. Word order is mercifully simple.",
       "evidenceKey": "es-a2-subjuntivo-intro-build",
       "assistanceAffectsEvidence": [
@@ -14740,7 +15389,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: It's important that you study. (tú)",
-      "hints": [],
+      "hints": [
+        "The impersonal trigger works exactly like quiero que: es importante que + the subjunctive. Estudiar → estudies for tú."
+      ],
       "feedback": "Es importante que estudies — the impersonal trigger works exactly like quiero que.",
       "evidenceKey": "es-a2-subjuntivo-intro-write",
       "assistanceAffectsEvidence": [
@@ -14754,7 +15405,23 @@
           "Es importante que estudies."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es importante que estudias.",
+            "category": "wrong conjugation",
+            "explanation": "Estudias is the indicative — after the trigger the verb flips: estudies."
+          },
+          {
+            "answer": "Es importante estudies.",
+            "category": "missing word",
+            "explanation": "The trigger needs its que-bridge: Es importante que estudies."
+          },
+          {
+            "answer": "Es importante que estudie.",
+            "category": "wrong conjugation",
+            "explanation": "Estudie is he/she; the tú form keeps its -s: estudies."
+          }
+        ]
       }
     },
     {
@@ -14770,7 +15437,9 @@
         "grammar"
       ],
       "prompt": "Quiero que ___ a la fiesta. (venir, tú)",
-      "hints": [],
+      "hints": [
+        "The trigger is regular, the verb is not: venir's subjunctive stem is veng-. Tú takes the -as: vengas."
+      ],
       "feedback": "Quiero que vengas — venir's subjunctive is irregular (veng-), but the trigger is perfectly regular.",
       "evidenceKey": "es-a2-subjuntivo-intro-fill",
       "assistanceAffectsEvidence": [
@@ -14800,7 +15469,23 @@
             "vengas"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "vienes",
+              "category": "wrong conjugation",
+              "explanation": "Vienes is the indicative — the intro's exact warning: Quiero que vengas, not vienes."
+            },
+            {
+              "answer": "vengo",
+              "category": "wrong conjugation",
+              "explanation": "Vengo is the yo form; the wish lands on tú, who takes vengas."
+            },
+            {
+              "answer": "venga",
+              "category": "wrong conjugation",
+              "explanation": "Venga is he/she; the tú subjunctive of venir is vengas."
+            }
+          ]
         }
       }
     },
@@ -14815,7 +15500,9 @@
         "vocabulary"
       ],
       "prompt": "Read the mother's rules. How many hours of sleep does she want?",
-      "hints": [],
+      "hints": [
+        "The mother's list ends with it: es importante que duermas ocho horas. The answer is the number of hours — ocho."
+      ],
       "feedback": "es importante que duermas ocho horas — the subjunctive duermas carries the mother's wish.",
       "evidenceKey": "es-a2-subjuntivo-intro-read",
       "assistanceAffectsEvidence": [
@@ -14832,7 +15519,23 @@
           "ocho"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Cuatro horas.",
+            "category": "incorrect answer",
+            "explanation": "The passage says ocho horas, not four."
+          },
+          {
+            "answer": "Diez horas.",
+            "category": "incorrect answer",
+            "explanation": "The mother wants eight hours of sleep — diez is not in her rules."
+          },
+          {
+            "answer": "En paz.",
+            "category": "incorrect answer",
+            "explanation": "En paz is the narrator's own wish (que me deje en paz); the mother wants ocho horas."
+          }
+        ]
       }
     },
     {
@@ -15089,7 +15792,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence compares two things as equal?",
-      "hints": [],
+      "hints": [
+        "Equality wears tan…como: Es tan alto como su hermano. Más/menos…que compare unequally, and el más alto crowns — equality is the pair with tan."
+      ],
       "feedback": "tan…como = as…as — equality. más/menos…que compare unequally; el más alto crowns him above all.",
       "evidenceKey": "es-a2-comparativos-meet",
       "assistanceAffectsEvidence": [
@@ -15134,7 +15839,9 @@
         "grammar"
       ],
       "prompt": "Predict: better → ___.",
-      "hints": [],
+      "hints": [
+        "Bueno's rebel comparative is mejor — it replaces the formula, so más never stacks on it. Better = mejor, full stop."
+      ],
       "feedback": "mejor — bueno's rebel form. Never *más bueno; the rebel replaces the formula.",
       "evidenceKey": "es-a2-comparativos-think",
       "assistanceAffectsEvidence": [
@@ -15148,7 +15855,23 @@
           "mejor"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "bueno",
+            "category": "incorrect answer",
+            "explanation": "Bueno is the plain adjective 'good'; the comparative is the rebel mejor."
+          },
+          {
+            "answer": "más bueno",
+            "category": "incorrect answer",
+            "explanation": "Never stack the formula on a rebel — mejor already means 'more good'. *Más bueno is the learner tattoo the intro warns about."
+          },
+          {
+            "answer": "la mejor",
+            "category": "extra word",
+            "explanation": "The blank wants the bare comparative mejor; la mejor turns it into 'the best (feminine)'."
+          }
+        ]
       }
     },
     {
@@ -15164,7 +15887,9 @@
         "vocabulary"
       ],
       "prompt": "Más de tres personas. Why de and not que?",
-      "hints": [],
+      "hints": [
+        "Before a number, que switches to de: más de tres, menos de diez. It is not a typo — numbers get their own preposition."
+      ],
       "feedback": "before a number, que becomes de: más de tres, menos de diez. Numbers get their own preposition.",
       "evidenceKey": "es-a2-comparativos-notice",
       "assistanceAffectsEvidence": [
@@ -15209,7 +15934,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Madrid is bigger than Seville.",
-      "hints": [],
+      "hints": [
+        "Subject, es, más, adjective, que, rival: Madrid es más grande que Sevilla. Que links the two sides of the comparison."
+      ],
       "feedback": "Madrid es más grande que Sevilla — the formula in order: noun, es, más, adjective, que, rival.",
       "evidenceKey": "es-a2-comparativos-build",
       "assistanceAffectsEvidence": [
@@ -15268,7 +15995,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: My flat is less expensive than yours.",
-      "hints": [],
+      "hints": [
+        "Menos follows the same formula as más: menos caro que. 'Yours' stays a pronoun phrase — el tuyo — with no repeated noun."
+      ],
       "feedback": "menos caro que — less follows the same formula as more. El tuyo = yours, no noun repeated.",
       "evidenceKey": "es-a2-comparativos-write",
       "assistanceAffectsEvidence": [
@@ -15282,7 +16011,28 @@
           "Mi piso es menos caro que el tuyo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mi piso es más caro que el tuyo.",
+            "category": "incorrect answer",
+            "explanation": "Más caro means more expensive — the prompt says less (menos): menos caro que."
+          },
+          {
+            "answer": "Mi piso es menos caro que tuyo.",
+            "category": "missing word",
+            "explanation": "Yours needs its el: que el tuyo."
+          },
+          {
+            "answer": "Mi piso es menos caro que tú.",
+            "category": "incorrect answer",
+            "explanation": "Tú is the pronoun 'you'; 'yours' is the possessive el tuyo."
+          },
+          {
+            "answer": "Mi piso es menos caro que tu.",
+            "category": "incorrect answer",
+            "explanation": "Tu without accent is 'your' + noun; the possessive 'yours' is el tuyo."
+          }
+        ]
       }
     },
     {
@@ -15299,7 +16049,9 @@
         "grammar"
       ],
       "prompt": "Es ___ alto como su hermano. (as…)",
-      "hints": [],
+      "hints": [
+        "Equality opens with tan and closes with como — tan alto como. Más would demand que, and como alone cannot open the pair."
+      ],
       "feedback": "tan…como — the equality pair. Tan opens it, como closes it.",
       "evidenceKey": "es-a2-comparativos-fill",
       "assistanceAffectsEvidence": [
@@ -15329,7 +16081,23 @@
             "tan"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "tanto",
+              "category": "incorrect answer",
+              "explanation": "Tanto belongs before nouns (tanto dinero); before an adjective the form is tan: tan alto como."
+            },
+            {
+              "answer": "más",
+              "category": "incorrect answer",
+              "explanation": "Más pairs with que for inequality; the equality formula is tan…como."
+            },
+            {
+              "answer": "como",
+              "category": "incorrect answer",
+              "explanation": "Como closes the pair; tan opens it: tan alto como."
+            }
+          ]
         }
       }
     },
@@ -15346,7 +16114,9 @@
         "vocabulary"
       ],
       "prompt": "Read the brothers. Who cooks better?",
-      "hints": [],
+      "hints": [
+        "The passage says it outright: yo cocino mejor que él — I cook better than him. The brother is taller and faster, but cooking belongs to the narrator."
+      ],
       "feedback": "cocino mejor que él — I cook better than him. Mejor settles the kitchen debate.",
       "evidenceKey": "es-a2-comparativos-read",
       "assistanceAffectsEvidence": [
@@ -15364,7 +16134,23 @@
           "el narrador"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Su hermano.",
+            "category": "incorrect answer",
+            "explanation": "The brother is more athletic; the one who cooks better is the narrator."
+          },
+          {
+            "answer": "Nuestra madre.",
+            "category": "incorrect answer",
+            "explanation": "The mother makes the comparison — she is not the cook. The narrator cooks mejor que él."
+          },
+          {
+            "answer": "Su padre.",
+            "category": "incorrect answer",
+            "explanation": "The father appears only in 'as stubborn as' — the better cook is the narrator."
+          }
+        ]
       }
     },
     {
@@ -15610,7 +16396,9 @@
         "vocabulary"
       ],
       "prompt": "Estudio para aprender. Para here marks…",
-      "hints": [],
+      "hints": [
+        "Para aprender = in order to learn — the goal ahead: purpose. Causes, exchanges and movement through belong to por."
+      ],
       "feedback": "purpose — para aprender = in order to learn, the goal ahead. Causes and movement belong to por.",
       "evidenceKey": "es-a2-por-para-meet",
       "assistanceAffectsEvidence": [
@@ -15655,7 +16443,9 @@
         "grammar"
       ],
       "prompt": "Predict: Thanks for your help → gracias ___ tu ayuda.",
-      "hints": [],
+      "hints": [
+        "Gratitude looks backward — gracias por tu ayuda. The help already happened, so por, never para."
+      ],
       "feedback": "gracias por — por looks back at what you're thankful for. The help already happened.",
       "evidenceKey": "es-a2-por-para-think",
       "assistanceAffectsEvidence": [
@@ -15669,7 +16459,23 @@
           "por"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "para",
+            "category": "wrong preposition",
+            "explanation": "Para looks forward; gratitude looks back at the help that already happened — gracias por."
+          },
+          {
+            "answer": "de",
+            "category": "wrong preposition",
+            "explanation": "De does not carry gratitude; the thanks-for pair is gracias por."
+          },
+          {
+            "answer": "porque",
+            "category": "incorrect answer",
+            "explanation": "Porque starts a clause ('because'); the blank wants the preposition por: gracias por tu ayuda."
+          }
+        ]
       }
     },
     {
@@ -15685,7 +16491,9 @@
         "vocabulary"
       ],
       "prompt": "Lo hice por ti. Por here means…",
-      "hints": [],
+      "hints": [
+        "Por ti names the cause behind the action: because of you. The destination reading would be para ti — but this sentence has no destination."
+      ],
       "feedback": "because of you — por ti names the cause behind the action. The recipient reading (*for you as destination) would be para ti.",
       "evidenceKey": "es-a2-por-para-notice",
       "assistanceAffectsEvidence": [
@@ -15730,7 +16538,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: It's for you.",
-      "hints": [],
+      "hints": [
+        "The recipient gets para: Es para ti. Three words — subject, verb, para + pronoun."
+      ],
       "feedback": "Es para ti — the recipient gets para. Three words, one direction: forward.",
       "evidenceKey": "es-a2-por-para-build",
       "assistanceAffectsEvidence": [
@@ -15774,7 +16584,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I need it for tomorrow.",
-      "hints": [],
+      "hints": [
+        "A deadline looks forward: para mañana. Lo carries the 'it' and rides before the verb: Lo necesito para mañana."
+      ],
       "feedback": "para mañana — the deadline reading of para. By tomorrow, not because of tomorrow.",
       "evidenceKey": "es-a2-por-para-write",
       "assistanceAffectsEvidence": [
@@ -15788,7 +16600,23 @@
           "Lo necesito para mañana."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Lo necesito por mañana.",
+            "category": "wrong preposition",
+            "explanation": "A deadline looks forward — por mañana would mean 'because of tomorrow' or 'by tomorrow' in the wrong sense: para mañana."
+          },
+          {
+            "answer": "Necesito para mañana.",
+            "category": "missing word",
+            "explanation": "The 'it' needs its pronoun lo before the verb: Lo necesito para mañana."
+          },
+          {
+            "answer": "La necesito para mañana.",
+            "category": "wrong article",
+            "explanation": "The neutral 'it' here is lo, not la: Lo necesito para mañana."
+          }
+        ]
       }
     },
     {
@@ -15805,7 +16633,9 @@
         "grammar"
       ],
       "prompt": "Paso ___ Madrid para ver a mi hermana. (through…)",
-      "hints": [],
+      "hints": [
+        "Passing through a place is movement through space: por Madrid. The para later in the sentence marks the purpose of the stop."
+      ],
       "feedback": "por Madrid = through Madrid — movement through space. Then para ver: the purpose of the stop.",
       "evidenceKey": "es-a2-por-para-fill",
       "assistanceAffectsEvidence": [
@@ -15835,7 +16665,23 @@
             "por"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "para",
+              "category": "wrong preposition",
+              "explanation": "Para marks the purpose — para ver a mi hermana. Movement through a city is por: por Madrid."
+            },
+            {
+              "answer": "de",
+              "category": "wrong preposition",
+              "explanation": "De is 'of/from'; passing through a city wears por: Paso por Madrid."
+            },
+            {
+              "answer": "en",
+              "category": "wrong preposition",
+              "explanation": "En is 'in/at'; the journey through Madrid is por: Paso por Madrid."
+            }
+          ]
         }
       }
     },
@@ -15850,7 +16696,9 @@
         "vocabulary"
       ],
       "prompt": "Read the trip. When does the narrator return?",
-      "hints": [],
+      "hints": [
+        "The last line answers it: Vuelvo el lunes por la noche. Monday is the return day, and por la noche tells you when on Monday."
+      ],
       "feedback": "Vuelvo el lunes por la noche — por la noche is por's time-of-day reading: in/during the night.",
       "evidenceKey": "es-a2-por-para-read",
       "assistanceAffectsEvidence": [
@@ -15867,7 +16715,23 @@
           "el lunes"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mañana.",
+            "category": "incorrect answer",
+            "explanation": "Mañana is when the trip STARTS (salgo de viaje); the return is el lunes por la noche."
+          },
+          {
+            "answer": "El lunes por la mañana.",
+            "category": "incorrect answer",
+            "explanation": "The trip-home happens por la noche, not por la mañana — the last line says so."
+          },
+          {
+            "answer": "Por la noche.",
+            "category": "incorrect answer",
+            "explanation": "Por la noche alone names the time of day; the return DAY is lunes — el lunes por la noche."
+          }
+        ]
       }
     },
     {
@@ -15888,7 +16752,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence is a superlative?",
-      "hints": [],
+      "hints": [
+        "A superlative crowns with el más…de: Es el más alto de la clase. Más…que only compares two, and tan…como declares equality."
+      ],
       "feedback": "Es el más alto de la clase — el más…de crowns him above all. más…que only compares two; tan…como declares equality.",
       "evidenceKey": "es-a2-superlativos-meet",
       "assistanceAffectsEvidence": [
@@ -15933,7 +16799,9 @@
         "grammar"
       ],
       "prompt": "Predict the -ísimo form of bueno.",
-      "hints": [],
+      "hints": [
+        "Bueno drops its -o and welds on -ísimo: buenísimo. Extreme good in a single word."
+      ],
       "feedback": "bueno → buenísimo: drop the -o, weld on -ísimo. Extreme good, one word.",
       "evidenceKey": "es-a2-superlativos-think",
       "assistanceAffectsEvidence": [
@@ -15947,7 +16815,23 @@
           "buenísimo"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "bueno",
+            "category": "incorrect answer",
+            "explanation": "Bueno is the plain adjective; the -ísimo extreme of it is buenísimo."
+          },
+          {
+            "answer": "muy bueno",
+            "category": "incorrect answer",
+            "explanation": "Muy bueno means 'very good'; the -ísimo form is the extreme in one word: buenísimo."
+          },
+          {
+            "answer": "buenisimo",
+            "category": "accent/diacritic issue",
+            "explanation": "The -ísimo ending carries its accent: buenísimo."
+          }
+        ]
       }
     },
     {
@@ -15961,7 +16845,9 @@
         "vocabulary"
       ],
       "prompt": "La oficina es grandísima. Grandísima means…",
-      "hints": [],
+      "hints": [
+        "-ísima cranks grande to the extreme — huge. It is a megaphone, not a shrinker: 'big-ish', 'small' and 'new' are all wrong."
+      ],
       "feedback": "huge — -ísima cranks grande to the extreme. It's not a diminutive; it's a megaphone.",
       "evidenceKey": "es-a2-superlativos-notice",
       "assistanceAffectsEvidence": [
@@ -16006,7 +16892,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I have an interview tomorrow.",
-      "hints": [],
+      "hints": [
+        "Have, what, when: Tengo una entrevista mañana. The verb leads and the when trails."
+      ],
       "feedback": "Tengo una entrevista mañana — have, what, when. The job hunt in four words.",
       "evidenceKey": "es-a2-superlativos-build",
       "assistanceAffectsEvidence": [
@@ -16055,7 +16943,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: My schedule is flexible.",
-      "hints": [],
+      "hints": [
+        "El horario is masculine and states of things ride ser: Mi horario es flexible. Hora would be the wrong noun — that is the hour, not the schedule."
+      ],
       "feedback": "Mi horario es flexible — el horario, masculine. States of things wear ser.",
       "evidenceKey": "es-a2-superlativos-write",
       "assistanceAffectsEvidence": [
@@ -16069,7 +16959,23 @@
           "Mi horario es flexible."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mi horario está flexible.",
+            "category": "wrong conjugation",
+            "explanation": "Being flexible is what the schedule is, not a temporary state — ser: es flexible."
+          },
+          {
+            "answer": "Mi horario es flexibles.",
+            "category": "wrong number",
+            "explanation": "Horario is singular, so the adjective is singular too: flexible."
+          },
+          {
+            "answer": "Mi hora es flexible.",
+            "category": "incorrect answer",
+            "explanation": "Hora is the hour or time; the schedule is el horario."
+          }
+        ]
       }
     },
     {
@@ -16083,7 +16989,9 @@
         "grammar"
       ],
       "prompt": "Mis compañeros son ___ más amables del mundo.",
-      "hints": [],
+      "hints": [
+        "The article must match compañeros — masculine plural: los más amables. El, la or las would break the agreement."
+      ],
       "feedback": "los — the article must match compañeros (masculine plural). El más…de needs its article to agree.",
       "evidenceKey": "es-a2-superlativos-fill",
       "assistanceAffectsEvidence": [
@@ -16113,7 +17021,23 @@
             "los"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "el",
+              "category": "wrong number",
+              "explanation": "Compañeros is plural, so the article is los: los más amables."
+            },
+            {
+              "answer": "las",
+              "category": "wrong article",
+              "explanation": "Compañeros is masculine — the article is los, not las."
+            },
+            {
+              "answer": "la",
+              "category": "wrong article",
+              "explanation": "La is feminine singular; compañeros needs the masculine plural los."
+            }
+          ]
         }
       }
     },
@@ -16131,7 +17055,9 @@
         "vocabulary"
       ],
       "prompt": "Read the new job. How many days a week does the narrator work?",
-      "hints": [],
+      "hints": [
+        "The passage ends with the schedule: trabajo cuatro días por semana. The answer is the number — cuatro."
+      ],
       "feedback": "trabajo cuatro días por semana — and calls the schedule buenísimo. The superlative earns its keep.",
       "evidenceKey": "es-a2-superlativos-read",
       "assistanceAffectsEvidence": [
@@ -16148,7 +17074,23 @@
           "cuatro"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Cinco días.",
+            "category": "incorrect answer",
+            "explanation": "A five-day week is the usual guess, but the passage says cuatro días por semana."
+          },
+          {
+            "answer": "El centro.",
+            "category": "incorrect answer",
+            "explanation": "The office is downtown — the question asks how many days he works: cuatro."
+          },
+          {
+            "answer": "Buenísimo.",
+            "category": "incorrect answer",
+            "explanation": "Buenísimo describes the schedule; the question asks how many days — cuatro."
+          }
+        ]
       }
     },
     {
@@ -16600,7 +17542,9 @@
         "vocabulary"
       ],
       "prompt": "Which sentence asks for the wifi password?",
-      "hints": [],
+      "hints": [
+        "Cuál asks which one — the password itself: ¿Cuál es la contraseña del wifi? Dónde looks for a place, qué for a definition, cuánto for a price."
+      ],
       "feedback": "¿Cuál es…? asks which one it is — the password itself. Dónde asks where, qué asks what it is, cuánto asks the price.",
       "evidenceKey": "es-a2-tecnologia-meet",
       "assistanceAffectsEvidence": [
@@ -16645,7 +17589,9 @@
         "grammar"
       ],
       "prompt": "Predict the yo present of enviar: te ___ un mensaje.",
-      "hints": [],
+      "hints": [
+        "Enviar is regular: yo → envío, with the accent on the í. Tech verbs rarely surprise you — learn the noun and the verb behaves."
+      ],
       "feedback": "enviar is regular: envío. Tech verbs rarely surprise you — learn the noun, the verb behaves.",
       "evidenceKey": "es-a2-tecnologia-think",
       "assistanceAffectsEvidence": [
@@ -16659,7 +17605,23 @@
           "envío"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "envio",
+            "category": "accent/diacritic issue",
+            "explanation": "The yo present carries its accent: envío."
+          },
+          {
+            "answer": "envió",
+            "category": "wrong tense",
+            "explanation": "Envió is the past; the present yo form is envío."
+          },
+          {
+            "answer": "envía",
+            "category": "wrong conjugation",
+            "explanation": "Envía is he/she; the 'te ___ un mensaje' from me is envío."
+          }
+        ]
       }
     },
     {
@@ -16676,7 +17638,9 @@
         "vocabulary"
       ],
       "prompt": "La contraseña del wifi. Del = …",
-      "hints": [],
+      "hints": [
+        "De + el always melts into del — the intro's golden contraction. De el wifi is wrong in every register."
+      ],
       "feedback": "de + el — the mandatory contraction. *De el wifi is always wrong, in every register.",
       "evidenceKey": "es-a2-tecnologia-notice",
       "assistanceAffectsEvidence": [
@@ -16721,7 +17685,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Download the app.",
-      "hints": [],
+      "hints": [
+        "Commands lead with the verb: Descarga, then the article + noun la aplicación. Descarga la aplicación."
+      ],
       "feedback": "Descarga la aplicación — command, then what. Imperatives lead with the verb.",
       "evidenceKey": "es-a2-tecnologia-build",
       "assistanceAffectsEvidence": [
@@ -16765,7 +17731,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: The screen is broken.",
-      "hints": [],
+      "hints": [
+        "Broken is a state, so estar: está. Pantalla is feminine, so the adjective agrees: rota, not roto."
+      ],
       "feedback": "La pantalla está rota — broken states wear estar, not ser. La pantalla is feminine: rota, not roto.",
       "evidenceKey": "es-a2-tecnologia-write",
       "assistanceAffectsEvidence": [
@@ -16779,7 +17747,23 @@
           "La pantalla está rota."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La pantalla es rota.",
+            "category": "wrong conjugation",
+            "explanation": "Being broken is a state, so estar, not ser: está rota."
+          },
+          {
+            "answer": "La pantalla está roto.",
+            "category": "wrong gender",
+            "explanation": "Pantalla is feminine, so the adjective is rota: está rota."
+          },
+          {
+            "answer": "El pantalla está rota.",
+            "category": "wrong article",
+            "explanation": "Pantalla is feminine, so the article is la: La pantalla está rota."
+          }
+        ]
       }
     },
     {
@@ -16795,7 +17779,9 @@
         "grammar"
       ],
       "prompt": "Te ___ el documento. (enviar, yo)",
-      "hints": [],
+      "hints": [
+        "Te rides before the verb, and enviar's yo present needs its accent: envío. Te envío el documento."
+      ],
       "feedback": "Te envío — the indirect pronoun te rides before the verb: I send it to you.",
       "evidenceKey": "es-a2-tecnologia-fill",
       "assistanceAffectsEvidence": [
@@ -16825,7 +17811,23 @@
             "envío"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "envio",
+              "category": "accent/diacritic issue",
+              "explanation": "The yo present of enviar carries its accent: envío."
+            },
+            {
+              "answer": "envió",
+              "category": "wrong tense",
+              "explanation": "Envió is the past 'he sent'; the present yo form is envío."
+            },
+            {
+              "answer": "envía",
+              "category": "wrong conjugation",
+              "explanation": "Envía is he/she sends; the prompt says yo — envío."
+            }
+          ]
         }
       }
     },
@@ -16842,7 +17844,9 @@
         "vocabulary"
       ],
       "prompt": "Read the phone saga. What did the technician say was fine?",
-      "hints": [],
+      "hints": [
+        "The technician's verdict is the battery: la batería está bien. The screen broke and the system needed the update — the battery was the part that was fine."
+      ],
       "feedback": "la batería está bien — está, because it's a state. The fix was the update, not the battery.",
       "evidenceKey": "es-a2-tecnologia-read",
       "assistanceAffectsEvidence": [
@@ -16859,7 +17863,23 @@
           "batería"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La pantalla.",
+            "category": "incorrect answer",
+            "explanation": "The screen is what BROKE — the technician said la batería está bien."
+          },
+          {
+            "answer": "El sistema.",
+            "category": "incorrect answer",
+            "explanation": "The system is what needed the update — the part that was fine is the battery."
+          },
+          {
+            "answer": "La actualización.",
+            "category": "incorrect answer",
+            "explanation": "The update was downloaded afterwards; what the technician declared fine was la batería."
+          }
+        ]
       }
     },
     {

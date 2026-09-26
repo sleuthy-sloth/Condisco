@@ -6480,7 +6480,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “not”?",
-      "hints": [],
+      "hints": [
+        "The word for “not” goes right before the verb: non lavoro. Lavoro and studi are verbs here, sì is yes."
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6528,7 +6530,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Studi ogni giorno?",
-      "hints": [],
+      "hints": [
+        "Studi is the tu form (you), ogni giorno is every day, and the final ? turns it into a question: Do you…?"
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -6542,7 +6546,23 @@
           "Do you study every day?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You study every day.",
+            "category": "incorrect answer",
+            "explanation": "The Italian is a question — translate it as a question: Do you study every day?"
+          },
+          {
+            "answer": "Study every day.",
+            "category": "incorrect answer",
+            "explanation": "That reads as a command. Studi ogni giorno? asks Do you study every day?"
+          },
+          {
+            "answer": "You are studying every day.",
+            "category": "incorrect answer",
+            "explanation": "Keep the simple present with the question form: Do you study every day?"
+          }
+        ]
       }
     },
     {
@@ -6561,7 +6581,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Do you study every day?",
-      "hints": [],
+      "hints": [
+        "Question word order mirrors the statement, with a question mark: Studi (verb) + ogni giorno (every day) + ?"
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6608,7 +6630,9 @@
         "grammar"
       ],
       "prompt": "Complete: ___ lavoro in casa.",
-      "hints": [],
+      "hints": [
+        "The missing word is the negation placed directly before the verb: ___ lavoro in casa → non lavoro in casa."
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6634,7 +6658,18 @@
             "Non"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "No",
+              "category": "incorrect answer",
+              "explanation": "No answers a question on its own; before a verb the negation is non."
+            },
+            {
+              "answer": "Sì",
+              "category": "incorrect answer",
+              "explanation": "Sì means yes — the negation you need before the verb is non."
+            }
+          ]
         }
       }
     },
@@ -6654,7 +6689,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: I do not work at home.",
-      "hints": [],
+      "hints": [
+        "Non sits right before the verb: non lavoro. Lavoro is the io form of lavorare — the sentence needs no other helper."
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6665,7 +6702,8 @@
       "id": "it-negation-foundation-produce",
       "answer": {
         "answers": [
-          "Non lavoro in casa."
+          "Non lavoro in casa.",
+          "Io non lavoro in casa."
         ],
         "allowTypo": false,
         "errors": [
@@ -6673,6 +6711,16 @@
             "answer": "Io non lavori in casa.",
             "category": "wrong conjugation",
             "explanation": "The verb still agrees with io: non lavoro."
+          },
+          {
+            "answer": "No lavoro in casa.",
+            "category": "incorrect answer",
+            "explanation": "No answers a question on its own; before a verb the negation is non: Non lavoro in casa."
+          },
+          {
+            "answer": "Non lavoro in la casa.",
+            "category": "incorrect answer",
+            "explanation": "At home here is in casa, without an article: Non lavoro in casa."
           }
         ]
       }
@@ -6693,7 +6741,9 @@
         "vocabulary"
       ],
       "prompt": "Does the speaker work at home? Answer in English. (Reading 9)",
-      "hints": [],
+      "hints": [
+        "The passage answers it directly: Non lavoro in casa. — I do not work at home. Answer with no or a short English sentence."
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-negation-foundation-read",
       "assistanceAffectsEvidence": [
@@ -6705,10 +6755,23 @@
       "stimulusId": "it-negation-foundation-read-passage",
       "answer": {
         "answers": [
-          "no"
+          "no",
+          "No, he doesn't.",
+          "He doesn't work at home."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Yes.",
+            "category": "incorrect answer",
+            "explanation": "The passage says Non lavoro in casa — I do not work at home, so the answer is no."
+          },
+          {
+            "answer": "He works at home.",
+            "category": "incorrect answer",
+            "explanation": "The passage's second sentence is Non lavoro in casa: the speaker does not work at home."
+          }
+        ]
       }
     },
     {
@@ -6727,7 +6790,9 @@
         "grammar"
       ],
       "prompt": "Recall from Study and work: I study every day.",
-      "hints": [],
+      "hints": [
+        "Recall the io form from Study and work: studiare → studio. Ogni giorno = every day; the dropped io is fine."
+      ],
       "feedback": "Regular -are verbs replace -are with -o for io and -i for tu. Studiare → studio, studi. Lavorare → lavoro, lavori. Ogni giorno means every day. No extra helping verb is needed for I am studying in this context.",
       "evidenceKey": "it-negation-foundation-review",
       "assistanceAffectsEvidence": [
@@ -6742,7 +6807,18 @@
           "Io studio ogni giorno."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Studi ogni giorno.",
+            "category": "wrong conjugation",
+            "explanation": "Studi is the tu form; with io the verb is studio."
+          },
+          {
+            "answer": "Io studi ogni giorno.",
+            "category": "wrong conjugation",
+            "explanation": "With io, studiare is studio, not studi."
+          }
+        ]
       }
     },
     {
@@ -6768,7 +6844,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “I take / I will have”?",
-      "hints": [],
+      "hints": [
+        "Prendo is the io form of prendere (to take): I take / I'll have. Prendi is the tu form (you take)."
+      ],
       "feedback": "Prendo means “I’ll have”; it is the io form of prendere.",
       "evidenceKey": "it-food-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -6816,7 +6894,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Prendi un tè?",
-      "hints": [],
+      "hints": [
+        "Prendi is the tu form (you), un tè is a tea, and the ? makes it a question: Will you have a tea?"
+      ],
       "feedback": "Prendi un tè? asks “Will you have a tea?”",
       "evidenceKey": "it-food-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -6830,7 +6910,18 @@
           "Will you have a tea?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "You have a tea.",
+            "category": "incorrect answer",
+            "explanation": "Prendi un tè? is a question — Will you have a tea?"
+          },
+          {
+            "answer": "I will have a tea.",
+            "category": "wrong conjugation",
+            "explanation": "Prendi is the you form; with io it would be prendo."
+          }
+        ]
       }
     },
     {
@@ -6849,7 +6940,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Will you have a tea?",
-      "hints": [],
+      "hints": [
+        "The tu form comes first: Prendi, then the article un, then tè? — keep the accent on tè."
+      ],
       "feedback": "Prendi un tè? uses prendi with tu.",
       "evidenceKey": "it-food-foundation-order",
       "assistanceAffectsEvidence": [
@@ -6896,7 +6989,9 @@
         "grammar"
       ],
       "prompt": "Complete: Io ___ un caffè.",
-      "hints": [],
+      "hints": [
+        "Io pairs with the io form of prendere: prendo. (Prendi is the tu form, prendere the infinitive.)"
+      ],
       "feedback": "Io prendo un caffè; io pairs with prendo.",
       "evidenceKey": "it-food-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -6926,7 +7021,18 @@
             "prendo"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prendi",
+              "category": "wrong conjugation",
+              "explanation": "Prendi is the tu form; with io use prendo."
+            },
+            {
+              "answer": "prendere",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive never follows io; use the io form prendo."
+            }
+          ]
         }
       }
     },
@@ -6946,7 +7052,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: I will have a coffee.",
-      "hints": [],
+      "hints": [
+        "Order: (io) + prendo + un caffè. Prendo is the io form of prendere — no helper verb needed."
+      ],
       "feedback": "Prendo un caffè is a natural short order.",
       "evidenceKey": "it-food-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -6966,6 +7074,16 @@
             "answer": "Io prendi un caffè.",
             "category": "wrong conjugation",
             "explanation": "With io, prendere becomes prendo."
+          },
+          {
+            "answer": "Io prendere un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive prendere never follows io; use the io form prendo."
+          },
+          {
+            "answer": "Prendo una caffè.",
+            "category": "wrong article",
+            "explanation": "Caffè is masculine: un caffè, not una caffè."
           }
         ]
       }
@@ -6986,7 +7104,9 @@
         "vocabulary"
       ],
       "prompt": "What does the other person order? Answer in Italian.",
-      "hints": [],
+      "hints": [
+        "The passage's second sentence: Tu prendi un tè. — the other person orders a tea. Answer in Italian with the article."
+      ],
       "feedback": "The other person takes un tè. Keep the accent on tè.",
       "evidenceKey": "it-food-foundation-read",
       "assistanceAffectsEvidence": [
@@ -7001,7 +7121,23 @@
           "un tè"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "un caffè",
+            "category": "incorrect answer",
+            "explanation": "The passage's second sentence is Tu prendi un tè — the other person orders a tea, not a coffee."
+          },
+          {
+            "answer": "tè",
+            "category": "missing word",
+            "explanation": "Answer with the article: un tè."
+          },
+          {
+            "answer": "una tè",
+            "category": "wrong article",
+            "explanation": "Tè is masculine: un tè."
+          }
+        ]
       }
     },
     {
@@ -7020,7 +7156,9 @@
         "grammar"
       ],
       "prompt": "Recall from Saying no and asking: I do not work at home.",
-      "hints": [],
+      "hints": [
+        "Recall the negation lesson: non sits before the verb — non lavoro in casa. The dropped io is fine."
+      ],
       "feedback": "Put non immediately before the verb to negate it: non studio. Do not add an equivalent of English do. A statement can become a yes/no question with intonation and a question mark. Keep subject and verb agreement.",
       "evidenceKey": "it-food-foundation-review",
       "assistanceAffectsEvidence": [
@@ -7031,10 +7169,22 @@
       "id": "it-food-foundation-review",
       "answer": {
         "answers": [
-          "Non lavoro in casa."
+          "Non lavoro in casa.",
+          "Io non lavoro in casa."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Non lavori in casa.",
+            "category": "wrong conjugation",
+            "explanation": "Lavori is the tu form; the phrase is about the speaker (io): non lavoro."
+          },
+          {
+            "answer": "No lavoro in casa.",
+            "category": "incorrect answer",
+            "explanation": "Before a verb the negation is non, not no: Non lavoro in casa."
+          }
+        ]
       }
     },
     {
@@ -7052,7 +7202,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: food and -ere verbs.",
-      "hints": [],
+      "hints": [
+        "The model is the café order from this lesson: Prendo un caffè. — io form prendo, and keep the accent on caffè."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-food-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -7067,7 +7219,23 @@
           "Prendo un caffè."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Io prendo un caffè.",
+            "category": "extra word",
+            "explanation": "The model says Prendo un caffè. — without io; the verb already means I."
+          },
+          {
+            "answer": "Prendi un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "The model says prendo (I), not prendi (you)."
+          },
+          {
+            "answer": "Prendo un cafe.",
+            "category": "accent/diacritic issue",
+            "explanation": "Keep the grave accent on caffè: un caffè."
+          }
+        ]
       }
     },
     {
@@ -7093,7 +7261,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “my (feminine singular)”?",
-      "hints": [],
+      "hints": [
+        "Mia matches a feminine singular noun (la casa). Mio is the masculine form, miei the masculine plural."
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7141,7 +7311,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Il mio libro è piccolo.",
-      "hints": [],
+      "hints": [
+        "Il mio = my (masculine), libro = book, è = is, piccolo = small."
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7155,7 +7327,18 @@
           "My book is small."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Your book is small.",
+            "category": "incorrect answer",
+            "explanation": "Mio means my, not your (tuo)."
+          },
+          {
+            "answer": "The book is small.",
+            "category": "missing word",
+            "explanation": "Mio means my — the sentence says My book is small."
+          }
+        ]
       }
     },
     {
@@ -7174,7 +7357,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: My book is small.",
-      "hints": [],
+      "hints": [
+        "Start with the article Il, then mio, then libro; the verb è follows the noun: Il mio libro è piccolo."
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-order",
       "assistanceAffectsEvidence": [
@@ -7231,7 +7416,9 @@
         "grammar"
       ],
       "prompt": "Complete: La ___ casa è bianca.",
-      "hints": [],
+      "hints": [
+        "Casa is feminine singular, so the possessive is mia: la mia casa. (Mio is masculine, miei plural.)"
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -7261,7 +7448,23 @@
             "mia"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mio",
+              "category": "wrong gender",
+              "explanation": "Casa is feminine, so the possessive is mia, not mio."
+            },
+            {
+              "answer": "miei",
+              "category": "wrong number",
+              "explanation": "Miei is the masculine plural; casa is singular feminine."
+            },
+            {
+              "answer": "tuo",
+              "category": "incorrect answer",
+              "explanation": "Tuo means your; the sentence says my house (mia)."
+            }
+          ]
         }
       }
     },
@@ -7281,7 +7484,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: My house is white.",
-      "hints": [],
+      "hints": [
+        "Order: article (La) + mia + casa + è + bianca. Casa is feminine, so the possessive is mia."
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7300,6 +7505,21 @@
             "answer": "La mio casa è bianca.",
             "category": "incorrect answer",
             "explanation": "Mia agrees with feminine casa."
+          },
+          {
+            "answer": "La mia casa e bianca.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) keeps its accent; e means and."
+          },
+          {
+            "answer": "Mia casa è bianca.",
+            "category": "missing word",
+            "explanation": "The definite article stays: La mia casa è bianca."
+          },
+          {
+            "answer": "La mia casa bianca.",
+            "category": "missing word",
+            "explanation": "The sentence needs its verb: La mia casa è bianca."
           }
         ]
       }
@@ -7320,7 +7540,9 @@
         "vocabulary"
       ],
       "prompt": "What is small? Answer in Italian. (Reading 11)",
-      "hints": [],
+      "hints": [
+        "The passage's second sentence: Il mio libro è piccolo. — what is small? The book, with its article."
+      ],
       "feedback": "Possessives agree with the thing owned: il mio libro, la mia casa, i miei libri. The owner’s gender does not determine mio or mia. Ordinary nouns usually keep the article before the possessive.",
       "evidenceKey": "it-possession-foundation-read",
       "assistanceAffectsEvidence": [
@@ -7335,7 +7557,23 @@
           "il libro"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "libro",
+            "category": "missing word",
+            "explanation": "Answer with the article: il libro."
+          },
+          {
+            "answer": "la casa",
+            "category": "incorrect answer",
+            "explanation": "The passage's second sentence is Il mio libro è piccolo — the book is small, not the house."
+          },
+          {
+            "answer": "piccolo",
+            "category": "incorrect answer",
+            "explanation": "Piccolo is the size, not the thing it describes; answer with the noun: il libro."
+          }
+        ]
       }
     },
     {
@@ -7354,7 +7592,9 @@
         "grammar"
       ],
       "prompt": "Recall from Food and -ere verbs: I will have a coffee.",
-      "hints": [],
+      "hints": [
+        "Recall the -ere verb: io prendo = I take / I'll have — Prendo un caffè. The dropped io is fine."
+      ],
       "feedback": "Regular -ere verbs commonly use -o for io and -i for tu: prendere → prendo, prendi. In a café, prendo un caffè can mean I will have a coffee. Keep the accents on caffè and tè. Acqua is feminine: un’acqua.",
       "evidenceKey": "it-possession-foundation-review",
       "assistanceAffectsEvidence": [
@@ -7369,7 +7609,18 @@
           "Io prendo un caffè."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Prendi un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "Recall the io form: prendo (I'll have), not prendi (you have)."
+          },
+          {
+            "answer": "Prendere un caffè.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive isn't the order form here; use prendo."
+          }
+        ]
       }
     },
     {
@@ -7387,7 +7638,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: what belongs to whom.",
-      "hints": [],
+      "hints": [
+        "The model is the possessive sentence from this lesson: article + mia + casa + è + bianca."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-possession-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -7402,7 +7655,23 @@
           "La mia casa è bianca."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La mia casa e bianca.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) keeps its accent; e means and."
+          },
+          {
+            "answer": "Mia casa è bianca.",
+            "category": "missing word",
+            "explanation": "The model starts with the article: La mia casa è bianca."
+          },
+          {
+            "answer": "La mio casa è bianca.",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine: la mia casa, not la mio casa."
+          }
+        ]
       }
     },
     {
@@ -7961,7 +8230,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “yesterday”?",
-      "hints": [],
+      "hints": [
+        "Ieri = yesterday. Mangiato and studiato are past participles; ho mangiato is the full past form."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8009,7 +8280,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Ho studiato in casa.",
-      "hints": [],
+      "hints": [
+        "Ho is the io form of avere; studiato is the participle of studiare: I studied / I have studied. In casa = at home."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8020,10 +8293,22 @@
       "id": "it-past-foundation-meaning",
       "answer": {
         "answers": [
-          "I studied at home."
+          "I studied at home.",
+          "I have studied at home."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I study at home.",
+            "category": "wrong tense",
+            "explanation": "Ho studiato is the past (I studied), not the present (studio)."
+          },
+          {
+            "answer": "I will study at home.",
+            "category": "wrong tense",
+            "explanation": "Ho studiato is the past: I studied at home / I have studied at home."
+          }
+        ]
       }
     },
     {
@@ -8042,7 +8327,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: I studied at home.",
-      "hints": [],
+      "hints": [
+        "The helper comes first, then the participle, then the place: Ho studiato in casa."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-order",
       "assistanceAffectsEvidence": [
@@ -8094,7 +8381,9 @@
         "grammar"
       ],
       "prompt": "Complete: Ieri ___ mangiato.",
-      "hints": [],
+      "hints": [
+        "The past is avere + mangiato; with io the helper is ho: Ieri ho mangiato. (Ha is the lui/lei form.)"
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8124,7 +8413,18 @@
             "ho"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "ha",
+              "category": "wrong conjugation",
+              "explanation": "With io, avere is ho, not ha."
+            },
+            {
+              "answer": "sono",
+              "category": "wrong auxiliary",
+              "explanation": "Mangiare takes avere: ieri ho mangiato, not sono mangiato."
+            }
+          ]
         }
       }
     },
@@ -8144,7 +8444,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Yesterday I ate.",
-      "hints": [],
+      "hints": [
+        "Yesterday is ieri — put it first. The past is avere + participle: (io) ho mangiato."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8163,6 +8465,16 @@
             "answer": "Io ha mangiato.",
             "category": "wrong conjugation",
             "explanation": "With io, avere is ho: Io ho mangiato."
+          },
+          {
+            "answer": "Ieri sono mangiato.",
+            "category": "wrong auxiliary",
+            "explanation": "Mangiare takes avere in the past: ieri ho mangiato, not sono mangiato."
+          },
+          {
+            "answer": "Ieri ho mangiare.",
+            "category": "wrong conjugation",
+            "explanation": "The past needs the participle mangiato, not the infinitive mangiare."
           }
         ]
       }
@@ -8183,7 +8495,9 @@
         "vocabulary"
       ],
       "prompt": "Where did the speaker study? Answer in Italian. (Reading 15)",
-      "hints": [],
+      "hints": [
+        "The passage's second sentence: Ho studiato in casa. — where? Answer in Italian: in casa."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-past-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8198,7 +8512,18 @@
           "in casa"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "casa",
+            "category": "missing word",
+            "explanation": "Answer with the full phrase: in casa."
+          },
+          {
+            "answer": "ieri",
+            "category": "incorrect answer",
+            "explanation": "Ieri is when, not where. The passage says Ho studiato in casa."
+          }
+        ]
       }
     },
     {
@@ -8217,7 +8542,9 @@
         "grammar"
       ],
       "prompt": "Recall from Morning routines: I get up at seven.",
-      "hints": [],
+      "hints": [
+        "Recall the reflexive morning routine: mi alzo (io). At seven is alle sette (a + le)."
+      ],
       "feedback": "Reflexive verbs use a pronoun referring back to the subject. Alzarsi means to get up: io mi alzo, tu ti alzi. Mi and ti go before the finite verb. Alle sette means at seven o’clock; alle combines a + le.",
       "evidenceKey": "it-past-foundation-review",
       "assistanceAffectsEvidence": [
@@ -8231,7 +8558,23 @@
           "Mi alzo alle sette."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mi alzo a sette.",
+            "category": "wrong article",
+            "explanation": "At seven o'clock is alle sette (a + le)."
+          },
+          {
+            "answer": "Io alzo alle sette.",
+            "category": "missing word",
+            "explanation": "The reflexive mi stays: mi alzo."
+          },
+          {
+            "answer": "Mi alza alle sette.",
+            "category": "wrong conjugation",
+            "explanation": "Alza is the lui/lei form; with mi (io) it's mi alzo."
+          }
+        ]
       }
     },
     {
@@ -8249,7 +8592,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: a first look at the past.",
-      "hints": [],
+      "hints": [
+        "The model is the past sentence from the lesson: Ho studiato in casa. — avere + participle, in casa."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-past-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -8264,7 +8609,23 @@
           "Ho studiato in casa."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ho studio in casa.",
+            "category": "wrong conjugation",
+            "explanation": "The model uses the participle: ho studiato, not studio."
+          },
+          {
+            "answer": "Sono studiato in casa.",
+            "category": "wrong auxiliary",
+            "explanation": "Studiare takes avere: ho studiato, not sono studiato."
+          },
+          {
+            "answer": "Ho studiato a casa.",
+            "category": "incorrect answer",
+            "explanation": "The model says in casa; keep the phrase the lesson teaches."
+          }
+        ]
       }
     },
     {
@@ -8290,7 +8651,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “tomorrow”?",
-      "hints": [],
+      "hints": [
+        "Domani = tomorrow. Oggi = today, stasera = this evening, a casa = at home."
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8338,7 +8701,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Domani studi in casa?",
-      "hints": [],
+      "hints": [
+        "Domani = tomorrow, studi = you study, in casa = at home, final ? = question."
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8352,7 +8717,18 @@
           "Are you studying at home tomorrow?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tomorrow you study at home.",
+            "category": "incorrect answer",
+            "explanation": "The Italian is a question: Are you studying at home tomorrow?"
+          },
+          {
+            "answer": "Tomorrow I study at home.",
+            "category": "wrong conjugation",
+            "explanation": "Studi is the you form; with io it would be studio."
+          }
+        ]
       }
     },
     {
@@ -8371,7 +8747,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Are you studying at home tomorrow?",
-      "hints": [],
+      "hints": [
+        "Start with Domani, then the tu-form verb studi, then in casa, then the question mark: Domani studi in casa?"
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-order",
       "assistanceAffectsEvidence": [
@@ -8423,7 +8801,9 @@
         "grammar"
       ],
       "prompt": "Complete: Domani io ___ a Roma.",
-      "hints": [],
+      "hints": [
+        "The io form of andare is vado: Domani io vado a Roma. (Va is lui/lei, vai is tu.)"
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8453,7 +8833,23 @@
             "vado"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "va",
+              "category": "wrong conjugation",
+              "explanation": "Va is the lui/lei form; with io, andare is vado."
+            },
+            {
+              "answer": "vai",
+              "category": "wrong conjugation",
+              "explanation": "Vai is the tu form; the sentence says io."
+            },
+            {
+              "answer": "andare",
+              "category": "wrong conjugation",
+              "explanation": "The infinitive doesn't follow io; use vado."
+            }
+          ]
         }
       }
     },
@@ -8473,7 +8869,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Tomorrow I am going to Rome.",
-      "hints": [],
+      "hints": [
+        "Domani = tomorrow. The io form of andare is vado, and a city takes a: vado a Roma."
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8492,6 +8890,16 @@
             "answer": "Domani io vai a Roma.",
             "category": "incorrect answer",
             "explanation": "Io uses vado, even when the plan is for tomorrow."
+          },
+          {
+            "answer": "Domani va a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "Va is the lui/lei form; with io, andare is vado."
+          },
+          {
+            "answer": "Domani vado Roma.",
+            "category": "missing word",
+            "explanation": "Going to a city needs a: vado a Roma."
           }
         ]
       }
@@ -8512,7 +8920,9 @@
         "vocabulary"
       ],
       "prompt": "When is the speaker going to Rome? Answer in Italian. (Reading 16)",
-      "hints": [],
+      "hints": [
+        "The passage's second sentence: Domani vado a Roma. — the time word answers “when”: domani."
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-plans-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8527,7 +8937,18 @@
           "domani"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "oggi",
+            "category": "incorrect answer",
+            "explanation": "The passage says Domani vado a Roma — the trip is tomorrow, not today."
+          },
+          {
+            "answer": "a Roma",
+            "category": "incorrect answer",
+            "explanation": "The question asks when, not where — answer with the time word: domani."
+          }
+        ]
       }
     },
     {
@@ -8546,7 +8967,9 @@
         "grammar"
       ],
       "prompt": "Recall from A first look at the past: Yesterday I ate.",
-      "hints": [],
+      "hints": [
+        "Recall the past from the last lesson: avere + mangiato, with ieri — Ieri ho mangiato."
+      ],
       "feedback": "The passato prossimo combines an auxiliary and a past participle. With mangiare, use avere: ho mangiato. Regular -are participles end in -ato. Ieri means yesterday. This lesson introduces only the I-form with avere.",
       "evidenceKey": "it-plans-foundation-review",
       "assistanceAffectsEvidence": [
@@ -8560,7 +8983,18 @@
           "Ieri ho mangiato."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ieri mangiato.",
+            "category": "missing word",
+            "explanation": "The past needs its helper: Ieri ho mangiato."
+          },
+          {
+            "answer": "Ieri sono mangiato.",
+            "category": "wrong auxiliary",
+            "explanation": "Mangiare takes avere: ieri ho mangiato, not sono mangiato."
+          }
+        ]
       }
     },
     {
@@ -8578,7 +9012,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: tomorrow and future plans.",
-      "hints": [],
+      "hints": [
+        "The model is the plan sentence: Domani vado a Roma. — domani + vado + a Roma."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-plans-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -8593,7 +9029,18 @@
           "Domani vado a Roma."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Domani vado Roma.",
+            "category": "missing word",
+            "explanation": "The model keeps the a: vado a Roma."
+          },
+          {
+            "answer": "Domani vai a Roma.",
+            "category": "wrong conjugation",
+            "explanation": "The model says vado (io), not vai (tu)."
+          }
+        ]
       }
     },
     {
@@ -8619,7 +9066,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “Monday”?",
-      "hints": [],
+      "hints": [
+        "Lunedì is Monday — it keeps the accent on the final ì. Venerdì is Friday, oggi is today."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8667,7 +9116,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Domani è venerdì.",
-      "hints": [],
+      "hints": [
+        "Domani = tomorrow, venerdì = Friday: Domani è venerdì."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8681,7 +9132,18 @@
           "Tomorrow is Friday."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Today is Friday.",
+            "category": "incorrect answer",
+            "explanation": "Domani is tomorrow, not today (oggi)."
+          },
+          {
+            "answer": "Tomorrow is Saturday.",
+            "category": "incorrect answer",
+            "explanation": "Venerdì is Friday; Saturday is sabato."
+          }
+        ]
       }
     },
     {
@@ -8700,7 +9162,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Today is Monday.",
-      "hints": [],
+      "hints": [
+        "Start with Oggi, then the verb è, then the day with its accent: Oggi è lunedì."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-order",
       "assistanceAffectsEvidence": [
@@ -8747,7 +9211,9 @@
         "grammar"
       ],
       "prompt": "Complete the date: Il compleanno è il ___ maggio.",
-      "hints": [],
+      "hints": [
+        "The date from the passage: Il compleanno di Anna è il tre maggio — the missing word is the day number: tre."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8777,7 +9243,18 @@
             "tre"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "tredici",
+              "category": "incorrect answer",
+              "explanation": "May third is il tre maggio, not thirteen."
+            },
+            {
+              "answer": "terzo",
+              "category": "incorrect answer",
+              "explanation": "Dates use the cardinal number: il tre maggio."
+            }
+          ]
         }
       }
     },
@@ -8797,7 +9274,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Today is Monday.",
-      "hints": [],
+      "hints": [
+        "The day uses essere: Oggi è lunedì. Keep the accent on è and the one on lunedì."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8816,6 +9295,16 @@
             "answer": "Oggi ha lunedì.",
             "category": "incorrect answer",
             "explanation": "Use essere for the day: Oggi è lunedì."
+          },
+          {
+            "answer": "Oggi e lunedì.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) keeps its accent; e means and."
+          },
+          {
+            "answer": "Oggi è lunedi.",
+            "category": "accent/diacritic issue",
+            "explanation": "The day keeps its accent: lunedì."
           }
         ]
       }
@@ -8836,7 +9325,9 @@
         "vocabulary"
       ],
       "prompt": "When is Anna’s birthday? Answer with the Italian date. (Reading 17)",
-      "hints": [],
+      "hints": [
+        "The passage's third sentence: Il compleanno di Anna è il tre maggio. Give that date with its article."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8851,7 +9342,23 @@
           "il tre maggio"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "tre maggio",
+            "category": "missing word",
+            "explanation": "Give the full date with its article: il tre maggio."
+          },
+          {
+            "answer": "il maggio",
+            "category": "missing word",
+            "explanation": "The date needs the day number: il tre maggio."
+          },
+          {
+            "answer": "lunedì",
+            "category": "incorrect answer",
+            "explanation": "Lunedì is today in the passage; Anna's birthday is il tre maggio."
+          }
+        ]
       }
     },
     {
@@ -8870,7 +9377,9 @@
         "grammar"
       ],
       "prompt": "Recall from Tomorrow and future plans: Tomorrow I am going to Rome.",
-      "hints": [],
+      "hints": [
+        "Recall the plan sentence: domani + the io form vado + a Roma. The dropped io is fine."
+      ],
       "feedback": "Italian often uses the present with a future time expression: domani vado a Roma. Domani makes the time clear. This is a first way to express plans before learning the future tense. Keep the irregular forms vado and vai.",
       "evidenceKey": "it-days-foundation-review",
       "assistanceAffectsEvidence": [
@@ -8908,7 +9417,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: days and dates.",
-      "hints": [],
+      "hints": [
+        "The model is the opening line of the lesson: Oggi è lunedì. — keep both accents."
+      ],
       "feedback": "Italian days and months are masculine and written lowercase: lunedì, maggio. Give the date with the number, di and the month: il tre maggio. Oggi, domani and ieri frame any plan.",
       "evidenceKey": "it-days-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -8923,7 +9434,23 @@
           "Oggi è lunedì."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Oggi e lunedì.",
+            "category": "accent/diacritic issue",
+            "explanation": "È (is) keeps its accent; e means and."
+          },
+          {
+            "answer": "Oggi è lunedi.",
+            "category": "accent/diacritic issue",
+            "explanation": "The day keeps its accent: lunedì."
+          },
+          {
+            "answer": "Domani è lunedì.",
+            "category": "incorrect answer",
+            "explanation": "The model says oggi (today), not domani (tomorrow)."
+          }
+        ]
       }
     },
     {
@@ -9972,7 +10499,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “help”?",
-      "hints": [],
+      "hints": [
+        "Aiuto = help — the word you shout first. Ambulanza = ambulance, urgente = urgent."
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10020,7 +10549,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: È urgente.",
-      "hints": [],
+      "hints": [
+        "È = it is, urgente = urgent: It is urgent."
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -10031,10 +10562,22 @@
       "id": "it-emergency-foundation-meaning",
       "answer": {
         "answers": [
-          "It is urgent."
+          "It is urgent.",
+          "It's urgent."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Is it urgent?",
+            "category": "incorrect answer",
+            "explanation": "È urgente states it — It is urgent. The question would be È urgente? with intonation."
+          },
+          {
+            "answer": "It is an emergency.",
+            "category": "incorrect answer",
+            "explanation": "Urgente is the adjective urgent; an emergency is un'emergenza."
+          }
+        ]
       }
     },
     {
@@ -10053,7 +10596,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "Start with the shout Aiuto!, then the request Chiami, then un'ambulanza!: Aiuto! Chiami un'ambulanza!"
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-order",
       "assistanceAffectsEvidence": [
@@ -10100,7 +10645,9 @@
         "grammar"
       ],
       "prompt": "Complete the call: Chiami ___!",
-      "hints": [],
+      "hints": [
+        "Complete the call from the lesson: Chiami un'ambulanza! — ambulanza is feminine, so the article elides."
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10130,7 +10677,23 @@
             "un’ambulanza"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "un ambulanza",
+              "category": "accent/diacritic issue",
+              "explanation": "Ambulanza is feminine: un'ambulanza."
+            },
+            {
+              "answer": "l’ambulanza",
+              "category": "incorrect answer",
+              "explanation": "The call asks for an ambulance, not the ambulance: Chiami un'ambulanza!"
+            },
+            {
+              "answer": "ambulanza",
+              "category": "missing word",
+              "explanation": "The article stays: un'ambulanza."
+            }
+          ]
         }
       }
     },
@@ -10150,7 +10713,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "Start with the shout Aiuto! Then the polite request form the lesson teaches: Chiami un'ambulanza!"
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -10169,6 +10734,21 @@
             "answer": "Aiuto! Chiamo un’ambulanza!",
             "category": "incorrect answer",
             "explanation": "Do not announce yourself; command politely: Chiami un’ambulanza!"
+          },
+          {
+            "answer": "Aiuto! Chiama un’ambulanza!",
+            "category": "wrong conjugation",
+            "explanation": "The lesson's request form is Chiami un'ambulanza! (the polite lei form), not chiama."
+          },
+          {
+            "answer": "Aiuto! Un’ambulanza!",
+            "category": "missing word",
+            "explanation": "The call needs its verb: Aiuto! Chiami un'ambulanza!"
+          },
+          {
+            "answer": "Aiuto! Chiami una ambulanza!",
+            "category": "accent/diacritic issue",
+            "explanation": "Ambulanza is feminine and elides: un'ambulanza."
           }
         ]
       }
@@ -10189,7 +10769,9 @@
         "vocabulary"
       ],
       "prompt": "What number? Answer with the Italian number name. (Reading 23)",
-      "hints": [],
+      "hints": [
+        "The passage's first sentence: Marco chiama il centododici. Give that number name, with its article."
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10204,7 +10786,23 @@
           "il centododici"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "centododici",
+            "category": "missing word",
+            "explanation": "Answer with the article: il centododici."
+          },
+          {
+            "answer": "centodue",
+            "category": "incorrect answer",
+            "explanation": "Marco calls il centododici (112), not 102."
+          },
+          {
+            "answer": "l’ambulanza",
+            "category": "incorrect answer",
+            "explanation": "The question asks which number he calls, not the vehicle: il centododici."
+          }
+        ]
       }
     },
     {
@@ -10223,7 +10821,9 @@
         "grammar"
       ],
       "prompt": "Recall from At the pharmacy: I need some medicine.",
-      "hints": [],
+      "hints": [
+        "Recall the pharmacy phrase: ho bisogno di + something — Ho bisogno di una medicina."
+      ],
       "feedback": "Ask for medicine with Ho bisogno di…: Ho bisogno di una medicina. Una pastiglia is a pill and lo sciroppo is syrup. Ask the price with Quanto costa?: Costa cinque euro.",
       "evidenceKey": "it-emergency-foundation-review",
       "assistanceAffectsEvidence": [
@@ -10242,6 +10842,11 @@
             "answer": "Ho bisogno una medicina.",
             "category": "incorrect answer",
             "explanation": "Bisogno needs di: Ho bisogno di una medicina."
+          },
+          {
+            "answer": "Io bisogno di una medicina.",
+            "category": "missing word",
+            "explanation": "The phrase needs its verb: ho bisogno di una medicina."
           }
         ]
       }
@@ -10261,7 +10866,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: calling for help.",
-      "hints": [],
+      "hints": [
+        "Write the shout then the request exactly as heard: Aiuto! Chiami un'ambulanza!"
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-emergency-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -10276,7 +10883,23 @@
           "Aiuto! Chiami un’ambulanza!"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Aiuto! Chiamo un’ambulanza!",
+            "category": "incorrect answer",
+            "explanation": "The model's request form is Chiami, not chiamo."
+          },
+          {
+            "answer": "Aiuto! Chiama un’ambulanza!",
+            "category": "wrong conjugation",
+            "explanation": "The model uses the polite form Chiami un'ambulanza!"
+          },
+          {
+            "answer": "Aiuto! Chiami una ambulanza.",
+            "category": "accent/diacritic issue",
+            "explanation": "Elide the article: un'ambulanza."
+          }
+        ]
       }
     },
     {
@@ -10416,7 +11039,9 @@
       ],
       "stimulusId": "it-food-story",
       "prompt": "Cosa prende Marco?",
-      "hints": [],
+      "hints": [
+        "Marco ordina subito: «Prendo un caffè, per favore.» — cosa prende?"
+      ],
       "feedback": "Marco prende un caffè.",
       "evidenceKey": "ev-food-story-attention",
       "assistanceAffectsEvidence": [
@@ -10459,7 +11084,9 @@
       ],
       "stimulusId": "it-food-story",
       "prompt": "Quanto paga Marco?",
-      "hints": [],
+      "hints": [
+        "Cerca il numero nel testo: «Marco paga due euro.»"
+      ],
       "feedback": "Marco paga due euro.",
       "evidenceKey": "ev-food-story-detail",
       "assistanceAffectsEvidence": [
@@ -10501,7 +11128,9 @@
       ],
       "stimulusId": "it-food-story",
       "prompt": "Metti in ordine quello che fa Marco.",
-      "hints": [],
+      "hints": [
+        "Segui la storia nell'ordine: prima entra nel bar, poi ordina, poi paga."
+      ],
       "feedback": "Prima entra, poi ordina, poi paga.",
       "evidenceKey": "ev-food-story-sequence",
       "assistanceAffectsEvidence": [
@@ -10546,7 +11175,9 @@
         "grammar"
       ],
       "prompt": "Ordina tu: chiedi un caffè con cortesia.",
-      "hints": [],
+      "hints": [
+        "Chiedi con cortesia usando una forma della lezione: Vorrei un caffè, per favore. / Prendo un caffè, per favore. / Un caffè, per favore."
+      ],
       "feedback": "Una richiesta cortese usa vorrei o per favore.",
       "evidenceKey": "ev-food-story-transfer",
       "assistanceAffectsEvidence": [
@@ -10557,10 +11188,32 @@
         "answers": [
           "Vorrei un caffè, per favore.",
           "Prendo un caffè, per favore.",
-          "Un caffè, per favore."
+          "Un caffè, per favore.",
+          "Vorrei un caffè."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Prendere un caffè, per favore.",
+            "category": "wrong conjugation",
+            "explanation": "An order needs a real verb form: Prendo un caffè, per favore."
+          },
+          {
+            "answer": "Un caffè.",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for a polite request — add per favore."
+          },
+          {
+            "answer": "Voglio un caffè, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Voglio (I want) sounds abrupt in a café; use Vorrei (I would like) or Prendo + per favore."
+          },
+          {
+            "answer": "Voglio un caffè.",
+            "category": "incorrect answer",
+            "explanation": "Voglio (I want) sounds abrupt in a café; the polite forms are Vorrei, Prendo or a bare order + per favore."
+          }
+        ]
       }
     },
     {
@@ -15169,7 +15822,9 @@
         "vocabulary"
       ],
       "prompt": "Penso che Maria ___ ragione. (avere — she is right)",
-      "hints": [],
+      "hints": [
+        "Dopo «penso che» il verbo va al congiuntivo: avere → abbia. L'indicativo ha resta per le frasi senza dubbio."
+      ],
       "feedback": "avere gives abbia in the subjunctive. After penso che, ha (indicative) is wrong; avrà is future; avrebbe is conditional.",
       "evidenceKey": "it-a2-congiuntivo-meet",
       "assistanceAffectsEvidence": [
@@ -15219,7 +15874,9 @@
         "grammar"
       ],
       "prompt": "Type: I think he speaks well. (parlare)",
-      "hints": [],
+      "hints": [
+        "Penso che + the congiuntivo of parlare for lui: parli. Word order: Penso che parli bene."
+      ],
       "feedback": "parlare gives parli: -are verbs take -i in the subjunctive.",
       "evidenceKey": "it-a2-congiuntivo-think",
       "assistanceAffectsEvidence": [
@@ -15230,10 +15887,27 @@
       "id": "it-a2-congiuntivo-think",
       "answer": {
         "answers": [
-          "Penso che parli bene."
+          "Penso che parli bene.",
+          "Penso che lui parli bene."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Penso che parla bene.",
+            "category": "wrong conjugation",
+            "explanation": "Parla is the indicative; after penso che use the congiuntivo parli."
+          },
+          {
+            "answer": "Penso che parlare bene.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive never follows che here; use the congiuntivo parli."
+          },
+          {
+            "answer": "Penso che parlo bene.",
+            "category": "wrong conjugation",
+            "explanation": "Parlo is the io form; for he (lui) the congiuntivo is parli."
+          }
+        ]
       }
     },
     {
@@ -15254,7 +15928,9 @@
         "vocabulary"
       ],
       "prompt": "È importante che tu ___ ogni giorno. (studiare)",
-      "hints": [],
+      "hints": [
+        "Dopo «È importante che» serve il congiuntivo: studiare → studi (tu). Studia è l'indicativo."
+      ],
       "feedback": "studiare gives studi after è importante che. studia is the indicative — wrong after this trigger.",
       "evidenceKey": "it-a2-congiuntivo-notice",
       "assistanceAffectsEvidence": [
@@ -15304,7 +15980,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I believe he is coming tomorrow.",
-      "hints": [],
+      "hints": [
+        "La frase: Credo + che + venga (he comes) + domani. Che viene subito dopo Credo."
+      ],
       "feedback": "Trigger (credo che) plus the bent verb (venga): Credo che venga domani.",
       "evidenceKey": "it-a2-congiuntivo-build",
       "assistanceAffectsEvidence": [
@@ -15358,7 +16036,9 @@
         "grammar"
       ],
       "prompt": "Add doubt: È vero. → Non credo che…",
-      "hints": [],
+      "hints": [
+        "Add doubt with Non credo che + the congiuntivo of essere: sia. This transforms È vero."
+      ],
       "feedback": "essere gives sia in the subjunctive: non credo che sia vero.",
       "evidenceKey": "it-a2-congiuntivo-vary",
       "assistanceAffectsEvidence": [
@@ -15372,7 +16052,23 @@
           "Non credo che sia vero."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Non credo che è vero.",
+            "category": "wrong conjugation",
+            "explanation": "After non credo che the verb is the congiuntivo: sia, not è."
+          },
+          {
+            "answer": "Non credo che essere vero.",
+            "category": "wrong conjugation",
+            "explanation": "Use a conjugated congiuntivo: sia vero."
+          },
+          {
+            "answer": "Credo che non sia vero.",
+            "category": "incorrect answer",
+            "explanation": "That changes the meaning (I believe it is NOT true). The dictated doubt is in the main clause: Non credo che sia vero."
+          }
+        ]
       }
     },
     {
@@ -15393,7 +16089,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "Spero che + congiuntivo: fare → faccia. Fa (indicative) and farà (future) don't follow spero che."
+      ],
       "feedback": "fare is irregular in the subjunctive: faccia. Spero che faccia bel tempo.",
       "evidenceKey": "it-a2-congiuntivo-cloze",
       "assistanceAffectsEvidence": [
@@ -15423,7 +16121,23 @@
             "faccia"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "fa",
+              "category": "wrong conjugation",
+              "explanation": "After spero che, fare becomes the congiuntivo faccia."
+            },
+            {
+              "answer": "farà",
+              "category": "wrong conjugation",
+              "explanation": "Farà is the future; after spero che use the congiuntivo faccia."
+            },
+            {
+              "answer": "faccio",
+              "category": "wrong conjugation",
+              "explanation": "Faccio is the io form; for il tempo (it) use faccia."
+            }
+          ]
         }
       }
     },
@@ -15445,7 +16159,9 @@
         "grammar"
       ],
       "prompt": "Secondo il testo, qual è la cosa più difficile? (What is the hardest thing?)",
-      "hints": [],
+      "hints": [
+        "Il testo lo dice esplicitamente: «Credo che la cosa più difficile sia il congiuntivo». Rispondi con quella cosa."
+      ],
       "feedback": "The text says: “Credo che la cosa più difficile sia il congiuntivo” — with sia in the subjunctive, naturally.",
       "evidenceKey": "it-a2-congiuntivo-read",
       "assistanceAffectsEvidence": [
@@ -15460,7 +16176,18 @@
           "La cosa più difficile è il congiuntivo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "L’italiano.",
+            "category": "incorrect answer",
+            "explanation": "Il testo dice che l'italiano non è difficile; la cosa più difficile è il congiuntivo."
+          },
+          {
+            "answer": "Studiare ogni giorno.",
+            "category": "incorrect answer",
+            "explanation": "Studiare ogni giorno è importante, ma la cosa più difficile è il congiuntivo."
+          }
+        ]
       },
       "stimulusId": "it-a2-congiuntivo-stim-2"
     },
@@ -16136,7 +16863,9 @@
         "vocabulary"
       ],
       "prompt": "Il treno è ___ veloce dell’autobus. (faster)",
-      "hints": [],
+      "hints": [
+        "Comparativo di maggioranza: più + aggettivo. Il treno è più veloce dell'autobus."
+      ],
       "feedback": "Comparing two things takes più… di. molto is just “very”; il più is the superlative; tanto needs quanto.",
       "evidenceKey": "it-a2-comparativi-meet",
       "assistanceAffectsEvidence": [
@@ -16186,7 +16915,9 @@
         "grammar"
       ],
       "prompt": "Type: My house is bigger than yours.",
-      "hints": [],
+      "hints": [
+        "Più + grande + della tua (than yours — feminine, agreeing with casa). Order: La mia casa è più grande della tua."
+      ],
       "feedback": "più plus grande plus di: più grande della tua.",
       "evidenceKey": "it-a2-comparativi-think",
       "assistanceAffectsEvidence": [
@@ -16197,10 +16928,27 @@
       "id": "it-a2-comparativi-think",
       "answer": {
         "answers": [
-          "La mia casa è più grande della tua."
+          "La mia casa è più grande della tua.",
+          "La mia casa è più grande della tua casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La mia casa è più grande di tua.",
+            "category": "missing word",
+            "explanation": "The second term needs its article: della tua."
+          },
+          {
+            "answer": "La mia casa è più grande che tua.",
+            "category": "incorrect answer",
+            "explanation": "After a noun the comparison uses di (della tua), not che."
+          },
+          {
+            "answer": "Mi casa è più grande della tua.",
+            "category": "incorrect answer",
+            "explanation": "The possessive keeps its article: la mia casa."
+          }
+        ]
       }
     },
     {
@@ -16221,7 +16969,9 @@
         "vocabulary"
       ],
       "prompt": "Questo ristorante è ___ di quello. (better)",
-      "hints": [],
+      "hints": [
+        "Migliore è il comparativo irregolare di buono (better). Più migliore è un raddoppio sbagliato."
+      ],
       "feedback": "buono gives migliore — an adjective, agreeing with ristorante. “più migliore” is a double comparative, wrong; meglio is the adverb.",
       "evidenceKey": "it-a2-comparativi-notice",
       "assistanceAffectsEvidence": [
@@ -16271,7 +17021,9 @@
         "grammar"
       ],
       "prompt": "Say it as an equality: È alto. (like me)",
-      "hints": [],
+      "hints": [
+        "L'uguaglianza usa come: alto come me. Di appartiene al comparativo (più alto di me), che qui non serve."
+      ],
       "feedback": "Equality takes così… come — the così is often dropped: alto come me.",
       "evidenceKey": "it-a2-comparativi-vary",
       "assistanceAffectsEvidence": [
@@ -16282,10 +17034,22 @@
       "id": "it-a2-comparativi-vary",
       "answer": {
         "answers": [
-          "È alto come me."
+          "È alto come me.",
+          "Lui è alto come me."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "È alto di me.",
+            "category": "incorrect answer",
+            "explanation": "L'uguaglianza usa come, non di: È alto come me."
+          },
+          {
+            "answer": "È più alto di me.",
+            "category": "incorrect answer",
+            "explanation": "Più … di is the comparative (taller); the prompt asks for the equality: È alto come me."
+          }
+        ]
       }
     },
     {
@@ -16306,7 +17070,9 @@
         "grammar"
       ],
       "prompt": "Complete the comparison.",
-      "hints": [],
+      "hints": [
+        "The comparison needs più + buono + di: più buono di quello americano."
+      ],
       "feedback": "Two coffees compared: più buono di — “more good than”.",
       "evidenceKey": "it-a2-comparativi-cloze",
       "assistanceAffectsEvidence": [
@@ -16336,7 +17102,18 @@
             "più"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "molto",
+              "category": "incorrect answer",
+              "explanation": "Molto means very/a lot; the comparison needs più … buono di…"
+            },
+            {
+              "answer": "il più",
+              "category": "incorrect answer",
+              "explanation": "Il più is the superlative (the most); here it's a comparative: più buono di quello americano."
+            }
+          ]
         }
       }
     },
@@ -16358,7 +17135,9 @@
         "grammar"
       ],
       "prompt": "Secondo il testo, perché ha scelto il secondo computer? (Why the second one?)",
-      "hints": [],
+      "hints": [
+        "Il testo: «per il mio lavoro è migliore, perché viaggio molto». Rispondi con quel motivo."
+      ],
       "feedback": "“per il mio lavoro è migliore, perché viaggio molto” — lighter and better for travelling work.",
       "evidenceKey": "it-a2-comparativi-read",
       "assistanceAffectsEvidence": [
@@ -16373,7 +17152,18 @@
           "Perché è più leggero e migliore per il suo lavoro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Perché è più veloce.",
+            "category": "incorrect answer",
+            "explanation": "Il primo computer è più veloce; lui ha scelto il secondo, perché viaggia molto."
+          },
+          {
+            "answer": "Perché ha più memoria.",
+            "category": "incorrect answer",
+            "explanation": "Più memoria è il primo; il secondo vince per il lavoro di chi viaggia molto."
+          }
+        ]
       },
       "stimulusId": "it-a2-comparativi-stim-2"
     },
@@ -17331,7 +18121,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check — match each comparative to its meaning.",
-      "hints": [],
+      "hints": [
+        "Abbina per parola chiave: meglio = better, peggio = worse, più veloce = faster, meno caro = less expensive."
+      ],
       "feedback": "Comparatives locked in. Nice.",
       "evidenceKey": "it-a2-comparativi-match",
       "assistanceAffectsEvidence": [
@@ -21307,7 +22099,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check — match each phrase to its meaning.",
-      "hints": [],
+      "hints": [
+        "Match by meaning: the negative sentence pairs with “I don't work…”, the question with “Do you study…?”, Sì. with “Yes.”"
+      ],
       "feedback": "Three for three — no is as useful as yes.",
       "evidenceKey": "it-negation-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -21375,7 +22169,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check — match each phrase to its meaning.",
-      "hints": [],
+      "hints": [
+        "Match by keyword: Aiuto = help, urgente = urgent, l'ambulanza arriva = the ambulance is coming."
+      ],
       "feedback": "In an emergency, these three do the talking.",
       "evidenceKey": "it-emergency-foundation-act-rb1",
       "assistanceAffectsEvidence": [

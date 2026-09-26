@@ -11584,7 +11584,9 @@
         "vocabulary"
       ],
       "prompt": "J’ai mangé une pizza. You know mangé comes from manger, “to eat”. Which word is the helper that puts it in the past ?",
-      "hints": [],
+      "hints": [
+        "The helper is the present-tense avoir that puts the verb in the past. ai is avoir for je; mangé is the participle naming what happened."
+      ],
       "feedback": "ai is the present of avoir — the helper that carries the past. mangé is the participle, the word that names what happened. J’ is just “I”, une just “a”.",
       "evidenceKey": "fr-a2-passe-compose-formation-meet",
       "assistanceAffectsEvidence": [
@@ -11633,7 +11635,9 @@
         "grammar"
       ],
       "prompt": "Think: the helper for je is ai. Fini comes from finir. How do you say “I finished” ? Build it from the two beats — then write it.",
-      "hints": [],
+      "hints": [
+        "Two beats: the helper j'ai, then the participle fini (from finir, just as mangé comes from manger)."
+      ],
       "feedback": "J’ai fini. Helper ai + participle fini — the same two beats as J’ai mangé.",
       "evidenceKey": "fr-a2-passe-compose-formation-think",
       "assistanceAffectsEvidence": [
@@ -11645,7 +11649,23 @@
           "J’ai fini."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J’ai finir.",
+            "category": "wrong conjugation",
+            "explanation": "finir is the infinitive. The two beats are helper + past participle: J'ai fini."
+          },
+          {
+            "answer": "Je fini.",
+            "category": "missing word",
+            "explanation": "The passé composé needs its helper: J'ai + fini. “Je fini” drops the beat that carries the past."
+          },
+          {
+            "answer": "Je ai fini.",
+            "category": "incorrect answer",
+            "explanation": "je + ai contract: J'ai fini. The apostrophe replaces the e of je."
+          }
+        ]
       }
     },
     {
@@ -11667,7 +11687,9 @@
         "vocabulary"
       ],
       "prompt": "Elle a pris un café. “She had a coffee.” Which word is the helper here — the present-tense avoir doing the past-tense job ?",
-      "hints": [],
+      "hints": [
+        "Look for the avoir form, not the participle and not the subject: elle a → a is the helper; pris (from prendre) is the irregular participle."
+      ],
       "feedback": "a is avoir for elle/il — the helper. pris is the irregular participle of prendre; you will meet pris, mis, écrit and a few friends one by one. Elle just points at who.",
       "evidenceKey": "fr-a2-passe-compose-formation-notice",
       "assistanceAffectsEvidence": [
@@ -11716,7 +11738,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “We watched a movie.”",
-      "hints": [],
+      "hints": [
+        "Subject first (Nous), then the helper (avons), then the participle (regardé), then the object: un film."
+      ],
       "feedback": "Nous avons regardé un film. Helper avons for nous, participle regardé — the pattern holds for every person.",
       "evidenceKey": "fr-a2-passe-compose-formation-build",
       "assistanceAffectsEvidence": [
@@ -11774,7 +11798,9 @@
         "grammar"
       ],
       "prompt": "New verb, same beats: parler → parlé. Say “You (tu) spoke.”",
-      "hints": [],
+      "hints": [
+        "Helper for tu is as, then the participle: parler → parlé. Tu as parlé."
+      ],
       "feedback": "Tu as parlé. Helper as for tu, participle parlé — swap the verb, keep the two beats.",
       "evidenceKey": "fr-a2-passe-compose-formation-vary",
       "assistanceAffectsEvidence": [
@@ -11786,7 +11812,23 @@
           "Tu as parlé."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu as parler.",
+            "category": "wrong conjugation",
+            "explanation": "After the helper as comes the past participle: parlé, not the infinitive parler."
+          },
+          {
+            "answer": "Tu a parlé.",
+            "category": "wrong conjugation",
+            "explanation": "a is the helper for il/elle. With tu the helper is as: Tu as parlé."
+          },
+          {
+            "answer": "Tu es parlé.",
+            "category": "wrong auxiliary",
+            "explanation": "parler takes avoir in the passé composé: Tu as parlé, not es."
+          }
+        ]
       }
     },
     {
@@ -11807,8 +11849,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Nous ___ mangé à midi.",
-      "hints": [],
+      "prompt": "Complete the passé composé: Nous ___ mangé à midi.",
+      "hints": [
+        "The subject is nous, so the helper is the nous form of avoir: nous avons."
+      ],
       "feedback": "avons — the helper for nous. The participle mangé never moves; the helper does all the person-work.",
       "evidenceKey": "fr-a2-passe-compose-formation-cloze",
       "assistanceAffectsEvidence": [
@@ -11836,7 +11880,23 @@
             "avons"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "sommes",
+              "category": "wrong auxiliary",
+              "explanation": "manger builds its passé composé with avoir, not être: nous avons mangé. (Être is for reflexive and movement verbs.)"
+            },
+            {
+              "answer": "avions",
+              "category": "wrong tense",
+              "explanation": "avions is the pluperfect (“we had eaten”). The passé composé uses the present helper: nous avons."
+            },
+            {
+              "answer": "a",
+              "category": "wrong conjugation",
+              "explanation": "a is the helper for il/elle. The subject is nous, so the helper is avons."
+            }
+          ]
         }
       }
     },
@@ -11859,7 +11919,9 @@
         "grammar"
       ],
       "prompt": "What did they have at the restaurant ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread the second sentence: “Nous avons pris le menu du jour.” — the fixed-price menu of the day."
+      ],
       "feedback": "Le menu du jour — “the menu of the day”, the fixed-price lunch. The rule you just built: helper + participle, in the wild.",
       "evidenceKey": "fr-a2-passe-compose-formation-read",
       "assistanceAffectsEvidence": [
@@ -11869,10 +11931,30 @@
       "answer": {
         "answers": [
           "Le menu du jour",
-          "le menu du jour"
+          "le menu du jour",
+          "The menu of the day",
+          "the menu of the day",
+          "The set menu",
+          "the set menu"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le menu",
+            "category": "missing word",
+            "explanation": "The passage names the full phrase: le menu du jour, “the menu of the day” — the fixed-price lunch they took."
+          },
+          {
+            "answer": "The menu",
+            "category": "missing word",
+            "explanation": "Answer with the full phrase from the passage: “the menu of the day” (le menu du jour)."
+          },
+          {
+            "answer": "La pizza",
+            "category": "incorrect answer",
+            "explanation": "No pizza in the passage: at the restaurant they took le menu du jour. (Le dessert is only asked about, not eaten.)"
+          }
+        ]
       },
       "stimulusId": "fr-a2-passe-compose-formation-stim-2"
     },
@@ -11902,7 +11984,9 @@
         "vocabulary"
       ],
       "prompt": "Nous parlions. “We were speaking.” Which part is the new imparfait ending ?",
-      "hints": [],
+      "hints": [
+        "The ending is the new piece that does the time-work: parl- is the stem, -ions is the nous imparfait ending. (-iens is not a French ending.)"
+      ],
       "feedback": "‑ions is the nous ending of the imparfait — the stem parl- comes from parlons minus -ons. Nous just points at who; -ions does the time-work.",
       "evidenceKey": "fr-a2-imparfait-formation-meet",
       "assistanceAffectsEvidence": [
@@ -11951,7 +12035,9 @@
         "grammar"
       ],
       "prompt": "Think: stem = nous form minus -ons. Nous finissons → stem finiss-. How do you say “I was finishing” ?",
-      "hints": [],
+      "hints": [
+        "Stem from nous finissons: finiss-. Add the je ending -ais: finiss- + -ais → je finissais."
+      ],
       "feedback": "Je finissais. Stem finiss- + -ais. Watch the double s — it comes from the nous form, not from nowhere.",
       "evidenceKey": "fr-a2-imparfait-formation-think",
       "assistanceAffectsEvidence": [
@@ -11963,7 +12049,23 @@
           "Je finissais."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J’ai fini.",
+            "category": "wrong tense",
+            "explanation": "That is the passé composé (“I finished”). The imparfait paints the ongoing action: Je finissais (“I was finishing”)."
+          },
+          {
+            "answer": "Je finisais.",
+            "category": "incorrect answer",
+            "explanation": "Close — but keep the double s from the nous form: nous finissons → stem finiss- → Je finissais."
+          },
+          {
+            "answer": "Je finissait.",
+            "category": "wrong conjugation",
+            "explanation": "-ait is the il/elle ending. With je the imparfait ending is -ais: Je finissais."
+          }
+        ]
       }
     },
     {
@@ -11985,7 +12087,9 @@
         "vocabulary"
       ],
       "prompt": "Il était malade. “He was sick.” Which verb breaks the nous-stem rule here ?",
-      "hints": [],
+      "hints": [
+        "Three of the words are ordinary; only one is an irregular imparfait. être uses the stem ét- instead of its nous form: Il était."
+      ],
       "feedback": "était — être is the rebel. It uses the stem ét- instead of its nous form. Il just points; malade just describes.",
       "evidenceKey": "fr-a2-imparfait-formation-notice",
       "assistanceAffectsEvidence": [
@@ -12034,7 +12138,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “We used to live in Paris.”",
-      "hints": [],
+      "hints": [
+        "Subject first (Nous), then the imparfait you just derived (habitions), then the place: à Paris."
+      ],
       "feedback": "Nous habitions à Paris. Stem habit- from habitons, ending -ions for nous — the pattern you just derived.",
       "evidenceKey": "fr-a2-imparfait-formation-build",
       "assistanceAffectsEvidence": [
@@ -12087,7 +12193,9 @@
         "grammar"
       ],
       "prompt": "New verb: prendre, nous prenons → stem pren-. Say “They (ils) were taking.”",
-      "hints": [],
+      "hints": [
+        "nous prenons → stem pren-. Add the ils ending -aient: ils prenaient."
+      ],
       "feedback": "Ils prenaient. Stem pren- + -aient for ils — same machine, new verb.",
       "evidenceKey": "fr-a2-imparfait-formation-vary",
       "assistanceAffectsEvidence": [
@@ -12099,7 +12207,23 @@
           "Ils prenaient."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ils prennent.",
+            "category": "wrong tense",
+            "explanation": "prennent is the present (“they take”). The imparfait of prendre (nous prenons → stem pren-) is prenaient."
+          },
+          {
+            "answer": "Ils prenait.",
+            "category": "wrong conjugation",
+            "explanation": "-ait is the il/elle ending. With ils the ending is -aient: Ils prenaient."
+          },
+          {
+            "answer": "Ils prennaient.",
+            "category": "incorrect answer",
+            "explanation": "The stem comes from nous prenons, which has one n: pren- + -aient → prenaient."
+          }
+        ]
       }
     },
     {
@@ -12120,8 +12244,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Chaque été, nous ___ à la mer. (aller)",
-      "hints": [],
+      "prompt": "Complete: Chaque été (every summer), nous ___ à la mer. (aller, imparfait)",
+      "hints": [
+        "Stem from nous allons: all-. Add -ions for nous: allions."
+      ],
       "feedback": "allions — the imparfait of aller for nous. Chaque été (“every summer”) is the classic imparfait signal: a repeated past.",
       "evidenceKey": "fr-a2-imparfait-formation-cloze",
       "assistanceAffectsEvidence": [
@@ -12149,7 +12275,23 @@
             "allions"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "allons",
+              "category": "wrong conjugation",
+              "explanation": "allons is the present (“we go”). Chaque été with the imparfait: nous allions."
+            },
+            {
+              "answer": "allais",
+              "category": "wrong conjugation",
+              "explanation": "-ais is the je/tu ending. With nous the imparfait takes -ions: allions."
+            },
+            {
+              "answer": "irons",
+              "category": "wrong tense",
+              "explanation": "irons is the future (“we will go”). The repeated past habit takes the imparfait: allions."
+            }
+          ]
         }
       }
     },
@@ -12179,7 +12321,9 @@
         "vocabulary"
       ],
       "prompt": "Il pleuvait quand je suis sorti. Two pasts in one sentence. Which one paints the background weather ?",
-      "hints": [],
+      "hints": [
+        "Find the verb that paints the scene around the event: the weather was going on (imparfait) — pleuvait. suis sorti is the finished event."
+      ],
       "feedback": "pleuvait — the imparfait paints the ongoing weather. suis sorti is the finished event that steps into the scene. quand (“when”) is just the hinge.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-meet",
       "assistanceAffectsEvidence": [
@@ -12228,7 +12372,9 @@
         "grammar"
       ],
       "prompt": "Think: background = imparfait, new event = passé composé. The phone ringing is the new event. How do you say “The phone rang” ?",
-      "hints": [],
+      "hints": [
+        "One finished event → passé composé: helper a + participle sonné."
+      ],
       "feedback": "Le téléphone a sonné. One finished event → photograph → passé composé: helper a + participle sonné.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-think",
       "assistanceAffectsEvidence": [
@@ -12240,7 +12386,23 @@
           "Le téléphone a sonné."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le téléphone sonnait.",
+            "category": "wrong tense",
+            "explanation": "sonnait is the imparfait — background, ongoing. The ring is a finished event, so the passé composé: a sonné."
+          },
+          {
+            "answer": "Le téléphone a sonner.",
+            "category": "wrong conjugation",
+            "explanation": "After the helper a comes the past participle: sonné, not the infinitive sonner."
+          },
+          {
+            "answer": "Le téléphone est sonné.",
+            "category": "wrong auxiliary",
+            "explanation": "sonner takes avoir: Le téléphone a sonné."
+          }
+        ]
       }
     },
     {
@@ -12262,7 +12424,9 @@
         "vocabulary"
       ],
       "prompt": "Je marchais quand le téléphone a sonné. Which verb is the interrupting event ?",
-      "hints": [],
+      "hints": [
+        "The interrupting event is the one that breaks in as a finished action: a sonné (passé composé). marchais is the background going on around it."
+      ],
       "feedback": "a sonné — the passé composé breaks into the imparfait background. marchais paints what was already happening; quand is the hinge again.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-notice",
       "assistanceAffectsEvidence": [
@@ -12311,7 +12475,9 @@
         "grammar"
       ],
       "prompt": "Background habit now: “We used to eat at noon.” (manger)",
-      "hints": [],
+      "hints": [
+        "A habit repeated in the past → imparfait of manger (nous mangions), then à midi."
+      ],
       "feedback": "Nous mangions à midi. A repeated past — no single event — so the imparfait paints it: mangions.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-vary",
       "assistanceAffectsEvidence": [
@@ -12323,7 +12489,23 @@
           "Nous mangions à midi."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Nous avons mangé à midi.",
+            "category": "wrong tense",
+            "explanation": "That is the passé composé — one finished meal. A repeated habit takes the imparfait: Nous mangions à midi."
+          },
+          {
+            "answer": "Nous mangions à le midi.",
+            "category": "wrong article",
+            "explanation": "“At noon” is à midi, with no article: Nous mangions à midi."
+          },
+          {
+            "answer": "Nous mangions midi.",
+            "category": "missing word",
+            "explanation": "“To eat at noon” needs its à: nous mangions à midi."
+          }
+        ]
       }
     },
     {
@@ -12345,7 +12527,9 @@
         "grammar"
       ],
       "prompt": "Complete: Soudain, il ___ mal à la tête. (avoir, passé composé)",
-      "hints": [],
+      "hints": [
+        "soudain (“suddenly”) marks a finished event → passé composé of avoir: a eu."
+      ],
       "feedback": "a eu — soudain (“suddenly”) marks a finished event, so photograph it: helper a + participle eu.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-cloze",
       "assistanceAffectsEvidence": [
@@ -12373,7 +12557,23 @@
             "a eu"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "avait",
+              "category": "wrong tense",
+              "explanation": "avait is the imparfait — background. Soudain (“suddenly”) marks a finished event, so the passé composé: a eu."
+            },
+            {
+              "answer": "a",
+              "category": "wrong tense",
+              "explanation": "a alone is the present (“he has”). The prompt dictates the passé composé: helper a + participle eu."
+            },
+            {
+              "answer": "a été",
+              "category": "wrong auxiliary",
+              "explanation": "Having a pain uses avoir, not être: a eu. (a été would be “was”.)"
+            }
+          ]
         }
       }
     },
@@ -12396,7 +12596,9 @@
         "grammar"
       ],
       "prompt": "Who wanted to see him ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread the last sentence: “C'était le médecin : il voulait me voir.” — it was the doctor who wanted to see him."
+      ],
       "feedback": "Le médecin — “the doctor”. C’était paints the background (imparfait of être); voulait paints the ongoing wish.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-read",
       "assistanceAffectsEvidence": [
@@ -12410,7 +12612,23 @@
           "The doctor"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le téléphone",
+            "category": "incorrect answer",
+            "explanation": "The phone is the thing that rang. The one who wanted to see him is le médecin."
+          },
+          {
+            "answer": "Médecin",
+            "category": "missing word",
+            "explanation": "Answer with the full phrase: Le médecin (the doctor)."
+          },
+          {
+            "answer": "Il",
+            "category": "incorrect answer",
+            "explanation": "“He” doesn't name who. The passage says it was the doctor: Le médecin."
+          }
+        ]
       },
       "stimulusId": "fr-a2-passe-imparfait-choix-stim-2"
     },
@@ -12614,7 +12832,9 @@
         "vocabulary"
       ],
       "prompt": "Je parlerai demain. Which ending says “I will” ?",
-      "hints": [],
+      "hints": [
+        "The ending is what says “will”: -ai on the untouched infinitive parler-. demain just points at when."
+      ],
       "feedback": "-ai is the je ending of the future — same letters as avoir’s ai, and that’s the history showing through. parler- is the untouched infinitive; demain just points at when.",
       "evidenceKey": "fr-a2-futur-formation-meet",
       "assistanceAffectsEvidence": [
@@ -12663,7 +12883,9 @@
         "grammar"
       ],
       "prompt": "Think: infinitive + ending. Finir + -as = ? Say “You will finish.”",
-      "hints": [],
+      "hints": [
+        "finir + -as for tu → finiras. One word: the infinitive carries the future."
+      ],
       "feedback": "Tu finiras. Infinitive finir, ending -as for tu — one word, no helper.",
       "evidenceKey": "fr-a2-futur-formation-think",
       "assistanceAffectsEvidence": [
@@ -12675,7 +12897,23 @@
           "Tu finiras."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu finis.",
+            "category": "wrong conjugation",
+            "explanation": "finis is the present. The future is the infinitive + the ending: Tu finiras."
+          },
+          {
+            "answer": "Tu finira.",
+            "category": "wrong conjugation",
+            "explanation": "-a is the il/elle ending. With tu the future ending is -as: Tu finiras."
+          },
+          {
+            "answer": "Tu finissais.",
+            "category": "wrong tense",
+            "explanation": "finissais is the imparfait (“you were finishing”). The future (“you will finish”) is Tu finiras."
+          }
+        ]
       }
     },
     {
@@ -12697,7 +12935,9 @@
         "vocabulary"
       ],
       "prompt": "Nous mangerons ensemble. Which ending is “we will” ?",
-      "hints": [],
+      "hints": [
+        "The “we will” ending echoes avons: -ons. manger- is the infinitive it rides on; ensemble is just company."
+      ],
       "feedback": "-ons — the nous ending, echoing avons. manger- is the infinitive stem; ensemble (“together”) is just company.",
       "evidenceKey": "fr-a2-futur-formation-notice",
       "assistanceAffectsEvidence": [
@@ -12746,7 +12986,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “She will take the train.”",
-      "hints": [],
+      "hints": [
+        "Subject (Elle), then the future form: prendre → prendr- + -a → prendra, then the object: le train."
+      ],
       "feedback": "Elle prendra le train. prendre → prendr- + -a for elle/il — the final -e of the infinitive drops before the future ending.",
       "evidenceKey": "fr-a2-futur-formation-build",
       "assistanceAffectsEvidence": [
@@ -12794,7 +13036,9 @@
         "grammar"
       ],
       "prompt": "Irregular stem: être → ser-. Say “I will be there.”",
-      "hints": [],
+      "hints": [
+        "The rebel stem ser- + the je ending -ai → serai, then là (“there”)."
+      ],
       "feedback": "Je serai là. The rebel stem ser- + the regular ending -ai. Irregular stems, regular endings — that’s the whole deal.",
       "evidenceKey": "fr-a2-futur-formation-vary",
       "assistanceAffectsEvidence": [
@@ -12803,11 +13047,26 @@
       ],
       "answer": {
         "answers": [
-          "Je serai là.",
-          "Je serai la."
+          "Je serai là."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je serai la.",
+            "category": "accent/diacritic issue",
+            "explanation": "“There” is là with an accent grave; without it, la is the article “the”. Je serai là."
+          },
+          {
+            "answer": "Je serais là.",
+            "category": "wrong tense",
+            "explanation": "serais is the conditional (“I would be”). The prompt dictates the future: Je serai là."
+          },
+          {
+            "answer": "Je serait là.",
+            "category": "wrong conjugation",
+            "explanation": "serait is the il/elle form. With je the future is serai: Je serai là."
+          }
+        ]
       }
     },
     {
@@ -12828,8 +13087,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Demain, tu ___ à la maison. (travailler)",
-      "hints": [],
+      "prompt": "Complete: Demain, tu ___ à la maison. (travailler, futur)",
+      "hints": [
+        "Infinitive travailler + the tu ending -as: travailleras."
+      ],
       "feedback": "travailleras — infinitive + -as for tu. Demain points at the future; the ending does the work.",
       "evidenceKey": "fr-a2-futur-formation-cloze",
       "assistanceAffectsEvidence": [
@@ -12857,7 +13118,23 @@
             "travailleras"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "travailles",
+              "category": "wrong conjugation",
+              "explanation": "travailles is the present. The future of tu is the infinitive + -as: travailleras."
+            },
+            {
+              "answer": "travaillera",
+              "category": "wrong conjugation",
+              "explanation": "-a is the il/elle ending. With tu the future ending is -as: travailleras."
+            },
+            {
+              "answer": "travaillerai",
+              "category": "wrong conjugation",
+              "explanation": "-ai is the je ending. With tu the future ending is -as: travailleras."
+            }
+          ]
         }
       }
     },
@@ -12880,7 +13157,9 @@
         "grammar"
       ],
       "prompt": "When will the meeting start ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread: “La réunion commencera à dix heures et le patron arrivera à neuf heures.” — ten for the meeting, nine for the boss."
+      ],
       "feedback": "À dix heures — “at ten”. commencera is the future doing its job in the wild.",
       "evidenceKey": "fr-a2-futur-formation-read",
       "assistanceAffectsEvidence": [
@@ -12894,7 +13173,23 @@
           "At ten."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "À neuf heures",
+            "category": "incorrect answer",
+            "explanation": "Nine o'clock is when the boss arrives. The meeting itself starts at ten: À dix heures."
+          },
+          {
+            "answer": "At nine.",
+            "category": "incorrect answer",
+            "explanation": "Nine is the boss's arrival. The meeting starts at ten: À dix heures."
+          },
+          {
+            "answer": "Dix heures",
+            "category": "missing word",
+            "explanation": "Answer with the full phrase from the passage: À dix heures — the à marks “at”."
+          }
+        ]
       },
       "stimulusId": "fr-a2-futur-formation-stim-2"
     },
@@ -13364,7 +13659,9 @@
         "vocabulary"
       ],
       "prompt": "Je voudrais un café. Which word softens the request — “would like” ?",
-      "hints": [],
+      "hints": [
+        "The softener is the conditional of vouloir: voudrais (“would like”). Je points at who; un café is the thing wanted."
+      ],
       "feedback": "voudrais — the conditional of vouloir. Je points at who; un café is just what’s wanted.",
       "evidenceKey": "fr-a2-conditionnel-politesse-meet",
       "assistanceAffectsEvidence": [
@@ -13413,7 +13710,9 @@
         "grammar"
       ],
       "prompt": "Think: future stem of pouvoir is pourr- + conditional ending. “Could you help me ?” (vous)",
-      "hints": [],
+      "hints": [
+        "Stem pourr- (future stem of pouvoir) + the vous conditional ending -iez; the pronoun flips after the verb: Pourriez-vous m'aider ?"
+      ],
       "feedback": "Pourriez-vous m’aider ? Stem pourr- + -iez for vous, and the pronoun flips after the verb in the question — the full polite package.",
       "evidenceKey": "fr-a2-conditionnel-politesse-think",
       "assistanceAffectsEvidence": [
@@ -13426,7 +13725,23 @@
           "Pourriez-vous m’aider."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Pouvez-vous m’aider ?",
+            "category": "wrong conjugation",
+            "explanation": "Pouvez-vous is the present (“can you”). The soft conditional is Pourriez-vous m'aider ?"
+          },
+          {
+            "answer": "Pourriez-vous me aider ?",
+            "category": "incorrect answer",
+            "explanation": "The object pronoun contracts onto the verb: me + aider → m'aider."
+          },
+          {
+            "answer": "Pourriez-vous m’aide ?",
+            "category": "wrong conjugation",
+            "explanation": "aide is not the infinitive the question governs: m'aider."
+          }
+        ]
       }
     },
     {
@@ -13448,7 +13763,9 @@
         "vocabulary"
       ],
       "prompt": "J’aimerais réserver. Which ending marks the conditional here ?",
-      "hints": [],
+      "hints": [
+        "The conditional ending sits on the future stem: aimer- + -ais. réserver is the infinitive it governs; J' points at who."
+      ],
       "feedback": "-ais — the je/tu conditional ending on the future stem aimer-. J’ points at who; réserver is the infinitive it governs.",
       "evidenceKey": "fr-a2-conditionnel-politesse-notice",
       "assistanceAffectsEvidence": [
@@ -13497,7 +13814,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “Would you have a table ?”",
-      "hints": [],
+      "hints": [
+        "The inverted conditional comes first: Auriez-vous, then what you're asking for: une table ?"
+      ],
       "feedback": "Auriez-vous une table ? Conditional of avoir (aur- + -iez) with inversion — the classic restaurant opening.",
       "evidenceKey": "fr-a2-conditionnel-politesse-build",
       "assistanceAffectsEvidence": [
@@ -13540,7 +13859,9 @@
         "grammar"
       ],
       "prompt": "Soften it further: “Could you show me ?” (vous)",
-      "hints": [],
+      "hints": [
+        "Same machine as the previous step: pourr- + -iez for vous, then me + montrer."
+      ],
       "feedback": "Pourriez-vous me montrer ? Same machine — pourr- + -iez — new infinitive. Politeness is a pattern, not a phrasebook.",
       "evidenceKey": "fr-a2-conditionnel-politesse-vary",
       "assistanceAffectsEvidence": [
@@ -13553,7 +13874,23 @@
           "Pourriez-vous me montrer."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Pouvez-vous me montrer ?",
+            "category": "wrong conjugation",
+            "explanation": "Present pouvoir again — the soft conditional is Pourriez-vous me montrer ?"
+          },
+          {
+            "answer": "Pourriez-vous montrer moi ?",
+            "category": "word-order problem",
+            "explanation": "The object pronoun leans on the verb: me montrer, not montrer moi."
+          },
+          {
+            "answer": "Pourriez-vous me montre ?",
+            "category": "wrong conjugation",
+            "explanation": "montrer is the infinitive the question governs: Pourriez-vous me montrer ?"
+          }
+        ]
       }
     },
     {
@@ -13575,7 +13912,9 @@
         "grammar"
       ],
       "prompt": "Complete: Je ___ une chambre calme. (vouloir, conditionnel)",
-      "hints": [],
+      "hints": [
+        "The polite default with je: voudrais (vouloir's conditional), as in the first example."
+      ],
       "feedback": "voudrais — the polite default for “I would like”. A blunt veux would still be understood, just less loved.",
       "evidenceKey": "fr-a2-conditionnel-politesse-cloze",
       "assistanceAffectsEvidence": [
@@ -13603,7 +13942,23 @@
             "voudrais"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "veux",
+              "category": "wrong conjugation",
+              "explanation": "veux is the blunt present (“I want”). The conditional softens it: je voudrais."
+            },
+            {
+              "answer": "voudrai",
+              "category": "wrong conjugation",
+              "explanation": "voudrai is the future (“I will want”). The polite conditional is voudrais."
+            },
+            {
+              "answer": "voudrait",
+              "category": "wrong conjugation",
+              "explanation": "voudrait is the il/elle form. With je the conditional ending is -ais: voudrais."
+            }
+          ]
         }
       }
     },
@@ -13626,7 +13981,9 @@
         "grammar"
       ],
       "prompt": "How many nights ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread: “Je voudrais réserver une chambre pour deux nuits.” — two nights."
+      ],
       "feedback": "Deux nuits — “two nights”. The whole passage is a masterclass in soft requests: voudrais, auriez-vous, pourriez-vous.",
       "evidenceKey": "fr-a2-conditionnel-politesse-read",
       "assistanceAffectsEvidence": [
@@ -13640,7 +13997,23 @@
           "Two nights."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Une nuit",
+            "category": "incorrect answer",
+            "explanation": "The passage says two nights: une chambre pour deux nuits."
+          },
+          {
+            "answer": "Une chambre",
+            "category": "incorrect answer",
+            "explanation": "That's the room, not the answer to “how many nights?” The passage states deux nuits."
+          },
+          {
+            "answer": "Two.",
+            "category": "missing word",
+            "explanation": "Give the number and the unit from the passage: Deux nuits (“Two nights”)."
+          }
+        ]
       },
       "stimulusId": "fr-a2-conditionnel-politesse-stim-2"
     },
@@ -14116,7 +14489,9 @@
         "vocabulary"
       ],
       "prompt": "J’y vais — “I’m going there.” Which English word does y stand for ?",
-      "hints": [],
+      "hints": [
+        "y replaces à + the place: au café → there. The gloss “I'm going there” gives the English word y stands for."
+      ],
       "feedback": "there — y replaces à + the place (au café → y). Je points at who; vais is the verb y leans on.",
       "evidenceKey": "fr-a2-pronoms-y-en-meet",
       "assistanceAffectsEvidence": [
@@ -14165,7 +14540,9 @@
         "grammar"
       ],
       "prompt": "Think: en replaces de + thing. “Do you want some (cake) ?”",
-      "hints": [],
+      "hints": [
+        "en replaces “some (of the cake)” — de + thing. It sits right before the verb: Tu en veux ?"
+      ],
       "feedback": "Tu en veux ? en stands for “some (of the cake)” — de + thing, swallowed into one syllable before the verb.",
       "evidenceKey": "fr-a2-pronoms-y-en-think",
       "assistanceAffectsEvidence": [
@@ -14178,7 +14555,23 @@
           "Tu en veux."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tu veux du gâteau ?",
+            "category": "incorrect answer",
+            "explanation": "Correct French — but this drill replaces de + thing with en: Tu en veux ?"
+          },
+          {
+            "answer": "Tu en veux du gâteau ?",
+            "category": "incorrect answer",
+            "explanation": "en already stands for “some (of the cake)”; don't repeat du gâteau: Tu en veux ?"
+          },
+          {
+            "answer": "Tu veux en ?",
+            "category": "word-order problem",
+            "explanation": "en leans on the verb from the left: Tu en veux ?"
+          }
+        ]
       }
     },
     {
@@ -14200,7 +14593,9 @@
         "vocabulary"
       ],
       "prompt": "J’y pense souvent. Where does y sit ?",
-      "hints": [],
+      "hints": [
+        "y and en always lean on the verb from the left — here between the subject and the verb: j'y pense, j'en veux."
+      ],
       "feedback": "before the verb — y and en always lean on the verb from the left: j’y pense, j’en veux. After the verb is the classic beginner tell.",
       "evidenceKey": "fr-a2-pronoms-y-en-notice",
       "assistanceAffectsEvidence": [
@@ -14249,7 +14644,9 @@
         "grammar"
       ],
       "prompt": "Replace the noun: “Je vais au café” → use y.",
-      "hints": [],
+      "hints": [
+        "au café collapses into y, and y sits before the verb, after j': J'y vais."
+      ],
       "feedback": "J’y vais. au café collapses into y, before the verb. Say it out loud — it’s the sound of fluency.",
       "evidenceKey": "fr-a2-pronoms-y-en-vary",
       "assistanceAffectsEvidence": [
@@ -14261,7 +14658,23 @@
           "J’y vais."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je vais au café.",
+            "category": "incorrect answer",
+            "explanation": "That's the sentence before the swap. The job is to replace au café with y: J'y vais."
+          },
+          {
+            "answer": "Je vais y.",
+            "category": "word-order problem",
+            "explanation": "y goes before the verb, not after it: J'y vais."
+          },
+          {
+            "answer": "Je y vais.",
+            "category": "incorrect answer",
+            "explanation": "je + y contract: J'y vais."
+          }
+        ]
       }
     },
     {
@@ -14283,7 +14696,9 @@
         "grammar"
       ],
       "prompt": "Complete: Tu veux du gâteau ? Oui, j’___ veux.",
-      "hints": [],
+      "hints": [
+        "du gâteau is de + thing, so it becomes en: Oui, j'en veux."
+      ],
       "feedback": "en — du gâteau (de + thing) becomes en. One letter doing the work of three words.",
       "evidenceKey": "fr-a2-pronoms-y-en-cloze",
       "assistanceAffectsEvidence": [
@@ -14311,7 +14726,18 @@
             "en"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "y",
+              "category": "incorrect answer",
+              "explanation": "y replaces à + place or idea. du gâteau is de + thing, so the pronoun is en."
+            },
+            {
+              "answer": "le",
+              "category": "incorrect answer",
+              "explanation": "le replaces a specific already-named object (“it”). du gâteau is partitive, so en: j'en veux."
+            }
+          ]
         }
       }
     },
@@ -14341,7 +14767,9 @@
         "vocabulary"
       ],
       "prompt": "Le collègue qui m’aide. Qui links to the subject — who helps ?",
-      "hints": [],
+      "hints": [
+        "qui points back at whoever does the verb: the colleague helps, so the answer is the subject, Le collègue."
+      ],
       "feedback": "Le collègue — the colleague does the helping, so qui is the subject-link. m’ (“me”) receives the help; aide is the verb.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-meet",
       "assistanceAffectsEvidence": [
@@ -14390,7 +14818,9 @@
         "grammar"
       ],
       "prompt": "Think: que = the verb acts on it. “The report that I’m writing.”",
-      "hints": [],
+      "hints": [
+        "I do the writing and the report receives it → object-link que: Le rapport que j'écris."
+      ],
       "feedback": "Le rapport que j’écris. I do the writing, the report receives it — so que, not qui.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-think",
       "assistanceAffectsEvidence": [
@@ -14402,7 +14832,23 @@
           "Le rapport que j’écris."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le rapport qui j’écris.",
+            "category": "incorrect answer",
+            "explanation": "qui links the subject that does the verb. The report receives the writing, so it's que: Le rapport que j'écris."
+          },
+          {
+            "answer": "Le rapport que je écris.",
+            "category": "incorrect answer",
+            "explanation": "je + écris contract: j'écris."
+          },
+          {
+            "answer": "Je écris le rapport.",
+            "category": "word-order problem",
+            "explanation": "The link opens with the noun being described: Le rapport que j'écris."
+          }
+        ]
       }
     },
     {
@@ -14424,7 +14870,9 @@
         "vocabulary"
       ],
       "prompt": "Le jour où je suis né. What does où mark here ?",
-      "hints": [],
+      "hints": [
+        "Le jour is a moment, not a place — and où handles time as well as place. (That's the sneakier use.)"
+      ],
       "feedback": "a time — où covers when as well as where. Le jour is a moment, not a place, and où handles both.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-notice",
       "assistanceAffectsEvidence": [
@@ -14473,7 +14921,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “The office where I work.”",
-      "hints": [],
+      "hints": [
+        "The noun (Le bureau) first, then the hinge (où), then the clause: je travaille."
+      ],
       "feedback": "Le bureau où je travaille. A place → où. The hinge sits between the noun and its clause.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-build",
       "assistanceAffectsEvidence": [
@@ -14521,7 +14971,9 @@
         "grammar"
       ],
       "prompt": "Link it: “The colleague who helps me is nice.”",
-      "hints": [],
+      "hints": [
+        "qui links the helper (the colleague) to the rest: Le collègue qui m'aide est sympa."
+      ],
       "feedback": "Le collègue qui m’aide est sympa. qui links the helper to the description — one flowing sentence instead of two short ones.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-vary",
       "assistanceAffectsEvidence": [
@@ -14530,10 +14982,22 @@
       ],
       "answer": {
         "answers": [
-          "Le collègue qui m’aide est sympa."
+          "Le collègue qui m’aide est sympa.",
+          "Le collègue qui m’aide est sympathique."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le collègue que m’aide est sympa.",
+            "category": "incorrect answer",
+            "explanation": "The colleague does the helping — subject, so qui: Le collègue qui m'aide."
+          },
+          {
+            "answer": "Le collègue qui aide moi est sympa.",
+            "category": "word-order problem",
+            "explanation": "The object pronoun leans on the verb: m'aide, not aide moi."
+          }
+        ]
       }
     },
     {
@@ -14555,7 +15019,9 @@
         "grammar"
       ],
       "prompt": "Complete: Le rapport ___ j’écris est long.",
-      "hints": [],
+      "hints": [
+        "j'écris acts on the report — it receives the verb → object-link que."
+      ],
       "feedback": "que — j’écris acts on the report, so it’s the object-link. If the report were doing the writing, it would be qui.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-cloze",
       "assistanceAffectsEvidence": [
@@ -14583,7 +15049,23 @@
             "que"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "qui",
+              "category": "incorrect answer",
+              "explanation": "qui is the subject-link. J'écris acts on the report, so the object-link is que."
+            },
+            {
+              "answer": "où",
+              "category": "incorrect answer",
+              "explanation": "où marks place or time. Here the verb acts on the report — that's the object-link que."
+            },
+            {
+              "answer": "qu’",
+              "category": "incorrect answer",
+              "explanation": "que stays full before j': Le rapport que j'écris."
+            }
+          ]
         }
       }
     },
@@ -14606,7 +15088,9 @@
         "grammar"
       ],
       "prompt": "What is in the office ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread: “Nous travaillons dans le bureau où il y a une grande fenêtre.” — a big window."
+      ],
       "feedback": "Une grande fenêtre — “a big window”. où links the office to its description, exactly the pattern you just built.",
       "evidenceKey": "fr-a2-relatifs-qui-que-ou-read",
       "assistanceAffectsEvidence": [
@@ -14620,7 +15104,23 @@
           "A big window."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le rapport",
+            "category": "incorrect answer",
+            "explanation": "The report is what Marc helps with. What's in the office is the big window: une grande fenêtre."
+          },
+          {
+            "answer": "Une fenêtre",
+            "category": "missing word",
+            "explanation": "The passage describes it fully: une grande fenêtre — a big window."
+          },
+          {
+            "answer": "A window.",
+            "category": "missing word",
+            "explanation": "Give the full description from the passage: a big window (une grande fenêtre)."
+          }
+        ]
       },
       "stimulusId": "fr-a2-relatifs-qui-que-ou-stim-2"
     },
@@ -14650,7 +15150,9 @@
         "vocabulary"
       ],
       "prompt": "Paris est plus grand que Lyon. Which word starts the comparison — “more” ?",
-      "hints": [],
+      "hints": [
+        "The comparison opener is “more”: plus. est links, grand is the adjective, que is “than”, Lyon the rival."
+      ],
       "feedback": "plus — the “more” marker. grand is the adjective (agreeing with Paris, masculine); que is the “than” hinge; Lyon is just the rival.",
       "evidenceKey": "fr-a2-comparatifs-meet",
       "assistanceAffectsEvidence": [
@@ -14699,7 +15201,9 @@
         "grammar"
       ],
       "prompt": "Think: moins + adjective + que. “The train is less expensive.”",
-      "hints": [],
+      "hints": [
+        "moins opens the comparison, cher describes the train (masculine): Le train est moins cher."
+      ],
       "feedback": "Le train est moins cher. moins opens it, cher describes the train, and que would introduce the rival if there were one.",
       "evidenceKey": "fr-a2-comparatifs-think",
       "assistanceAffectsEvidence": [
@@ -14711,7 +15215,23 @@
           "Le train est moins cher."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le train est moins chère.",
+            "category": "wrong gender",
+            "explanation": "cher agrees with le train (masculine): Le train est moins cher."
+          },
+          {
+            "answer": "Le train est moins.",
+            "category": "missing word",
+            "explanation": "The comparison needs its adjective: moins cher."
+          },
+          {
+            "answer": "Le train coûte moins cher.",
+            "category": "incorrect answer",
+            "explanation": "Also true French — but the drill dictates the être form: Le train est moins cher."
+          }
+        ]
       }
     },
     {
@@ -14733,7 +15253,9 @@
         "vocabulary"
       ],
       "prompt": "L’hôtel est aussi beau. Which comparison is this — more, less, or as ?",
-      "hints": [],
+      "hints": [
+        "aussi + adjective means “as … as”: aussi beau is “as beautiful”. (Plus = more, moins = less.)"
+      ],
       "feedback": "as — aussi + adjective (+ que) means “as … as”. The que is implied here: as beautiful (as the other one).",
       "evidenceKey": "fr-a2-comparatifs-notice",
       "assistanceAffectsEvidence": [
@@ -14778,7 +15300,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “This flight is faster.”",
-      "hints": [],
+      "hints": [
+        "Subject (Ce vol), then est, then the comparison: plus rapide."
+      ],
       "feedback": "Ce vol est plus rapide. plus + rapide, agreeing with vol (masculine) — no que needed when there’s no rival named.",
       "evidenceKey": "fr-a2-comparatifs-build",
       "assistanceAffectsEvidence": [
@@ -14826,7 +15350,9 @@
         "grammar"
       ],
       "prompt": "Compare with a rival: “The plane is faster than the train.”",
-      "hints": [],
+      "hints": [
+        "The full sandwich: plus + rapide + que + le train."
+      ],
       "feedback": "L’avion est plus rapide que le train. The full sandwich: plus + adjective + que + rival.",
       "evidenceKey": "fr-a2-comparatifs-vary",
       "assistanceAffectsEvidence": [
@@ -14838,7 +15364,23 @@
           "L’avion est plus rapide que le train."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "L’avion est plus rapide que la train.",
+            "category": "wrong article",
+            "explanation": "train is masculine: le train."
+          },
+          {
+            "answer": "L’avion est plus rapide le train.",
+            "category": "missing word",
+            "explanation": "The comparison needs its hinge: plus rapide que le train."
+          },
+          {
+            "answer": "L’avion est plus vite que le train.",
+            "category": "incorrect answer",
+            "explanation": "rapide is the adjective agreeing with l'avion; vite is the adverb (“quickly”): plus rapide."
+          }
+        ]
       }
     },
     {
@@ -14859,8 +15401,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Le train est ___ confortable que l’avion.",
-      "hints": [],
+      "prompt": "Complete the comparison “the train is more comfortable than the plane”: Le train est ___ confortable que l'avion.",
+      "hints": [
+        "“More comfortable” → the plus opener: Le train est plus confortable que l'avion."
+      ],
       "feedback": "plus — the train wins this round. The sandwich needs its opener: plus/moins/aussi.",
       "evidenceKey": "fr-a2-comparatifs-cloze",
       "assistanceAffectsEvidence": [
@@ -14888,7 +15432,18 @@
             "plus"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "moins",
+              "category": "incorrect answer",
+              "explanation": "moins would be “less” — grammatical, but the prompt dictates MORE comfortable: plus."
+            },
+            {
+              "answer": "aussi",
+              "category": "incorrect answer",
+              "explanation": "aussi … que means “as … as”. The prompt dictates “more”: plus."
+            }
+          ]
         }
       }
     },
@@ -14918,7 +15473,9 @@
         "vocabulary"
       ],
       "prompt": "C’est le plus grand. Which word makes it “the most” — the superlative marker ?",
-      "hints": [],
+      "hints": [
+        "plus is the marker — it only means “the most” once its crown le sits in front of it."
+      ],
       "feedback": "plus — but it only becomes “the most” with its crown, le. C’est just presents; grand is the adjective.",
       "evidenceKey": "fr-a2-superlatifs-meet",
       "assistanceAffectsEvidence": [
@@ -14966,8 +15523,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Think: la + moins + chère (feminine). “It’s the cheapest (hotel).”",
-      "hints": [],
+      "prompt": "Think: la + moins + chère (a feminine noun). Say “It's the cheapest one.”",
+      "hints": [
+        "Feminine crown la + moins + the agreeing adjective chère: C'est la moins chère."
+      ],
       "feedback": "C’est la moins chère. Feminine crown la, moins for “least”, chère agreeing feminine — the whole agreement chain.",
       "evidenceKey": "fr-a2-superlatifs-think",
       "assistanceAffectsEvidence": [
@@ -14979,7 +15538,23 @@
           "C’est la moins chère."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "C’est la moins cher.",
+            "category": "wrong gender",
+            "explanation": "chère agrees with the feminine noun: la moins chère."
+          },
+          {
+            "answer": "C’est le moins chère.",
+            "category": "wrong article",
+            "explanation": "le crowns a masculine noun. The drill dictates the feminine crown: la moins chère."
+          },
+          {
+            "answer": "C’est la plus chère.",
+            "category": "incorrect answer",
+            "explanation": "plus makes it “the most expensive”. The prompt dictates the cheapest: la moins chère."
+          }
+        ]
       }
     },
     {
@@ -15001,7 +15576,9 @@
         "vocabulary"
       ],
       "prompt": "Le meilleur restaurant. Why not “le plus bon” ?",
-      "hints": [],
+      "hints": [
+        "bon is the rebel: its superlative is meilleur, never “le plus bon”. (meilleur is an adjective — and bon does change, irregularly.)"
+      ],
       "feedback": "bon is irregular — it becomes meilleur. “le plus bon” is the mistake every learner makes once; now you’ll never make it.",
       "evidenceKey": "fr-a2-superlatifs-notice",
       "assistanceAffectsEvidence": [
@@ -15050,7 +15627,9 @@
         "grammar"
       ],
       "prompt": "Crown it: “The most famous monument.”",
-      "hints": [],
+      "hints": [
+        "Noun + repeated crown + plus + adjective: Le monument le plus célèbre."
+      ],
       "feedback": "Le monument le plus célèbre. Note the word order: with a noun, the crown repeats after it — le monument le plus célèbre.",
       "evidenceKey": "fr-a2-superlatifs-vary",
       "assistanceAffectsEvidence": [
@@ -15062,7 +15641,23 @@
           "Le monument le plus célèbre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le plus célèbre monument.",
+            "category": "word-order problem",
+            "explanation": "With a noun, the crown repeats after it: Le monument le plus célèbre."
+          },
+          {
+            "answer": "La monument le plus célèbre.",
+            "category": "wrong article",
+            "explanation": "monument is masculine: le monument."
+          },
+          {
+            "answer": "Le monument plus célèbre.",
+            "category": "missing word",
+            "explanation": "The superlative needs its crown inside the noun phrase: le monument LE plus célèbre."
+          }
+        ]
       }
     },
     {
@@ -15084,7 +15679,9 @@
         "grammar"
       ],
       "prompt": "Complete: C’est ___ restaurant de Paris. (good → best)",
-      "hints": [],
+      "hints": [
+        "(good → best) = bon's irregular crown: le meilleur."
+      ],
       "feedback": "le meilleur — bon’s irregular crown. “le plus bon” would betray you.",
       "evidenceKey": "fr-a2-superlatifs-cloze",
       "assistanceAffectsEvidence": [
@@ -15112,7 +15709,23 @@
             "le meilleur"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "le plus bon",
+              "category": "incorrect answer",
+              "explanation": "bon is irregular — its superlative is le meilleur, never “le plus bon”."
+            },
+            {
+              "answer": "la meilleure",
+              "category": "wrong gender",
+              "explanation": "restaurant is masculine: le meilleur."
+            },
+            {
+              "answer": "meilleur",
+              "category": "missing word",
+              "explanation": "The crown le is required: le meilleur restaurant."
+            }
+          ]
         }
       }
     },
@@ -15135,7 +15748,9 @@
         "grammar"
       ],
       "prompt": "What does the Louvre have ? (Reading)",
-      "hints": [],
+      "hints": [
+        "Reread: “le Louvre a la plus belle collection.” — the most beautiful collection."
+      ],
       "feedback": "La plus belle collection — “the most beautiful collection”. The superlative doing its job in the wild.",
       "evidenceKey": "fr-a2-superlatifs-read",
       "assistanceAffectsEvidence": [
@@ -15149,7 +15764,23 @@
           "The most beautiful collection."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Le monument le plus célèbre",
+            "category": "incorrect answer",
+            "explanation": "That's the Eiffel Tower's description. The Louvre has the most beautiful collection: la plus belle collection."
+          },
+          {
+            "answer": "La collection",
+            "category": "missing word",
+            "explanation": "The passage describes it fully: la plus belle collection — the most beautiful collection."
+          },
+          {
+            "answer": "The most beautiful view.",
+            "category": "incorrect answer",
+            "explanation": "The beautiful view belongs to the restaurant, not the Louvre. The Louvre has la plus belle collection."
+          }
+        ]
       },
       "stimulusId": "fr-a2-superlatifs-stim-2"
     },
@@ -15179,7 +15810,9 @@
         "vocabulary"
       ],
       "prompt": "Il faut que tu viennes. Which chunk triggers the subjunctive — “it’s necessary that” ?",
-      "hints": [],
+      "hints": [
+        "The trigger is the whole chunk: Il faut que (“it's necessary that”). Il faut alone opens nothing; que alone is just a hinge."
+      ],
       "feedback": "Il faut que — the trigger. tu viennes is the subjunctive clause it opens; viennes looks like the present, but the que tells you it’s the new mood.",
       "evidenceKey": "fr-a2-subjonctif-intro-meet",
       "assistanceAffectsEvidence": [
@@ -15228,7 +15861,9 @@
         "grammar"
       ],
       "prompt": "Think: ils boivent → stem boiv- + -e. “You must drink water.”",
-      "hints": [],
+      "hints": [
+        "Stem from ils boivent: boiv-. Add the tu subjunctive ending -es: tu boives. Keep the trigger: Il faut que."
+      ],
       "feedback": "Il faut que tu boives de l’eau. Stem boiv- from the ils present, ending -e for tu — the subjunctive machine working.",
       "evidenceKey": "fr-a2-subjonctif-intro-think",
       "assistanceAffectsEvidence": [
@@ -15240,7 +15875,23 @@
           "Il faut que tu boives de l’eau."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il faut que tu bois de l’eau.",
+            "category": "wrong conjugation",
+            "explanation": "bois is the present of boire. After il faut que, the subjunctive stem (ils boivent → boiv-) takes -es: tu boives."
+          },
+          {
+            "answer": "Il faut que tu boire de l’eau.",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive doesn't follow il faut que: the subjunctive boives is needed."
+          },
+          {
+            "answer": "Il faut tu boives de l’eau.",
+            "category": "missing word",
+            "explanation": "The trigger needs its hinge: il faut QUE tu boives."
+          }
+        ]
       }
     },
     {
@@ -15262,7 +15913,9 @@
         "vocabulary"
       ],
       "prompt": "Il faut qu’elle dorme. The verb after que looks like the present — but what tells you it’s the subjunctive ?",
-      "hints": [],
+      "hints": [
+        "The verb form alone looks ordinary — the mood comes from the trigger: the que after il faut."
+      ],
       "feedback": "the que after il faut — the trigger is the signal. dorme happens to look like the present; the mood comes from il faut que.",
       "evidenceKey": "fr-a2-subjonctif-intro-notice",
       "assistanceAffectsEvidence": [
@@ -15311,7 +15964,9 @@
         "grammar"
       ],
       "prompt": "Build it with the blocks: “I need to rest.”",
-      "hints": [],
+      "hints": [
+        "Trigger first: Il faut que, then the subject (je) and the subjunctive form: me repose."
+      ],
       "feedback": "Il faut que je me repose. The trigger, then the subjunctive: ils se reposent → stem repos- + -e.",
       "evidenceKey": "fr-a2-subjonctif-intro-build",
       "assistanceAffectsEvidence": [
@@ -15369,7 +16024,9 @@
         "grammar"
       ],
       "prompt": "Say it: “She must sleep eight hours.”",
-      "hints": [],
+      "hints": [
+        "Trigger with elision: Il faut qu'elle, then the subjunctive from ils dorment → dorm- + -e: dorme."
+      ],
       "feedback": "Il faut qu’elle dorme huit heures. qu’elle with élision, then dorme — ils dorment → dorm- + -e.",
       "evidenceKey": "fr-a2-subjonctif-intro-vary",
       "assistanceAffectsEvidence": [
@@ -15381,7 +16038,23 @@
           "Il faut qu’elle dorme huit heures."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il faut que elle dorme huit heures.",
+            "category": "incorrect answer",
+            "explanation": "que + elle contract: qu'elle."
+          },
+          {
+            "answer": "Il faut qu’elle dors huit heures.",
+            "category": "wrong conjugation",
+            "explanation": "dors is the tu form of dormir. After il faut que, elle takes the subjunctive: dorme."
+          },
+          {
+            "answer": "Il faut qu’elle dort huit heures.",
+            "category": "wrong conjugation",
+            "explanation": "dort is the present. After il faut que, the subjunctive: elle dorme."
+          }
+        ]
       }
     },
     {
@@ -15402,8 +16075,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete: Il faut que tu ___ ton médicament. (prendre)",
-      "hints": [],
+      "prompt": "Complete: Il faut que tu ___ ton médicament. (prendre, subjonctif)",
+      "hints": [
+        "Stem from ils prennent: prenn-. Add -es for tu: prennes."
+      ],
       "feedback": "prennes — ils prennent → prenn- + -es for tu. The double n comes from the ils form, not from nowhere.",
       "evidenceKey": "fr-a2-subjonctif-intro-cloze",
       "assistanceAffectsEvidence": [
@@ -15431,7 +16106,23 @@
             "prennes"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prends",
+              "category": "wrong conjugation",
+              "explanation": "prends is the present of prendre. After il faut que, the subjunctive from ils prennent: tu prennes."
+            },
+            {
+              "answer": "prenne",
+              "category": "wrong conjugation",
+              "explanation": "With tu the subjunctive takes -es: prennes."
+            },
+            {
+              "answer": "prennent",
+              "category": "wrong conjugation",
+              "explanation": "prennent is the ils form. With tu: prennes."
+            }
+          ]
         }
       }
     },
@@ -16473,7 +17164,9 @@
         "grammar"
       ],
       "prompt": "Photograph or painting? Match each line to the job its past tense is doing.",
-      "hints": [],
+      "hints": [
+        "Match each sentence to its job: “Soudain…” interrupts (passé composé); “Elle dormait” and “Il pleuvait” are ongoing background (imparfait); “Je suis entré” is one finished event."
+      ],
       "feedback": "Four for four. The passé composé snaps the photo; the imparfait paints the room the photo was taken in.",
       "evidenceKey": "fr-a2-passe-imparfait-choix-match",
       "assistanceAffectsEvidence": [
@@ -16554,7 +17247,9 @@
         "grammar"
       ],
       "prompt": "Tiny words, big job. Match each line to what y or en is standing in for.",
-      "hints": [],
+      "hints": [
+        "Match each line: y stands for à + place (J'y vais) or à + idea (Tu y penses); en stands for de + thing (J'en veux) or de + quantity (Il en a deux)."
+      ],
       "feedback": "All four. Y swallows à plus a place or an idea; en swallows de plus a thing. That really is the whole trick.",
       "evidenceKey": "fr-a2-pronoms-y-en-match",
       "assistanceAffectsEvidence": [
@@ -16635,7 +17330,9 @@
         "grammar"
       ],
       "prompt": "Crown each line. Match the French superlative to the quality it names.",
-      "hints": [],
+      "hints": [
+        "Match each superlative to its English meaning: le plus grand = the biggest, la moins chère = the cheapest, le meilleur = the best, la plus belle = the most beautiful."
+      ],
       "feedback": "Four crowns placed. Le plus, le moins, le meilleur — the crown always agrees with its noun.",
       "evidenceKey": "fr-a2-superlatifs-match",
       "assistanceAffectsEvidence": [

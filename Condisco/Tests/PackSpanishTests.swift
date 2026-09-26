@@ -654,6 +654,314 @@ final class PackSpanishTests: XCTestCase {
         XCTAssertTrue(result.accepted, "mañana-first alternative is authored")
     }
 
+    // MARK: - Wave D (discovery family outside units 1–2, rubric H4/H3)
+
+    /// The thirteen discovery-family lessons of wave D (units 4–17), keyed
+    /// by their seven graded path activities.
+    private static let batch4Lessons: [String: [String]] = [
+        "es-time-days-foundation": [
+            "es-time-days-foundation-meet", "es-time-days-foundation-think",
+            "es-time-days-foundation-build", "es-time-days-foundation-notice",
+            "es-time-days-foundation-cloze", "es-time-days-foundation-meaning",
+            "es-time-days-foundation-read",
+        ],
+        "es-descriptions-foundation": [
+            "es-descriptions-foundation-meet", "es-descriptions-foundation-think",
+            "es-descriptions-foundation-build", "es-descriptions-foundation-notice",
+            "es-descriptions-foundation-fill", "es-descriptions-foundation-write",
+            "es-descriptions-foundation-read",
+        ],
+        "es-past-foundation": [
+            "es-past-foundation-build", "es-past-foundation-meet",
+            "es-past-foundation-think", "es-past-foundation-fill",
+            "es-past-foundation-notice", "es-past-foundation-write",
+            "es-past-foundation-read",
+        ],
+        "es-months-foundation": [
+            "es-months-foundation-meet", "es-months-foundation-think",
+            "es-months-foundation-build", "es-months-foundation-notice",
+            "es-months-foundation-fill", "es-months-foundation-write",
+            "es-months-foundation-read",
+        ],
+        "es-emergency-foundation": [
+            "es-emergency-foundation-build", "es-emergency-foundation-meet",
+            "es-emergency-foundation-think", "es-emergency-foundation-fill",
+            "es-emergency-foundation-notice", "es-emergency-foundation-write",
+            "es-emergency-foundation-read",
+        ],
+        "es-a2-preterito-formacion": [
+            "es-a2-preterito-formacion-meet", "es-a2-preterito-formacion-think",
+            "es-a2-preterito-formacion-build", "es-a2-preterito-formacion-notice",
+            "es-a2-preterito-formacion-fill", "es-a2-preterito-formacion-write",
+            "es-a2-preterito-formacion-read",
+        ],
+        "es-a2-futuro-formacion": [
+            "es-a2-futuro-formacion-build", "es-a2-futuro-formacion-meet",
+            "es-a2-futuro-formacion-think", "es-a2-futuro-formacion-fill",
+            "es-a2-futuro-formacion-notice", "es-a2-futuro-formacion-write",
+            "es-a2-futuro-formacion-read",
+        ],
+        "es-a2-planes-intenciones": [
+            "es-a2-planes-intenciones-meet", "es-a2-planes-intenciones-fill",
+            "es-a2-planes-intenciones-think", "es-a2-planes-intenciones-build",
+            "es-a2-planes-intenciones-notice", "es-a2-planes-intenciones-write",
+            "es-a2-planes-intenciones-read",
+        ],
+        "es-a2-subjuntivo-intro": [
+            "es-a2-subjuntivo-intro-meet", "es-a2-subjuntivo-intro-think",
+            "es-a2-subjuntivo-intro-build", "es-a2-subjuntivo-intro-notice",
+            "es-a2-subjuntivo-intro-fill", "es-a2-subjuntivo-intro-write",
+            "es-a2-subjuntivo-intro-read",
+        ],
+        "es-a2-comparativos": [
+            "es-a2-comparativos-meet", "es-a2-comparativos-fill",
+            "es-a2-comparativos-think", "es-a2-comparativos-build",
+            "es-a2-comparativos-notice", "es-a2-comparativos-write",
+            "es-a2-comparativos-read",
+        ],
+        "es-a2-por-para": [
+            "es-a2-por-para-build", "es-a2-por-para-meet",
+            "es-a2-por-para-think", "es-a2-por-para-fill",
+            "es-a2-por-para-notice", "es-a2-por-para-write",
+            "es-a2-por-para-read",
+        ],
+        "es-a2-superlativos": [
+            "es-a2-superlativos-meet", "es-a2-superlativos-fill",
+            "es-a2-superlativos-think", "es-a2-superlativos-build",
+            "es-a2-superlativos-notice", "es-a2-superlativos-write",
+            "es-a2-superlativos-read",
+        ],
+        "es-a2-tecnologia": [
+            "es-a2-tecnologia-meet", "es-a2-tecnologia-fill",
+            "es-a2-tecnologia-think", "es-a2-tecnologia-build",
+            "es-a2-tecnologia-notice", "es-a2-tecnologia-write",
+            "es-a2-tecnologia-read",
+        ],
+    ]
+
+    /// Every graded step in wave-D discovery lessons has a real authored hint
+    /// (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch4GradedStepsHaveAuthoredHints() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch4Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and every cloze blank in wave-D lessons authors
+    /// error-specific feedback (audit_editorial error-gap must stay 0).
+    func testBatch4TextAndClozeActivitiesAuthorErrors() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch4Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Every wave-D discovery lesson carries a non-empty objective (M2) and
+    /// closes with a text final-response step (M5 outcome coherence).
+    func testBatch4DiscoveryLessonsEndWithTextFinalResponse() throws {
+        let pack = try spanishPack()
+        for lessonId in Self.batch4Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lessons.first { $0.id == lessonId }, "missing lesson \(lessonId)")
+            XCTAssertEqual(lesson.family, .discovery, "\(lessonId) must be a discovery lesson")
+            XCTAssertFalse(
+                lesson.objective.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                "\(lessonId) must have an objective")
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            var hasTextTerminal = false
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                if case .text = act { hasTextTerminal = true }
+            }
+            XCTAssertTrue(hasTextTerminal, "\(lessonId) must end with a text final-response step (M5)")
+        }
+    }
+
+    /// Plausible wrong answers in wave-D lessons hit their authored category
+    /// + explanation (text and cloze surfaces).
+    func testBatch4AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try spanishPack()
+
+        // es-time-days-foundation
+        var result = try gradeClozeBlank("es-time-days-foundation-cloze", in: pack, blank: "b1", "El")
+        XCTAssertEqual(result.category, "wrong number")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("es-time-days-foundation-think", in: pack, "Hoy está viernes.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-time-days-foundation-meaning", in: pack, "Monday I work.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("es-time-days-foundation-read", in: pack, "Martes.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-descriptions-foundation
+        result = try gradeClozeBlank("es-descriptions-foundation-fill", in: pack, blank: "b1", "nueva")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("es-descriptions-foundation-think", in: pack, "El casa es grande.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("es-descriptions-foundation-write", in: pack, "Son alto.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-descriptions-foundation-read", in: pack, "Nueva.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-past-foundation
+        result = try gradeClozeBlank("es-past-foundation-fill", in: pack, blank: "b1", "hablo")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-past-foundation-think", in: pack, "Como pan.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-past-foundation-write", in: pack, "Ayer trabajo mucho.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-past-foundation-read", in: pack, "Con mi familia.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-months-foundation
+        result = try gradeClozeBlank("es-months-foundation-fill", in: pack, blank: "b1", "enero")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-months-foundation-think", in: pack, "Mi cumpleaños es junio.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("es-months-foundation-write", in: pack, "Hoy es mayo 3.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("es-months-foundation-read", in: pack, "El 10 de enero.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-emergency-foundation
+        result = try gradeClozeBlank("es-emergency-foundation-fill", in: pack, blank: "b1", "Ayuda")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-emergency-foundation-think", in: pack, "¿Dónde es el hospital?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-emergency-foundation-write", in: pack, "Necesito la ayuda.")
+        XCTAssertEqual(result.category, "extra word")
+
+        // es-a2-preterito-formacion
+        result = try gradeClozeBlank("es-a2-preterito-formacion-fill", in: pack, blank: "b1", "hago")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-preterito-formacion-think", in: pack, "comi")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-a2-preterito-formacion-write", in: pack, "Me dijo no.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // es-a2-futuro-formacion
+        result = try gradeClozeBlank("es-a2-futuro-formacion-fill", in: pack, blank: "b1", "saliremos")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-futuro-formacion-think", in: pack, "comía")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-futuro-formacion-write", in: pack, "Comemos a las dos.")
+        XCTAssertEqual(result.category, "wrong tense")
+
+        // es-a2-planes-intenciones
+        result = try gradeClozeBlank("es-a2-planes-intenciones-fill", in: pack, blank: "b1", "Voy")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-planes-intenciones-think", in: pack, "Vamos")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-planes-intenciones-write", in: pack, "Vamos a viajamos en verano.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-a2-subjuntivo-intro
+        result = try gradeClozeBlank("es-a2-subjuntivo-intro-fill", in: pack, blank: "b1", "vienes")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-subjuntivo-intro-think", in: pack, "hablas")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-subjuntivo-intro-write", in: pack, "Es importante que estudias.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // es-a2-comparativos
+        result = try gradeClozeBlank("es-a2-comparativos-fill", in: pack, blank: "b1", "más")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-comparativos-think", in: pack, "más bueno")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-comparativos-write", in: pack, "Mi piso es menos caro que tuyo.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // es-a2-por-para
+        result = try gradeClozeBlank("es-a2-por-para-fill", in: pack, blank: "b1", "para")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("es-a2-por-para-think", in: pack, "para")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("es-a2-por-para-write", in: pack, "Lo necesito por mañana.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("es-a2-por-para-read", in: pack, "Mañana.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-a2-superlativos
+        result = try gradeClozeBlank("es-a2-superlativos-fill", in: pack, blank: "b1", "el")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-a2-superlativos-think", in: pack, "bueno")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-superlativos-write", in: pack, "Mi horario está flexible.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-a2-superlativos-read", in: pack, "Cinco días.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-a2-tecnologia
+        result = try gradeClozeBlank("es-a2-tecnologia-fill", in: pack, blank: "b1", "envio")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-a2-tecnologia-think", in: pack, "envió")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("es-a2-tecnologia-write", in: pack, "La pantalla está roto.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("es-a2-tecnologia-read", in: pack, "La pantalla.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// The authored accepted answers for wave-D surfaces stay accepted,
+    /// including the natural digit alternative.
+    func testBatch4AcceptsAuthoredAnswers() throws {
+        let pack = try spanishPack()
+
+        var result = try gradeText("es-a2-futuro-formacion-write", in: pack, "Comeremos a las dos.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-futuro-formacion-write", in: pack, "Comeremos a las 2.")
+        XCTAssertTrue(result.accepted, "digit time is authored alongside the word form")
+
+        result = try gradeText("es-emergency-foundation-write", in: pack, "¡Necesito ayuda!")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-subjuntivo-intro-write", in: pack, "Es importante que estudies.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-tecnologia-write", in: pack, "La pantalla está rota.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-past-foundation-write", in: pack, "Ayer trabajé mucho.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-descriptions-foundation-write", in: pack, "Son altos.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-months-foundation-write", in: pack, "Hoy es el 3 de mayo.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-por-para-think", in: pack, "por")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeClozeBlank("es-a2-comparativos-fill", in: pack, blank: "b1", "tan")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-time-days-foundation-cloze", in: pack, blank: "b1", "Los")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-a2-superlativos-fill", in: pack, blank: "b1", "los")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-a2-tecnologia-fill", in: pack, blank: "b1", "envío")
+        XCTAssertTrue(result.accepted)
+        result = try gradeClozeBlank("es-a2-subjuntivo-intro-fill", in: pack, blank: "b1", "vengas")
+        XCTAssertTrue(result.accepted)
+    }
+
     // MARK: - Accepted answers (prompt ↔ answers alignment)
 
     /// Natural Spanish replies for comprehension/quantity prompts are accepted

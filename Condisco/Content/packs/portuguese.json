@@ -5329,7 +5329,9 @@
         "vocabulary"
       ],
       "prompt": "In Lisbon a shop sign swaps a single word at dawn. Choose today's word.",
-      "hints": [],
+      "hints": [
+        "Look for the word that means 'today' — the shop sign's dawn word. Amanhã points to tomorrow and semana to the whole week."
+      ],
       "feedback": "Hoje is right. What is left over means the week, Monday and tomorrow.",
       "evidenceKey": "pt-time-days-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5375,7 +5377,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it. Monday is the second fair, so count from domingo: today is Monday.",
-      "hints": [],
+      "hints": [
+        "The sentence starts with Hoje é, then the second fair counting from domingo: segunda-feira, hyphen and all."
+      ],
       "feedback": "Hoje é plus the day. Domingo is the first feria, so Monday, the second, is segunda-feira.",
       "evidenceKey": "pt-time-days-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5389,7 +5393,23 @@
           "Hoje é segunda-feira."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hoje e segunda-feira.",
+            "category": "accent/diacritic issue",
+            "explanation": "Without its accent, é becomes e, 'and' — the sentence needs the verb 'is': Hoje é segunda-feira."
+          },
+          {
+            "answer": "Hoje é terça-feira.",
+            "category": "incorrect answer",
+            "explanation": "Count the ferias from domingo: domingo is first, so Monday — the second fair — is segunda-feira, not terça-feira."
+          },
+          {
+            "answer": "Hoje é segunda feira.",
+            "category": "accent/diacritic issue",
+            "explanation": "The weekday keeps its hyphen: segunda-feira, one compound word."
+          }
+        ]
       }
     },
     {
@@ -5405,7 +5425,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Na segunda-feira trabalho.",
-      "hints": [],
+      "hints": [
+        "Read na segunda-feira as 'on Monday' and trabalho as 'I work' — either word order is accepted."
+      ],
       "feedback": "Na marks on before a feminine weekday, and segunda-feira is the second fair.",
       "evidenceKey": "pt-time-days-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -5420,7 +5442,18 @@
           "I work on Monday."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I work on Tuesday.",
+            "category": "incorrect answer",
+            "explanation": "Segunda-feira is Monday, the second fair — Tuesday would be terça-feira."
+          },
+          {
+            "answer": "I work.",
+            "category": "missing word",
+            "explanation": "The line names the day too: na segunda-feira — 'on Monday'."
+          }
+        ]
       }
     },
     {
@@ -5436,7 +5469,9 @@
         "vocabulary"
       ],
       "prompt": "Portuguese counts the working days from domingo. Counting that way, which day is the fourth?",
-      "hints": [],
+      "hints": [
+        "Count the ferias from domingo: segunda is second, terça third — so the fourth day is quarta-feira."
+      ],
       "feedback": "Domingo is the first feria; segunda is second, terça third, so the fourth is quarta-feira.",
       "evidenceKey": "pt-time-days-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5478,7 +5513,9 @@
         "vocabulary"
       ],
       "prompt": "Read the week. According to the passage, which day opens the week?",
-      "hints": [],
+      "hints": [
+        "The passage's first line announces the day that opens the week: domingo é o primeiro dia."
+      ],
       "feedback": "The opening line names it: domingo é o primeiro dia da semana.",
       "evidenceKey": "pt-time-days-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5494,7 +5531,18 @@
           "Sunday"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Monday.",
+            "category": "incorrect answer",
+            "explanation": "Domingo é o primeiro dia — the passage opens with Sunday, not Monday."
+          },
+          {
+            "answer": "segunda-feira",
+            "category": "incorrect answer",
+            "explanation": "Segunda-feira is the second day of the week — the week opens with domingo."
+          }
+        ]
       }
     },
     {
@@ -5510,7 +5558,9 @@
         "grammar"
       ],
       "prompt": "Build the Portuguese sentence for today is Wednesday, keeping the hyphen.",
-      "hints": [],
+      "hints": [
+        "Start with Hoje, follow with é, and close with the hyphenated day quarta-feira."
+      ],
       "feedback": "Hoje first, then é, then the hyphenated day: quarta-feira.",
       "evidenceKey": "pt-time-days-foundation-build",
       "assistanceAffectsEvidence": [
@@ -5554,7 +5604,9 @@
         "grammar"
       ],
       "prompt": "Complete with the noun for the morning, not the word for tomorrow: A ___ está fria.",
-      "hints": [],
+      "hints": [
+        "The gap takes the noun for the morning — manhã. Amanhã adds an a in front and means 'tomorrow'."
+      ],
       "feedback": "Manhã is the morning; amanhã, with an a in front, is tomorrow.",
       "evidenceKey": "pt-time-days-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -5584,7 +5636,18 @@
             "manhã"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "amanhã",
+              "category": "incorrect answer",
+              "explanation": "Amanhã means 'tomorrow' — the noun for 'morning' is the shorter manhã."
+            },
+            {
+              "answer": "manha",
+              "category": "accent/diacritic issue",
+              "explanation": "Manhã carries the tilde on the a: manhã, not manha."
+            }
+          ]
         }
       }
     },
@@ -8342,7 +8405,9 @@
         "vocabulary"
       ],
       "prompt": "Which word names the room where you cook?",
-      "hints": [],
+      "hints": [
+        "The room where you cook is the kitchen — cozinha. Quarto is the bedroom, sala the living room, casa de banho the bathroom."
+      ],
       "feedback": "A cozinha is the kitchen — it carries the feminine article a, like a sala and a casa de banho.",
       "evidenceKey": "pt-home-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8387,7 +8452,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: in the bedroom. (Remember what em + o becomes.)",
-      "hints": [],
+      "hints": [
+        "Em + o fuses into no — so 'in the bedroom' is no quarto, one word with no space."
+      ],
       "feedback": "Em melts into o to make no: no quarto, in the bedroom.",
       "evidenceKey": "pt-home-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8401,7 +8468,23 @@
           "no quarto"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "em o quarto",
+            "category": "wrong preposition",
+            "explanation": "Em and o fuse into the single word no: no quarto, never em o quarto."
+          },
+          {
+            "answer": "na quarto",
+            "category": "wrong gender",
+            "explanation": "Quarto is masculine, so em + o gives no — na would fuse em + a for a feminine noun."
+          },
+          {
+            "answer": "em quarto",
+            "category": "missing word",
+            "explanation": "Portuguese keeps the fused article after em: no quarto, not bare quarto."
+          }
+        ]
       }
     },
     {
@@ -8417,7 +8500,9 @@
         "grammar"
       ],
       "prompt": "Which sentence keeps the fused form Portuguese wants?",
-      "hints": [],
+      "hints": [
+        "Look for the fused form — em + a melts into na. The other options split the article apart or drop it."
+      ],
       "feedback": "Em + a fuses into na; splitting it (em a) or dropping it (em cozinha) both sound wrong.",
       "evidenceKey": "pt-home-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8462,7 +8547,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The books are in the bedroom.",
-      "hints": [],
+      "hints": [
+        "Open with Os (the plural article), then livros — the fused no precedes quarto to close the line."
+      ],
       "feedback": "Os livros estão no quarto — note the plural os with the plural noun, and no doing its fused job.",
       "evidenceKey": "pt-home-foundation-build",
       "assistanceAffectsEvidence": [
@@ -8517,7 +8604,9 @@
         "grammar"
       ],
       "prompt": "Change the room: O gato está no quarto. → The cat is in the kitchen.",
-      "hints": [],
+      "hints": [
+        "Keep the frame O gato está — only the room and its fused preposition change: 'in the kitchen' is na cozinha."
+      ],
       "feedback": "No becomes na for the feminine a cozinha: O gato está na cozinha.",
       "evidenceKey": "pt-home-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -8531,7 +8620,23 @@
           "O gato está na cozinha."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O gato está em a cozinha.",
+            "category": "wrong preposition",
+            "explanation": "Em and a fuse into na: na cozinha, not em a cozinha."
+          },
+          {
+            "answer": "O gato está no cozinha.",
+            "category": "wrong gender",
+            "explanation": "Cozinha is feminine, so the fused form is na, not no (which would need a masculine noun)."
+          },
+          {
+            "answer": "O gato está em cozinha.",
+            "category": "missing word",
+            "explanation": "Portuguese keeps the article after em: na cozinha."
+          }
+        ]
       }
     },
     {
@@ -8547,7 +8652,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: A mesa está ___ sala. (in the living room)",
-      "hints": [],
+      "hints": [
+        "The gap holds the fused form of em + a before the feminine sala: na."
+      ],
       "feedback": "Em + a = na: A mesa está na sala.",
       "evidenceKey": "pt-home-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8577,7 +8684,18 @@
             "na"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "no",
+              "category": "wrong gender",
+              "explanation": "Sala is feminine, so em + a gives na — no would fuse em + o for a masculine noun like o quarto."
+            },
+            {
+              "answer": "em a",
+              "category": "wrong preposition",
+              "explanation": "Em and a fuse into one word: na sala, not em a sala."
+            }
+          ]
         }
       }
     },
@@ -8595,7 +8713,9 @@
         "vocabulary"
       ],
       "prompt": "Read the house note. Where does the cat sleep?",
-      "hints": [],
+      "hints": [
+        "The note's first sentence tells where the cat sleeps — o meu gato dorme na sala."
+      ],
       "feedback": "The cat sleeps na sala — in the living room.",
       "evidenceKey": "pt-home-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8609,10 +8729,27 @@
         "answers": [
           "In the living room.",
           "In the living room",
-          "The living room."
+          "The living room.",
+          "The cat sleeps in the living room."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "In the kitchen.",
+            "category": "incorrect answer",
+            "explanation": "The kitchen is small but the cat is elsewhere — the note says o gato dorme na sala."
+          },
+          {
+            "answer": "In the bedroom.",
+            "category": "incorrect answer",
+            "explanation": "The books are in the bedroom — the cat sleeps in the living room: na sala."
+          },
+          {
+            "answer": "In my house.",
+            "category": "incorrect answer",
+            "explanation": "The note names the exact room — the cat sleeps na sala, in the living room."
+          }
+        ]
       }
     },
     {
@@ -8635,7 +8772,9 @@
         "vocabulary"
       ],
       "prompt": "Which adjective matches a sister? A minha irmã é ___.",
-      "hints": [],
+      "hints": [
+        "The sister is feminine, so the adjective takes the feminine -a ending to match irmã: alta."
+      ],
       "feedback": "Alta matches the feminine irmã; alto would describe a brother.",
       "evidenceKey": "pt-descriptions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8680,7 +8819,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: The house is new. (Casa is feminine.)",
-      "hints": [],
+      "hints": [
+        "Start with A casa (feminine), then é, then the feminine adjective: novo turns into nova."
+      ],
       "feedback": "Nova agrees with the feminine casa: A casa é nova.",
       "evidenceKey": "pt-descriptions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8694,7 +8835,23 @@
           "A casa é nova."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A casa é novo.",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine, so the adjective ends in -a: nova, not novo."
+          },
+          {
+            "answer": "A casa é novas.",
+            "category": "wrong gender",
+            "explanation": "The house is one thing — singular nova; novas would need the plural casas."
+          },
+          {
+            "answer": "O casa é nova.",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine, so the article is A: A casa é nova."
+          }
+        ]
       }
     },
     {
@@ -8710,7 +8867,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Match the adjective to its noun: quarto is masculine (pequeno), cozinha feminine and singular (pequena)."
+      ],
       "feedback": "Pequeno matches the masculine quarto; a cozinha would need pequena.",
       "evidenceKey": "pt-descriptions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -8755,7 +8914,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: The coffee is very good.",
-      "hints": [],
+      "hints": [
+        "Begin with O café, then é, then muito — the adjective bom closes the sentence."
+      ],
       "feedback": "Muito sits in front of the adjective it boosts: O café é muito bom.",
       "evidenceKey": "pt-descriptions-foundation-build",
       "assistanceAffectsEvidence": [
@@ -8809,7 +8970,9 @@
         "grammar"
       ],
       "prompt": "Make it feminine: O meu irmão é alto. → My sister is tall.",
-      "hints": [],
+      "hints": [
+        "Swap irmão for irmã, and the whole phrase turns feminine too: A minha irmã é alta."
+      ],
       "feedback": "Both the noun and the adjective switch: A minha irmã é alta.",
       "evidenceKey": "pt-descriptions-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -8823,7 +8986,23 @@
           "A minha irmã é alta."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O minha irmã é alta.",
+            "category": "wrong gender",
+            "explanation": "Irmã is feminine, so the article and possessive are feminine too: A minha."
+          },
+          {
+            "answer": "A minha irmã é alto.",
+            "category": "wrong gender",
+            "explanation": "The adjective must match the sister: alta, not alto."
+          },
+          {
+            "answer": "A meu irmã é alta.",
+            "category": "wrong gender",
+            "explanation": "The feminine noun irmã takes the feminine possessive: A minha."
+          }
+        ]
       }
     },
     {
@@ -8840,7 +9019,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: A sala é ___ grande. (very)",
-      "hints": [],
+      "hints": [
+        "The gap takes the little word that turns the volume up before grande: muito."
+      ],
       "feedback": "Muito never changes — it just turns the adjective up: muito grande.",
       "evidenceKey": "pt-descriptions-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8870,7 +9051,18 @@
             "muito"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "muita",
+              "category": "wrong gender",
+              "explanation": "Muito is invariable before an adjective: muito grande, not muita grande."
+            },
+            {
+              "answer": "mais",
+              "category": "incorrect answer",
+              "explanation": "Mais means 'more' and starts a comparison — the intensifier for 'very' is muito."
+            }
+          ]
         }
       }
     },
@@ -8888,7 +9080,9 @@
         "vocabulary"
       ],
       "prompt": "Read the house note. Which room is new?",
-      "hints": [],
+      "hints": [
+        "The note says which room is new — o meu quarto é novo e muito confortável."
+      ],
       "feedback": "O meu quarto é novo — the bedroom is the new room.",
       "evidenceKey": "pt-descriptions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8905,7 +9099,23 @@
           "My bedroom."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The kitchen.",
+            "category": "incorrect answer",
+            "explanation": "The kitchen is small — the new room is the bedroom: o meu quarto é novo."
+          },
+          {
+            "answer": "The living room.",
+            "category": "incorrect answer",
+            "explanation": "The living room is big, not new — the note calls the bedroom new."
+          },
+          {
+            "answer": "The whole house.",
+            "category": "incorrect answer",
+            "explanation": "The house is old (antiga) — only the bedroom is new."
+          }
+        ]
       }
     },
     {
@@ -8928,7 +9138,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the plural of o mês?",
-      "hints": [],
+      "hints": [
+        "Mês ends in a consonant, so its plural adds -es without an accent: os meses."
+      ],
       "feedback": "Consonant endings take -es: o mês → os meses.",
       "evidenceKey": "pt-plural-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8973,7 +9185,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: the houses. (Casa is feminine.)",
-      "hints": [],
+      "hints": [
+        "Casa is feminine, so the plural article is as and the noun simply adds -s: as casas."
+      ],
       "feedback": "Feminine plural article as with casas: as casas.",
       "evidenceKey": "pt-plural-foundation-think",
       "assistanceAffectsEvidence": [
@@ -8987,7 +9201,23 @@
           "as casas"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "os casas",
+            "category": "wrong gender",
+            "explanation": "Casa is feminine — the plural article is as, not os."
+          },
+          {
+            "answer": "as casa",
+            "category": "missing word",
+            "explanation": "The noun takes the plural -s too: as casas."
+          },
+          {
+            "answer": "a casas",
+            "category": "wrong gender",
+            "explanation": "Everything in the phrase is plural: as casas, never a casas."
+          }
+        ]
       }
     },
     {
@@ -9004,7 +9234,9 @@
         "grammar"
       ],
       "prompt": "Which phrase keeps everything plural?",
-      "hints": [],
+      "hints": [
+        "Everything pluralizes together — the article, the noun and the adjective: as casas grandes."
+      ],
       "feedback": "Article, noun and adjective all go plural: as casas grandes.",
       "evidenceKey": "pt-plural-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9050,7 +9282,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I buy two bread rolls.",
-      "hints": [],
+      "hints": [
+        "Start with Compro, then count dois, and close with the -ão plural pães."
+      ],
       "feedback": "The -ão rebel: pão → pães. Compro dois pães.",
       "evidenceKey": "pt-plural-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9094,7 +9328,9 @@
         "grammar"
       ],
       "prompt": "Make it plural: A janela está aberta. → The windows are open.",
-      "hints": [],
+      "hints": [
+        "Make every word plural: the article as, the noun janelas, the verb estão and the adjective abertas."
+      ],
       "feedback": "Everything shifts: as janelas estão abertas.",
       "evidenceKey": "pt-plural-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9108,7 +9344,23 @@
           "As janelas estão abertas."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "As janelas estão aberta.",
+            "category": "missing word",
+            "explanation": "The adjective joins the plural too: abertas, not aberta."
+          },
+          {
+            "answer": "A janelas estão abertas.",
+            "category": "wrong gender",
+            "explanation": "The article becomes plural too: As janelas."
+          },
+          {
+            "answer": "As janela está aberta.",
+            "category": "wrong conjugation",
+            "explanation": "Janelas is plural, so the verb is estão and the noun keeps its -s: As janelas estão abertas."
+          }
+        ]
       }
     },
     {
@@ -9124,7 +9376,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Tenho ___ irmãos. (two)",
-      "hints": [],
+      "hints": [
+        "Count two brothers — the masculine noun irmãos takes the number dois."
+      ],
       "feedback": "Dois matches the masculine irmãos; duas would pair with irmãs.",
       "evidenceKey": "pt-plural-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9154,7 +9408,18 @@
             "dois"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "duas",
+              "category": "wrong gender",
+              "explanation": "Irmãos is masculine, so the number is dois — duas would need a feminine noun."
+            },
+            {
+              "answer": "duas irmãs",
+              "category": "incorrect answer",
+              "explanation": "The sentence says irmãos (brothers) — the number must be the masculine dois."
+            }
+          ]
         }
       }
     },
@@ -9172,7 +9437,9 @@
         "vocabulary"
       ],
       "prompt": "Read the bakery note. How many bread rolls does the writer buy?",
-      "hints": [],
+      "hints": [
+        "The note's first sentence tells how many bread rolls he buys — compro dois pães."
+      ],
       "feedback": "Dois pães — two bread rolls.",
       "evidenceKey": "pt-plural-foundation-read",
       "assistanceAffectsEvidence": [
@@ -9187,10 +9454,27 @@
           "Two.",
           "Two",
           "2.",
-          "2"
+          "2",
+          "He buys two."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Three.",
+            "category": "incorrect answer",
+            "explanation": "Three is the croissants (três croissants) — the bread rolls are dois pães."
+          },
+          {
+            "answer": "One.",
+            "category": "incorrect answer",
+            "explanation": "The writer buys two bread rolls: compro dois pães."
+          },
+          {
+            "answer": "None.",
+            "category": "incorrect answer",
+            "explanation": "The bakery note says compro dois pães — two rolls, not none."
+          }
+        ]
       }
     },
     {
@@ -9441,7 +9725,9 @@
         "vocabulary"
       ],
       "prompt": "Which word makes a verb negative?",
-      "hints": [],
+      "hints": [
+        "The word that flips a sentence negative is não — it hugs the verb: não falo."
+      ],
       "feedback": "Não is the negator — it goes directly before the verb.",
       "evidenceKey": "pt-negation-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9486,7 +9772,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I don't speak Portuguese. (Não hugs the verb.)",
-      "hints": [],
+      "hints": [
+        "Place não directly before the verb — Não falo — then the language: português."
+      ],
       "feedback": "Não falo português — não sits right before falo.",
       "evidenceKey": "pt-negation-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9500,7 +9788,23 @@
           "Não falo português."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Falo não português.",
+            "category": "word-order problem",
+            "explanation": "Não sits before the verb, not after it: Não falo português."
+          },
+          {
+            "answer": "Não falo portugues.",
+            "category": "accent/diacritic issue",
+            "explanation": "Português keeps its accent on the final ês: Não falo português."
+          },
+          {
+            "answer": "Não falo inglês.",
+            "category": "incorrect answer",
+            "explanation": "The sentence says 'I don't speak Portuguese' — português, not inglês."
+          }
+        ]
       }
     },
     {
@@ -9516,7 +9820,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "The negative word must stand right before the verb — Não falo português."
+      ],
       "feedback": "Não goes before the verb: Não falo português.",
       "evidenceKey": "pt-negation-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9561,7 +9867,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I don't want anything, thank you.",
-      "hints": [],
+      "hints": [
+        "Open with Não, then quero, then nada — the thanks closes the line: obrigado."
+      ],
       "feedback": "The double negative is correct: Não quero nada, obrigado.",
       "evidenceKey": "pt-negation-foundation-build",
       "assistanceAffectsEvidence": [
@@ -9610,7 +9918,9 @@
         "grammar"
       ],
       "prompt": "Make it never: Como carne. → I never eat meat.",
-      "hints": [],
+      "hints": [
+        "Nunca replaces não and stays before the verb: Nunca como carne."
+      ],
       "feedback": "Nunca replaces não for never: Nunca como carne.",
       "evidenceKey": "pt-negation-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -9624,7 +9934,23 @@
           "Nunca como carne."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Como nunca carne.",
+            "category": "word-order problem",
+            "explanation": "Nunca goes before the verb: Nunca como carne."
+          },
+          {
+            "answer": "Não nunca como carne.",
+            "category": "extra word",
+            "explanation": "Nunca already carries the negation — não is not needed: Nunca como carne."
+          },
+          {
+            "answer": "Nunca como carnes.",
+            "category": "incorrect answer",
+            "explanation": "Carne is uncountable here — the line is Nunca como carne."
+          }
+        ]
       }
     },
     {
@@ -9640,7 +9966,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Não está ___ em casa. (nobody)",
-      "hints": [],
+      "hints": [
+        "'Nobody' is ninguém — it pairs with the não already in the sentence: Não está ninguém em casa."
+      ],
       "feedback": "Ninguém pairs with não: Não está ninguém em casa.",
       "evidenceKey": "pt-negation-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -9670,7 +9998,23 @@
             "ninguém"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "nada",
+              "category": "incorrect answer",
+              "explanation": "Nada means 'nothing' — the gap wants 'nobody', which is ninguém."
+            },
+            {
+              "answer": "alguém",
+              "category": "incorrect answer",
+              "explanation": "Alguém means 'somebody' — the sentence is negative, so the word is ninguém."
+            },
+            {
+              "answer": "ninguem",
+              "category": "accent/diacritic issue",
+              "explanation": "Ninguém carries the accent on the final ém: ninguém."
+            }
+          ]
         }
       }
     },
@@ -9688,7 +10032,9 @@
         "vocabulary"
       ],
       "prompt": "Read the coffee note. What do they drink at home instead of coffee?",
-      "hints": [],
+      "hints": [
+        "The note's last line says what is at home instead of coffee — só chá."
+      ],
       "feedback": "Só chá — only tea.",
       "evidenceKey": "pt-negation-foundation-read",
       "assistanceAffectsEvidence": [
@@ -9702,10 +10048,27 @@
         "answers": [
           "Tea.",
           "Tea",
-          "Only tea."
+          "Only tea.",
+          "They drink tea."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Coffee.",
+            "category": "incorrect answer",
+            "explanation": "Nobody drinks coffee at home — the note ends with só chá: only tea."
+          },
+          {
+            "answer": "Nothing.",
+            "category": "incorrect answer",
+            "explanation": "There is no coffee at home — but there is tea: só chá."
+          },
+          {
+            "answer": "Water.",
+            "category": "incorrect answer",
+            "explanation": "The final line names what they drink at home instead of coffee: chá, tea."
+          }
+        ]
       }
     },
     {
@@ -10245,7 +10608,9 @@
         "vocabulary"
       ],
       "prompt": "Which possessive goes with casa? ___ casa é grande.",
-      "hints": [],
+      "hints": [
+        "Casa is feminine — the possessive matches the thing owned: a minha casa."
+      ],
       "feedback": "Casa is feminine: a minha casa.",
       "evidenceKey": "pt-possession-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10290,7 +10655,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: My friends live here. (Amigos is masculine plural.)",
-      "hints": [],
+      "hints": [
+        "Amigos is masculine plural, so the possessive is os meus: Os meus amigos vivem aqui."
+      ],
       "feedback": "Masculine plural needs os meus: Os meus amigos vivem aqui.",
       "evidenceKey": "pt-possession-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10304,7 +10671,23 @@
           "Os meus amigos vivem aqui."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Os meu amigos vivem aqui.",
+            "category": "missing word",
+            "explanation": "The possessive agrees in number too: os meus amigos, with the -s on meus."
+          },
+          {
+            "answer": "As minhas amigos vivem aqui.",
+            "category": "wrong gender",
+            "explanation": "Amigos is masculine — the possessive is os meus, not as minhas."
+          },
+          {
+            "answer": "Os meus amigos vive aqui.",
+            "category": "wrong conjugation",
+            "explanation": "Amigos is plural, so the verb is vivem, not vive."
+          }
+        ]
       }
     },
     {
@@ -10320,7 +10703,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "The article, possessive and noun all agree as feminine singular: A minha casa."
+      ],
       "feedback": "Article first, then the matching possessive: a minha casa.",
       "evidenceKey": "pt-possession-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10365,7 +10750,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: My keys are here.",
-      "hints": [],
+      "hints": [
+        "Open with As, then minhas, then chaves — estão aqui closes the line: my keys are here."
+      ],
       "feedback": "Feminine plural all the way: As minhas chaves estão aqui.",
       "evidenceKey": "pt-possession-foundation-build",
       "assistanceAffectsEvidence": [
@@ -10420,7 +10807,9 @@
         "grammar"
       ],
       "prompt": "Change the owner: O meu carro é novo. → Your (informal) car is new.",
-      "hints": [],
+      "hints": [
+        "Swap the owner: meu becomes teu (informal 'your') — the article and noun stay put."
+      ],
       "feedback": "Teu is the informal your: O teu carro é novo.",
       "evidenceKey": "pt-possession-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10434,7 +10823,23 @@
           "O teu carro é novo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O tua carro é novo.",
+            "category": "wrong gender",
+            "explanation": "Carro is masculine, so the possessive is teu, not tua."
+          },
+          {
+            "answer": "A teu carro é novo.",
+            "category": "wrong gender",
+            "explanation": "Carro is masculine, so the article is o: O teu carro é novo."
+          },
+          {
+            "answer": "O meu carro é novo.",
+            "category": "incorrect answer",
+            "explanation": "The owner changed to 'your' (informal) — the possessive is teu, not meu."
+          }
+        ]
       }
     },
     {
@@ -10450,7 +10855,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ irmã vive no Porto. (my — feminine)",
-      "hints": [],
+      "hints": [
+        "The gap takes the full feminine possessive with its article: A minha irmã."
+      ],
       "feedback": "A minha matches the feminine irmã.",
       "evidenceKey": "pt-possession-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10476,7 +10883,23 @@
             "A minha"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "O minha",
+              "category": "wrong gender",
+              "explanation": "Irmã is feminine, so the article is A and the possessive minha: A minha irmã."
+            },
+            {
+              "answer": "Minha",
+              "category": "missing word",
+              "explanation": "European Portuguese keeps the article in front of the possessive: A minha irmã."
+            },
+            {
+              "answer": "Os meus",
+              "category": "incorrect answer",
+              "explanation": "Os meus is masculine plural — the sister is one feminine noun, so the gap takes A minha."
+            }
+          ]
         }
       }
     },
@@ -10494,7 +10917,9 @@
         "vocabulary"
       ],
       "prompt": "Read the car note. Where are the keys?",
-      "hints": [],
+      "hints": [
+        "The note's second line traces where the keys are: as minhas chaves estão na mala."
+      ],
       "feedback": "As minhas chaves estão na mala — in the bag.",
       "evidenceKey": "pt-possession-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10508,10 +10933,27 @@
         "answers": [
           "In the bag.",
           "In the bag",
-          "In my bag."
+          "In my bag.",
+          "The keys are in the bag."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "In the car.",
+            "category": "incorrect answer",
+            "explanation": "The bag is in the car, but the keys are inside the bag: estão na mala."
+          },
+          {
+            "answer": "On the street.",
+            "category": "incorrect answer",
+            "explanation": "The car is on the street — the keys are in the bag: na mala."
+          },
+          {
+            "answer": "In the garage.",
+            "category": "incorrect answer",
+            "explanation": "The garage holds the other car — your keys are in the bag: na mala."
+          }
+        ]
       }
     },
     {
@@ -11485,7 +11927,9 @@
         "vocabulary"
       ],
       "prompt": "Which phrase means 'it's cloudy'?",
-      "hints": [],
+      "hints": [
+        "Cloudy describes the sky right now, so it takes estar — Está nublado. Faz is for heat and cold."
+      ],
       "feedback": "Está nublado — estar for the sky right now.",
       "evidenceKey": "pt-weather-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11530,7 +11974,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: It's sunny today. (Estar for the sky.)",
-      "hints": [],
+      "hints": [
+        "The sun is part of the sky right now, so it takes estar — Está sol hoje."
+      ],
       "feedback": "Está sol hoje — estar, not fazer.",
       "evidenceKey": "pt-weather-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11544,7 +11990,23 @@
           "Está sol hoje."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Faz sol hoje.",
+            "category": "incorrect answer",
+            "explanation": "Sun and clouds take estar — fazer is only for heat and cold: Está sol hoje."
+          },
+          {
+            "answer": "Está calor hoje.",
+            "category": "incorrect answer",
+            "explanation": "Heat takes fazer: Faz calor — the sun takes estar: Está sol hoje."
+          },
+          {
+            "answer": "Está sol.",
+            "category": "missing word",
+            "explanation": "The sentence keeps its time marker hoje: Está sol hoje."
+          }
+        ]
       }
     },
     {
@@ -11560,7 +12022,9 @@
         "grammar"
       ],
       "prompt": "Which sentence is correct?",
-      "hints": [],
+      "hints": [
+        "Heat and cold take fazer — Faz calor. Estar is for what the sky is doing right now."
+      ],
       "feedback": "Faz calor — heat takes fazer.",
       "evidenceKey": "pt-weather-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11605,7 +12069,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: It's very hot in summer.",
-      "hints": [],
+      "hints": [
+        "Open with Faz, then muito, then calor — the season closes with no verão."
+      ],
       "feedback": "Faz muito calor no verão.",
       "evidenceKey": "pt-weather-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11660,7 +12126,9 @@
         "grammar"
       ],
       "prompt": "Change the season: O verão é quente. → Winter is cold.",
-      "hints": [],
+      "hints": [
+        "Swap the season to winter and the adjective to its masculine 'cold': O inverno é frio."
+      ],
       "feedback": "O inverno é frio — winter takes o.",
       "evidenceKey": "pt-weather-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11674,7 +12142,23 @@
           "O inverno é frio."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O inverno é quente.",
+            "category": "incorrect answer",
+            "explanation": "Winter is the cold season — the sentence says frio, not quente."
+          },
+          {
+            "answer": "O verão é frio.",
+            "category": "incorrect answer",
+            "explanation": "The season changed to winter: o inverno."
+          },
+          {
+            "answer": "O inverno é fria.",
+            "category": "wrong gender",
+            "explanation": "Inverno is masculine, so the adjective is frio, not fria."
+          }
+        ]
       }
     },
     {
@@ -11690,7 +12174,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Está ___ chover. (the European -ing: a)",
-      "hints": [],
+      "hints": [
+        "The European continuous is estar a + infinitive — the gap holds the little a: Está a chover."
+      ],
       "feedback": "Está a chover is the European continuous: está + a + infinitive.",
       "evidenceKey": "pt-weather-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11720,7 +12206,18 @@
             "a"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "em",
+              "category": "wrong preposition",
+              "explanation": "The European continuous is estar a + verb: Está a chover, not estar em."
+            },
+            {
+              "answer": "de",
+              "category": "wrong preposition",
+              "explanation": "Estar de would change the meaning — the continuous form is estar a: Está a chover."
+            }
+          ]
         }
       }
     },
@@ -11738,7 +12235,9 @@
         "vocabulary"
       ],
       "prompt": "Read the weather note. What is tomorrow going to be like?",
-      "hints": [],
+      "hints": [
+        "The note's third sentence tells tomorrow's weather — vai estar nublado e vai chover."
+      ],
       "feedback": "Amanhã vai estar nublado e vai chover — cloudy and rainy.",
       "evidenceKey": "pt-weather-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11752,10 +12251,28 @@
         "answers": [
           "Cloudy and rainy.",
           "Cloudy and rainy",
-          "Cloudy and rain."
+          "Cloudy and rain.",
+          "It will be cloudy and rainy.",
+          "It is going to be cloudy and rainy."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sunny and hot.",
+            "category": "incorrect answer",
+            "explanation": "That is today's weather — tomorrow will be cloudy and rainy."
+          },
+          {
+            "answer": "Cold.",
+            "category": "incorrect answer",
+            "explanation": "Cold belongs to winter — tomorrow is cloudy and rainy: nublado e chover."
+          },
+          {
+            "answer": "Cloudy.",
+            "category": "missing word",
+            "explanation": "Tomorrow is both cloudy and rainy — the note names the rain too."
+          }
+        ]
       }
     },
     {
@@ -11778,7 +12295,9 @@
         "vocabulary"
       ],
       "prompt": "Which asks the time?",
-      "hints": [],
+      "hints": [
+        "The question that asks the time is Que horas são? — the others ask the date, the price and a location."
+      ],
       "feedback": "Que horas são? — literally, what hours are they.",
       "evidenceKey": "pt-time-telling-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11823,7 +12342,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: It's one o'clock. (The famous exception.)",
-      "hints": [],
+      "hints": [
+        "The famous exception: one o'clock is singular — É uma hora, never são."
+      ],
       "feedback": "É uma hora — one o'clock takes é, not são.",
       "evidenceKey": "pt-time-telling-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11837,7 +12358,23 @@
           "É uma hora."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "São uma hora.",
+            "category": "wrong conjugation",
+            "explanation": "One o'clock is the exception — the verb is the singular É, not São."
+          },
+          {
+            "answer": "É um hora.",
+            "category": "wrong gender",
+            "explanation": "The hour is feminine: uma hora — the masculine um would need a masculine noun."
+          },
+          {
+            "answer": "É uma.",
+            "category": "missing word",
+            "explanation": "The noun hora completes the sentence: É uma hora."
+          }
+        ]
       }
     },
     {
@@ -11853,7 +12390,9 @@
         "grammar"
       ],
       "prompt": "Which is correct?",
-      "hints": [],
+      "hints": [
+        "One o'clock is the exception — it takes the singular É with the feminine uma: É uma hora."
+      ],
       "feedback": "É uma hora is the exception that proves the são rule.",
       "evidenceKey": "pt-time-telling-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11898,7 +12437,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: It's half past three.",
-      "hints": [],
+      "hints": [
+        "Open with São, then três, then e, then meia: half past three."
+      ],
       "feedback": "São três e meia — e glues the half on.",
       "evidenceKey": "pt-time-telling-foundation-build",
       "assistanceAffectsEvidence": [
@@ -11948,7 +12489,9 @@
         "grammar"
       ],
       "prompt": "Change the time: São três e meia. → It's quarter to four.",
-      "hints": [],
+      "hints": [
+        "Quarter to four counts back from the hour: São quatro menos um quarto."
+      ],
       "feedback": "São quatro menos um quarto — menos subtracts.",
       "evidenceKey": "pt-time-telling-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11962,7 +12505,23 @@
           "São quatro menos um quarto."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "São três e um quarto.",
+            "category": "incorrect answer",
+            "explanation": "Three and a quarter is quarter past three — quarter to four is quatro menos um quarto."
+          },
+          {
+            "answer": "São quatro menos uma quarto.",
+            "category": "wrong gender",
+            "explanation": "The quarter is masculine: um quarto."
+          },
+          {
+            "answer": "É quatro menos um quarto.",
+            "category": "wrong conjugation",
+            "explanation": "Four is plural, so the verb stays São: São quatro menos um quarto."
+          }
+        ]
       }
     },
     {
@@ -11978,7 +12537,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: ___ meio-dia. (It's)",
-      "hints": [],
+      "hints": [
+        "Midday is one of the two singular clocks — the gap takes É: É meio-dia."
+      ],
       "feedback": "É meio-dia — noon takes é like one o'clock.",
       "evidenceKey": "pt-time-telling-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12004,7 +12565,18 @@
             "É"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "São",
+              "category": "wrong conjugation",
+              "explanation": "Meio-dia is treated as singular — É meio-dia, not São."
+            },
+            {
+              "answer": "E",
+              "category": "accent/diacritic issue",
+              "explanation": "The verb 'is' carries its accent — É, not E (which would be 'and')."
+            }
+          ]
         }
       }
     },
@@ -12022,7 +12594,9 @@
         "vocabulary"
       ],
       "prompt": "Read the station note. When does the train leave?",
-      "hints": [],
+      "hints": [
+        "The note gives the departure time — o comboio parte às quatro."
+      ],
       "feedback": "O comboio parte às quatro — at four.",
       "evidenceKey": "pt-time-telling-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12036,10 +12610,27 @@
         "answers": [
           "At four.",
           "At four",
-          "Às quatro."
+          "Às quatro.",
+          "The train leaves at four."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "At half past three.",
+            "category": "incorrect answer",
+            "explanation": "Half past three is the current time — the train leaves at four (às quatro)."
+          },
+          {
+            "answer": "At midday.",
+            "category": "incorrect answer",
+            "explanation": "Midday is the arrival in Lisbon — the train leaves at four."
+          },
+          {
+            "answer": "At three.",
+            "category": "incorrect answer",
+            "explanation": "It is half past three now — the train departs at four: às quatro."
+          }
+        ]
       }
     },
     {
@@ -12062,7 +12653,9 @@
         "vocabulary"
       ],
       "prompt": "Which month is maio?",
-      "hints": [],
+      "hints": [
+        "Maio is the fifth month — May. Março is March, junho June and abril April."
+      ],
       "feedback": "Maio is May — em maio há flores.",
       "evidenceKey": "pt-months-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12107,7 +12700,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: My birthday is in June. (Months are lowercase.)",
-      "hints": [],
+      "hints": [
+        "Use é for the date and em before the lowercase month: O meu aniversário é em junho."
+      ],
       "feedback": "O meu aniversário é em junho — junho stays lowercase.",
       "evidenceKey": "pt-months-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12121,7 +12716,23 @@
           "O meu aniversário é em junho."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Meu aniversário é em junho.",
+            "category": "missing word",
+            "explanation": "The sentence keeps the article: O meu aniversário é em junho."
+          },
+          {
+            "answer": "O meu aniversário são em junho.",
+            "category": "wrong conjugation",
+            "explanation": "The birthday is one thing, so the verb is é, not são."
+          },
+          {
+            "answer": "O aniversário é em junho.",
+            "category": "missing word",
+            "explanation": "The line keeps its possessive meu: O meu aniversário é em junho."
+          }
+        ]
       }
     },
     {
@@ -12137,7 +12748,9 @@
         "grammar"
       ],
       "prompt": "Which date is written correctly?",
-      "hints": [],
+      "hints": [
+        "The date stacks em + day + de + month, all lowercase: Em 3 de maio."
+      ],
       "feedback": "Em 3 de maio — day, de, lowercase month.",
       "evidenceKey": "pt-months-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12182,7 +12795,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I arrive on May 3rd.",
-      "hints": [],
+      "hints": [
+        "Open with Chego, then em, then 3, then de — the month maio closes the date."
+      ],
       "feedback": "Chego em 3 de maio.",
       "evidenceKey": "pt-months-foundation-build",
       "assistanceAffectsEvidence": [
@@ -12237,7 +12852,9 @@
         "grammar"
       ],
       "prompt": "Change the month: Em janeiro faz frio. → In May there are flowers.",
-      "hints": [],
+      "hints": [
+        "Keep the frame Em + month; swap janeiro for maio and the cold for flowers — há flores."
+      ],
       "feedback": "Em maio há flores.",
       "evidenceKey": "pt-months-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12251,7 +12868,23 @@
           "Em maio há flores."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Em maio faz flores.",
+            "category": "incorrect answer",
+            "explanation": "Flowers exist in May — the verb is há ('there are'), not faz."
+          },
+          {
+            "answer": "No maio há flores.",
+            "category": "wrong preposition",
+            "explanation": "Months take em: Em maio, not no maio."
+          },
+          {
+            "answer": "Em maio há flor.",
+            "category": "missing word",
+            "explanation": "More than one flower: há flores."
+          }
+        ]
       }
     },
     {
@@ -12267,7 +12900,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: O ano tem doze ___. (months)",
-      "hints": [],
+      "hints": [
+        "Twelve months — the plural of mês adds -es without keeping its accent: meses."
+      ],
       "feedback": "O ano tem doze meses.",
       "evidenceKey": "pt-months-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -12297,7 +12932,23 @@
             "meses"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mêses",
+              "category": "accent/diacritic issue",
+              "explanation": "The plural of mês is meses — the accent drops off in the plural."
+            },
+            {
+              "answer": "mês",
+              "category": "missing word",
+              "explanation": "The year has twelve of them — plural meses, not the singular mês."
+            },
+            {
+              "answer": "mes",
+              "category": "accent/diacritic issue",
+              "explanation": "The singular mês carries its accent, and the gap wants the plural meses anyway."
+            }
+          ]
         }
       }
     },
@@ -12315,7 +12966,9 @@
         "vocabulary"
       ],
       "prompt": "Read the birthday note. When is the party?",
-      "hints": [],
+      "hints": [
+        "The note gives the party date — a festa é em 15 de junho."
+      ],
       "feedback": "Em 15 de junho — on June 15th.",
       "evidenceKey": "pt-months-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12329,10 +12982,27 @@
         "answers": [
           "On June 15th.",
           "On June 15th",
-          "June 15th."
+          "June 15th.",
+          "The party is on June 15th."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "On May 15th.",
+            "category": "incorrect answer",
+            "explanation": "May is when everything gets prepared — the party itself is em 15 de junho."
+          },
+          {
+            "answer": "On June 5th.",
+            "category": "incorrect answer",
+            "explanation": "The date is the 15th: em 15 de junho."
+          },
+          {
+            "answer": "In May.",
+            "category": "incorrect answer",
+            "explanation": "May is preparation time — the party is em 15 de junho."
+          }
+        ]
       }
     },
     {
@@ -14324,7 +14994,9 @@
         "vocabulary"
       ],
       "prompt": "Which describes a habit in the past?",
-      "hints": [],
+      "hints": [
+        "A past habit takes the imperfeito — the -ava ending is the giveaway: brincava."
+      ],
       "feedback": "Brincava na rua — the -ava ending marks the imperfeito: used to play. Brinquei is one completed event, brinco is present.",
       "evidenceKey": "pt-a2-imperfeito-meet",
       "assistanceAffectsEvidence": [
@@ -14369,7 +15041,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: he used to eat at seven — 'Ele ___ sempre às sete.'",
-      "hints": [],
+      "hints": [
+        "The habit verb takes the -ia imperfeito ending of comer: comia."
+      ],
       "feedback": "Ele comia sempre às sete — -er verbs take -ia in the imperfeito: comia.",
       "evidenceKey": "pt-a2-imperfeito-think",
       "assistanceAffectsEvidence": [
@@ -14384,7 +15058,23 @@
           "comia"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ele come sempre às sete.",
+            "category": "wrong tense",
+            "explanation": "Come is the present — the habit belongs to the past, so the verb is comia."
+          },
+          {
+            "answer": "Ele comeu sempre às sete.",
+            "category": "wrong tense",
+            "explanation": "Comeu is the perfect past for one finished event — a repeated habit takes the imperfeito: comia."
+          },
+          {
+            "answer": "Ele comer sempre às sete.",
+            "category": "wrong conjugation",
+            "explanation": "The sentence needs a conjugated verb — the imperfeito of comer is comia, not the infinitive."
+          }
+        ]
       }
     },
     {
@@ -14400,7 +15090,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb is irregular in the imperfeito?",
-      "hints": [],
+      "hints": [
+        "Ser is one of the three irregular imperfeito verbs — era. Falava, comia and partia all follow the pattern."
+      ],
       "feedback": "Era — ser becomes era, one of only three irregulars (era, tinha, vinha). Falava, comia and partia are regular.",
       "evidenceKey": "pt-a2-imperfeito-notice",
       "assistanceAffectsEvidence": [
@@ -14446,7 +15138,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: When I was a child I used to play in the street.",
-      "hints": [],
+      "hints": [
+        "Open with Quando era criança, — comma clause first — then brincava na rua."
+      ],
       "feedback": "Quando era criança, brincava na rua — the quando clause sets the scene, then the habit.",
       "evidenceKey": "pt-a2-imperfeito-build",
       "assistanceAffectsEvidence": [
@@ -14505,7 +15199,9 @@
         "grammar"
       ],
       "prompt": "Say: We were watching TV.",
-      "hints": [],
+      "hints": [
+        "'We were' is estávamos; the European continuous then adds a ver: Estávamos a ver televisão."
+      ],
       "feedback": "Estávamos a ver televisão — the very Portuguese past progressive: estar in the imperfeito + a + infinitivo.",
       "evidenceKey": "pt-a2-imperfeito-vary",
       "assistanceAffectsEvidence": [
@@ -14519,7 +15215,23 @@
           "Estávamos a ver televisão."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Estamos a ver televisão.",
+            "category": "wrong tense",
+            "explanation": "Estamos is the present — the sentence says 'we were', so the imperfeito estávamos."
+          },
+          {
+            "answer": "Estávamos vendo televisão.",
+            "category": "incorrect answer",
+            "explanation": "The gerund form (vendo) is the Brazilian pattern — European Portuguese uses estar a: Estávamos a ver."
+          },
+          {
+            "answer": "Estávamos a ver TV.",
+            "category": "incorrect answer",
+            "explanation": "The taught phrase names the activity fully: a ver televisão."
+          }
+        ]
       }
     },
     {
@@ -14535,7 +15247,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Ele ___ sempre às sete. (he used to eat)",
-      "hints": [],
+      "hints": [
+        "The gap takes the imperfeito of comer for 'he used to eat': comia."
+      ],
       "feedback": "Comia — imperfeito of comer for ele: -ia ending.",
       "evidenceKey": "pt-a2-imperfeito-cloze",
       "assistanceAffectsEvidence": [
@@ -14565,7 +15279,23 @@
             "comia"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "come",
+              "category": "wrong tense",
+              "explanation": "Come is the present — the sentence is about a past habit: comia."
+            },
+            {
+              "answer": "comeu",
+              "category": "wrong tense",
+              "explanation": "Comeu is the perfect past for a single event — a repeated habit takes the imperfeito comia."
+            },
+            {
+              "answer": "comer",
+              "category": "wrong conjugation",
+              "explanation": "The gap needs the conjugated imperfeito form — comia, not the infinitive comer."
+            }
+          ]
         }
       }
     },
@@ -14583,7 +15313,9 @@
         "vocabulary"
       ],
       "prompt": "Read about Tiago's childhood. How did he get to school?",
-      "hints": [],
+      "hints": [
+        "The note's middle sentence tells how he got to school — ia a pé para a escola."
+      ],
       "feedback": "He walked — 'ia a pé para a escola'.",
       "evidenceKey": "pt-a2-imperfeito-read",
       "assistanceAffectsEvidence": [
@@ -14601,7 +15333,23 @@
           "Ia a pé."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "By bus.",
+            "category": "incorrect answer",
+            "explanation": "The note says he went on foot — ia a pé para a escola."
+          },
+          {
+            "answer": "He played with friends.",
+            "category": "incorrect answer",
+            "explanation": "Playing with friends came in the afternoon — getting to school was on foot: a pé."
+          },
+          {
+            "answer": "He woke up early.",
+            "category": "incorrect answer",
+            "explanation": "Waking early is a morning habit — the school trip itself was on foot: a pé."
+          }
+        ]
       }
     },
     {
@@ -16293,7 +17041,9 @@
         "vocabulary"
       ],
       "prompt": "Which is correct after 'quero que'?",
-      "hints": [],
+      "hints": [
+        "After quero que the verb shifts into the conjuntivo — fales, not falas."
+      ],
       "feedback": "Quero que fales mais devagar — the conjuntivo flips falas to fales. 'Quero que falas' uses the indicative and is wrong; falar and falava don't belong here at all.",
       "evidenceKey": "pt-a2-conjuntivo-intro-meet",
       "assistanceAffectsEvidence": [
@@ -16338,7 +17088,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: 'É preciso que ___ para o exame.' (you study)",
-      "hints": [],
+      "hints": [
+        "É preciso que calls the conjuntivo: estudar's -a- flips to -e- → estudes."
+      ],
       "feedback": "É preciso que estudes — -ar verbs flip -a- to -e- in the conjuntivo: estudes.",
       "evidenceKey": "pt-a2-conjuntivo-intro-think",
       "assistanceAffectsEvidence": [
@@ -16353,7 +17105,23 @@
           "estudes"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "É preciso que estudas para o exame.",
+            "category": "wrong conjugation",
+            "explanation": "After é preciso que the verb shifts into the conjuntivo: estudes, not estudas."
+          },
+          {
+            "answer": "É preciso que estuda para o exame.",
+            "category": "wrong conjugation",
+            "explanation": "The conjuntivo of estudar for 'you' is estudes — the -a- flips to -e-."
+          },
+          {
+            "answer": "É preciso que estudei para o exame.",
+            "category": "wrong tense",
+            "explanation": "Estudei is the perfect past — the conjuntivo present is estudes."
+          }
+        ]
       }
     },
     {
@@ -16369,7 +17137,9 @@
         "vocabulary"
       ],
       "prompt": "Which phrase triggers the conjuntivo?",
-      "hints": [],
+      "hints": [
+        "The trigger is the wish-phrase quero que — acho que, sei que and vejo que keep the indicative."
+      ],
       "feedback": "Quero que — wishing triggers the conjuntivo. Acho que, sei que and vejo que state facts, so they keep the indicative.",
       "evidenceKey": "pt-a2-conjuntivo-intro-notice",
       "assistanceAffectsEvidence": [
@@ -16414,7 +17184,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: I hope you come tomorrow.",
-      "hints": [],
+      "hints": [
+        "Open with Espero, then que, then venhas — amanhã closes the hope."
+      ],
       "feedback": "Espero que venhas amanhã — espero que + conjuntivo (vir → venhas).",
       "evidenceKey": "pt-a2-conjuntivo-intro-build",
       "assistanceAffectsEvidence": [
@@ -16464,7 +17236,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Quero que ___ mais devagar. (you speak)",
-      "hints": [],
+      "hints": [
+        "Quero que flips falar's ending — the -a- becomes -e-: fales."
+      ],
       "feedback": "Fales — the conjuntivo of falar for tu: fales.",
       "evidenceKey": "pt-a2-conjuntivo-intro-cloze",
       "assistanceAffectsEvidence": [
@@ -16494,7 +17268,23 @@
             "fales"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "falas",
+              "category": "wrong conjugation",
+              "explanation": "After quero que the verb takes the conjuntivo: fales, not falas."
+            },
+            {
+              "answer": "fala",
+              "category": "wrong conjugation",
+              "explanation": "The conjuntivo for 'you' is fales — fala is the ele/ela form."
+            },
+            {
+              "answer": "falar",
+              "category": "wrong conjugation",
+              "explanation": "The gap needs a conjugated verb — falar is the infinitive; the conjuntivo is fales."
+            }
+          ]
         }
       }
     },
@@ -16511,7 +17301,9 @@
         "vocabulary"
       ],
       "prompt": "Read the mother's instructions. What time must he be home?",
-      "hints": [],
+      "hints": [
+        "The mother's rule lands in the middle of the note — é preciso que chegues a casa às dez."
+      ],
       "feedback": "At ten — 'é preciso que chegues a casa às dez'.",
       "evidenceKey": "pt-a2-conjuntivo-intro-read",
       "assistanceAffectsEvidence": [
@@ -16526,10 +17318,27 @@
           "At ten.",
           "By ten.",
           "Às dez.",
-          "At 10."
+          "At 10.",
+          "He must be home at ten."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "At the party.",
+            "category": "incorrect answer",
+            "explanation": "The party is where he must be careful — he must be home by ten (às dez)."
+          },
+          {
+            "answer": "At eight.",
+            "category": "incorrect answer",
+            "explanation": "The note sets the home time at dez — ten, not eight."
+          },
+          {
+            "answer": "After the exam.",
+            "category": "incorrect answer",
+            "explanation": "The exam appears in the study rule — the home time is às dez."
+          }
+        ]
       }
     },
     {
@@ -16807,7 +17616,9 @@
         "vocabulary"
       ],
       "prompt": "Which is correct? 'Este café é ___ do que o outro.'",
-      "hints": [],
+      "hints": [
+        "Bom refuses the mais-frame — its irregular comparative is melhor; 'mais melhor' does not exist."
+      ],
       "feedback": "Melhor — bom becomes melhor, and it never takes mais. 'Mais melhor' and 'mais bom' do not exist.",
       "evidenceKey": "pt-a2-comparativos-meet",
       "assistanceAffectsEvidence": [
@@ -16852,7 +17663,9 @@
         "grammar"
       ],
       "prompt": "Predict the frame: 'O Porto é mais pequeno ___ Lisboa.'",
-      "hints": [],
+      "hints": [
+        "The 'than' part of the frame is do que — O Porto é mais pequeno do que Lisboa."
+      ],
       "feedback": "Do que — mais… do que is the full frame for 'than'.",
       "evidenceKey": "pt-a2-comparativos-think",
       "assistanceAffectsEvidence": [
@@ -16867,7 +17680,23 @@
           "do que"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O Porto é mais pequeno que Lisboa.",
+            "category": "missing word",
+            "explanation": "The frame keeps its do: mais pequeno do que Lisboa."
+          },
+          {
+            "answer": "O Porto é mais pequeno de Lisboa.",
+            "category": "wrong preposition",
+            "explanation": "Comparisons use do que, not de — mais pequeno do que Lisboa."
+          },
+          {
+            "answer": "O Porto é mais pequeno como Lisboa.",
+            "category": "wrong preposition",
+            "explanation": "Como belongs to the equal frame (tão… como) — 'than' is do que."
+          }
+        ]
       }
     },
     {
@@ -16883,7 +17712,9 @@
         "vocabulary"
       ],
       "prompt": "Which means 'as tall as'?",
-      "hints": [],
+      "hints": [
+        "'As tall as' is the equal frame — tão alta como. The other options are more/less than."
+      ],
       "feedback": "Tão alta como — tão… como is the 'as… as' frame. Mais/menos… do que compare unequal things.",
       "evidenceKey": "pt-a2-comparativos-notice",
       "assistanceAffectsEvidence": [
@@ -16928,7 +17759,9 @@
         "grammar"
       ],
       "prompt": "Say: Traffic is worse today.",
-      "hints": [],
+      "hints": [
+        "'Worse' is mau's irregular comparative — pior; either word order is accepted."
+      ],
       "feedback": "Hoje o trânsito está pior — mau becomes pior; estar for a temporary state.",
       "evidenceKey": "pt-a2-comparativos-vary",
       "assistanceAffectsEvidence": [
@@ -16943,7 +17776,23 @@
           "O trânsito está pior hoje."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hoje o trânsito está mais mau.",
+            "category": "incorrect answer",
+            "explanation": "Mau has its own comparative — pior, not mais mau."
+          },
+          {
+            "answer": "Hoje o trânsito está melhor.",
+            "category": "incorrect answer",
+            "explanation": "Melhor means 'better' — worse is pior."
+          },
+          {
+            "answer": "Hoje o trânsito são pior.",
+            "category": "wrong conjugation",
+            "explanation": "Trânsito is singular, so the verb is está: o trânsito está pior."
+          }
+        ]
       }
     },
     {
@@ -16959,7 +17808,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: Este café é ___ do que o outro. (better)",
-      "hints": [],
+      "hints": [
+        "'Better' is the irregular comparative of bom — melhor, never mais bom."
+      ],
       "feedback": "Melhor — the irregular comparative of bom.",
       "evidenceKey": "pt-a2-comparativos-cloze",
       "assistanceAffectsEvidence": [
@@ -16989,7 +17840,23 @@
             "melhor"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mais bom",
+              "category": "incorrect answer",
+              "explanation": "Bom has its own comparative form — melhor; mais bom does not exist."
+            },
+            {
+              "answer": "mais melhor",
+              "category": "incorrect answer",
+              "explanation": "Melhor already means 'more good' — never stack the frame: mais melhor."
+            },
+            {
+              "answer": "bom",
+              "category": "incorrect answer",
+              "explanation": "The sentence compares two cafés — it needs the comparative melhor."
+            }
+          ]
         }
       }
     },
@@ -17007,7 +17874,9 @@
         "vocabulary"
       ],
       "prompt": "Read the café debate. Why does Ana prefer the Central?",
-      "hints": [],
+      "hints": [
+        "Ana's reasons sit in the note's first sentence — mais barato and o atendimento é melhor."
+      ],
       "feedback": "It's cheaper and the service is better — 'é mais barato do que o café Roma e o atendimento é melhor'.",
       "evidenceKey": "pt-a2-comparativos-read",
       "assistanceAffectsEvidence": [
@@ -17024,7 +17893,23 @@
           "É mais barato e o atendimento é melhor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "It's closer to home.",
+            "category": "incorrect answer",
+            "explanation": "The note gives two reasons — cheaper and better service; distance never comes up."
+          },
+          {
+            "answer": "It's cosier.",
+            "category": "incorrect answer",
+            "explanation": "Cosy is the sister's argument for the Roma — Ana prefers the Central for price and service."
+          },
+          {
+            "answer": "It's cheaper.",
+            "category": "missing word",
+            "explanation": "The note names both advantages — cheaper AND better service: barato e atendimento melhor."
+          }
+        ]
       }
     },
     {
@@ -17567,7 +18452,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is a superlative ('the oldest')?",
-      "hints": [],
+      "hints": [
+        "The relative superlative frames the comparison with the article and da cidade — o mais antigo da cidade."
+      ],
       "feedback": "O mais antigo da cidade — the article o + mais makes it 'the oldest'. 'Mais antigo' alone is just comparative (older).",
       "evidenceKey": "pt-a2-superlativos-trabalho-meet",
       "assistanceAffectsEvidence": [
@@ -17610,7 +18497,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: 'Ela é a funcionária mais ___ .' (punctual)",
-      "hints": [],
+      "hints": [
+        "The frame is a + funcionária + mais + adjective — pontual keeps its shape (it ends in -l)."
+      ],
       "feedback": "A funcionária mais pontual — feminine article a with the feminine noun.",
       "evidenceKey": "pt-a2-superlativos-trabalho-think",
       "assistanceAffectsEvidence": [
@@ -17625,7 +18514,23 @@
           "pontual"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ela é a funcionária mais pontuada.",
+            "category": "incorrect answer",
+            "explanation": "Pontuada means 'scored' — the adjective for 'punctual' is pontual."
+          },
+          {
+            "answer": "Ela é a funcionária mais pontuais.",
+            "category": "wrong gender",
+            "explanation": "The superlative agrees with the singular funcionária — pontual, not pontuais."
+          },
+          {
+            "answer": "Ela é a funcionária pontualíssima.",
+            "category": "incorrect answer",
+            "explanation": "Pontualíssima is the absolute -íssimo pattern — the taught frame here is o mais + adjective."
+          }
+        ]
       }
     },
     {
@@ -17641,7 +18546,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: We have a meeting at nine.",
-      "hints": [],
+      "hints": [
+        "Open with Temos, then uma, then reunião — the time closes with às nove."
+      ],
       "feedback": "Temos uma reunião às nove — ter + noun is the habit for 'have a meeting'.",
       "evidenceKey": "pt-a2-superlativos-trabalho-build",
       "assistanceAffectsEvidence": [
@@ -17696,7 +18603,9 @@
         "grammar"
       ],
       "prompt": "Say: My boss is really great.",
-      "hints": [],
+      "hints": [
+        "'Really great' is the -íssimo form of fixe — fixíssimo for a male boss, fixíssima for a female one."
+      ],
       "feedback": "O meu chefe é fixíssimo — or 'A minha chefe é fixíssima' for a female boss.",
       "evidenceKey": "pt-a2-superlativos-trabalho-vary",
       "assistanceAffectsEvidence": [
@@ -17711,7 +18620,23 @@
           "A minha chefe é fixíssima."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O meu chefe é fixo.",
+            "category": "incorrect answer",
+            "explanation": "Fixo means 'fixed' — the colloquial 'great' is fixe, and its superlative is fixíssimo."
+          },
+          {
+            "answer": "O meu chefe é mais fixe.",
+            "category": "incorrect answer",
+            "explanation": "Mais fixe would compare two bosses — here the meaning is 'really great': fixíssimo."
+          },
+          {
+            "answer": "O meu chefe é fixíssima.",
+            "category": "wrong gender",
+            "explanation": "With o meu the boss is masculine — fixíssimo; fixíssima goes with a female boss (a minha)."
+          }
+        ]
       }
     },
     {
@@ -17727,7 +18652,9 @@
         "grammar"
       ],
       "prompt": "Fill the gap: O computador novo é ___ . (super fast)",
-      "hints": [],
+      "hints": [
+        "'Super fast' is the -íssimo superlative of rápido — rapidíssimo."
+      ],
       "feedback": "Rapidíssimo — the -íssimo absolute superlative of rápido.",
       "evidenceKey": "pt-a2-superlativos-trabalho-cloze",
       "assistanceAffectsEvidence": [
@@ -17757,7 +18684,23 @@
             "rapidíssimo"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "mais rápido",
+              "category": "incorrect answer",
+              "explanation": "Mais rápido compares two things ('faster') — the sentence says 'super fast': rapidíssimo."
+            },
+            {
+              "answer": "rapidissimo",
+              "category": "accent/diacritic issue",
+              "explanation": "The -íssimo suffix keeps its accent: rapidíssimo."
+            },
+            {
+              "answer": "rápido",
+              "category": "incorrect answer",
+              "explanation": "Rápido is just 'fast' — the gap wants the intensified form rapidíssimo."
+            }
+          ]
         }
       }
     },
@@ -17774,7 +18717,9 @@
         "vocabulary"
       ],
       "prompt": "Read about Sofia's new job. What time was the first meeting?",
-      "hints": [],
+      "hints": [
+        "The note gives the first meeting's time — a primeira reunião foi às nove."
+      ],
       "feedback": "At nine — 'A primeira reunião foi às nove'.",
       "evidenceKey": "pt-a2-superlativos-trabalho-read",
       "assistanceAffectsEvidence": [
@@ -17788,10 +18733,27 @@
         "answers": [
           "At nine.",
           "At 9.",
-          "Às nove."
+          "Às nove.",
+          "The first meeting was at nine."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "In the office.",
+            "category": "incorrect answer",
+            "explanation": "The office is where she works — the meeting time is às nove."
+          },
+          {
+            "answer": "At eight.",
+            "category": "incorrect answer",
+            "explanation": "The meeting started at nine — foi às nove."
+          },
+          {
+            "answer": "In the morning.",
+            "category": "incorrect answer",
+            "explanation": "The note is specific: the meeting was às nove — at nine o'clock."
+          }
+        ]
       }
     },
     {
@@ -18633,7 +19595,9 @@
         "vocabulary"
       ],
       "prompt": "Quick check — match each comparison to its meaning.",
-      "hints": [],
+      "hints": [
+        "Pair each frame with its meaning: mais… do que is 'more than', menos… do que 'less than', tão… como 'as… as'."
+      ],
       "feedback": "Comparatives matched. Nicely done.",
       "evidenceKey": "pt-a2-comparativos-match",
       "assistanceAffectsEvidence": [

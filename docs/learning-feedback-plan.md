@@ -6,6 +6,25 @@ minimum needed to answer a specific product question, with clear consent and no 
 recordings or free-text answers sent off-device by default.** **Human-blocked**: needs
 volunteer testers; Stage 2 constrains diagnostics if ever proposed.
 
+## Status 2026-09-26 (Phase 6 — dated note)
+
+- **No sessions held.** No learners recruited, no consent conversations, no
+  journals. Every measure in this plan — task success, recovery, clarity,
+  delayed recall, media reliability, progress safety — is
+  **unverified — no learner sessions held** and must not be reported as
+  measured.
+- **Automated gates and editorial ledger** are tracked in
+  `docs/first-slice-verification.md` ("Status 2026-09-26"): waveF preflight
+  green (372/372 unit, 1/1 first-run UI), editorial ledger 255/255
+  dispositioned (183 pass / 72 pass-with-notes / 0 unreviewed); a later
+  accessibility-sweep run has one open failure (largest Dynamic Type).
+- **Solo fallback**: `docs/usability/2026-09-26-solo-walkthrough-and-outcome-status.md`
+  records the simulator-only walkthrough the roadmap defines when no outside
+  testers are available. An AI simulation is not evidence that learners
+  succeeded.
+- The recruiting/consent rules and the "Do not do" list below are unchanged
+  and apply verbatim to the first real session.
+
 ## Stage 1 — voluntary interviews + tester journal
 
 ### Recruiting and consent basics

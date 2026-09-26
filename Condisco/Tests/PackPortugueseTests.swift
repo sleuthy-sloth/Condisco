@@ -978,6 +978,200 @@ final class PackPortugueseTests: XCTestCase {
         }
     }
 
+    // MARK: - Wave E conversation lessons (rubric H4/H3/H1/M5)
+
+    /// The six unreviewed Wave E conversation lessons (units 3, 4, 9, 12,
+    /// 15), keyed by the graded path activity ids each lesson references.
+    private static let batch5Lessons: [String: [String]] = [
+        "pt-shopping-foundation": [
+            "pt-shopping-foundation-act-rb1", "pt-shopping-foundation-meet",
+            "pt-shopping-foundation-ask", "pt-shopping-foundation-act-rb2",
+            "pt-shopping-foundation-act-rb3", "pt-shopping-foundation-think",
+            "pt-shopping-foundation-vary",
+        ],
+        "pt-family-people-foundation": [
+            "pt-family-people-foundation-act-rb1", "pt-family-people-foundation-meet",
+            "pt-family-people-foundation-vary", "pt-family-people-foundation-act-rb2",
+            "pt-family-people-foundation-notice", "pt-family-people-foundation-think",
+            "pt-family-people-foundation-read",
+        ],
+        "pt-requests-foundation": [
+            "pt-requests-foundation-act-rb1", "pt-requests-foundation-meet",
+            "pt-requests-foundation-think", "pt-requests-foundation-act-rb2",
+            "pt-requests-foundation-notice", "pt-requests-foundation-vary",
+            "pt-requests-foundation-read",
+        ],
+        "pt-pharmacy-foundation": [
+            "pt-pharmacy-foundation-act-rb1", "pt-pharmacy-foundation-meet",
+            "pt-pharmacy-foundation-think", "pt-pharmacy-foundation-act-rb2",
+            "pt-pharmacy-foundation-notice", "pt-pharmacy-foundation-vary",
+            "pt-pharmacy-foundation-read",
+        ],
+        "pt-invitations-foundation": [
+            "pt-invitations-foundation-act-rb1", "pt-invitations-foundation-meet",
+            "pt-invitations-foundation-think", "pt-invitations-foundation-act-rb2",
+            "pt-invitations-foundation-notice", "pt-invitations-foundation-vary",
+            "pt-invitations-foundation-read",
+        ],
+        "pt-a2-condicional": [
+            "pt-a2-condicional-act-rb1", "pt-a2-condicional-meet",
+            "pt-a2-condicional-think", "pt-a2-condicional-act-rb2",
+            "pt-a2-condicional-notice", "pt-a2-condicional-vary",
+            "pt-a2-condicional-read",
+        ],
+    ]
+
+    /// Every graded step in the Wave E conversation lessons has a real
+    /// authored hint, not the runtime generic fallbacks (audit hint-gap 0).
+    func testWaveEGradedStepsHaveAuthoredHints() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text surface in the Wave E conversation lessons authors
+    /// error-specific feedback (audit error-feedback gap must be 0).
+    func testWaveETextActivitiesAuthorErrors() throws {
+        let pack = try portuguesePack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers hit their authored category + explanation.
+    func testWaveEAuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try portuguesePack()
+
+        // pt-shopping-foundation
+        var result = try gradeText("pt-shopping-foundation-ask", in: pack, "O conta, por favor.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("pt-shopping-foundation-think", in: pack, "Quanto custam o café?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-shopping-foundation-vary", in: pack, "Não e caro.")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+
+        // pt-family-people-foundation
+        result = try gradeText("pt-family-people-foundation-vary", in: pack, "Tenho duas irmã.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("pt-family-people-foundation-think", in: pack, "Tene um irmão.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-family-people-foundation-read", in: pack, "Porto.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-requests-foundation
+        result = try gradeText("pt-requests-foundation-think", in: pack, "Pode me ajudar, por favor?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("pt-requests-foundation-vary", in: pack, "Gostaria um café, por favor.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("pt-requests-foundation-read", in: pack, "The menu.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-pharmacy-foundation
+        result = try gradeText("pt-pharmacy-foundation-think", in: pack, "Preciso a aspirina.")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("pt-pharmacy-foundation-vary", in: pack, "Preciso de um xarope para o tosse.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("pt-pharmacy-foundation-read", in: pack, "The syrup.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-invitations-foundation
+        result = try gradeText("pt-invitations-foundation-think", in: pack, "Quer vir jantar?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("pt-invitations-foundation-vary", in: pack, "Gostavas de vir no cinema?")
+        XCTAssertEqual(result.category, "wrong preposition")
+        result = try gradeText("pt-invitations-foundation-read", in: pack, "Friday at eight.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-a2-condicional
+        result = try gradeText("pt-a2-condicional-think", in: pack, "É ótimo ver-te amanhã.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-condicional-vary", in: pack, "Será ótimo ver-te amanhã.")
+        XCTAssertEqual(result.category, "wrong tense")
+        result = try gradeText("pt-a2-condicional-read", in: pack, "To move the sofa.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// Natural full/short/alternative lines are accepted where the learner
+    /// would not be wrong to give them; the wrong-but-taught lines are
+    /// rejected.
+    func testWaveEAcceptsNaturalAlternatives() throws {
+        let pack = try portuguesePack()
+
+        // The concept card itself teaches o café for the price question.
+        var result = try gradeText("pt-shopping-foundation-think", in: pack, "Quanto custa o café?")
+        XCTAssertTrue(result.accepted, "Quanto custa o café? must be accepted")
+
+        // Explicit-eu forms stay accepted (pack unit-1 convention).
+        result = try gradeText("pt-family-people-foundation-think", in: pack, "Eu tenho um irmão.")
+        XCTAssertTrue(result.accepted, "Eu tenho um irmão. must be accepted")
+        result = try gradeText("pt-family-people-foundation-vary", in: pack, "Eu tenho duas irmãs.")
+        XCTAssertTrue(result.accepted, "Eu tenho duas irmãs. must be accepted")
+
+        // Portuguese answer forms accepted on comprehension reads.
+        result = try gradeText("pt-family-people-foundation-read", in: pack, "Lisboa.")
+        XCTAssertTrue(result.accepted, "Lisboa. must be accepted")
+        result = try gradeText("pt-pharmacy-foundation-read", in: pack, "The prescription.")
+        XCTAssertTrue(result.accepted, "The prescription. must be accepted")
+        result = try gradeText("pt-pharmacy-foundation-think", in: pack, "Preciso de uma aspirina.")
+        XCTAssertTrue(result.accepted, "Preciso de uma aspirina. must be accepted")
+
+        // Both standard pronoun positions are fine pt-PT.
+        result = try gradeText("pt-requests-foundation-think", in: pack, "Pode-me ajudar, por favor?")
+        XCTAssertTrue(result.accepted, "Pode-me ajudar, por favor? must be accepted")
+
+        // ir/condicional invitation variants are natural pt-PT.
+        result = try gradeText("pt-invitations-foundation-vary", in: pack, "Gostavas de ir ao cinema?")
+        XCTAssertTrue(result.accepted, "Gostavas de ir ao cinema? must be accepted")
+        result = try gradeText("pt-invitations-foundation-read", in: pack, "At eight.")
+        XCTAssertTrue(result.accepted, "At eight. must be accepted")
+
+        // Short blank answer stays accepted on the condicional predict step.
+        result = try gradeText("pt-a2-condicional-think", in: pack, "Seria")
+        XCTAssertTrue(result.accepted, "Seria must be accepted")
+
+        // Wrong-but-plausible lines still fail.
+        result = try gradeText("pt-requests-foundation-vary", in: pack, "Quero um café, por favor.")
+        XCTAssertFalse(result.accepted, "quero stays blunt and must not pass")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// The Wave E conversation lessons all close on a graded text step with
+    /// an authored hint (rubric M5: distinct final response).
+    func testWaveEConversationFinalStepsAreTextResponses() throws {
+        let pack = try portuguesePack()
+        for lessonId in Self.batch5Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+            let terminal = try XCTUnwrap(
+                lesson.steps.first { $0.nextStepId == nil && $0.branches.isEmpty },
+                "\(lessonId) has no terminal step")
+            let act = try activity(terminal.activityId, in: pack)
+            guard case .text = act else {
+                XCTFail("\(lessonId) terminal \(terminal.id) must be a text activity")
+                continue
+            }
+            XCTAssertFalse(
+                try XCTUnwrap(act.base).hints.allSatisfy { Self.genericHints.contains($0) },
+                "\(lessonId) final response must have an authored hint")
+        }
+    }
+
     // MARK: - Retained v1 legacy exercises stay in sync
 
     /// The lesson-level legacyExercises mirror the path activities; the

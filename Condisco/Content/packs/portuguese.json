@@ -5187,7 +5187,9 @@
         "vocabulary"
       ],
       "prompt": "One of these lines will get a price out of a shopkeeper in Lisbon. Which one is it?",
-      "hints": [],
+      "hints": [
+        "Ask how much: quanto ('how much') + custa ('it costs') — Como está? asks how someone is and Onde fica? where something is, neither gets a price."
+      ],
       "feedback": "Quanto custa? is the price question: quanto asks how much, and custa is the form of custar that fits one item.",
       "evidenceKey": "pt-shopping-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5228,7 +5230,9 @@
         "grammar"
       ],
       "prompt": "The meal is over and you want to pay in a Portuguese restaurant. Ask for the bill.",
-      "hints": [],
+      "hints": [
+        "The bill is a conta, a feminine noun, so it takes A — and por favor carries the politeness on its own."
+      ],
       "feedback": "Conta is feminine and takes a, and por favor carries the politeness on its own.",
       "evidenceKey": "pt-shopping-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -5243,7 +5247,23 @@
           "A conta por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "O conta, por favor.",
+            "category": "wrong gender",
+            "explanation": "Conta is feminine — the bill is a conta, never o conta."
+          },
+          {
+            "answer": "A conta.",
+            "category": "missing word",
+            "explanation": "Finish the request with por favor — the softener is what makes the line a polite ask."
+          },
+          {
+            "answer": "Conta, por favor.",
+            "category": "missing word",
+            "explanation": "The bill keeps its article: A conta, por favor."
+          }
+        ]
       }
     },
     {
@@ -5259,7 +5279,9 @@
         "grammar"
       ],
       "prompt": "You find the price reasonable and want to say as much. Negate «É caro.»",
-      "hints": [],
+      "hints": [
+        "Negation goes before the verb: Não + é caro — and the tilde on não is part of the word, never an optional flourish."
+      ],
       "feedback": "Não goes ahead of the verb é, and the tilde on não is part of the word, never an optional flourish.",
       "evidenceKey": "pt-shopping-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5273,7 +5295,23 @@
           "Não é caro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "É não caro.",
+            "category": "word-order problem",
+            "explanation": "Não comes before the verb — negation wraps it: Não é caro."
+          },
+          {
+            "answer": "Não e caro.",
+            "category": "accent/diacritic issue",
+            "explanation": "É needs its accent — without it the word is e, \"and\": write Não é caro."
+          },
+          {
+            "answer": "Não é cara.",
+            "category": "wrong gender",
+            "explanation": "The price stays masculine — o preço é caro, so the line is Não é caro, not cara."
+          }
+        ]
       }
     },
     {
@@ -5289,7 +5327,9 @@
         "grammar"
       ],
       "prompt": "At a pastelaria counter in Lisbon you want the price of one coffee. Ask it.",
-      "hints": [],
+      "hints": [
+        "Keep custa singular for the one item: Quanto custa + um café — the lesson's point is that the verb stays singular for a single thing."
+      ],
       "feedback": "Custa agrees with the one item, um café, so the question stays in the singular.",
       "evidenceKey": "pt-shopping-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5300,10 +5340,27 @@
       "id": "pt-shopping-foundation-think",
       "answer": {
         "answers": [
-          "Quanto custa um café?"
+          "Quanto custa um café?",
+          "Quanto custa o café?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto custa café?",
+            "category": "missing word",
+            "explanation": "The coffee keeps its article: Quanto custa um café? — the drink needs its um (or o for \"the coffee\")."
+          },
+          {
+            "answer": "Custa quanto um café?",
+            "category": "word-order problem",
+            "explanation": "The price question starts with Quanto: Quanto custa um café? — custa comes after quanto."
+          },
+          {
+            "answer": "Quanto custam o café?",
+            "category": "wrong conjugation",
+            "explanation": "One coffee keeps the verb singular: custa, not custam — the plural form is only for several things."
+          }
+        ]
       }
     },
     {
@@ -5674,7 +5731,9 @@
         "vocabulary"
       ],
       "prompt": "Portuguese marks the sister with a tilde. Which of these four words is she?",
-      "hints": [],
+      "hints": [
+        "The sister carries the tilde: irmã — irmão (brother), pais (parents) and família (family) are the decoys to compare against."
+      ],
       "feedback": "The word for sister is irmã, tilde and all; strip its nasal sound and you get irmão, the brother. Pais is the parents, and família the family.",
       "evidenceKey": "pt-family-people-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5719,7 +5778,9 @@
         "vocabulary"
       ],
       "prompt": "Irmã is feminine. Which line says I have a sister with the article that matches her?",
-      "hints": [],
+      "hints": [
+        "The feminine indefinite article is uma — um irmã and uns irmã both mismatch the article to the feminine noun."
+      ],
       "feedback": "Uma irmã is the feminine form; um irmã and uns irmã both mismatch the article to the noun.",
       "evidenceKey": "pt-family-people-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5760,7 +5821,9 @@
         "grammar"
       ],
       "prompt": "Change the sentence from one sister to two: Tenho uma irmã.",
-      "hints": [],
+      "hints": [
+        "Two sisters: uma becomes duas and irmã takes the plural -s — Tenho duas irmãs."
+      ],
       "feedback": "The plural adds -s to irmã, and uma becomes duas: Tenho duas irmãs.",
       "evidenceKey": "pt-family-people-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5771,10 +5834,22 @@
       "id": "pt-family-people-foundation-vary",
       "answer": {
         "answers": [
-          "Tenho duas irmãs."
+          "Tenho duas irmãs.",
+          "Eu tenho duas irmãs."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tenho duas irmã.",
+            "category": "wrong number",
+            "explanation": "Two sisters take the plural: irmãs, with the -s — Tenho duas irmãs."
+          },
+          {
+            "answer": "Tenho dois irmãs.",
+            "category": "wrong gender",
+            "explanation": "Irmã is feminine, so the number is duas, not dois — the two agree in gender."
+          }
+        ]
       }
     },
     {
@@ -5791,7 +5866,9 @@
         "vocabulary"
       ],
       "prompt": "Read the family note. In which city did the parents stay?",
-      "hints": [],
+      "hints": [
+        "Find the sentence about the parents: ficaram em names the city where they stayed — Lisboa."
+      ],
       "feedback": "The brother and sister have moved on; the parents are the ones still in Lisbon.",
       "evidenceKey": "pt-family-people-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5805,10 +5882,22 @@
         "answers": [
           "Lisbon.",
           "Lisbon",
-          "In Lisbon."
+          "In Lisbon.",
+          "Lisboa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Porto.",
+            "category": "incorrect answer",
+            "explanation": "Porto is where the narrator and the sister live — the parents are the ones who stayed in Lisbon."
+          },
+          {
+            "answer": "Coimbra.",
+            "category": "incorrect answer",
+            "explanation": "Coimbra is where the brother moved — the parents stayed behind in Lisbon."
+          }
+        ]
       }
     },
     {
@@ -5824,7 +5913,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I have a brother. (ter is irregular in the I form.)",
-      "hints": [],
+      "hints": [
+        "Ter is irregular: the I form is tenho, not tene — and the brother takes the masculine article: Tenho um irmão."
+      ],
       "feedback": "Ter is irregular, so the I form is tenho and not tene: Tenho um irmão.",
       "evidenceKey": "pt-family-people-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5835,10 +5926,22 @@
       "id": "pt-family-people-foundation-think",
       "answer": {
         "answers": [
-          "Tenho um irmão."
+          "Tenho um irmão.",
+          "Eu tenho um irmão."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tene um irmão.",
+            "category": "wrong conjugation",
+            "explanation": "Ter doesn't follow the regular -er pattern in the I form — the irregular form is tenho."
+          },
+          {
+            "answer": "Tenho uma irmão.",
+            "category": "wrong gender",
+            "explanation": "Irmão is masculine — the article is um, not uma: Tenho um irmão."
+          }
+        ]
       }
     },
     {
@@ -11323,7 +11426,9 @@
         "vocabulary"
       ],
       "prompt": "Which phrase means 'I would like…'?",
-      "hints": [],
+      "hints": [
+        "Gostaria de… is the polite 'I would like' — quero is plain want, posso is can, and tenho de is have to."
+      ],
       "feedback": "Gostaria de… is the polite I would like — softer than quero.",
       "evidenceKey": "pt-requests-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11369,7 +11474,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: Can you help me, please? (Poder + -me on the verb.)",
-      "hints": [],
+      "hints": [
+        "Pode + the infinitive, with -me glued after ajudar — the European way: Pode ajudar-me, por favor?"
+      ],
       "feedback": "Pode ajudar-me, por favor? — note -me glued after the verb, the European way.",
       "evidenceKey": "pt-requests-foundation-think",
       "assistanceAffectsEvidence": [
@@ -11380,10 +11487,27 @@
       "id": "pt-requests-foundation-think",
       "answer": {
         "answers": [
-          "Pode ajudar-me, por favor?"
+          "Pode ajudar-me, por favor?",
+          "Pode-me ajudar, por favor?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Pode me ajudar, por favor?",
+            "category": "word-order problem",
+            "explanation": "The object pronoun rides on the verb in European Portuguese: ajudar-me — not me ajudar."
+          },
+          {
+            "answer": "Pode ajudar eu, por favor?",
+            "category": "incorrect answer",
+            "explanation": "The object form is -me, not eu — help me is ajudar-me, with the pronoun glued on."
+          },
+          {
+            "answer": "Pode ajudar-me?",
+            "category": "missing word",
+            "explanation": "Finish the request with por favor — the softener the prompt asks for."
+          }
+        ]
       }
     },
     {
@@ -11400,7 +11524,9 @@
         "grammar"
       ],
       "prompt": "Which is the most polite way to order a coffee?",
-      "hints": [],
+      "hints": [
+        "Queria (the softened 'I'd like') with por favor is the polite frame — quero and dá-me are direct, and já is a demand."
+      ],
       "feedback": "Queria (I wanted) softens the request — the classic polite order.",
       "evidenceKey": "pt-requests-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -11446,7 +11572,9 @@
         "grammar"
       ],
       "prompt": "Make it polite: Quero um café. → I'd like a coffee, please.",
-      "hints": [],
+      "hints": [
+        "Swap quero for the softer Queria or Gostaria de — and land with por favor."
+      ],
       "feedback": "Queria or Gostaria de both soften quero.",
       "evidenceKey": "pt-requests-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -11458,10 +11586,33 @@
       "answer": {
         "answers": [
           "Queria um café, por favor.",
-          "Gostaria de um café, por favor."
+          "Gostaria de um café, por favor.",
+          "Eu queria um café, por favor.",
+          "Eu gostaria de um café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quero um café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quero is still the blunt form — the point of the exercise is the softened verb: Queria um café, por favor."
+          },
+          {
+            "answer": "Queria um café.",
+            "category": "missing word",
+            "explanation": "The politeness needs por favor to land: Queria um café, por favor."
+          },
+          {
+            "answer": "Gostaria um café, por favor.",
+            "category": "missing word",
+            "explanation": "Gostaria takes de before the thing: Gostaria de um café, por favor."
+          },
+          {
+            "answer": "Queria de um café, por favor.",
+            "category": "extra word",
+            "explanation": "Queria takes the drink directly — the de belongs to Gostaria de: Queria um café, por favor."
+          }
+        ]
       }
     },
     {
@@ -11477,7 +11628,9 @@
         "vocabulary"
       ],
       "prompt": "Read the restaurant exchange. What does the customer ask for first?",
-      "hints": [],
+      "hints": [
+        "The customer's first line opens with gostaria de reservar — the first ask is the table booking."
+      ],
       "feedback": "Gostaria de reservar uma mesa para dois — a table for two.",
       "evidenceKey": "pt-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11494,7 +11647,23 @@
           "A table for two."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The menu.",
+            "category": "incorrect answer",
+            "explanation": "The menu (a ementa) is asked for later — the customer's first request books the table."
+          },
+          {
+            "answer": "A table for one.",
+            "category": "incorrect answer",
+            "explanation": "The booking is for two — uma mesa para dois."
+          },
+          {
+            "answer": "For today at eight.",
+            "category": "incorrect answer",
+            "explanation": "That's the time the customer confirms — the first ask is the table itself."
+          }
+        ]
       }
     },
     {
@@ -13975,7 +14144,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb means 'to need'?",
-      "hints": [],
+      "hints": [
+        "Precisar is to need — gostar is to like, ter is to have, and doer is to hurt (as in dor de cabeça)."
+      ],
       "feedback": "Precisar de — Preciso de aspirina.",
       "evidenceKey": "pt-pharmacy-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -14020,7 +14191,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: I need aspirin. (Precisar brings de.)",
-      "hints": [],
+      "hints": [
+        "The I form is preciso, and de is mandatory: Preciso de aspirina."
+      ],
       "feedback": "Preciso de aspirina — never skip the de.",
       "evidenceKey": "pt-pharmacy-foundation-think",
       "assistanceAffectsEvidence": [
@@ -14031,10 +14204,29 @@
       "id": "pt-pharmacy-foundation-think",
       "answer": {
         "answers": [
-          "Preciso de aspirina."
+          "Preciso de aspirina.",
+          "Preciso de aspirina, por favor.",
+          "Preciso de uma aspirina.",
+          "Eu preciso de aspirina."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Preciso aspirina.",
+            "category": "missing word",
+            "explanation": "Precisar always brings de — precisar + de: Preciso de aspirina."
+          },
+          {
+            "answer": "Preciso a aspirina.",
+            "category": "wrong preposition",
+            "explanation": "The link after precisar is de, not a: Preciso de aspirina."
+          },
+          {
+            "answer": "Me preciso de aspirina.",
+            "category": "incorrect answer",
+            "explanation": "Precisar is not reflexive — no me: Preciso de aspirina."
+          }
+        ]
       }
     },
     {
@@ -14050,7 +14242,9 @@
         "grammar"
       ],
       "prompt": "Which is correct?",
-      "hints": [],
+      "hints": [
+        "Precisar + de, always — aspirina follows the de: Preciso de aspirina."
+      ],
       "feedback": "Precisar + de, always.",
       "evidenceKey": "pt-pharmacy-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -14096,7 +14290,9 @@
         "grammar"
       ],
       "prompt": "Change the need: Preciso de aspirina. → I need a syrup for the cough.",
-      "hints": [],
+      "hints": [
+        "Same frame, new object: precisar de + um xarope, then para + a tosse — what it's for."
+      ],
       "feedback": "Preciso de um xarope para a tosse.",
       "evidenceKey": "pt-pharmacy-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -14107,10 +14303,37 @@
       "id": "pt-pharmacy-foundation-vary",
       "answer": {
         "answers": [
-          "Preciso de um xarope para a tosse."
+          "Preciso de um xarope para a tosse.",
+          "Eu preciso de um xarope para a tosse."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Preciso de xarope para a tosse.",
+            "category": "missing word",
+            "explanation": "The syrup is one thing — um xarope, not a bare noun: Preciso de um xarope."
+          },
+          {
+            "answer": "Preciso de um xarope para tosse.",
+            "category": "missing word",
+            "explanation": "The cough keeps its article: para a tosse, not para tosse."
+          },
+          {
+            "answer": "Preciso um xarope para a tosse.",
+            "category": "missing word",
+            "explanation": "Precisar keeps its de: preciso de um xarope para a tosse."
+          },
+          {
+            "answer": "Preciso de um xarope para o tosse.",
+            "category": "wrong gender",
+            "explanation": "Tosse is feminine — para a tosse, never para o tosse."
+          },
+          {
+            "answer": "Preciso de uma xarope para a tosse.",
+            "category": "wrong gender",
+            "explanation": "Xarope is masculine — um xarope, not uma xarope."
+          }
+        ]
       }
     },
     {
@@ -14127,7 +14350,9 @@
         "vocabulary"
       ],
       "prompt": "Read the pharmacy note. What does the pharmacist ask for?",
-      "hints": [],
+      "hints": [
+        "The pharmacist's question is Tem receita? — she asks whether you carry a prescription."
+      ],
       "feedback": "Tem receita? — do you have a prescription.",
       "evidenceKey": "pt-pharmacy-foundation-read",
       "assistanceAffectsEvidence": [
@@ -14141,10 +14366,28 @@
         "answers": [
           "A prescription.",
           "A prescription",
-          "Receita."
+          "Receita.",
+          "A receita.",
+          "The prescription."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Aspirin.",
+            "category": "incorrect answer",
+            "explanation": "The aspirin is what the narrator buys — the pharmacist's question is about the prescription."
+          },
+          {
+            "answer": "The syrup.",
+            "category": "incorrect answer",
+            "explanation": "The syrup comes at the end of the visit — what she asks for is the receita."
+          },
+          {
+            "answer": "The headache.",
+            "category": "incorrect answer",
+            "explanation": "The headache is the reason — what the pharmacist asks for is the prescription."
+          }
+        ]
       }
     },
     {
@@ -14481,7 +14724,9 @@
         "vocabulary"
       ],
       "prompt": "Which accepts warmly?",
-      "hints": [],
+      "hints": [
+        "The warm yes is Sim, com prazer — the other three decline or hesitate."
+      ],
       "feedback": "Sim, com prazer! — yes, with pleasure.",
       "evidenceKey": "pt-invitations-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -14526,7 +14771,9 @@
         "grammar"
       ],
       "prompt": "Predict the form before you write it: Do you want to come for dinner? (Queres vir…?)",
-      "hints": [],
+      "hints": [
+        "Queres (you want, tu form) + vir + jantar: Queres vir jantar?"
+      ],
       "feedback": "Queres vir jantar? — the classic invitation.",
       "evidenceKey": "pt-invitations-foundation-think",
       "assistanceAffectsEvidence": [
@@ -14540,7 +14787,23 @@
           "Queres vir jantar?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quer vir jantar?",
+            "category": "wrong conjugation",
+            "explanation": "The tu form of querer is queres — the -s marks the you form: Queres vir…"
+          },
+          {
+            "answer": "Quero vir jantar?",
+            "category": "wrong conjugation",
+            "explanation": "Quero is the I form — the invitation asks tu, so the verb is queres."
+          },
+          {
+            "answer": "Queres vir para jantar?",
+            "category": "extra word",
+            "explanation": "Jantar follows vir directly — no para between them: Queres vir jantar?"
+          }
+        ]
       }
     },
     {
@@ -14556,7 +14819,9 @@
         "grammar"
       ],
       "prompt": "Which declines kindly?",
-      "hints": [],
+      "hints": [
+        "The cushioned no: Desta vez não posso, desculpa — a bare não sounds cold to a friend."
+      ],
       "feedback": "Desta vez não posso, desculpa — cushioned, not cold.",
       "evidenceKey": "pt-invitations-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -14601,7 +14866,9 @@
         "grammar"
       ],
       "prompt": "Soften the invitation: Queres vir jantar? → Would you like to come to the cinema?",
-      "hints": [],
+      "hints": [
+        "The softened ask is Gostavas de + vir + ao cinema — the imperfeito gostavas turns the ask into a gift."
+      ],
       "feedback": "Gostavas de…? — the conditional softens beautifully.",
       "evidenceKey": "pt-invitations-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -14612,10 +14879,28 @@
       "id": "pt-invitations-foundation-vary",
       "answer": {
         "answers": [
-          "Gostavas de vir ao cinema?"
+          "Gostavas de vir ao cinema?",
+          "Gostavas de ir ao cinema?",
+          "Gostarias de vir ao cinema?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Gostavas vir ao cinema?",
+            "category": "missing word",
+            "explanation": "Gostavas de carries the softener: Gostavas de vir ao cinema?"
+          },
+          {
+            "answer": "Queres vir ao cinema?",
+            "category": "incorrect answer",
+            "explanation": "That's the plain ask — the exercise wants the softened form: Gostavas de vir ao cinema?"
+          },
+          {
+            "answer": "Gostavas de vir no cinema?",
+            "category": "wrong preposition",
+            "explanation": "To the cinema is ao cinema (a + o), not no: Gostavas de vir ao cinema?"
+          }
+        ]
       }
     },
     {
@@ -14632,7 +14917,9 @@
         "vocabulary"
       ],
       "prompt": "Read the invitation. When is the dinner?",
-      "hints": [],
+      "hints": [
+        "The invitation names the day and the hour: sábado and às oito — Saturday at eight."
+      ],
       "feedback": "Sábado, às oito — Saturday at eight.",
       "evidenceKey": "pt-invitations-foundation-read",
       "assistanceAffectsEvidence": [
@@ -14646,10 +14933,22 @@
         "answers": [
           "Saturday at eight.",
           "Saturday at eight",
-          "Sábado às oito."
+          "Sábado às oito.",
+          "At eight."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Friday at eight.",
+            "category": "incorrect answer",
+            "explanation": "The dinner is on sábado — Saturday, not Friday."
+          },
+          {
+            "answer": "At his house.",
+            "category": "incorrect answer",
+            "explanation": "Em minha casa is where the dinner happens — the question asks when."
+          }
+        ]
       }
     },
     {
@@ -16530,7 +16829,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the softest, most polite request?",
-      "hints": [],
+      "hints": [
+        "Poderia is the condicional of poder — the -ia ending makes it the softest; podes is direct, ajuda-me a command, and vou ajudar-te offers help instead of asking."
+      ],
       "feedback": "Poderia ajudar-me? — the condicional (would be able) is the politest form. Podes is direct, ajuda-me is a command, and vou ajudar-te offers help rather than asking.",
       "evidenceKey": "pt-a2-condicional-meet",
       "assistanceAffectsEvidence": [
@@ -16575,7 +16876,9 @@
         "grammar"
       ],
       "prompt": "Predict the form: '___ ótimo ver-te amanhã.' (it would be great)",
-      "hints": [],
+      "hints": [
+        "The condicional of ser is seria — the blank takes the 'would be' verb: Seria ótimo."
+      ],
       "feedback": "Seria ótimo — the condicional of ser: seria.",
       "evidenceKey": "pt-a2-condicional-think",
       "assistanceAffectsEvidence": [
@@ -16590,7 +16893,23 @@
           "Seria"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "É ótimo ver-te amanhã.",
+            "category": "wrong tense",
+            "explanation": "É is the present 'is' — a hypothetical 'would be' about tomorrow needs the condicional: Seria."
+          },
+          {
+            "answer": "Foi ótimo ver-te amanhã.",
+            "category": "wrong tense",
+            "explanation": "Foi is past — and 'would be' pointing at tomorrow is seria, not foi."
+          },
+          {
+            "answer": "Seria ótimo te ver amanhã.",
+            "category": "word-order problem",
+            "explanation": "The object pronoun glues after the verb in European Portuguese: ver-te, not te ver."
+          }
+        ]
       }
     },
     {
@@ -16604,7 +16923,9 @@
         "vocabulary"
       ],
       "prompt": "Which verb form means 'would speak'?",
-      "hints": [],
+      "hints": [
+        "Falaria = would speak: the infinitivo falar plus -ia; falava is used to speak, falou is spoke, and falará is will speak."
+      ],
       "feedback": "Falaria — infinitivo + -ia = would. Falava is the imperfeito (used to speak), falou is past (spoke), falará is future (will speak).",
       "evidenceKey": "pt-a2-condicional-notice",
       "assistanceAffectsEvidence": [
@@ -16649,7 +16970,9 @@
         "grammar"
       ],
       "prompt": "Say: It would be great to see you tomorrow.",
-      "hints": [],
+      "hints": [
+        "Seria ótimo + the bare infinitive: seria (the condicional of ser) + ver + the -te pronoun — Seria ótimo ver-te amanhã."
+      ],
       "feedback": "Seria ótimo ver-te amanhã — seria + infinitivo.",
       "evidenceKey": "pt-a2-condicional-vary",
       "assistanceAffectsEvidence": [
@@ -16663,7 +16986,23 @@
           "Seria ótimo ver-te amanhã."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Será ótimo ver-te amanhã.",
+            "category": "wrong tense",
+            "explanation": "Será is the future ('it will be great') — the hypothetical 'would be' is the condicional: seria."
+          },
+          {
+            "answer": "É ótimo ver-te amanhã.",
+            "category": "wrong tense",
+            "explanation": "É is the present — the 'would be' of this sentence takes the condicional: Seria."
+          },
+          {
+            "answer": "Seria ótimo te ver amanhã.",
+            "category": "word-order problem",
+            "explanation": "The pronoun rides on the infinitive: ver-te, not te ver."
+          }
+        ]
       }
     },
     {
@@ -16679,7 +17018,9 @@
         "vocabulary"
       ],
       "prompt": "Read Rui's request. What does he offer in return?",
-      "hints": [],
+      "hints": [
+        "Rui's offer in return follows em troca — help with the shopping: ajudar com as compras."
+      ],
       "feedback": "Help with the shopping — 'Eu ajudaria com as compras em troca.'",
       "evidenceKey": "pt-a2-condicional-read",
       "assistanceAffectsEvidence": [
@@ -16696,7 +17037,23 @@
           "Ajudar com as compras."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "To move the sofa.",
+            "category": "incorrect answer",
+            "explanation": "Moving the sofa is the favour Rui asks — the offer in return is help with the shopping."
+          },
+          {
+            "answer": "On Saturday.",
+            "category": "incorrect answer",
+            "explanation": "Saturday is when the favour happens — the question asks what Rui offers in return."
+          },
+          {
+            "answer": "No problem.",
+            "category": "incorrect answer",
+            "explanation": "Sem problema is the neighbour's answer — what Rui offers is ajudar com as compras."
+          }
+        ]
       }
     },
     {
@@ -19710,7 +20067,9 @@
         "vocabulary"
       ],
       "prompt": "You want the price first. What do you say?",
-      "hints": [],
+      "hints": [
+        "The price question opens the chat: Quanto custa isto? — the shopkeeper's greeting is answered by naming the price question, not by paying or thanking yet."
+      ],
       "feedback": "Quanto custa isto? — the price question opens every market chat.",
       "evidenceKey": "pt-shopping-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19759,7 +20118,9 @@
         "vocabulary"
       ],
       "prompt": "The shopkeeper accepts eight euros. How do you close the deal?",
-      "hints": [],
+      "hints": [
+        "Close the deal with Está bem ('all right'), then obrigado — the shopkeeper already named eight euros, so don't re-open the price."
+      ],
       "feedback": "Está bem, obrigado — accept graciously, then pay.",
       "evidenceKey": "pt-shopping-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19808,7 +20169,9 @@
         "vocabulary"
       ],
       "prompt": "The tag says twelve euros. Which reply haggles politely?",
-      "hints": [],
+      "hints": [
+        "Name the problem first (É muito caro), then propose a price (Faz por dez?) — asking the price again can't work once it's on the tag."
+      ],
       "feedback": "É muito caro. Faz por dez? — name the pain, then name your price.",
       "evidenceKey": "pt-shopping-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -19854,7 +20217,9 @@
         "vocabulary"
       ],
       "prompt": "Your aunt points at your brother. How do you introduce him?",
-      "hints": [],
+      "hints": [
+        "Introduce him with É + o meu + irmão — the small article o belongs with the possessive, the way Portuguese always pairs them."
+      ],
       "feedback": "É o meu irmão — é, the article, and the family word.",
       "evidenceKey": "pt-family-people-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19904,7 +20269,9 @@
         "vocabulary"
       ],
       "prompt": "Now she asks about your sister. What do you say?",
-      "hints": [],
+      "hints": [
+        "Answer the question asked — your aunt wants to know how your sister is, so start with A minha irmã está bem."
+      ],
       "feedback": "A minha irmã está bem, obrigada — answer the question asked.",
       "evidenceKey": "pt-family-people-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19954,7 +20321,9 @@
         "vocabulary"
       ],
       "prompt": "You have the barista's attention. Order politely.",
-      "hints": [],
+      "hints": [
+        "The full polite frame: Gostaria de + the drink + por favor — de is the link between the soft verb and the coffee."
+      ],
       "feedback": "Gostaria de um café, por favor — gostaria de + por favor.",
       "evidenceKey": "pt-requests-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20003,7 +20372,9 @@
         "vocabulary"
       ],
       "prompt": "You're done. How do you close and ask for the bill?",
-      "hints": [],
+      "hints": [
+        "Close the round kindly: É tudo ('that's all'), then ask for the bill — A conta, por favor."
+      ],
       "feedback": "É tudo + A conta, por favor — close the round kindly.",
       "evidenceKey": "pt-requests-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20053,7 +20424,9 @@
         "vocabulary"
       ],
       "prompt": "State your need.",
-      "hints": [],
+      "hints": [
+        "Precisar always brings de: Preciso de aspirina, por favor — the request opens with need, not want."
+      ],
       "feedback": "Preciso de aspirina, por favor — precisar + de.",
       "evidenceKey": "pt-pharmacy-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20103,7 +20476,9 @@
         "vocabulary"
       ],
       "prompt": "You have no prescription. What do you say?",
-      "hints": [],
+      "hints": [
+        "Answer the question asked, honestly: Não tenho receita — no prescription on you."
+      ],
       "feedback": "Não tenho receita — answer the question asked, honestly.",
       "evidenceKey": "pt-pharmacy-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20153,7 +20528,9 @@
         "vocabulary"
       ],
       "prompt": "They said yes! Give a time.",
-      "hints": [],
+      "hints": [
+        "Name the hour with às ('at the'): Às oito — and keep it warm with an está bem? check."
+      ],
       "feedback": "Às oito, está bem? — confirm the detail, keep it warm.",
       "evidenceKey": "pt-invitations-foundation-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20203,7 +20580,9 @@
         "vocabulary"
       ],
       "prompt": "You have plenty of room. What do you say?",
-      "hints": [],
+      "hints": [
+        "With plenty of room the answer is a yes with wide arms: Claro que sim!"
+      ],
       "feedback": "Claro que sim! — yes stays yes-shaped in Portuguese too.",
       "evidenceKey": "pt-invitations-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -20252,7 +20631,9 @@
         "vocabulary"
       ],
       "prompt": "Ask if they could help you.",
-      "hints": [],
+      "hints": [
+        "The velvet request: Poderia (would you be able to) + ajudar-me + por favor — the -ia ending does the softening."
+      ],
       "feedback": "Poderia ajudar-me, por favor? — the conditional turns a demand into a request.",
       "evidenceKey": "pt-a2-condicional-act-rb1",
       "assistanceAffectsEvidence": [
@@ -20301,7 +20682,9 @@
         "vocabulary"
       ],
       "prompt": "Three nights, said as softly as possible.",
-      "hints": [],
+      "hints": [
+        "Soften the stay with the condicional: Seria ótimo ficar três noites — the same seria that carried the request."
+      ],
       "feedback": "Seria ótimo ficar três noites — the conditional keeps the whole exchange soft.",
       "evidenceKey": "pt-a2-condicional-act-rb2",
       "assistanceAffectsEvidence": [

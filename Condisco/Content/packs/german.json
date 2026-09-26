@@ -5024,7 +5024,9 @@
         "vocabulary"
       ],
       "prompt": "German puts the verb straight after the question word. Which of these lines asks what something costs?",
-      "hints": [],
+      "hints": [
+        "The price question starts with Was and puts the verb straight after it: Was kostet… — the other lines ask about health or location."
+      ],
       "feedback": "Was kostet das? is the price question: Was first, then the verb kostet. Wie geht es? asks after someone's health, and Wo ist das? asks where something is.",
       "evidenceKey": "de-shopping-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5065,7 +5067,9 @@
         "grammar"
       ],
       "prompt": "Nicht stands in front of the adjective it cancels. Make «Es ist teuer.» say the opposite.",
-      "hints": [],
+      "hints": [
+        "Keep «Es ist teuer.» as it is and slide nicht in front of teuer: Es ist nicht teuer."
+      ],
       "feedback": "Es ist nicht teuer puts nicht immediately before teuer; German will not let the nicht drift to the end of the sentence the way English lets the not.",
       "evidenceKey": "de-shopping-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5079,7 +5083,23 @@
           "Es ist nicht teuer."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es ist teuer nicht.",
+            "category": "word-order problem",
+            "explanation": "Nicht belongs directly in front of the adjective it cancels: Es ist nicht teuer — it doesn't drift to the end the way English not does."
+          },
+          {
+            "answer": "Es nicht ist teuer.",
+            "category": "word-order problem",
+            "explanation": "The verb ist keeps position two; nicht cancels teuer and stands before it: Es ist nicht teuer."
+          },
+          {
+            "answer": "Es ist nicht billig.",
+            "category": "incorrect answer",
+            "explanation": "Billig is 'cheap' — the prompt asks you to negate teuer, not swap the adjective: Es ist nicht teuer."
+          }
+        ]
       }
     },
     {
@@ -5095,7 +5115,9 @@
         "grammar"
       ],
       "prompt": "You are at a Berlin café counter with a single Kaffee in mind. Ask what it costs.",
-      "hints": [],
+      "hints": [
+        "The coffee stays the subject here (only its price is asked, nothing is ordered), so the article stays ein: Was kostet ein Kaffee?"
+      ],
       "feedback": "Kaffee is masculine and is the subject here, so the article stays ein and the question reads Was kostet ein Kaffee?",
       "evidenceKey": "de-shopping-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5109,7 +5131,23 @@
           "Was kostet ein Kaffee?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Was kostet einen Kaffee?",
+            "category": "wrong article",
+            "explanation": "Nothing is being ordered — only the price is asked, so the coffee stays the subject ein: Was kostet ein Kaffee?"
+          },
+          {
+            "answer": "Was kostest ein Kaffee?",
+            "category": "wrong conjugation",
+            "explanation": "Kostet agrees with Kaffee (third person); kostest is the du form: Was kostet ein Kaffee?"
+          },
+          {
+            "answer": "Ein Kaffee kostet was?",
+            "category": "word-order problem",
+            "explanation": "The question word opens the w-question: Was kostet ein Kaffee?"
+          }
+        ]
       }
     },
     {
@@ -5125,7 +5163,9 @@
         "grammar"
       ],
       "prompt": "You have finished eating in a German restaurant. Ask for the bill.",
-      "hints": [],
+      "hints": [
+        "Rechnung is feminine, so the article is die — a bare bitte after it turns the phrase into a request: Die Rechnung, bitte."
+      ],
       "feedback": "Rechnung is feminine, so it takes die, and a bare bitte after it turns the statement into a request.",
       "evidenceKey": "de-shopping-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -5140,7 +5180,23 @@
           "Die Rechnung bitte."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Der Rechnung, bitte.",
+            "category": "wrong gender",
+            "explanation": "Rechnung is feminine — the article is die: Die Rechnung, bitte."
+          },
+          {
+            "answer": "Das Rechnung, bitte.",
+            "category": "wrong article",
+            "explanation": "Rechnung is feminine, not neuter: Die Rechnung, bitte."
+          },
+          {
+            "answer": "Die Rechnung.",
+            "category": "missing word",
+            "explanation": "The bare bitte is what turns the phrase into a polite request: Die Rechnung, bitte."
+          }
+        ]
       }
     },
     {
@@ -5503,7 +5559,9 @@
         "vocabulary"
       ],
       "prompt": "All four of these are nouns, so all four wear a capital letter. Which one is the sister?",
-      "hints": [],
+      "hints": [
+        "The sister is die Schwester — the female sibling, not the brother, the parents, or the family itself."
+      ],
       "feedback": "Schwester is the sister. Bruder is the brother, and Eltern are the parents, with Familie sitting behind all of them.",
       "evidenceKey": "de-family-people-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5548,7 +5606,9 @@
         "grammar"
       ],
       "prompt": "You have exactly one brother, and he is the object of your sentence. Predict the form before you write it: I have a brother.",
-      "hints": [],
+      "hints": [
+        "Masculine object → einen: make the one brother the object and the article moves: Ich habe einen Bruder."
+      ],
       "feedback": "Bruder is masculine and is the direct object, so ein becomes einen: Ich habe einen Bruder.",
       "evidenceKey": "de-family-people-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5562,7 +5622,23 @@
           "Ich habe einen Bruder."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe ein Bruder.",
+            "category": "wrong article",
+            "explanation": "Bruder is the masculine object, so ein moves to einen: Ich habe einen Bruder."
+          },
+          {
+            "answer": "Ich habe eine Bruder.",
+            "category": "wrong article",
+            "explanation": "Bruder is masculine — the accusative form is einen, not eine: Ich habe einen Bruder."
+          },
+          {
+            "answer": "Ich habe einen Schwester.",
+            "category": "wrong gender",
+            "explanation": "Schwester is feminine and would stay eine — the sentence is about the brother: Ich habe einen Bruder."
+          }
+        ]
       }
     },
     {
@@ -5578,7 +5654,9 @@
         "vocabulary"
       ],
       "prompt": "Bruder is masculine and moves to einen as an object; Schwester does not move. Pick the sentence that says I have a sister.",
-      "hints": [],
+      "hints": [
+        "Schwester is feminine and does not move in the accusative — the article stays eine: Ich habe eine Schwester."
+      ],
       "feedback": "Schwester is feminine, so the article stays eine in the accusative. Only masculine nouns change, which is why einen Schwester cannot be right.",
       "evidenceKey": "de-family-people-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5619,7 +5697,9 @@
         "grammar"
       ],
       "prompt": "Give the sentence a second sister: Ich habe eine Schwester.",
-      "hints": [],
+      "hints": [
+        "Two sisters take the plural noun with -n, and zwei replaces eine: Ich habe zwei Schwestern."
+      ],
       "feedback": "The plural adds -n to Schwester, and eine becomes zwei: Ich habe zwei Schwestern.",
       "evidenceKey": "de-family-people-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5633,7 +5713,23 @@
           "Ich habe zwei Schwestern."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich habe zwei Schwester.",
+            "category": "wrong number",
+            "explanation": "Zwei takes the plural noun with -n: zwei Schwestern."
+          },
+          {
+            "answer": "Ich habe eine Schwestern.",
+            "category": "wrong number",
+            "explanation": "Eine is singular — two sisters need zwei plus the plural noun: Ich habe zwei Schwestern."
+          },
+          {
+            "answer": "Ich habe zwei Brüder.",
+            "category": "incorrect answer",
+            "explanation": "The prompt adds a second sister, not a brother: Ich habe zwei Schwestern."
+          }
+        ]
       }
     },
     {
@@ -5650,7 +5746,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note about a family that has scattered. Which city have the parents stayed in?",
-      "hints": [],
+      "hints": [
+        "The parents' sentence sits at the end of the note — answer with just the city where they stayed: Berlin."
+      ],
       "feedback": "The last sentence leaves the parents in Berlin while the brother and sister are elsewhere.",
       "evidenceKey": "de-family-people-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5667,7 +5765,18 @@
           "In Berlin."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Hamburg.",
+            "category": "incorrect answer",
+            "explanation": "Hamburg is where the brother lives — the parents stayed in Berlin."
+          },
+          {
+            "answer": "Wien.",
+            "category": "incorrect answer",
+            "explanation": "Wien is where the sister moved — the parents stayed in Berlin."
+          }
+        ]
       }
     },
     {
@@ -9892,7 +10001,9 @@
         "vocabulary"
       ],
       "prompt": "Which word asks ‘where’?",
-      "hints": [],
+      "hints": [
+        "Wo is 'where' — wer is who, was is what, wann is when."
+      ],
       "feedback": "Wo asks where. Wer asks who, was asks what, wann asks when.",
       "evidenceKey": "de-questions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9937,7 +10048,9 @@
         "grammar"
       ],
       "prompt": "Predict the question before you write it: Where do you work?",
-      "hints": [],
+      "hints": [
+        "Wo first, then the verb in its du form: Wo arbeitest du?"
+      ],
       "feedback": "Wo first, then the verb with its du-ending: Wo arbeitest du?",
       "evidenceKey": "de-questions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9951,7 +10064,23 @@
           "Wo arbeitest du?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Wo du arbeitest?",
+            "category": "word-order problem",
+            "explanation": "The verb follows the question word directly: Wo arbeitest du?"
+          },
+          {
+            "answer": "Wo arbeiten du?",
+            "category": "wrong conjugation",
+            "explanation": "Arbeiten drops its -en for du: Wo arbeitest du?"
+          },
+          {
+            "answer": "Wo arbeitet du?",
+            "category": "wrong conjugation",
+            "explanation": "Du takes the -st ending: Wo arbeitest du?"
+          }
+        ]
       }
     },
     {
@@ -9967,7 +10096,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct yes-no question.",
-      "hints": [],
+      "hints": [
+        "A yes-no question opens with the conjugated verb: Arbeitest du?"
+      ],
       "feedback": "A yes-no question starts with the conjugated verb: Arbeitest du? Arbeiten du breaks the verb ending.",
       "evidenceKey": "de-questions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10009,7 +10140,9 @@
         "grammar"
       ],
       "prompt": "Ask about the place instead of the time: Wann arbeitest du?",
-      "hints": [],
+      "hints": [
+        "Swap wann for wo and keep the verb in position two: Wo arbeitest du?"
+      ],
       "feedback": "Swap wann for wo; the verb stays second: Wo arbeitest du?",
       "evidenceKey": "de-questions-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -10023,7 +10156,23 @@
           "Wo arbeitest du?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Wann arbeitest du?",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks about the place — swap wann for wo and keep the frame: Wo arbeitest du?"
+          },
+          {
+            "answer": "Wo du arbeitest?",
+            "category": "word-order problem",
+            "explanation": "Only the question word changes — the verb stays right after wo: Wo arbeitest du?"
+          },
+          {
+            "answer": "Wo arbeiten du?",
+            "category": "wrong conjugation",
+            "explanation": "The verb keeps its du form arbeitest: Wo arbeitest du?"
+          }
+        ]
       }
     },
     {
@@ -10041,7 +10190,9 @@
         "vocabulary"
       ],
       "prompt": "Read the chat. Where does Anna live?",
-      "hints": [],
+      "hints": [
+        "Anna answers the wo-question directly — reply with the city only: in Berlin."
+      ],
       "feedback": "Anna answers the wo-question directly: Ich wohne in Berlin.",
       "evidenceKey": "de-questions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10058,7 +10209,18 @@
           "Berlin"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich wohne in Berlin.",
+            "category": "extra word",
+            "explanation": "The prompt asks where Anna lives — answer with the city alone: In Berlin."
+          },
+          {
+            "answer": "Anna.",
+            "category": "incorrect answer",
+            "explanation": "Anna is her name — the question asks where she lives: in Berlin."
+          }
+        ]
       }
     },
     {
@@ -12563,7 +12725,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is ‘the head’?",
-      "hints": [],
+      "hints": [
+        "Kopf is the head — Arm is the arm, Bein the leg, Arzt the doctor."
+      ],
       "feedback": "Kopf is the head. Arm is the arm, Bein is the leg, Arzt is the doctor.",
       "evidenceKey": "de-health-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -12609,7 +12773,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: My head hurts.",
-      "hints": [],
+      "hints": [
+        "Start with to-me, then the subject of the ache: Mir tut der Kopf weh."
+      ],
       "feedback": "Pain happens to you: Mir tut der Kopf weh — word for word, ‘to me does the head pain’.",
       "evidenceKey": "de-health-foundation-think",
       "assistanceAffectsEvidence": [
@@ -12623,7 +12789,23 @@
           "Mir tut der Kopf weh."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mein Kopf tut weh.",
+            "category": "incorrect answer",
+            "explanation": "Mein Kopf tut weh copies the English pattern — German feels the pain as happening to you: Mir tut der Kopf weh."
+          },
+          {
+            "answer": "Mir tut meine Kopf weh.",
+            "category": "wrong article",
+            "explanation": "Der Kopf keeps its subject article der — the possessive meine isn't part of the frame: Mir tut der Kopf weh."
+          },
+          {
+            "answer": "Ich habe Kopfschmerzen.",
+            "category": "incorrect answer",
+            "explanation": "Kopfschmerzen is the noun 'headache' — the model names what hurts and to whom: Mir tut der Kopf weh."
+          }
+        ]
       }
     },
     {
@@ -12640,7 +12822,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the idiomatic German sentence.",
-      "hints": [],
+      "hints": [
+        "The idiomatic frame is Mir (to me) with der Kopf as the subject of tut weh."
+      ],
       "feedback": "Mir — to me — is the right start, and der Kopf stays nominative as the subject of tut weh.",
       "evidenceKey": "de-health-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -12683,7 +12867,9 @@
         "grammar"
       ],
       "prompt": "Change the body part: Mir tut der Kopf weh.",
-      "hints": [],
+      "hints": [
+        "Kopf becomes Arm — both masculine, so der stays: Mir tut der Arm weh."
+      ],
       "feedback": "Kopf becomes Arm — both masculine, so der stays: Mir tut der Arm weh.",
       "evidenceKey": "de-health-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -12697,7 +12883,23 @@
           "Mir tut der Arm weh."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Mir tut die Arm weh.",
+            "category": "wrong article",
+            "explanation": "Arm is masculine and stays the subject der: Mir tut der Arm weh."
+          },
+          {
+            "answer": "Mir tut der Bein weh.",
+            "category": "wrong article",
+            "explanation": "Bein is neuter (das Bein) — to vary the model, swap in the masculine Arm: Mir tut der Arm weh."
+          },
+          {
+            "answer": "Mein Arm tut weh.",
+            "category": "incorrect answer",
+            "explanation": "Same frame as the model: the pain happens to you — Mir tut der Arm weh."
+          }
+        ]
       }
     },
     {
@@ -12714,7 +12916,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note. Where does the writer go?",
-      "hints": [],
+      "hints": [
+        "The destination sits in the second sentence of the note — answer with the place: zum Arzt."
+      ],
       "feedback": "The destination is clear: Ich gehe zum Arzt.",
       "evidenceKey": "de-health-foundation-read",
       "assistanceAffectsEvidence": [
@@ -12731,7 +12935,18 @@
           "Arzt"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Zu Hause.",
+            "category": "incorrect answer",
+            "explanation": "Zu Hause is where the writer stays tomorrow — today's destination is the doctor: zum Arzt."
+          },
+          {
+            "answer": "Der Arzt.",
+            "category": "incorrect answer",
+            "explanation": "The question asks where the writer goes, not who the doctor is: zum Arzt."
+          }
+        ]
       }
     },
     {
@@ -13341,7 +13556,9 @@
         "vocabulary"
       ],
       "prompt": "Which one is ‘the invitation’?",
-      "hints": [],
+      "hints": [
+        "Einladung is the invitation — Party is the party, Plan the plan, Tasche the bag."
+      ],
       "feedback": "Einladung is the invitation. Party is the party, Plan is the plan, Tasche is the bag.",
       "evidenceKey": "de-invitations-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -13386,7 +13603,9 @@
         "grammar"
       ],
       "prompt": "Predict the sentence before you write it: I’m inviting you (informal).",
-      "hints": [],
+      "hints": [
+        "Einladen splits: the conjugated lade sits second and the prefix ein closes the sentence: Ich lade dich ein."
+      ],
       "feedback": "Einladen separates: lade goes second, ein goes last — Ich lade dich ein.",
       "evidenceKey": "de-invitations-foundation-think",
       "assistanceAffectsEvidence": [
@@ -13400,7 +13619,23 @@
           "Ich lade dich ein."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich einlade dich.",
+            "category": "word-order problem",
+            "explanation": "The conjugated part comes second and the prefix ein waits until the end: Ich lade dich ein."
+          },
+          {
+            "answer": "Ich lade ein dich.",
+            "category": "word-order problem",
+            "explanation": "Ein closes the sentence: Ich lade dich ein."
+          },
+          {
+            "answer": "Ich lade du ein.",
+            "category": "incorrect answer",
+            "explanation": "Dich is the object form of du: Ich lade dich ein."
+          }
+        ]
       }
     },
     {
@@ -13416,7 +13651,9 @@
         "vocabulary"
       ],
       "prompt": "Pick the correct separable-verb sentence.",
-      "hints": [],
+      "hints": [
+        "The prefix ein must stand at the very end of the sentence: Ich lade dich ein."
+      ],
       "feedback": "The prefix ein must stand at the very end: Ich lade dich ein.",
       "evidenceKey": "de-invitations-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -13457,7 +13694,9 @@
         "grammar"
       ],
       "prompt": "Turn the acceptance into a polite decline: Ja, ich komme gern.",
-      "hints": [],
+      "hints": [
+        "Soften the refusal with leider: Leider kann ich nicht."
+      ],
       "feedback": "Leider softens the refusal: Leider kann ich nicht.",
       "evidenceKey": "de-invitations-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -13471,7 +13710,23 @@
           "Leider kann ich nicht."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Ich kann nicht.",
+            "category": "missing word",
+            "explanation": "Leider is the polite softener that marks the decline: Leider kann ich nicht."
+          },
+          {
+            "answer": "Nein.",
+            "category": "incorrect answer",
+            "explanation": "A bare nein is blunt — the model softens the refusal: Leider kann ich nicht."
+          },
+          {
+            "answer": "Leider nicht kann ich.",
+            "category": "word-order problem",
+            "explanation": "Kann keeps position two: Leider kann ich nicht."
+          }
+        ]
       }
     },
     {
@@ -13489,7 +13744,9 @@
         "vocabulary"
       ],
       "prompt": "Read the invitation. When is the party?",
-      "hints": [],
+      "hints": [
+        "The date is in the second sentence of the invitation — answer with the day: am Samstag."
+      ],
       "feedback": "The date is in the second sentence: Die Party ist am Samstag.",
       "evidenceKey": "de-invitations-foundation-read",
       "assistanceAffectsEvidence": [
@@ -13506,7 +13763,18 @@
           "Samstag"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Am Sonntag.",
+            "category": "incorrect answer",
+            "explanation": "The invitation says am Samstag — not Sunday."
+          },
+          {
+            "answer": "Gern.",
+            "category": "incorrect answer",
+            "explanation": "Gern is Anna's reply to the invitation, not the party's date: am Samstag."
+          }
+        ]
       }
     },
     {
@@ -15419,7 +15687,9 @@
         "vocabulary"
       ],
       "prompt": "Which request is the most polite?",
-      "hints": [],
+      "hints": [
+        "The softest frame is the wäre-construction: Wäre es möglich, das Fenster zu öffnen? — the other options are commands or statements."
+      ],
       "feedback": "Wäre es möglich, das Fenster zu öffnen? — the softest frame. The commands are blunt; Du öffnest is just a statement.",
       "evidenceKey": "de-a2-hoefliche-bitten-meet",
       "assistanceAffectsEvidence": [
@@ -15465,7 +15735,9 @@
         "grammar"
       ],
       "prompt": "Predict and write: Could you please open the window? (formal)",
-      "hints": [],
+      "hints": [
+        "Könnten Sie + bitte + object + infinitive at the end: Könnten Sie bitte das Fenster öffnen?"
+      ],
       "feedback": "Könnten Sie bitte das Fenster öffnen?",
       "evidenceKey": "de-a2-hoefliche-bitten-think",
       "assistanceAffectsEvidence": [
@@ -15480,7 +15752,23 @@
           "Könnten Sie das Fenster bitte öffnen?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Können Sie bitte das Fenster öffnen?",
+            "category": "wrong tense",
+            "explanation": "Können is the plain present — polite requests soften it to Könnten: Könnten Sie bitte das Fenster öffnen?"
+          },
+          {
+            "answer": "Könntest du bitte das Fenster öffnen?",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for the formal Sie form — Könntest du is informal: Könnten Sie bitte das Fenster öffnen?"
+          },
+          {
+            "answer": "Könnten Sie bitte das Fenster öffnet?",
+            "category": "wrong conjugation",
+            "explanation": "The second verb stays the infinitive at the end: …das Fenster öffnen."
+          }
+        ]
       }
     },
     {
@@ -15496,7 +15784,9 @@
         "vocabulary"
       ],
       "prompt": "Which modal form makes a request polite?",
-      "hints": [],
+      "hints": [
+        "Könnten is the softened (Konjunktiv) form — kannst and kann are direct, können is the plain infinitive."
+      ],
       "feedback": "Könnten — the soft form. Kannst is direct, können is the infinitive.",
       "evidenceKey": "de-a2-hoefliche-bitten-notice",
       "assistanceAffectsEvidence": [
@@ -15541,7 +15831,9 @@
         "grammar"
       ],
       "prompt": "Make it polite: Mach die Tür zu!",
-      "hints": [],
+      "hints": [
+        "Rebuild the command as a polite Sie-request with the infinitive last: Könnten Sie bitte die Tür schließen?"
+      ],
       "feedback": "Könnten Sie bitte die Tür schließen?",
       "evidenceKey": "de-a2-hoefliche-bitten-vary",
       "assistanceAffectsEvidence": [
@@ -15556,7 +15848,23 @@
           "Würden Sie bitte die Tür schließen?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Können Sie bitte die Tür schließen?",
+            "category": "wrong tense",
+            "explanation": "The softened modal is Könnten — the polite frame: Könnten Sie bitte die Tür schließen?"
+          },
+          {
+            "answer": "Könnten Sie bitte die Tür schließt?",
+            "category": "wrong conjugation",
+            "explanation": "The infinitive schließen closes the request: …die Tür schließen."
+          },
+          {
+            "answer": "Mach die Tür zu!",
+            "category": "incorrect answer",
+            "explanation": "That is the blunt command from the prompt — make it polite: Könnten Sie bitte die Tür schließen?"
+          }
+        ]
       }
     },
     {
@@ -15573,7 +15881,9 @@
         "vocabulary"
       ],
       "prompt": "Read the hotel dialogue. What does the guest ask for last?",
-      "hints": [],
+      "hints": [
+        "The guest's last line asks about the window — answer with that action: das Fenster öffnen."
+      ],
       "feedback": "Würden Sie das Fenster öffnen? — to open the window.",
       "evidenceKey": "de-a2-hoefliche-bitten-read",
       "assistanceAffectsEvidence": [
@@ -15589,7 +15899,18 @@
           "Ein offenes Fenster."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Einen Moment warten.",
+            "category": "incorrect answer",
+            "explanation": "Waiting was the receptionist's request to the guest — the guest's last request is the window: das Fenster öffnen."
+          },
+          {
+            "answer": "Später zu kommen.",
+            "category": "incorrect answer",
+            "explanation": "Coming later is the guest's first question — the last request is the window: das Fenster öffnen."
+          }
+        ]
       },
       "stimulusId": "de-a2-hoefliche-bitten-stim-2"
     },
@@ -18230,7 +18551,9 @@
       "kind": "dialogue-choice",
       "id": "de-invitations-foundation-act-rb2",
       "prompt": "Anna: „Deine Party klingt toll! Aber ich arbeite am Samstag…“ — She sounds unsure. Which reply keeps the invitation alive?",
-      "hints": [],
+      "hints": [
+        "Keep the door open — push past her doubt with the invitation itself: Komm doch trotzdem — ich lade dich herzlich ein!"
+      ],
       "feedback": "Komm doch! keeps the door open and einladen names the invitation. Giving up, or declining on her behalf, ends the conversation.",
       "evidenceKey": "de-invitations-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18280,7 +18603,9 @@
       "kind": "dialogue-choice",
       "id": "de-invitations-foundation-act-rb3",
       "prompt": "Anna: „Na gut — wann denn genau?“ — Pin it down:",
-      "hints": [],
+      "hints": [
+        "Pin the day with am Samstag, then confirm: Am Samstag. Kommst du?"
+      ],
       "feedback": "Am Samstag pins the day and Kommst du? asks the question. Vague answers lose the plan.",
       "evidenceKey": "de-invitations-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18346,7 +18671,9 @@
       "kind": "dialogue-choice",
       "id": "de-health-foundation-act-rb2",
       "prompt": "Doctor: „Was fehlt Ihnen?“ — Tell her your head hurts, the German way:",
-      "hints": [],
+      "hints": [
+        "German lets the pain happen to you: Mir tut der Kopf weh. Mein Kopf tut weh is English wearing a German coat."
+      ],
       "feedback": "Pain happens to you: Mir tut der Kopf weh. Mein Kopf tut weh is English wearing a German coat.",
       "evidenceKey": "de-health-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18395,7 +18722,9 @@
       "kind": "dialogue-choice",
       "id": "de-health-foundation-act-rb3",
       "prompt": "Doctor: „Seit wann?“ — Since yesterday:",
-      "hints": [],
+      "hints": [
+        "Seit plus a point in time means since: Seit gestern. Für means for and ab means from."
+      ],
       "feedback": "Seit plus a time means since: Seit gestern. The doctor nods and writes it down.",
       "evidenceKey": "de-health-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18463,7 +18792,9 @@
       "kind": "dialogue-choice",
       "id": "de-a2-hoefliche-bitten-act-rb2",
       "prompt": "Receptionist: „Guten Abend! Was kann ich für Sie tun?“ — Ask for a quiet room, politely:",
-      "hints": [],
+      "hints": [
+        "The polite frame is Könnten Sie … bitte …? with the infinitive last: Könnten Sie mir bitte ein ruhiges Zimmer geben?"
+      ],
       "feedback": "Könnten Sie bitte…? is the polite frame. Demands and blunt wollen don't open doors — soft questions do.",
       "evidenceKey": "de-a2-hoefliche-bitten-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18513,7 +18844,9 @@
       "kind": "dialogue-choice",
       "id": "de-a2-hoefliche-bitten-act-rb3",
       "prompt": "Receptionist: „Sehr gern. Sonst noch etwas?“ — Ask whether opening the window is possible:",
-      "hints": [],
+      "hints": [
+        "Wäre es möglich …? is the softest frame for a request at a front desk."
+      ],
       "feedback": "Wäre es möglich…? is the softest frame in German. A command at a front desk lands badly.",
       "evidenceKey": "de-a2-hoefliche-bitten-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18577,7 +18910,9 @@
       "kind": "dialogue-choice",
       "id": "de-questions-foundation-act-rb2",
       "prompt": "You: „Hallo! Ich bin Alex.“ — Stranger: „Hallo! Freut mich.“ — Ask where she lives:",
-      "hints": [],
+      "hints": [
+        "Question word first, verb second with the du ending: Wo wohnst du?"
+      ],
       "feedback": "Question word first, verb second: Wo wohnst du? The verb must follow wo immediately.",
       "evidenceKey": "de-questions-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18625,7 +18960,9 @@
       "kind": "dialogue-choice",
       "id": "de-questions-foundation-act-rb3",
       "prompt": "Stranger: „In Kreuzberg. Und du?“ — „In Mitte.“ — „Was machst du beruflich?“ — Answer, and keep the chat going:",
-      "hints": [],
+      "hints": [
+        "Answer with the verb in second position, then toss the question back: Ich arbeite als Lehrer. Und du?"
+      ],
       "feedback": "Answer, then return the question: Und du? is the little engine of small talk.",
       "evidenceKey": "de-questions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18689,7 +19026,9 @@
       "kind": "dialogue-choice",
       "id": "de-family-people-foundation-act-rb2",
       "prompt": "Mother: „Erzähl mal — hast du Geschwister?“ — Say you have a brother:",
-      "hints": [],
+      "hints": [
+        "Brother is the masculine object, so the article moves to einen: Ich habe einen Bruder. Only the article moves."
+      ],
       "feedback": "Bruder is masculine and the object: einen Bruder. Only the masculine article moves.",
       "evidenceKey": "de-family-people-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18737,7 +19076,9 @@
       "kind": "dialogue-choice",
       "id": "de-family-people-foundation-act-rb3",
       "prompt": "Father: „Und deine Eltern — wo wohnen sie?“ — Answer:",
-      "hints": [],
+      "hints": [
+        "Eltern is plural, so the verb takes the plural form and the possessive is meine: Meine Eltern wohnen in Berlin."
+      ],
       "feedback": "Eltern is plural: meine Eltern wohnen. The verb must agree with the plural subject.",
       "evidenceKey": "de-family-people-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18801,7 +19142,9 @@
       "kind": "dialogue-choice",
       "id": "de-shopping-foundation-act-rb2",
       "prompt": "Seller: „Das ist ein schönes Stück — echtes Leder!“ — Ask what it costs:",
-      "hints": [],
+      "hints": [
+        "The price question is a fixed frame: Was kostet das? — Was first, then the verb, then das. The other options break that frame."
+      ],
       "feedback": "Was kostet das? — question word, verb second. The frame never changes, whatever the price.",
       "evidenceKey": "de-shopping-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18849,7 +19192,9 @@
       "kind": "selection",
       "id": "de-shopping-foundation-act-rb3",
       "prompt": "The seller says 35. You want the polite word for 'inexpensive' — the one a shopkeeper won't wince at. Which is it?",
-      "hints": [],
+      "hints": [
+        "The shopkeeper-safe word for inexpensive is günstig — billig can sound like cheap junk and kostenlos means free."
+      ],
       "feedback": "Günstig means inexpensive without insulting the goods. Billig can sound cheap in the bad way — never about someone's leather bag.",
       "evidenceKey": "de-shopping-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18897,7 +19242,9 @@
       "kind": "dialogue-choice",
       "id": "de-shopping-foundation-act-rb4",
       "prompt": "Seller: „40 Euro.“ — Too expensive. React, and offer 25:",
-      "hints": [],
+      "hints": [
+        "Name the problem with zu teuer, then put your counter-price as a question: Das ist zu teuer. 25 Euro?"
+      ],
       "feedback": "Das ist zu teuer names the problem; naming your price keeps the haggle alive. Zu billig means the opposite of what you want.",
       "evidenceKey": "de-shopping-foundation-act-rb4",
       "assistanceAffectsEvidence": [

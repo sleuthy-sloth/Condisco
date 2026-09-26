@@ -1437,4 +1437,318 @@ final class PackGermanTests: XCTestCase {
         result = try gradeText("de-a2-berufsvokabular-read", in: pack, "Ihren Lebenslauf.")
         XCTAssertTrue(result.accepted)
     }
+
+    // MARK: - Wave E (6 conversation lessons, units 3–15)
+
+    /// The six German conversation-family lessons edited in wave E (family
+    /// == "conversation", unreviewed before this batch), keyed by the graded
+    /// activity ids each lesson's path references.
+    private static let batch5Lessons: [String: [String]] = [
+        "de-shopping-foundation": [
+            "de-shopping-foundation-act-rb2", "de-shopping-foundation-meet",
+            "de-shopping-foundation-vary", "de-shopping-foundation-act-rb4",
+            "de-shopping-foundation-act-rb3", "de-shopping-foundation-think",
+            "de-shopping-foundation-ask",
+        ],
+        "de-family-people-foundation": [
+            "de-family-people-foundation-act-rb2", "de-family-people-foundation-meet",
+            "de-family-people-foundation-think", "de-family-people-foundation-act-rb3",
+            "de-family-people-foundation-notice", "de-family-people-foundation-vary",
+            "de-family-people-foundation-read",
+        ],
+        "de-questions-foundation": [
+            "de-questions-foundation-act-rb2", "de-questions-foundation-meet",
+            "de-questions-foundation-think", "de-questions-foundation-act-rb3",
+            "de-questions-foundation-notice", "de-questions-foundation-vary",
+            "de-questions-foundation-read",
+        ],
+        "de-health-foundation": [
+            "de-health-foundation-act-rb2", "de-health-foundation-meet",
+            "de-health-foundation-think", "de-health-foundation-act-rb3",
+            "de-health-foundation-notice", "de-health-foundation-vary",
+            "de-health-foundation-read",
+        ],
+        "de-invitations-foundation": [
+            "de-invitations-foundation-act-rb2", "de-invitations-foundation-meet",
+            "de-invitations-foundation-think", "de-invitations-foundation-act-rb3",
+            "de-invitations-foundation-notice", "de-invitations-foundation-vary",
+            "de-invitations-foundation-read",
+        ],
+        "de-a2-hoefliche-bitten": [
+            "de-a2-hoefliche-bitten-act-rb2", "de-a2-hoefliche-bitten-meet",
+            "de-a2-hoefliche-bitten-think", "de-a2-hoefliche-bitten-act-rb3",
+            "de-a2-hoefliche-bitten-notice", "de-a2-hoefliche-bitten-vary",
+            "de-a2-hoefliche-bitten-read",
+        ],
+    ]
+
+    /// Every graded step in wave-E lessons has a real authored hint
+    /// (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch5GradedStepsHaveAuthoredHints() throws {
+        let pack = try germanPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer and every cloze blank in wave-E lessons authors
+    /// error-specific feedback (audit_editorial error-gap must stay 0).
+    func testBatch5TextAndClozeActivitiesAuthorErrors() throws {
+        let pack = try germanPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers for wave-E lessons hit their authored
+    /// category + explanation instead of the generic fallback.
+    func testBatch5AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try germanPack()
+
+        // de-shopping-foundation-vary (Es ist nicht teuer.)
+        var result = try gradeText("de-shopping-foundation-vary", in: pack, "Es ist teuer nicht.")
+        XCTAssertEqual(result.category, "word-order problem")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-shopping-foundation-vary", in: pack, "Es nicht ist teuer.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("de-shopping-foundation-vary", in: pack, "Es ist nicht billig.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-shopping-foundation-think (Was kostet ein Kaffee?)
+        result = try gradeText("de-shopping-foundation-think", in: pack, "Was kostet einen Kaffee?")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-shopping-foundation-think", in: pack, "Was kostest ein Kaffee?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("de-shopping-foundation-think", in: pack, "Ein Kaffee kostet was?")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-shopping-foundation-ask (Die Rechnung, bitte.)
+        result = try gradeText("de-shopping-foundation-ask", in: pack, "Der Rechnung, bitte.")
+        XCTAssertEqual(result.category, "wrong gender")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-shopping-foundation-ask", in: pack, "Das Rechnung, bitte.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("de-shopping-foundation-ask", in: pack, "Die Rechnung.")
+        XCTAssertEqual(result.category, "missing word")
+
+        // de-family-people-foundation-think (Ich habe einen Bruder.)
+        result = try gradeText("de-family-people-foundation-think", in: pack, "Ich habe ein Bruder.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-family-people-foundation-think", in: pack, "Ich habe eine Bruder.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("de-family-people-foundation-think", in: pack, "Ich habe einen Schwester.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // de-family-people-foundation-vary (Ich habe zwei Schwestern.)
+        result = try gradeText("de-family-people-foundation-vary", in: pack, "Ich habe zwei Schwester.")
+        XCTAssertEqual(result.category, "wrong number")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-family-people-foundation-vary", in: pack, "Ich habe eine Schwestern.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("de-family-people-foundation-vary", in: pack, "Ich habe zwei Brüder.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-family-people-foundation-read (Berlin)
+        result = try gradeText("de-family-people-foundation-read", in: pack, "Hamburg.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-family-people-foundation-read", in: pack, "Wien.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-questions-foundation-think (Wo arbeitest du?)
+        result = try gradeText("de-questions-foundation-think", in: pack, "Wo du arbeitest?")
+        XCTAssertEqual(result.category, "word-order problem")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-questions-foundation-think", in: pack, "Wo arbeiten du?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("de-questions-foundation-think", in: pack, "Wo arbeitet du?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-questions-foundation-vary (Wo arbeitest du?)
+        result = try gradeText("de-questions-foundation-vary", in: pack, "Wann arbeitest du?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-questions-foundation-vary", in: pack, "Wo du arbeitest?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("de-questions-foundation-vary", in: pack, "Wo arbeiten du?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-questions-foundation-read (In Berlin.)
+        result = try gradeText("de-questions-foundation-read", in: pack, "Ich wohne in Berlin.")
+        XCTAssertEqual(result.category, "extra word")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-questions-foundation-read", in: pack, "Anna.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-health-foundation-think (Mir tut der Kopf weh.)
+        result = try gradeText("de-health-foundation-think", in: pack, "Mein Kopf tut weh.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-health-foundation-think", in: pack, "Mir tut meine Kopf weh.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("de-health-foundation-think", in: pack, "Ich habe Kopfschmerzen.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-health-foundation-vary (Mir tut der Arm weh.)
+        result = try gradeText("de-health-foundation-vary", in: pack, "Mir tut die Arm weh.")
+        XCTAssertEqual(result.category, "wrong article")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-health-foundation-vary", in: pack, "Mir tut der Bein weh.")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("de-health-foundation-vary", in: pack, "Mein Arm tut weh.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-health-foundation-read (zum Arzt)
+        result = try gradeText("de-health-foundation-read", in: pack, "Zu Hause.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-health-foundation-read", in: pack, "Der Arzt.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-invitations-foundation-think (Ich lade dich ein.)
+        result = try gradeText("de-invitations-foundation-think", in: pack, "Ich einlade dich.")
+        XCTAssertEqual(result.category, "word-order problem")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-invitations-foundation-think", in: pack, "Ich lade ein dich.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("de-invitations-foundation-think", in: pack, "Ich lade du ein.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-invitations-foundation-vary (Leider kann ich nicht.)
+        result = try gradeText("de-invitations-foundation-vary", in: pack, "Ich kann nicht.")
+        XCTAssertEqual(result.category, "missing word")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-invitations-foundation-vary", in: pack, "Nein.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("de-invitations-foundation-vary", in: pack, "Leider nicht kann ich.")
+        XCTAssertEqual(result.category, "word-order problem")
+
+        // de-invitations-foundation-read (Am Samstag.)
+        result = try gradeText("de-invitations-foundation-read", in: pack, "Am Sonntag.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-invitations-foundation-read", in: pack, "Gern.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-a2-hoefliche-bitten-think (Könnten Sie bitte das Fenster öffnen?)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-think", in: pack, "Können Sie bitte das Fenster öffnen?")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-think", in: pack, "Könntest du bitte das Fenster öffnen?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-think", in: pack, "Könnten Sie bitte das Fenster öffnet?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // de-a2-hoefliche-bitten-vary (Könnten Sie bitte die Tür schließen?)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-vary", in: pack, "Können Sie bitte die Tür schließen?")
+        XCTAssertEqual(result.category, "wrong tense")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-vary", in: pack, "Könnten Sie bitte die Tür schließt?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("de-a2-hoefliche-bitten-vary", in: pack, "Mach die Tür zu!")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // de-a2-hoefliche-bitten-read (das Fenster öffnen)
+        result = try gradeText("de-a2-hoefliche-bitten-read", in: pack, "Einen Moment warten.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("de-a2-hoefliche-bitten-read", in: pack, "Später zu kommen.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// Wave-E lessons accept their dictated target lines, natural German
+    /// forms, and second accepted variants.
+    func testBatch5AcceptsAuthoredAnswers() throws {
+        let pack = try germanPack()
+
+        // de-shopping-foundation
+        var result = try gradeText("de-shopping-foundation-vary", in: pack, "Es ist nicht teuer.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-shopping-foundation-think", in: pack, "Was kostet ein Kaffee?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-shopping-foundation-ask", in: pack, "Die Rechnung, bitte.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-shopping-foundation-ask", in: pack, "Die Rechnung bitte.")
+        XCTAssertTrue(result.accepted)
+
+        // de-family-people-foundation
+        result = try gradeText("de-family-people-foundation-think", in: pack, "Ich habe einen Bruder.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-family-people-foundation-vary", in: pack, "Ich habe zwei Schwestern.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-family-people-foundation-read", in: pack, "Berlin.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-family-people-foundation-read", in: pack, "In Berlin.")
+        XCTAssertTrue(result.accepted)
+
+        // de-questions-foundation
+        result = try gradeText("de-questions-foundation-think", in: pack, "Wo arbeitest du?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-questions-foundation-vary", in: pack, "Wo arbeitest du?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-questions-foundation-read", in: pack, "Berlin")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-questions-foundation-read", in: pack, "in Berlin")
+        XCTAssertTrue(result.accepted)
+
+        // de-health-foundation
+        result = try gradeText("de-health-foundation-think", in: pack, "Mir tut der Kopf weh.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-health-foundation-vary", in: pack, "Mir tut der Arm weh.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-health-foundation-read", in: pack, "Zum Arzt.")
+        XCTAssertTrue(result.accepted)
+
+        // de-invitations-foundation
+        result = try gradeText("de-invitations-foundation-think", in: pack, "Ich lade dich ein.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-invitations-foundation-vary", in: pack, "Leider kann ich nicht.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-invitations-foundation-read", in: pack, "Am Samstag.")
+        XCTAssertTrue(result.accepted)
+
+        // de-a2-hoefliche-bitten
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-think", in: pack, "Könnten Sie bitte das Fenster öffnen?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-think", in: pack, "Könnten Sie das Fenster bitte öffnen?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText(
+            "de-a2-hoefliche-bitten-vary", in: pack, "Würden Sie bitte die Tür schließen?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-a2-hoefliche-bitten-read", in: pack, "Das Fenster öffnen.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("de-a2-hoefliche-bitten-read", in: pack, "Ein offenes Fenster.")
+        XCTAssertTrue(result.accepted)
+    }
 }

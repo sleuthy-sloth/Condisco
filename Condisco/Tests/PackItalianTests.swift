@@ -963,4 +963,315 @@ final class PackItalianTests: XCTestCase {
         XCTAssertFalse(che.accepted)
         XCTAssertEqual(che.category, "incorrect answer")
     }
+
+    // MARK: - Wave E: conversation + listening lessons (it-unit-4/5/6/11)
+
+    /// it-requests-foundation-cloze b1: after posso the verb stays
+    /// infinitive; the conjugated prendo and the wrong verb rendere are
+    /// authored errors.
+    func testRequestsClozeInfinitiveAfterPosso() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-requests-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "prendere", spec: spec).accepted)
+        let prendo = AnswerEngine.evaluate(response: "prendo", spec: spec)
+        XCTAssertFalse(prendo.accepted)
+        XCTAssertEqual(prendo.category, "wrong conjugation")
+        let rendere = AnswerEngine.evaluate(response: "rendere", spec: spec)
+        XCTAssertFalse(rendere.accepted)
+        XCTAssertEqual(rendere.category, "incorrect answer")
+    }
+
+    /// it-requests-foundation-listen-model: the dictated permission question
+    /// keeps the infinitive and the accent on caffè; both slips are authored
+    /// errors.
+    func testRequestsListenModelDictation() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-requests-foundation-listen-model")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Posso prendere un caffè?", spec: spec).accepted)
+        let conjugated = AnswerEngine.evaluate(response: "Posso prendo un caffè?", spec: spec)
+        XCTAssertFalse(conjugated.accepted)
+        XCTAssertEqual(conjugated.category, "wrong conjugation")
+        let accent = AnswerEngine.evaluate(response: "Posso prendere un cafe?", spec: spec)
+        XCTAssertFalse(accent.accepted)
+        XCTAssertEqual(accent.category, "accent/diacritic issue")
+    }
+
+    /// it-requests-transfer: the permission question accepts the emphatic io;
+    /// the blunt voglio and the scrambled order are authored errors.
+    func testRequestsTransferPermissionQuestion() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-requests-transfer")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Posso pagare?", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Posso pagare io?", spec: spec).accepted)
+        let voglio = AnswerEngine.evaluate(response: "Voglio pagare.", spec: spec)
+        XCTAssertFalse(voglio.accepted)
+        XCTAssertEqual(voglio.category, "incorrect answer")
+        let scrambled = AnswerEngine.evaluate(response: "Pagare posso?", spec: spec)
+        XCTAssertFalse(scrambled.accepted)
+        XCTAssertEqual(scrambled.category, "word-order problem")
+    }
+
+    /// it-market-foundation-cloze b1: a plural price takes costano; the
+    /// singular costa and the verb essere are authored errors.
+    func testMarketClozePluralPriceVerb() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-market-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Costano", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "costano", spec: spec).accepted)
+        let costa = AnswerEngine.evaluate(response: "Costa", spec: spec)
+        XCTAssertFalse(costa.accepted)
+        XCTAssertEqual(costa.category, "wrong number")
+        let sono = AnswerEngine.evaluate(response: "sono", spec: spec)
+        XCTAssertFalse(sono.accepted)
+        XCTAssertEqual(sono.category, "incorrect answer")
+    }
+
+    /// it-market-foundation-read: the price list prices the bread at un euro;
+    /// the apples' due euro is an authored distractor error.
+    func testMarketReadBreadPrice() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-market-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "un euro", spec: spec).accepted)
+        let apples = AnswerEngine.evaluate(response: "due euro", spec: spec)
+        XCTAssertFalse(apples.accepted)
+        XCTAssertEqual(apples.category, "incorrect answer")
+        let perKilo = AnswerEngine.evaluate(response: "un euro al chilo", spec: spec)
+        XCTAssertFalse(perKilo.accepted)
+        XCTAssertEqual(perKilo.category, "extra word")
+    }
+
+    /// it-market-foundation-listen-model: the dictated question uses the
+    /// singular costa with un chilo; the plural costano is an authored
+    /// wrong-number error.
+    func testMarketListenModelSingularVerb() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-market-foundation-listen-model")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Quanto costa un chilo di mele?", spec: spec).accepted)
+        let plural = AnswerEngine.evaluate(response: "Quanto costano un chilo di mele?", spec: spec)
+        XCTAssertFalse(plural.accepted)
+        XCTAssertEqual(plural.category, "wrong number")
+        let il = AnswerEngine.evaluate(response: "Quanto costa il chilo di mele?", spec: spec)
+        XCTAssertFalse(il.accepted)
+        XCTAssertEqual(il.category, "wrong article")
+    }
+
+    /// it-market-foundation-meaning: costano is plural; the singular gloss
+    /// is an authored wrong-number error.
+    func testMarketMeaningPluralGloss() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-market-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "They cost three euros.", spec: spec).accepted)
+        let singular = AnswerEngine.evaluate(response: "It costs three euros.", spec: spec)
+        XCTAssertFalse(singular.accepted)
+        XCTAssertEqual(singular.category, "wrong number")
+    }
+
+    /// it-health-foundation-act-rb5: the report sentence keeps che and the
+    /// article with febbre; sono la febbre and a missing article are authored
+    /// errors.
+    func testHealthRb5ReportSentence() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-health-foundation-act-rb5")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Il dottore dice che ho la febbre.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Il medico dice che ho la febbre.", spec: spec).accepted)
+        let sono = AnswerEngine.evaluate(response: "Il dottore dice che sono la febbre.", spec: spec)
+        XCTAssertFalse(sono.accepted)
+        XCTAssertEqual(sono.category, "incorrect answer")
+        let noArticle = AnswerEngine.evaluate(response: "Il dottore dice che ho febbre.", spec: spec)
+        XCTAssertFalse(noArticle.accepted)
+        XCTAssertEqual(noArticle.category, "missing word")
+    }
+
+    /// it-health-foundation-produce: the pain pattern keeps the article on
+    /// the body part; dropping it is an authored missing-word error.
+    func testHealthProduceBodyPartArticle() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-health-foundation-produce")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Mi fa male la testa.", spec: spec).accepted)
+        let bare = AnswerEngine.evaluate(response: "Mi fa male testa.", spec: spec)
+        XCTAssertFalse(bare.accepted)
+        XCTAssertEqual(bare.category, "missing word")
+    }
+
+    /// it-pharmacy-foundation-act-rb5: the formal goodbye is arrivederci, not
+    /// the informal ciao; the flipped order is an authored word-order error.
+    func testPharmacyRb5FormalGoodbye() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-pharmacy-foundation-act-rb5")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Grazie, arrivederci.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Grazie e arrivederci.", spec: spec).accepted)
+        let ciao = AnswerEngine.evaluate(response: "Grazie, ciao.", spec: spec)
+        XCTAssertFalse(ciao.accepted)
+        XCTAssertEqual(ciao.category, "incorrect answer")
+        let flipped = AnswerEngine.evaluate(response: "Arrivederci, grazie.", spec: spec)
+        XCTAssertFalse(flipped.accepted)
+        XCTAssertEqual(flipped.category, "word-order problem")
+    }
+
+    /// it-pharmacy-foundation-meaning: costa is singular; the plural gloss is
+    /// an authored wrong-number error.
+    func testPharmacyMeaningSingularCosts() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-pharmacy-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "It costs five euros.", spec: spec).accepted)
+        let plural = AnswerEngine.evaluate(response: "They cost five euros.", spec: spec)
+        XCTAssertFalse(plural.accepted)
+        XCTAssertEqual(plural.category, "wrong number")
+    }
+
+    /// it-invitations-foundation-act-rb5: the invitation uses venire + casa
+    /// mia; andare and the article before casa mia are authored errors.
+    func testInvitationsRb5VenireCasaMia() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-invitations-foundation-act-rb5")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vuoi venire a casa mia domenica?", spec: spec).accepted)
+        let andare = AnswerEngine.evaluate(response: "Vuoi andare a casa mia domenica?", spec: spec)
+        XCTAssertFalse(andare.accepted)
+        XCTAssertEqual(andare.category, "incorrect answer")
+        let article = AnswerEngine.evaluate(response: "Vuoi venire a la casa mia domenica?", spec: spec)
+        XCTAssertFalse(article.accepted)
+        XCTAssertEqual(article.category, "wrong article")
+    }
+
+    /// it-invitations-foundation-meaning: the short "Sorry, I cannot." is
+    /// accepted alongside the full form; the refusal meaning is an authored
+    /// incorrect-answer error.
+    func testInvitationsMeaningPoliteNo() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-invitations-foundation-meaning")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "I am sorry, I cannot.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Sorry, I cannot.", spec: spec).accepted)
+        let want = AnswerEngine.evaluate(response: "I am sorry, I don't want to.", spec: spec)
+        XCTAssertFalse(want.accepted)
+        XCTAssertEqual(want.category, "incorrect answer")
+    }
+
+    /// it-cafe-order-foundation-produce: the prompt dictates the polite order
+    /// Vorrei un caffè, per favore; voglio and the accent-less caffè are
+    /// authored errors.
+    func testCafeOrderProducePoliteOrder() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-cafe-order-foundation-produce")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vorrei un caffè, per favore.", spec: spec).accepted)
+        let voglio = AnswerEngine.evaluate(response: "Voglio un caffè, per favore.", spec: spec)
+        XCTAssertFalse(voglio.accepted)
+        XCTAssertEqual(voglio.category, "incorrect answer")
+        let accent = AnswerEngine.evaluate(response: "Vorrei un cafe, per favore.", spec: spec)
+        XCTAssertFalse(accent.accepted)
+        XCTAssertEqual(accent.category, "accent/diacritic issue")
+    }
+
+    /// it-cafe-order-foundation-cloze b1: the reply is completed with favore;
+    /// repeating per favore and substituting prego are authored errors.
+    func testCafeOrderClozeFavore() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-cafe-order-foundation-cloze", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "favore", spec: spec).accepted)
+        let repeated = AnswerEngine.evaluate(response: "per favore", spec: spec)
+        XCTAssertFalse(repeated.accepted)
+        XCTAssertEqual(repeated.category, "extra word")
+        let prego = AnswerEngine.evaluate(response: "prego", spec: spec)
+        XCTAssertFalse(prego.accepted)
+        XCTAssertEqual(prego.category, "incorrect answer")
+    }
+
+    /// it-cafe-order-foundation-transfer: the price question stays singular
+    /// and short; costano is an authored wrong-number error.
+    func testCafeOrderTransferPriceQuestion() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-cafe-order-transfer")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Quanto costa?", spec: spec).accepted)
+        let plural = AnswerEngine.evaluate(response: "Quanto costano?", spec: spec)
+        XCTAssertFalse(plural.accepted)
+        XCTAssertEqual(plural.category, "wrong number")
+        let padded = AnswerEngine.evaluate(response: "Quanto costa, per favore?", spec: spec)
+        XCTAssertFalse(padded.accepted)
+        XCTAssertEqual(padded.category, "extra word")
+    }
+
+    /// it-a2-condizionale-cortesia-think: the polite room request is vorrei
+    /// + una camera singola; voglio and the masculine article are authored
+    /// errors.
+    func testCondizionaleCortesiaThinkVorrei() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-condizionale-cortesia-think")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Vorrei una camera singola.", spec: spec).accepted)
+        let voglio = AnswerEngine.evaluate(response: "Voglio una camera singola.", spec: spec)
+        XCTAssertFalse(voglio.accepted)
+        XCTAssertEqual(voglio.category, "wrong conjugation")
+        let un = AnswerEngine.evaluate(response: "Vorrei un camera singola.", spec: spec)
+        XCTAssertFalse(un.accepted)
+        XCTAssertEqual(un.category, "wrong article")
+    }
+
+    /// it-a2-condizionale-cortesia-vary: the polite bill request keeps the
+    /// indirect pronoun; the bare imperative and the dropped mi are authored
+    /// errors.
+    func testCondizionaleCortesiaVaryPronoun() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-condizionale-cortesia-vary")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Mi potrebbe portare il conto?", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Potrebbe portarmi il conto?", spec: spec).accepted)
+        let imperative = AnswerEngine.evaluate(response: "Dammi il conto, per favore.", spec: spec)
+        XCTAssertFalse(imperative.accepted)
+        XCTAssertEqual(imperative.category, "incorrect answer")
+        let noMi = AnswerEngine.evaluate(response: "Potrebbe portare il conto?", spec: spec)
+        XCTAssertFalse(noMi.accepted)
+        XCTAssertEqual(noMi.category, "missing word")
+    }
+
+    /// it-a2-condizionale-cortesia-act-rb3: the taxi request accepts both
+    /// pronoun placements; the blunt può form is an authored error.
+    func testCondizionaleCortesiaRb3Taxi() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-condizionale-cortesia-act-rb3")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Potrebbe chiamarmi un taxi?", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Mi potrebbe chiamare un taxi, per favore?", spec: spec).accepted)
+        let puo = AnswerEngine.evaluate(response: "Può chiamarmi un taxi?", spec: spec)
+        XCTAssertFalse(puo.accepted)
+        XCTAssertEqual(puo.category, "incorrect answer")
+    }
+
+    /// it-a2-vorrei-act-6: the polite price question accepts both pronoun
+    /// placements; the detached pronoun order is an authored word-order error.
+    func testVorreiAct6PriceQuestion() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-vorrei-act-6")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Potrebbe dirmi il prezzo?", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Mi potrebbe dire il prezzo?", spec: spec).accepted)
+        let detached = AnswerEngine.evaluate(response: "Potrebbe dire mi il prezzo?", spec: spec)
+        XCTAssertFalse(detached.accepted)
+        XCTAssertEqual(detached.category, "word-order problem")
+        let puo = AnswerEngine.evaluate(response: "Può dirmi il prezzo?", spec: spec)
+        XCTAssertFalse(puo.accepted)
+        XCTAssertEqual(puo.category, "incorrect answer")
+    }
+
+    /// it-a2-vorrei-act-9: the sweater is la maglia, so the closing line is
+    /// La prendo; lo and the post-verb pronoun are authored errors.
+    func testVorreiAct9LaPrendo() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-vorrei-act-9")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "La prendo.", spec: spec).accepted)
+        let lo = AnswerEngine.evaluate(response: "Lo prendo.", spec: spec)
+        XCTAssertFalse(lo.accepted)
+        XCTAssertEqual(lo.category, "wrong gender")
+        let after = AnswerEngine.evaluate(response: "Prendo la.", spec: spec)
+        XCTAssertFalse(after.accepted)
+        XCTAssertEqual(after.category, "word-order problem")
+    }
+
+    /// it-a2-vorrei-act-8 b1: the escape phrase uses the gerund guardando;
+    /// the infinitive and the present form are authored wrong-form errors.
+    func testVorreiAct8GuardandoGerund() throws {
+        let pack = try italianPack()
+        let spec = try clozeBlank(pack, "it-a2-vorrei-act-8", "b1")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "guardando", spec: spec).accepted)
+        let infinitive = AnswerEngine.evaluate(response: "guardare", spec: spec)
+        XCTAssertFalse(infinitive.accepted)
+        XCTAssertEqual(infinitive.category, "wrong tense")
+        let present = AnswerEngine.evaluate(response: "guardo", spec: spec)
+        XCTAssertFalse(present.accepted)
+        XCTAssertEqual(present.category, "wrong conjugation")
+    }
 }

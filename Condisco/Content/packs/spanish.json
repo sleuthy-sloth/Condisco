@@ -5338,7 +5338,9 @@
         "vocabulary"
       ],
       "prompt": "Spanish fences a question with two marks, the first of them upside down. Which of these is asking the price?",
-      "hints": [],
+      "hints": [
+        "The price question is cuánto + cuesta: ¿Cuánto cuesta? Cómo and dónde ask how and where — the money word is cuánto."
+      ],
       "feedback": "¿Cuánto cuesta? is the price question: cuánto asks how much, cuesta comes from costar, and both marks are obligatory.",
       "evidenceKey": "es-shopping-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5379,7 +5381,9 @@
         "grammar"
       ],
       "prompt": "At a café in Seville you are pricing one coffee only. Ask the question.",
-      "hints": [],
+      "hints": [
+        "Cuesta is costar for ONE thing — un café. Open with ¿Cuánto (accent on the o); several things would flip the verb to cuestan."
+      ],
       "feedback": "Cuesta is singular because one coffee is being priced; for several the verb would turn into cuestan.",
       "evidenceKey": "es-shopping-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5393,7 +5397,28 @@
           "¿Cuánto cuesta un café?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Cuánto cuestan un café?",
+            "category": "wrong number",
+            "explanation": "Cuestan fits several things; one coffee keeps the singular cuesta."
+          },
+          {
+            "answer": "¿Cuánto cuesta café?",
+            "category": "missing word",
+            "explanation": "A specific coffee takes its article: un café — ¿Cuánto cuesta un café?"
+          },
+          {
+            "answer": "¿Cuánto costar un café?",
+            "category": "wrong conjugation",
+            "explanation": "Costar is the infinitive; the question needs the conjugated form — cuesta."
+          },
+          {
+            "answer": "¿Cuánto es un café?",
+            "category": "incorrect answer",
+            "explanation": "Cuánto es asks the total; pricing one item takes costar: ¿Cuánto cuesta un café?"
+          }
+        ]
       }
     },
     {
@@ -5409,7 +5434,9 @@
         "grammar"
       ],
       "prompt": "You think the price is fair. Turn «Es caro.» into its opposite.",
-      "hints": [],
+      "hints": [
+        "The opposite of expensive starts with no before the verb: Es caro → No es caro. Spanish pins the no to the front of the verb, never the end."
+      ],
       "feedback": "No goes before the verb es; Spanish never lets the negation wander to the end of the sentence.",
       "evidenceKey": "es-shopping-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5423,7 +5450,23 @@
           "No es caro."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Es no caro.",
+            "category": "word-order problem",
+            "explanation": "The no stands before the verb: No es caro — Spanish never tucks it after es."
+          },
+          {
+            "answer": "Es barato.",
+            "category": "incorrect answer",
+            "explanation": "Barato is the opposite word, but the drill is the negation of caro — No es caro."
+          },
+          {
+            "answer": "No caro es.",
+            "category": "word-order problem",
+            "explanation": "The negation pins itself to the verb: No es caro, not 'No caro es'."
+          }
+        ]
       }
     },
     {
@@ -5439,7 +5482,9 @@
         "grammar"
       ],
       "prompt": "Dinner in Madrid is over and you want to settle up. Ask the waiter for the bill.",
-      "hints": [],
+      "hints": [
+        "The bill is feminine: la cuenta. Pair it with por favor and the request stays polite: La cuenta, por favor."
+      ],
       "feedback": "Cuenta is feminine, so it takes la, and por favor is what keeps the request polite.",
       "evidenceKey": "es-shopping-foundation-ask",
       "assistanceAffectsEvidence": [
@@ -5454,7 +5499,23 @@
           "La cuenta por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "El cuenta, por favor.",
+            "category": "wrong article",
+            "explanation": "Cuenta is feminine — la cuenta, never el cuenta."
+          },
+          {
+            "answer": "La cuenta.",
+            "category": "missing word",
+            "explanation": "The bare demand reads brusque; the polite line pairs it with por favor: La cuenta, por favor."
+          },
+          {
+            "answer": "La cuenta, favor.",
+            "category": "missing word",
+            "explanation": "The politeness marker is por favor — the by-your-leave: La cuenta, por favor."
+          }
+        ]
       }
     },
     {
@@ -5831,7 +5892,9 @@
         "vocabulary"
       ],
       "prompt": "One letter separates the Spanish words for brother and sister. Which of these four is the sister?",
-      "hints": [],
+      "hints": [
+        "Sister is hermana — hermano with an a — and the article agrees: la for the feminine sister, el for the brother."
+      ],
       "feedback": "Hermana is the sister; the -a ending marks her feminine, as -o marks hermano. Padres is the pair of parents, and la familia is the household.",
       "evidenceKey": "es-family-people-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -5876,7 +5939,9 @@
         "vocabulary"
       ],
       "prompt": "Hermana is feminine and keeps the same article as the subject. Choose the line that correctly says I have a sister.",
-      "hints": [],
+      "hints": [
+        "Hermana is feminine: una pairs with hermana. Un (masculine) and unos (plural) both clash with the one feminine sister."
+      ],
       "feedback": "Una hermana keeps the feminine article una; un hermana and unos hermana are the two ways learners get this wrong.",
       "evidenceKey": "es-family-people-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -5917,7 +5982,9 @@
         "grammar"
       ],
       "prompt": "You are describing the one brother you have. Predict the form before you write it: I have a brother.",
-      "hints": [],
+      "hints": [
+        "Tener breaks the pattern in the I form: tengo, never *tene. One brother is un hermano — singular, no mis: Tengo un hermano."
+      ],
       "feedback": "Tener is irregular, so the I form is tengo and never tene: Tengo un hermano.",
       "evidenceKey": "es-family-people-foundation-think",
       "assistanceAffectsEvidence": [
@@ -5931,7 +5998,23 @@
           "Tengo un hermano."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tene un hermano.",
+            "category": "wrong conjugation",
+            "explanation": "Tener's I form is irregular: tengo, never tene."
+          },
+          {
+            "answer": "Tengo una hermano.",
+            "category": "wrong gender",
+            "explanation": "Hermano is masculine, so it takes un: un hermano. Una would demand the feminine hermana."
+          },
+          {
+            "answer": "Tengo unos hermanos.",
+            "category": "wrong number",
+            "explanation": "Unos hermanos says several brothers; the prompt has the one brother — un hermano."
+          }
+        ]
       }
     },
     {
@@ -5948,7 +6031,9 @@
         "vocabulary"
       ],
       "prompt": "Read what Ana wrote about her family. Which city are the parents still in?",
-      "hints": [],
+      "hints": [
+        "The parents are the ones who stayed: mis padres siguen viviendo en Madrid — the closing sentence. Max works in Seville, Ana studies in Valencia."
+      ],
       "feedback": "The brother and sister are in Seville and Valencia; the closing sentence keeps the parents in Madrid.",
       "evidenceKey": "es-family-people-foundation-read",
       "assistanceAffectsEvidence": [
@@ -5965,7 +6050,23 @@
           "In Madrid."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Sevilla.",
+            "category": "incorrect answer",
+            "explanation": "Sevilla is where the brother Max works; the parents are the ones who stayed — Madrid."
+          },
+          {
+            "answer": "Valencia.",
+            "category": "incorrect answer",
+            "explanation": "Valencia is where the sister Ana studies; the parents still live in Madrid."
+          },
+          {
+            "answer": "En Sevilla.",
+            "category": "incorrect answer",
+            "explanation": "En Sevilla is the brother's city; the closing line keeps the parents in Madrid."
+          }
+        ]
       }
     },
     {
@@ -5981,7 +6082,9 @@
         "grammar"
       ],
       "prompt": "Make the sentence talk about two sisters instead of one: Tengo una hermana.",
-      "hints": [],
+      "hints": [
+        "Pluralize both ends: una becomes dos, and hermana takes its -s: hermanas. Tengo dos hermanas."
+      ],
       "feedback": "The plural adds -s to hermana, and una becomes dos: Tengo dos hermanas.",
       "evidenceKey": "es-family-people-foundation-vary",
       "assistanceAffectsEvidence": [
@@ -5995,7 +6098,23 @@
           "Tengo dos hermanas."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Tengo dos hermana.",
+            "category": "wrong number",
+            "explanation": "Two sisters need the plural noun: hermanas, with its -s."
+          },
+          {
+            "answer": "Tengo una hermanas.",
+            "category": "wrong number",
+            "explanation": "Una is singular-one; with the plural sisters you count dos (or more): dos hermanas."
+          },
+          {
+            "answer": "Tengo dos hermanos.",
+            "category": "wrong gender",
+            "explanation": "Hermanos is masculine — brothers or a mixed group; the two SISTERS are dos hermanas."
+          }
+        ]
       }
     },
     {
@@ -9844,7 +9963,9 @@
         "vocabulary"
       ],
       "prompt": "Which question asks where someone lives?",
-      "hints": [],
+      "hints": [
+        "Dónde is the where-word. Qué, cómo and cuándo ask what, how and when — match the meaning, not the drill: where someone lives takes dónde."
+      ],
       "feedback": "Dónde is the where word; qué asks what and cuándo asks when.",
       "evidenceKey": "es-questions-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9889,7 +10010,9 @@
         "grammar"
       ],
       "prompt": "Predict the question before you write it: what does he eat?",
-      "hints": [],
+      "hints": [
+        "Qué asks what, and comer for 'he' keeps the -e: come (comes is you). Write the full question — ¿Qué come? — with the accent on Qué."
+      ],
       "feedback": "Qué asks what, and comer takes -e for he: ¿Qué come?",
       "evidenceKey": "es-questions-foundation-think",
       "assistanceAffectsEvidence": [
@@ -9900,10 +10023,32 @@
       "id": "es-questions-foundation-think",
       "answer": {
         "answers": [
-          "¿Qué come?"
+          "¿Qué come?",
+          "¿Qué come él?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Qué comer?",
+            "category": "wrong conjugation",
+            "explanation": "Comer is the infinitive 'to eat'; the question asks what he eats, so it takes the conjugated form come: ¿Qué come?"
+          },
+          {
+            "answer": "¿Que come?",
+            "category": "accent/diacritic issue",
+            "explanation": "Que without its accent means 'that'; the question word wears the accent — ¿Qué come?"
+          },
+          {
+            "answer": "¿Qué comen?",
+            "category": "wrong conjugation",
+            "explanation": "Comen is 'they eat'; one person eats, so the verb stays come: ¿Qué come?"
+          },
+          {
+            "answer": "¿Qué como?",
+            "category": "wrong conjugation",
+            "explanation": "Como is 'I eat'; the question asks what HE eats — come: ¿Qué come?"
+          }
+        ]
       }
     },
     {
@@ -9919,7 +10064,9 @@
         "vocabulary"
       ],
       "prompt": "The accent carries the meaning. Choose the correct question.",
-      "hints": [],
+      "hints": [
+        "Cómo with its accent asks how. The reflexives already carry the person — me/te — so a stray tú before the verb is a giveaway: ¿Cómo te llamas?"
+      ],
       "feedback": "Cómo with the accent asks how; ¿Cómo tú te llamas? scrambles the order — pronouns don't need tú before them.",
       "evidenceKey": "es-questions-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -9964,7 +10111,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: Who works here?",
-      "hints": [],
+      "hints": [
+        "Quién asks who and never drops its accent. Trabajar for one person is trabaja (the -a ending), and here is aquí: ¿Quién trabaja aquí?"
+      ],
       "feedback": "Quién asks who, with its accent: ¿Quién trabaja aquí?",
       "evidenceKey": "es-questions-foundation-write",
       "assistanceAffectsEvidence": [
@@ -9978,7 +10127,23 @@
           "¿Quién trabaja aquí?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Quien trabaja aquí?",
+            "category": "accent/diacritic issue",
+            "explanation": "Quien without the accent is the relative 'who/that'; the question word is quién, accent included."
+          },
+          {
+            "answer": "¿Quién trabajar aquí?",
+            "category": "wrong conjugation",
+            "explanation": "Trabajar is the infinitive; who works needs the conjugated form: trabaja."
+          },
+          {
+            "answer": "¿Quién trabaja allí?",
+            "category": "incorrect answer",
+            "explanation": "Allí means 'there'; the prompt asks about here — aquí: ¿Quién trabaja aquí?"
+          }
+        ]
       }
     },
     {
@@ -9995,7 +10160,9 @@
         "vocabulary"
       ],
       "prompt": "Read the note. Where is the party?",
-      "hints": [],
+      "hints": [
+        "The note answers its own question: ¿Dónde es? — Es en mi casa. The where is the place after en — mi casa."
+      ],
       "feedback": "The answer follows the question directly: Es en mi casa.",
       "evidenceKey": "es-questions-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10012,7 +10179,23 @@
           "En casa."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A las ocho.",
+            "category": "incorrect answer",
+            "explanation": "Ocho is when the party starts; the question asks WHERE it is — es en mi casa."
+          },
+          {
+            "answer": "Toda la familia.",
+            "category": "incorrect answer",
+            "explanation": "La familia answers who's coming; the where is en mi casa."
+          },
+          {
+            "answer": "En su casa.",
+            "category": "incorrect answer",
+            "explanation": "Su casa would be his or their house; the note says mi casa — my house."
+          }
+        ]
       }
     },
     {
@@ -10786,7 +10969,9 @@
         "vocabulary"
       ],
       "prompt": "Which is the most polite way to ask for the bill?",
-      "hints": [],
+      "hints": [
+        "Rank the softness: querría + por favor is the polite peak. Quiero ya and dame are brusque commands, and La cuenta quiero puts the verb last — the odd one out."
+      ],
       "feedback": "Querría softens the request into would-like: Querría la cuenta, por favor.",
       "evidenceKey": "es-requests-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10832,7 +11017,9 @@
         "grammar"
       ],
       "prompt": "Predict the question before you write it: can you help me? (informal)",
-      "hints": [],
+      "hints": [
+        "Poder for you (informal) is puedes — the -es ending. Help me is one glued word, ayudarme, with me riding the infinitive: ¿Puedes ayudarme?"
+      ],
       "feedback": "Poder takes -es for you, and ayudarme is help-me in one word: ¿Puedes ayudarme?",
       "evidenceKey": "es-requests-foundation-think",
       "assistanceAffectsEvidence": [
@@ -10846,7 +11033,28 @@
           "¿Puedes ayudarme?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Puede ayudarme?",
+            "category": "wrong conjugation",
+            "explanation": "Puede is the polite he/she/usted form; the prompt says informal you — puedes."
+          },
+          {
+            "answer": "¿Puedo ayudarte?",
+            "category": "incorrect answer",
+            "explanation": "Puedo is 'I can' and te is 'you'; the question is reversed — can YOU help ME: ¿Puedes ayudarme?"
+          },
+          {
+            "answer": "¿Puedes ayúdame?",
+            "category": "wrong conjugation",
+            "explanation": "Ayúdame is the command form; after puedes the helper stays the bare infinitive: ayudarme."
+          },
+          {
+            "answer": "¿Puedes ayudarle?",
+            "category": "incorrect answer",
+            "explanation": "Le is 'him/her'; the prompt asks can you help ME — me: ¿Puedes ayudarme?"
+          }
+        ]
       }
     },
     {
@@ -10862,7 +11070,9 @@
         "vocabulary"
       ],
       "prompt": "After poder comes the infinitive. Choose the correct line.",
-      "hints": [],
+      "hints": [
+        "Poder hands off to the bare infinitive: puedo ir. Voy (a conjugation), ido (a participle) and yendo (a gerund) are all wrong after puedo."
+      ],
       "feedback": "Poder is always followed by the plain infinitive: Puedo ir mañana.",
       "evidenceKey": "es-requests-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -10907,7 +11117,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I would like a coffee, please.",
-      "hints": [],
+      "hints": [
+        "Would-like is the conditional querría — querer softened. Un café, and por favor to close it politely: Querría un café, por favor."
+      ],
       "feedback": "Querría is the polite conditional of querer: Querría un café, por favor.",
       "evidenceKey": "es-requests-foundation-write",
       "assistanceAffectsEvidence": [
@@ -10921,7 +11133,28 @@
           "Querría un café, por favor."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quiero un café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quiero is a plain want; the prompt's 'would like' is the softened conditional — querría."
+          },
+          {
+            "answer": "Querría un café.",
+            "category": "missing word",
+            "explanation": "The courtesy marker belongs to the line: por favor — Querría un café, por favor."
+          },
+          {
+            "answer": "Querría una café.",
+            "category": "wrong gender",
+            "explanation": "Café is masculine: un café, never una café."
+          },
+          {
+            "answer": "Quería un café, por favor.",
+            "category": "incorrect answer",
+            "explanation": "Quería is the past 'I wanted'; the would-like form is querría — the conditional with its double r."
+          }
+        ]
       }
     },
     {
@@ -10938,7 +11171,9 @@
         "vocabulary"
       ],
       "prompt": "Read the café exchange. What does Ana order?",
-      "hints": [],
+      "hints": [
+        "Ana's first line is her order: Querría un café, por favor. The café is what she asks for; the card question and the waiter's offers are the rest."
+      ],
       "feedback": "Her first line places the order: Querría un café, por favor.",
       "evidenceKey": "es-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10955,7 +11190,23 @@
           "Quiere un café."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "La cuenta.",
+            "category": "incorrect answer",
+            "explanation": "La cuenta comes up in the card question later; what Ana ORDERS is the café."
+          },
+          {
+            "answer": "Un té.",
+            "category": "incorrect answer",
+            "explanation": "The exchange never mentions tea — Ana's order is un café, por favor."
+          },
+          {
+            "answer": "Nada.",
+            "category": "incorrect answer",
+            "explanation": "Ana declines only the waiter's extra offer; her order itself is un café."
+          }
+        ]
       }
     },
     {
@@ -13233,7 +13484,9 @@
         "vocabulary"
       ],
       "prompt": "Which line accepts the invitation?",
-      "hints": [],
+      "hints": [
+        "Accepting is a warm yes: ¡Claro que sí! Claro que no refuses, and Lo siento declines — the yes-line is the one with gracias."
+      ],
       "feedback": "¡Claro que sí! is the warm yes; Lo siento, no puedo is the gentle no.",
       "evidenceKey": "es-invitations-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -13278,7 +13531,9 @@
         "grammar"
       ],
       "prompt": "Predict the question before you write it: do you want to come? (informal)",
-      "hints": [],
+      "hints": [
+        "Querer for you (informal) is quieres — the -es ending. After it comes the bare infinitive: venir → ¿Quieres venir?"
+      ],
       "feedback": "Querer takes -es for you: ¿Quieres venir?",
       "evidenceKey": "es-invitations-foundation-think",
       "assistanceAffectsEvidence": [
@@ -13292,7 +13547,23 @@
           "¿Quieres venir?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "¿Quiere venir?",
+            "category": "wrong conjugation",
+            "explanation": "Quiere is the polite he/she/usted form; the prompt says informal you — quieres: ¿Quieres venir?"
+          },
+          {
+            "answer": "¿Quieres vienes?",
+            "category": "wrong conjugation",
+            "explanation": "After quieres the second verb stays the bare infinitive: venir, not a second conjugation."
+          },
+          {
+            "answer": "¿Quieres ir?",
+            "category": "incorrect answer",
+            "explanation": "Ir is 'to go'; the invitation says come — venir: ¿Quieres venir?"
+          }
+        ]
       }
     },
     {
@@ -13308,7 +13579,9 @@
         "vocabulary"
       ],
       "prompt": "Invitar needs its a. Choose the correct invitation.",
-      "hints": [],
+      "hints": [
+        "Invitar always takes the preposition a: te invito a + place. En says 'inside', de says 'from' — the invitation preposition is a."
+      ],
       "feedback": "The a bridges invito to the place: Te invito a mi casa.",
       "evidenceKey": "es-invitations-foundation-notice",
       "assistanceAffectsEvidence": [
@@ -13354,7 +13627,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: I'm sorry, I can't.",
-      "hints": [],
+      "hints": [
+        "The gentle decline is two beats: Lo siento (I'm sorry) + no puedo (I can't). Poder for I is puedo — o turns ue — and no rides before the verb."
+      ],
       "feedback": "The gentle decline: Lo siento, no puedo.",
       "evidenceKey": "es-invitations-foundation-write",
       "assistanceAffectsEvidence": [
@@ -13368,7 +13643,28 @@
           "Lo siento, no puedo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Lo siento, no poder.",
+            "category": "wrong conjugation",
+            "explanation": "No poder is the infinitive; the line needs the conjugated I form — no puedo."
+          },
+          {
+            "answer": "Lo siento, puedo no.",
+            "category": "word-order problem",
+            "explanation": "No rides before the verb: no puedo. 'Puedo no' scrambles the negation."
+          },
+          {
+            "answer": "Siento, no puedo.",
+            "category": "missing word",
+            "explanation": "The apology is two words in Spanish — lo siento; the lo belongs: Lo siento, no puedo."
+          },
+          {
+            "answer": "Lo siento, no puedas.",
+            "category": "wrong conjugation",
+            "explanation": "Puedas is the subjunctive; a plain statement of can't takes puedo."
+          }
+        ]
       }
     },
     {
@@ -13385,7 +13681,9 @@
         "vocabulary"
       ],
       "prompt": "Read the invitation. Does Pablo accept?",
-      "hints": [],
+      "hints": [
+        "Pablo's line answers the question outright: ¡Claro que sí, gracias! — the warm yes. The passage's dialogue settles it in its second line."
+      ],
       "feedback": "His answer is the warm yes: ¡Claro que sí, gracias!",
       "evidenceKey": "es-invitations-foundation-read",
       "assistanceAffectsEvidence": [
@@ -13402,7 +13700,23 @@
           "¡Claro que sí!"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "No.",
+            "category": "incorrect answer",
+            "explanation": "Pablo answers ¡Claro que sí, gracias! — he is coming."
+          },
+          {
+            "answer": "Lo siento.",
+            "category": "incorrect answer",
+            "explanation": "Lo siento is the decline; Pablo accepts with the warm ¡Claro que sí!"
+          },
+          {
+            "answer": "Claro que no.",
+            "category": "incorrect answer",
+            "explanation": "Claro que no is the refusal; Pablo's answer is Claro que sí."
+          }
+        ]
       }
     },
     {
@@ -15014,7 +15328,9 @@
         "vocabulary"
       ],
       "prompt": "¿Podrías ayudarme? This is…",
-      "hints": [],
+      "hints": [
+        "Podrías is poder wearing the conditional — the would-you form that softens a request. A past event would be podías or pudiste; a command drops the conditional."
+      ],
       "feedback": "a polite request — the conditional softens could you into asking, not telling. Commands bark; the conditional knocks.",
       "evidenceKey": "es-a2-condicional-meet",
       "assistanceAffectsEvidence": [
@@ -15059,7 +15375,9 @@
         "grammar"
       ],
       "prompt": "Predict: I would like → me ___.",
-      "hints": [],
+      "hints": [
+        "Gustar flips: what's liked is the subject, so 'I would like' is me gustaría — but the me is already in the prompt (me ___), so the blank takes just the conditional verb: gustaría."
+      ],
       "feedback": "me gustaría — gustar's conditional. The politest I-want in the language, and worth owning cold.",
       "evidenceKey": "es-a2-condicional-think",
       "assistanceAffectsEvidence": [
@@ -15073,7 +15391,28 @@
           "gustaría"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "gusta",
+            "category": "wrong conjugation",
+            "explanation": "Gusta is the plain present 'it pleases'; the would-like form is the conditional gustaría."
+          },
+          {
+            "answer": "gustaria",
+            "category": "accent/diacritic issue",
+            "explanation": "The conditional -ía carries its accent: gustaría."
+          },
+          {
+            "answer": "me gustaría",
+            "category": "extra word",
+            "explanation": "The me is already in the prompt (me ___); the blank wants the verb alone: gustaría."
+          },
+          {
+            "answer": "me gusta",
+            "category": "incorrect answer",
+            "explanation": "Me gusta is 'I like it' in the present; the blank wants the conditional wish — gustaría."
+          }
+        ]
       }
     },
     {
@@ -15089,7 +15428,9 @@
         "vocabulary"
       ],
       "prompt": "Which stem is irregular in the conditional?",
-      "hints": [],
+      "hints": [
+        "Conditional endings are regular, but a few stems rebel: tener shortens to tendr-. Tendría is the irregular one; hablar-, comer- and vivir- keep their infinitive stems."
+      ],
       "feedback": "tendría — tener→tendr-, one of the same six rebels as the future. The rest keep the whole infinitive.",
       "evidenceKey": "es-a2-condicional-notice",
       "assistanceAffectsEvidence": [
@@ -15134,7 +15475,9 @@
         "grammar"
       ],
       "prompt": "Translate into Spanish: You should rest more. (tú)",
-      "hints": [],
+      "hints": [
+        "Advice wears deber in the -ías form for tú: deberías. Then the bare infinitive descansar, and más: Deberías descansar más."
+      ],
       "feedback": "Deberías — advice wears the -ías ending for tú. Should, not must: gentle, not bossy.",
       "evidenceKey": "es-a2-condicional-write",
       "assistanceAffectsEvidence": [
@@ -15148,7 +15491,23 @@
           "Deberías descansar más."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Debes descansar más.",
+            "category": "incorrect answer",
+            "explanation": "Debes is the plain 'you must'; the soft should is the conditional deberías."
+          },
+          {
+            "answer": "Deberías descansas más.",
+            "category": "wrong conjugation",
+            "explanation": "After deberías the second verb stays the bare infinitive: descansar, not a second conjugation."
+          },
+          {
+            "answer": "Debería descansar más.",
+            "category": "wrong conjugation",
+            "explanation": "Debería is the I/he/usted form; the prompt says you (tú) — deberías, with the s."
+          }
+        ]
       }
     },
     {
@@ -15162,7 +15521,9 @@
         "vocabulary"
       ],
       "prompt": "Read the dream trip. Where would the narrator go in spring?",
-      "hints": [],
+      "hints": [
+        "The spring plan sits in one clause: Iría a Japón en primavera. Japón is the destination; the sushi, the language and the year are extras."
+      ],
       "feedback": "Iría a Japón en primavera — the conditional iría does the dreaming.",
       "evidenceKey": "es-a2-condicional-read",
       "assistanceAffectsEvidence": [
@@ -15179,7 +15540,23 @@
           "Japón"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "A comer sushi.",
+            "category": "incorrect answer",
+            "explanation": "Sushi is what he'd eat there; the place he'd go in spring is Japón."
+          },
+          {
+            "answer": "Aprender japonés.",
+            "category": "incorrect answer",
+            "explanation": "Learning Japanese is a later wish; the spring trip goes to Japón."
+          },
+          {
+            "answer": "A viajar por todo el mundo.",
+            "category": "incorrect answer",
+            "explanation": "The whole world is the dream frame; the specific spring destination is Japón."
+          }
+        ]
       }
     },
     {
@@ -18129,7 +18506,9 @@
         "vocabulary"
       ],
       "prompt": "Pablo: «¿Qué haces el sábado?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "He asked what you're doing Saturday — turn the answer into an invitation: te invito a cenar (I invite you to dinner) + el sábado. The person comes first: te invito."
+      ],
       "feedback": "Te invito a cenar el sábado — warm, direct, and the a is doing its job.",
       "evidenceKey": "es-invitations-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18181,7 +18560,9 @@
         "vocabulary"
       ],
       "prompt": "Pablo: «¡Claro que sí! ¿A qué hora?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "He said yes and asked the time — answer it, then check he's still in: A las ocho. ¿Vienes? The come-verb flips back into a question."
+      ],
       "feedback": "A las ocho. ¿Vienes? — you set the time and keep him in the conversation.",
       "evidenceKey": "es-invitations-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18239,7 +18620,9 @@
         "vocabulary"
       ],
       "prompt": "Seller: «¿Cuánto quiere?» (how much do you want) Choose your reply.",
-      "hints": [],
+      "hints": [
+        "He asked how much you want — answer with the amount, not a verb: un kilo, por favor. Cuesta dos euros is the seller's line, not your order."
+      ],
       "feedback": "Un kilo, por favor — quantity first, courtesy always.",
       "evidenceKey": "es-shopping-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18290,7 +18673,9 @@
         "vocabulary"
       ],
       "prompt": "The seller says «Son dos euros.» You want to haggle politely. Which line works?",
-      "hints": [],
+      "hints": [
+        "Haggling is a polite ask: ¿Me lo deja en uno cincuenta? — would you leave it at 1.50? The other lines praise or refuse — they don't negotiate."
+      ],
       "feedback": "¿Me lo deja en uno cincuenta? — will you leave it for me at 1.50. Polite haggling, not a complaint.",
       "evidenceKey": "es-shopping-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18338,7 +18723,9 @@
         "vocabulary"
       ],
       "prompt": "Seller: «¿Algo más?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Close the loop: no to more goods, gracias, then claim the bill politely — La cuenta, por favor. Cuenta takes its article la."
+      ],
       "feedback": "No, gracias. La cuenta, por favor — done shopping, settling up.",
       "evidenceKey": "es-shopping-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18397,7 +18784,9 @@
         "vocabulary"
       ],
       "prompt": "Waiter: «¿Qué van a tomar?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "A busy waiter earns politeness: querría is the soft conditional of querer — the polite I'd-like. Add un café and por favor and the order is done."
+      ],
       "feedback": "Querría un café, por favor — the softened verb does the heavy lifting.",
       "evidenceKey": "es-requests-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18449,7 +18838,9 @@
         "vocabulary"
       ],
       "prompt": "Waiter: «¿Necesitan algo más?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Ask as a request, not an order: ¿Puedes (can you) + traerme (bring me) + la cuenta + por favor. The me glues onto the infinitive — traerme."
+      ],
       "feedback": "¿Puedes traerme la cuenta, por favor? — can, not command.",
       "evidenceKey": "es-requests-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18508,7 +18899,9 @@
         "vocabulary"
       ],
       "prompt": "Lucía: «Soy de Valencia.» Choose your follow-up.",
-      "hints": [],
+      "hints": [
+        "She just told you where she's from — follow up on the place. Dónde asks where, accent and question word first: ¿Dónde vives ahora?"
+      ],
       "feedback": "¿Dónde vives ahora? — dónde for where, accent on, question word first.",
       "evidenceKey": "es-questions-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18560,7 +18953,9 @@
         "vocabulary"
       ],
       "prompt": "Lucía: «¿Y tú?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "She flipped the question to you — give your name with me llamo, then return the ask with cómo (accent on): ¿Cómo te llamas? Llamo alone never carries a name."
+      ],
       "feedback": "Me llamo Sam. ¿Cómo te llamas? — answer, then ask back.",
       "evidenceKey": "es-questions-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18618,7 +19013,9 @@
         "vocabulary"
       ],
       "prompt": "Ana’s mother: «¿Cómo te llamas?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "She asked your name — answer with llamarse: me llamo + name. An older relative earns the polite ¿Y usted?, mirroring the question back."
+      ],
       "feedback": "Me llamo Alex. ¿Y usted? — introduce, then return the courtesy.",
       "evidenceKey": "es-family-people-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18669,7 +19066,9 @@
         "vocabulary"
       ],
       "prompt": "Ana: «¿Tienes hermanos?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Answer her yes, then name the count with un: tengo un hermano. Uno stands alone, and el hermano would mean 'the brother' you already mentioned."
+      ],
       "feedback": "Sí, tengo un hermano — tengo, then the brother with his article.",
       "evidenceKey": "es-family-people-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18729,7 +19128,9 @@
         "vocabulary"
       ],
       "prompt": "Friend: «Estoy agotado.» (I’m exhausted.) Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Agotado calls for advice, not an order: deberías (you should — the -ías conditional) + descansar más. Descansa ya commands; deberías suggests."
+      ],
       "feedback": "Deberías descansar más — the conditional advises without ordering.",
       "evidenceKey": "es-a2-condicional-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18782,7 +19183,9 @@
         "vocabulary"
       ],
       "prompt": "Friend: «¿Me ayudas con el examen?» Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Say yes warmly, then soften the next ask: ¿Podrías venir mañana? — would you be able to come tomorrow. Podrías keeps it polite, no commands."
+      ],
       "feedback": "Claro. ¿Podrías venir mañana? — yes, wrapped in courtesy.",
       "evidenceKey": "es-a2-condicional-act-rb3",
       "assistanceAffectsEvidence": [

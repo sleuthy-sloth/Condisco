@@ -2947,19 +2947,19 @@
       "pairs": [
         {
           "target": "Vorrei un caffè, per favore.",
-          "meaning": "Would you like to coffee today?"
+          "meaning": "I would like a coffee, please."
         },
         {
           "target": "Sì, grazie.",
-          "meaning": "Yes, thanks, gladly."
+          "meaning": "Yes, thanks."
         }
       ]
     },
     {
       "kind": "text",
       "id": "it-cafe-order-foundation-read-passage",
-      "body": "Anna invita Marco: Vorrei un caffè, per favore. Sì, grazie, per favore, dice Marco.",
-      "translation": "Anna invites Marco: Would you like to coffee today? “Yes, thanks, gladly,” says Marco."
+      "body": "Il cliente dice: Vorrei un caffè, per favore.",
+      "translation": "The customer says: I would like a coffee, please."
     },
     {
       "kind": "audio",
@@ -7866,7 +7866,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “I can”?",
-      "hints": [],
+      "hints": [
+        "Potere is the verb for can. Its io-form is posso; puoi is the tu-form, prendere is the infinitive to take, and per favore is a courtesy phrase — only one option is the first-person I can."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7914,7 +7916,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Puoi studiare in casa.",
-      "hints": [],
+      "hints": [
+        "Puoi is you can (the tu-form of potere), studiare is to study, and in casa is at home. Give the whole sentence in natural English."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7925,10 +7929,27 @@
       "id": "it-requests-foundation-meaning",
       "answer": {
         "answers": [
-          "You can study at home."
+          "You can study at home.",
+          "You can study in the house."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Can you study at home?",
+            "category": "incorrect answer",
+            "explanation": "The Italian is a statement, not a question: Puoi studiare in casa. means You can study at home."
+          },
+          {
+            "answer": "You can study home.",
+            "category": "missing word",
+            "explanation": "The phrase keeps its preposition: at home — in casa."
+          },
+          {
+            "answer": "You study at home.",
+            "category": "wrong conjugation",
+            "explanation": "Puoi studiare is you can study — the modal can (puoi) is part of the meaning and must not drop out."
+          }
+        ]
       }
     },
     {
@@ -7947,7 +7968,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: You can study at home.",
-      "hints": [],
+      "hints": [
+        "Start with the verb form Puoi, then the infinitive studiare, then in, and end with casa."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-order",
       "assistanceAffectsEvidence": [
@@ -7999,7 +8022,9 @@
         "grammar"
       ],
       "prompt": "Complete: Posso ___ un caffè?",
-      "hints": [],
+      "hints": [
+        "After posso the next verb stays in the infinitive. The word for to take is prendere — the -ere form, not the conjugated prendo."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -8029,7 +8054,23 @@
             "prendere"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "prendo",
+              "category": "wrong conjugation",
+              "explanation": "Posso already carries the conjugation; the verb after it stays infinitive: prendere."
+            },
+            {
+              "answer": "prendere un caffè",
+              "category": "extra word",
+              "explanation": "The gap holds one word — un caffè is already written after it."
+            },
+            {
+              "answer": "rendere",
+              "category": "incorrect answer",
+              "explanation": "Rendere means to give back or to render. The request uses prendere: Posso prendere un caffè?"
+            }
+          ]
         }
       }
     },
@@ -8049,7 +8090,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Can I have a coffee?",
-      "hints": [],
+      "hints": [
+        "Open with Posso, then the infinitive prendere, then un caffè — and keep the question mark. Posso + infinitive is the form this step tests."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8069,6 +8112,11 @@
             "answer": "Posso prendo un caffè?",
             "category": "incorrect answer",
             "explanation": "After posso, use the infinitive prendere."
+          },
+          {
+            "answer": "Voglio prendere un caffè?",
+            "category": "incorrect answer",
+            "explanation": "Voglio announces a wish bluntly; the permission request uses Posso: Posso prendere un caffè?"
           }
         ]
       }
@@ -8089,7 +8137,9 @@
         "vocabulary"
       ],
       "prompt": "What does the speaker want? Answer in Italian. (Reading 13)",
-      "hints": [],
+      "hints": [
+        "The speaker asks Posso prendere un caffè? — the thing he wants comes right after the verb. Name it in Italian."
+      ],
       "feedback": "Potere means can or be able to: io posso, tu puoi. Follow it with an infinitive: posso prendere. Do not conjugate both verbs. Per favore means please. Vorrei is a useful fixed polite request meaning I would like.",
       "evidenceKey": "it-requests-foundation-read",
       "assistanceAffectsEvidence": [
@@ -8101,10 +8151,27 @@
       "stimulusId": "it-requests-foundation-read-passage",
       "answer": {
         "answers": [
-          "un caffè"
+          "un caffè",
+          "caffè"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "un tè",
+            "category": "incorrect answer",
+            "explanation": "The speaker says Non prendo un tè — he is not having a tea. What he wants is un caffè."
+          },
+          {
+            "answer": "tè",
+            "category": "incorrect answer",
+            "explanation": "The speaker declines tea (tè); the thing he wants is un caffè."
+          },
+          {
+            "answer": "Vorrei un caffè",
+            "category": "incorrect answer",
+            "explanation": "The passage asks with posso, not vorrei, and the question is what he wants: un caffè."
+          }
+        ]
       }
     },
     {
@@ -8123,7 +8190,9 @@
         "grammar"
       ],
       "prompt": "Recall from Going places: I am going to the station.",
-      "hints": [],
+      "hints": [
+        "Andare's first person is vado. Combine a + la into alla, and put the station last: Vado alla stazione."
+      ],
       "feedback": "Andare is irregular: io vado, tu vai. Use a with cities, and combine a + la as alla, a + il as al. Vado alla stazione means I am going to the station. A Roma has no article.",
       "evidenceKey": "it-requests-foundation-review",
       "assistanceAffectsEvidence": [
@@ -8138,7 +8207,23 @@
           "Io vado alla stazione."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vado al stazione.",
+            "category": "wrong article",
+            "explanation": "The station is la stazione (feminine), so the contraction is alla — al belongs to il."
+          },
+          {
+            "answer": "Vado alla città.",
+            "category": "incorrect answer",
+            "explanation": "The prompt asks for the station (la stazione), not the city (la città)."
+          },
+          {
+            "answer": "Vado a la stazione.",
+            "category": "incorrect answer",
+            "explanation": "The preposition a fuses with the article la into one word: alla stazione."
+          }
+        ]
       }
     },
     {
@@ -8156,7 +8241,9 @@
         "listening"
       ],
       "prompt": "Listen to the polite coffee request and write what you hear.",
-      "hints": [],
+      "hints": [
+        "The polite request starts with Vorrei (the conditional of volere), then un caffè, then the comma and per favore — keep the accents on Vorrei and caffè."
+      ],
       "feedback": "Use the polite request introduced in the worked examples. Keep the accents and the complete phrase.",
       "evidenceKey": "it-requests-foundation-listen",
       "assistanceAffectsEvidence": [
@@ -8171,7 +8258,28 @@
           "Vorrei un caffè, per favore."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vorrei un cafe, per favore.",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè keeps its grave accent: caffè."
+          },
+          {
+            "answer": "Voglio un caffè, per favore.",
+            "category": "wrong conjugation",
+            "explanation": "Voglio is the blunt present; the polite request uses the conditional Vorrei."
+          },
+          {
+            "answer": "Vorei un caffè, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Vorrei is written with a double r: Vorrei un caffè, per favore."
+          },
+          {
+            "answer": "Vorrei una caffè, per favore.",
+            "category": "wrong gender",
+            "explanation": "Un caffè is masculine — the article is un: Vorrei un caffè, per favore."
+          }
+        ]
       }
     },
     {
@@ -8189,7 +8297,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: modal verbs and requests.",
-      "hints": [],
+      "hints": [
+        "The model asks permission: Posso prendere un caffè? — capital Posso, the infinitive prendere, and the final question mark."
+      ],
       "feedback": "Compare the words you heard with the model sentence. Replay slowly, then at normal speed.",
       "evidenceKey": "it-requests-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -8204,7 +8314,23 @@
           "Posso prendere un caffè?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Posso prendo un caffè?",
+            "category": "wrong conjugation",
+            "explanation": "After posso the second verb stays infinitive: prendere."
+          },
+          {
+            "answer": "Posso prendere un cafe?",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè keeps its grave accent: caffè."
+          },
+          {
+            "answer": "Vorrei un caffè, per favore?",
+            "category": "incorrect answer",
+            "explanation": "The model opens with posso, not vorrei — listen again for Posso prendere un caffè?"
+          }
+        ]
       }
     },
     {
@@ -9913,7 +10039,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “kilo”?",
-      "hints": [],
+      "hints": [
+        "The weight you buy apples by is the chilo. Mercato is the market, euro is the currency, and prezzo is the price."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -9961,7 +10089,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Costano tre euro.",
-      "hints": [],
+      "hints": [
+        "Costano is the plural of costa — it agrees with more than one thing. So the phrase says they cost three euros."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -9975,7 +10105,23 @@
           "They cost three euros."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "It costs three euros.",
+            "category": "wrong number",
+            "explanation": "Costano is plural — they cost. It costs would be Costa tre euro."
+          },
+          {
+            "answer": "They cost three euro.",
+            "category": "incorrect answer",
+            "explanation": "English keeps euros plural: They cost three euros."
+          },
+          {
+            "answer": "They are three euros.",
+            "category": "incorrect answer",
+            "explanation": "The verb is costare (to cost), not essere: Costano tre euro = They cost three euros."
+          }
+        ]
       }
     },
     {
@@ -9994,7 +10140,9 @@
         "grammar"
       ],
       "prompt": "Arrange the words to say: How much is a kilo of apples?",
-      "hints": [],
+      "hints": [
+        "Quanto and costa lead the question, then un chilo di, and the apples come last with the question mark."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-order",
       "assistanceAffectsEvidence": [
@@ -10056,7 +10204,9 @@
         "grammar"
       ],
       "prompt": "Complete the price: ___ tre euro.",
-      "hints": [],
+      "hints": [
+        "Tre euro is a plural price, so the verb is costano — the -ano form of costare. The singular costa would match one item."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -10086,7 +10236,23 @@
             "Costano"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "Costa",
+              "category": "wrong number",
+              "explanation": "Tre euro is plural, so the verb is costano; costa would match a single item."
+            },
+            {
+              "answer": "sono",
+              "category": "incorrect answer",
+              "explanation": "Prices in Italian use costare, not essere: Costano tre euro."
+            },
+            {
+              "answer": "Quanto",
+              "category": "extra word",
+              "explanation": "The gap is the verb: Costano tre euro. — Quanto belongs at the start of a question, not a price statement."
+            }
+          ]
         }
       }
     },
@@ -10106,7 +10272,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: How much is a kilo of apples?",
-      "hints": [],
+      "hints": [
+        "Open with Quanto, then the singular verb costa (un chilo is one thing), then un chilo di mele and the question mark."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -10125,6 +10293,11 @@
             "answer": "Quanto costano un chilo di mele?",
             "category": "incorrect answer",
             "explanation": "Un chilo is singular: Quanto costa un chilo di mele?"
+          },
+          {
+            "answer": "Quanto costa un chilo di mela?",
+            "category": "wrong number",
+            "explanation": "Apples are plural here: un chilo di mele."
           }
         ]
       }
@@ -10145,7 +10318,9 @@
         "vocabulary"
       ],
       "prompt": "How much is the bread? Answer with the Italian price. (Reading 20)",
-      "hints": [],
+      "hints": [
+        "The price list gives two prices: mele (due euro al chilo) and pane. Find the one after Pane and answer with the Italian phrase."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-read",
       "assistanceAffectsEvidence": [
@@ -10160,7 +10335,23 @@
           "un euro"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "due euro",
+            "category": "incorrect answer",
+            "explanation": "Due euro is the apples' price (Mele: due euro al chilo). The bread costs un euro."
+          },
+          {
+            "answer": "uno euro",
+            "category": "incorrect answer",
+            "explanation": "With euro the masculine un is used: un euro. Uno appears before s + consonant, like uno studente."
+          },
+          {
+            "answer": "un euro al chilo",
+            "category": "extra word",
+            "explanation": "The list prices the bread by the item, not per kilo: the answer is just un euro."
+          }
+        ]
       }
     },
     {
@@ -10179,7 +10370,9 @@
         "grammar"
       ],
       "prompt": "Recall from Weather and seasons: It is cold today.",
-      "hints": [],
+      "hints": [
+        "Weather uses fare, not essere: fa freddo. Put oggi first or after the verb — both orders are accepted."
+      ],
       "feedback": "Describe the weather with fa plus an adjective: fa caldo for hot, fa freddo for cold. Say c’è il sole for sunny and piove for it rains. Two seasons to know now are l’estate (summer) and l’inverno (winter).",
       "evidenceKey": "it-market-foundation-review",
       "assistanceAffectsEvidence": [
@@ -10218,7 +10411,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: market prices.",
-      "hints": [],
+      "hints": [
+        "The model asks the price of one item: Quanto costa (singular) un chilo di mele? — capital Q and the final question mark."
+      ],
       "feedback": "Ask the price with Quanto costa? for one thing and Quanto costano? for several: Quanto costa un chilo di mele? Answer with the price: Tre euro. Un chilo is one kilo and il mercato is the market.",
       "evidenceKey": "it-market-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -10233,7 +10428,23 @@
           "Quanto costa un chilo di mele?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto costano un chilo di mele?",
+            "category": "wrong number",
+            "explanation": "Un chilo is singular, so the verb is costa: Quanto costa un chilo di mele?"
+          },
+          {
+            "answer": "Quanto costa un chilo di mela?",
+            "category": "wrong number",
+            "explanation": "The apples are plural — le mele; una mela is a single apple."
+          },
+          {
+            "answer": "Quanto costa il chilo di mele?",
+            "category": "wrong article",
+            "explanation": "The question asks for a kilo: un chilo (a kilo), not il (the)."
+          }
+        ]
       }
     },
     {
@@ -10252,7 +10463,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “head”?",
-      "hints": [],
+      "hints": [
+        "The pounding spot in the scene is the testa — head. Febbre is fever, dottore is doctor, and male is pain or hurt."
+      ],
       "feedback": "Say pain with mi fa male plus the body part: Mi fa male la testa. Headache is il mal di testa and fever is la febbre. Answer Dove fa male? (Where does it hurt?) with Mi fa male plus the spot.",
       "evidenceKey": "it-health-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10300,7 +10513,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Ho la febbre.",
-      "hints": [],
+      "hints": [
+        "Ho is I have (avere) and la febbre is the fever. Put the two together in natural English."
+      ],
       "feedback": "Say pain with mi fa male plus the body part: Mi fa male la testa. Headache is il mal di testa and fever is la febbre. Answer Dove fa male? (Where does it hurt?) with Mi fa male plus the spot.",
       "evidenceKey": "it-health-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -10314,7 +10529,23 @@
           "I have a fever."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I am a fever.",
+            "category": "incorrect answer",
+            "explanation": "The verb is avere (to have), not essere: Ho la febbre = I have a fever."
+          },
+          {
+            "answer": "I have the fever.",
+            "category": "incorrect answer",
+            "explanation": "English says a fever here: I have a fever."
+          },
+          {
+            "answer": "You have a fever.",
+            "category": "incorrect answer",
+            "explanation": "Ho is I have; you have is hai. The phrase says I have a fever."
+          }
+        ]
       }
     },
     {
@@ -10333,7 +10564,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: My head hurts.",
-      "hints": [],
+      "hints": [
+        "The pain pattern is mi fa male + the body part with its article: la testa. Keep fare in the third person: fa."
+      ],
       "feedback": "Say pain with mi fa male plus the body part: Mi fa male la testa. Headache is il mal di testa and fever is la febbre. Answer Dove fa male? (Where does it hurt?) with Mi fa male plus the spot.",
       "evidenceKey": "it-health-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -10352,6 +10585,11 @@
             "answer": "La mia testa è male.",
             "category": "incorrect answer",
             "explanation": "Pain uses fare: Mi fa male la testa."
+          },
+          {
+            "answer": "Mi fa male testa.",
+            "category": "missing word",
+            "explanation": "The body part keeps its article: Mi fa male la testa."
           }
         ]
       }
@@ -10372,7 +10610,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “medicine”?",
-      "hints": [],
+      "hints": [
+        "The thing you ask Ho bisogno di… for is the medicina. Farmacia is the shop, pastiglia a pill, sciroppo syrup."
+      ],
       "feedback": "Ask for medicine with Ho bisogno di…: Ho bisogno di una medicina. Una pastiglia is a pill and lo sciroppo is syrup. Ask the price with Quanto costa?: Costa cinque euro.",
       "evidenceKey": "it-pharmacy-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10420,7 +10660,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Costa cinque euro.",
-      "hints": [],
+      "hints": [
+        "Costa is the singular of costare — it costs. Cinque euro is the amount."
+      ],
       "feedback": "Ask for medicine with Ho bisogno di…: Ho bisogno di una medicina. Una pastiglia is a pill and lo sciroppo is syrup. Ask the price with Quanto costa?: Costa cinque euro.",
       "evidenceKey": "it-pharmacy-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -10434,7 +10676,23 @@
           "It costs five euros."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "They cost five euros.",
+            "category": "wrong number",
+            "explanation": "Costa is singular — it costs; they cost would be costano."
+          },
+          {
+            "answer": "It costs five euro.",
+            "category": "incorrect answer",
+            "explanation": "Keep euros plural in English: It costs five euros."
+          },
+          {
+            "answer": "It is five euros.",
+            "category": "incorrect answer",
+            "explanation": "The verb is costare, not essere: Costa cinque euro = It costs five euros."
+          }
+        ]
       }
     },
     {
@@ -10453,7 +10711,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: I need some medicine.",
-      "hints": [],
+      "hints": [
+        "The pattern is ho bisogno + di + the thing: di una medicina. Do not drop the di."
+      ],
       "feedback": "Ask for medicine with Ho bisogno di…: Ho bisogno di una medicina. Una pastiglia is a pill and lo sciroppo is syrup. Ask the price with Quanto costa?: Costa cinque euro.",
       "evidenceKey": "it-pharmacy-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -10472,6 +10732,11 @@
             "answer": "Ho bisogno una medicina.",
             "category": "incorrect answer",
             "explanation": "Bisogno needs di: Ho bisogno di una medicina."
+          },
+          {
+            "answer": "Voglio una medicina.",
+            "category": "incorrect answer",
+            "explanation": "Voglio is a demand; the need pattern is ho bisogno di una medicina."
           }
         ]
       }
@@ -10918,7 +11183,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “dinner”?",
-      "hints": [],
+      "hints": [
+        "The meal Sofia cooks on Saturday night is la cena — dinner. Sabato is Saturday, volentieri gladly, mi dispiace I'm sorry."
+      ],
       "feedback": "Invite with Vuoi venire…?: Vuoi venire a cena? Accept with Sì, grazie, volentieri. Decline politely with Mi dispiace, non posso.",
       "evidenceKey": "it-invitations-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -10966,7 +11233,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Mi dispiace, non posso.",
-      "hints": [],
+      "hints": [
+        "Mi dispiace is the polite apology and non posso is the inability — I cannot. Combine them in natural English."
+      ],
       "feedback": "Invite with Vuoi venire…?: Vuoi venire a cena? Accept with Sì, grazie, volentieri. Decline politely with Mi dispiace, non posso.",
       "evidenceKey": "it-invitations-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -10977,10 +11246,27 @@
       "id": "it-invitations-foundation-meaning",
       "answer": {
         "answers": [
-          "I am sorry, I cannot."
+          "I am sorry, I cannot.",
+          "Sorry, I cannot."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I am sorry, I don't want to.",
+            "category": "incorrect answer",
+            "explanation": "Non posso is can't (no ability), not don't want (non voglio)."
+          },
+          {
+            "answer": "I am sorry, I can.",
+            "category": "incorrect answer",
+            "explanation": "Non posso is negative — I cannot."
+          },
+          {
+            "answer": "I am sorry, I can't come.",
+            "category": "extra word",
+            "explanation": "The Italian says just non posso — I cannot. The come is added by you; keep the accepted phrase I am sorry, I cannot."
+          }
+        ]
       }
     },
     {
@@ -10999,7 +11285,9 @@
         "grammar"
       ],
       "prompt": "Write in Italian: Do you want to come to dinner Saturday?",
-      "hints": [],
+      "hints": [
+        "The invitation pattern is Vuoi venire a cena + the day: sabato. Note venire, not andare, and the question mark."
+      ],
       "feedback": "Invite with Vuoi venire…?: Vuoi venire a cena? Accept with Sì, grazie, volentieri. Decline politely with Mi dispiace, non posso.",
       "evidenceKey": "it-invitations-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -11018,6 +11306,11 @@
             "answer": "Vuoi andare a cena sabato?",
             "category": "incorrect answer",
             "explanation": "Andare is to go; invite with venire: Vuoi venire a cena sabato?"
+          },
+          {
+            "answer": "Vuoi venire a pranzo sabato?",
+            "category": "incorrect answer",
+            "explanation": "Pranzo is lunch; the invitation is to dinner — a cena."
           }
         ]
       }
@@ -11240,7 +11533,9 @@
       ],
       "stimulusId": "it-requests-dialogue",
       "prompt": "Cosa risponde Marco?",
-      "hints": [],
+      "hints": [
+        "The barista asks whether Marco also takes a pastry (un dolce). Pick the reply that accepts — with per favore — not the refusal."
+      ],
       "feedback": "Marco dice sì al dolce.",
       "evidenceKey": "ev-requests-dialogue",
       "assistanceAffectsEvidence": [
@@ -11279,7 +11574,9 @@
         "grammar"
       ],
       "prompt": "Chiedi se puoi pagare tu.",
-      "hints": [],
+      "hints": [
+        "Ask permission with posso + infinitive: posso pagare. Add io only for the emphatic I pay."
+      ],
       "feedback": "Posso + infinito per chiedere il permesso.",
       "evidenceKey": "ev-requests-transfer",
       "assistanceAffectsEvidence": [
@@ -11292,7 +11589,23 @@
           "Posso pagare io?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voglio pagare.",
+            "category": "incorrect answer",
+            "explanation": "Voglio is a demand; the step asks you to request permission: Posso pagare?"
+          },
+          {
+            "answer": "Pagare posso?",
+            "category": "word-order problem",
+            "explanation": "Italian keeps the verb first in a yes/no question: Posso pagare?"
+          },
+          {
+            "answer": "Posso pago?",
+            "category": "wrong conjugation",
+            "explanation": "After posso the verb stays infinitive: posso pagare."
+          }
+        ]
       }
     },
     {
@@ -11314,7 +11627,9 @@
       ],
       "stimulusId": "it-market-listen-stim",
       "prompt": "Dove compra Elena la frutta?",
-      "hints": [],
+      "hints": [
+        "The scene opens at the market stalls — Elena buys her fruit al mercato, not at the supermarket."
+      ],
       "feedback": "Elena compra la frutta al mercato.",
       "evidenceKey": "ev-market-gist",
       "assistanceAffectsEvidence": [
@@ -11355,7 +11670,9 @@
       ],
       "stimulusId": "it-market-listen-stim",
       "prompt": "Quanto prosciutto prende Elena?",
-      "hints": [],
+      "hints": [
+        "Elena asks for a small amount of cured ham — due etti. Un chilo would be a whole kilo; listen for the number that goes with etti."
+      ],
       "feedback": "Elena prende due etti di prosciutto.",
       "evidenceKey": "ev-market-prosciutto",
       "assistanceAffectsEvidence": [
@@ -11396,7 +11713,9 @@
       ],
       "stimulusId": "it-market-listen-stim",
       "prompt": "Quanto costano le pesche?",
-      "hints": [],
+      "hints": [
+        "The peaches run cinque euro e cinquanta. The three-euro price belongs to a different item in the scene."
+      ],
       "feedback": "Le pesche costano cinque euro e cinquanta.",
       "evidenceKey": "ev-market-pesche",
       "assistanceAffectsEvidence": [
@@ -11437,7 +11756,9 @@
       ],
       "stimulusId": "it-market-listen-stim",
       "prompt": "Cosa dice Elena per ordinare le mele?",
-      "hints": [],
+      "hints": [
+        "To order she uses the polite request with vorrei — the phrase that asks for a kilo of apples, per favore."
+      ],
       "feedback": "Elena ordina con una richiesta cortese: vorrei un chilo di mele, per favore.",
       "evidenceKey": "ev-market-ordine",
       "assistanceAffectsEvidence": [
@@ -11482,7 +11803,9 @@
       ],
       "stimulusId": "it-market-listen-stim",
       "prompt": "Come chiude Elena dopo la vendita?",
-      "hints": [],
+      "hints": [
+        "After paying she thanks and says goodbye formally: grazie mille, arrivederci — the vendor is not a friend, so the informal ciao would not close the deal."
+      ],
       "feedback": "Elena ringrazia e saluta: grazie mille, arrivederci.",
       "evidenceKey": "ev-market-grazie",
       "assistanceAffectsEvidence": [
@@ -11728,7 +12051,7 @@
       "kind": "information",
       "id": "it-cafe-order-foundation-intro",
       "revision": 1,
-      "body": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
+      "body": "Order politely with Vorrei…, per favore: Vorrei un caffè, per favore. Accept with Sì, grazie. Ask the price with Quanto costa? and pay with Ecco, grazie.",
       "stimulusId": "it-cafe-order-foundation-examples",
       "conceptIds": [
         "it-cafe-order-concept"
@@ -11756,7 +12079,9 @@
         "vocabulary"
       ],
       "prompt": "Which Italian word means “coffee”?",
-      "hints": [],
+      "hints": [
+        "The drink you order after the barista's Buongiorno is the caffè — note its grave accent. Conto is the bill, prezzo the price, tavolo the table."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -11804,7 +12129,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Quanto costa?",
-      "hints": [],
+      "hints": [
+        "Quanto asks how much, and costa is the singular of costare — it costs. Put the two together as a question."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -11818,7 +12145,18 @@
           "How much does it cost?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "How much do they cost?",
+            "category": "wrong number",
+            "explanation": "Costa is singular — it costs; they cost would be costano."
+          },
+          {
+            "answer": "How much it costs?",
+            "category": "word-order problem",
+            "explanation": "English inverts for a question: How much does it cost?"
+          }
+        ]
       }
     },
     {
@@ -11836,8 +12174,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Arrange the words to say: Would you like to coffee today?",
-      "hints": [],
+      "prompt": "Arrange the words to say: I would like a coffee, please.",
+      "hints": [
+        "Lay the order out: Vorrei, then un caffè with its comma, then per favore."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-order",
       "assistanceAffectsEvidence": [
@@ -11894,7 +12234,9 @@
         "grammar"
       ],
       "prompt": "Complete the reply: Sì, grazie, ___.",
-      "hints": [],
+      "hints": [
+        "The polite pair is grazie + per favore. The reply is Sì, grazie, per favore — the gap holds the second half of per favore: favore."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-cloze",
       "assistanceAffectsEvidence": [
@@ -11924,7 +12266,23 @@
             "favore"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "per favore",
+              "category": "extra word",
+              "explanation": "The gap takes one word — per is already written before it: Sì, grazie, per favore."
+            },
+            {
+              "answer": "prego",
+              "category": "incorrect answer",
+              "explanation": "Prego is you're welcome — spoken by the other person. The reply needs per favore."
+            },
+            {
+              "answer": "grazie",
+              "category": "incorrect answer",
+              "explanation": "Grazie already appears in the reply — the gap is the polite closer: favore."
+            }
+          ]
         }
       }
     },
@@ -11943,8 +12301,10 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Write in Italian: Would you like to coffee today?",
-      "hints": [],
+      "prompt": "Write in Italian: I would like a coffee, please.",
+      "hints": [
+        "The polite order: open with Vorrei, then un caffè, then the comma and per favore. Keep the accent on caffè."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -11960,9 +12320,19 @@
         "allowTypo": false,
         "errors": [
           {
-            "answer": "Vuoi andare a caffè caffè?",
+            "answer": "Voglio un caffè, per favore.",
             "category": "incorrect answer",
-            "explanation": "Andare is to go; invite with prendere: Vorrei un caffè, per favore."
+            "explanation": "Voglio is a blunt demand; begin the request with the polite Vorrei: Vorrei un caffè, per favore."
+          },
+          {
+            "answer": "Vorrei un cafe, per favore.",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè keeps its grave accent: caffè."
+          },
+          {
+            "answer": "Vorrei un cappuccino, per favore.",
+            "category": "incorrect answer",
+            "explanation": "The polite order names the coffee itself: Vorrei un caffè, per favore."
           }
         ]
       }
@@ -11982,8 +12352,10 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "When is coffee? Answer with the Italian day. (Reading 24)",
-      "hints": [],
+      "prompt": "What does the customer order? Answer in Italian. (Reading 24)",
+      "hints": [
+        "The customer's polite order is Vorrei un caffè, per favore. Name the thing they ask for in Italian."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-read",
       "assistanceAffectsEvidence": [
@@ -11995,10 +12367,22 @@
       "stimulusId": "it-cafe-order-foundation-read-passage",
       "answer": {
         "answers": [
+          "un caffè",
           "caffè"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "un tè",
+            "category": "incorrect answer",
+            "explanation": "Anna orders coffee, not tea: Vorrei un caffè, per favore."
+          },
+          {
+            "answer": "un cornetto",
+            "category": "incorrect answer",
+            "explanation": "The passage has no pastry — Anna asks for un caffè."
+          }
+        ]
       }
     },
     {
@@ -12017,7 +12401,9 @@
         "grammar"
       ],
       "prompt": "Recall from Emergencies: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "Call for help with Aiuto!, then command politely: Chiami un'ambulanza! — the formal -i form, not the announcing chiamo."
+      ],
       "feedback": "Call for help with Aiuto! Ask for an ambulance with Chiami un’ambulanza! The emergency number is il centododici (112). Say È urgente when it is urgent.",
       "evidenceKey": "it-cafe-order-foundation-review",
       "assistanceAffectsEvidence": [
@@ -12055,7 +12441,9 @@
         "listening"
       ],
       "prompt": "Listen and write the model: ordering and paying.",
-      "hints": [],
+      "hints": [
+        "The model polite order is Vorrei un caffè, per favore — capital Vorrei, accent on caffè, comma before per favore."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-foundation-listen-model",
       "assistanceAffectsEvidence": [
@@ -12070,7 +12458,23 @@
           "Vorrei un caffè, per favore."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voglio un caffè, per favore.",
+            "category": "wrong conjugation",
+            "explanation": "Voglio is the blunt present; the model uses the polite conditional Vorrei."
+          },
+          {
+            "answer": "Vorrei un cafe, per favore.",
+            "category": "accent/diacritic issue",
+            "explanation": "caffè keeps its grave accent: caffè."
+          },
+          {
+            "answer": "Vorei un caffè, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Vorrei is written with a double r: Vorrei un caffè, per favore."
+          }
+        ]
       }
     },
     {
@@ -12088,7 +12492,9 @@
         "writing"
       ],
       "prompt": "Transfer: You have finished your coffee. Ask politely how much it costs.",
-      "hints": [],
+      "hints": [
+        "Ask the price with Quanto costa? — the singular form for one item, your coffee."
+      ],
       "feedback": "Order with Vuoi prendere…?: Vorrei un caffè, per favore. Accept with Sì, grazie. Decline politely with Quanto costa?",
       "evidenceKey": "it-cafe-order-transfer",
       "assistanceAffectsEvidence": [
@@ -12102,7 +12508,23 @@
           "Quanto costa?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quanto costano?",
+            "category": "wrong number",
+            "explanation": "Your single coffee is one thing: Quanto costa? Costano is for several items."
+          },
+          {
+            "answer": "Vorrei il conto.",
+            "category": "incorrect answer",
+            "explanation": "The step asks for the price, not the bill: Quanto costa?"
+          },
+          {
+            "answer": "Quanto costa, per favore?",
+            "category": "extra word",
+            "explanation": "The price question is short and direct: Quanto costa?"
+          }
+        ]
       }
     },
     {
@@ -15234,7 +15656,9 @@
         "vocabulary"
       ],
       "prompt": "___ dirmi l’ora, per favore? (Could you tell me…)",
-      "hints": [],
+      "hints": [
+        "The gloss says Could you — that is the conditional of potere: potrebbe. Può is the blunt present, poteva the past, potrà the future."
+      ],
       "feedback": "A polite request to a stranger takes the conditional: potrebbe. può is blunt; poteva is past; potrà is future.",
       "evidenceKey": "it-a2-condizionale-cortesia-meet",
       "assistanceAffectsEvidence": [
@@ -15284,7 +15708,9 @@
         "grammar"
       ],
       "prompt": "Type politely: I would like a single room.",
-      "hints": [],
+      "hints": [
+        "volere in the conditional gives vorrei. Then una camera singola — feminine article for camera."
+      ],
       "feedback": "volere gives vorrei. In hotels and shops, vorrei is the only correct choice.",
       "evidenceKey": "it-a2-condizionale-cortesia-think",
       "assistanceAffectsEvidence": [
@@ -15298,7 +15724,23 @@
           "Vorrei una camera singola."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Voglio una camera singola.",
+            "category": "wrong conjugation",
+            "explanation": "Voglio is a demand; the polite form is the conditional: vorrei."
+          },
+          {
+            "answer": "Vorrei un camera singola.",
+            "category": "wrong article",
+            "explanation": "Camera is feminine, so the article is una: una camera singola."
+          },
+          {
+            "answer": "Vorrei una camera singolo.",
+            "category": "wrong gender",
+            "explanation": "Singola agrees with the feminine camera: camera singola, not singolo."
+          }
+        ]
       }
     },
     {
@@ -15319,7 +15761,9 @@
         "vocabulary"
       ],
       "prompt": "___ possibile avere il menù? (Would it be…)",
-      "hints": [],
+      "hints": [
+        "The fixed polite phrase is sarebbe possibile — the conditional of essere. È, era and sarà are the wrong tenses."
+      ],
       "feedback": "The fixed polite phrase is “sarebbe possibile”.",
       "evidenceKey": "it-a2-condizionale-cortesia-notice",
       "assistanceAffectsEvidence": [
@@ -15369,7 +15813,9 @@
         "grammar"
       ],
       "prompt": "Make it polite: Dammi il conto.",
-      "hints": [],
+      "hints": [
+        "Swap the imperative Dammi for the conditional: potrebbe portare (bring). The pronoun mi moves before the verb group or onto the infinitive."
+      ],
       "feedback": "“Dammi” is an order; the conditional plus the indirect pronoun turns it into a polite request.",
       "evidenceKey": "it-a2-condizionale-cortesia-vary",
       "assistanceAffectsEvidence": [
@@ -15384,7 +15830,23 @@
           "Potrebbe portarmi il conto?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Dammi il conto, per favore.",
+            "category": "incorrect answer",
+            "explanation": "Adding per favore does not soften the imperative — rebuild the request with potrebbe portare."
+          },
+          {
+            "answer": "Potresti portarmi il conto?",
+            "category": "incorrect answer",
+            "explanation": "Potresti is the familiar tu form; to a stranger use the formal potrebbe."
+          },
+          {
+            "answer": "Potrebbe portare il conto?",
+            "category": "missing word",
+            "explanation": "Keep the indirect pronoun — say who gets the bill: Mi potrebbe portare il conto? or Potrebbe portarmi il conto?"
+          }
+        ]
       }
     },
     {
@@ -15412,7 +15874,9 @@
         "vocabulary"
       ],
       "prompt": "Vorrei ___ questa maglia. (to try on)",
-      "hints": [],
+      "hints": [
+        "After vorrei the verb stays in the infinitive: vorrei provare. provo is the present, provato a participle, proverò the future."
+      ],
       "feedback": "After vorrei comes the infinitive: vorrei provare. provo is present, provato is a participle, proverò is future.",
       "evidenceKey": "it-a2-vorrei-act-2",
       "assistanceAffectsEvidence": [
@@ -15462,7 +15926,9 @@
         "grammar"
       ],
       "prompt": "Type: I would like to try these shoes.",
-      "hints": [],
+      "hints": [
+        "vorrei + the infinitive provare + queste scarpe — the demonstrative agrees with the plural scarpe."
+      ],
       "feedback": "vorrei plus the infinitive provare, then the object: Vorrei provare queste scarpe.",
       "evidenceKey": "it-a2-vorrei-act-3",
       "assistanceAffectsEvidence": [
@@ -15476,7 +15942,23 @@
           "Vorrei provare queste scarpe."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vorrei provare questi scarpe.",
+            "category": "wrong gender",
+            "explanation": "Scarpe is feminine plural, so the demonstrative is queste: queste scarpe."
+          },
+          {
+            "answer": "Voglio provare queste scarpe.",
+            "category": "wrong conjugation",
+            "explanation": "Voglio is the blunt present; the polite request is vorrei."
+          },
+          {
+            "answer": "Vorrei provare questa scarpe.",
+            "category": "wrong number",
+            "explanation": "Scarpe is plural — queste, not the singular questa."
+          }
+        ]
       }
     },
     {
@@ -15497,7 +15979,9 @@
         "vocabulary"
       ],
       "prompt": "Avete una taglia più ___? (bigger)",
-      "hints": [],
+      "hints": [
+        "The gap takes the adjective for big: grande. Grandezza is the noun size, ingrandire the verb to enlarge, grandioso grandiose."
+      ],
       "feedback": "You need the adjective grande. grandezza is the noun “size”; ingrandire is the verb “to enlarge”; grandioso means “grandiose”.",
       "evidenceKey": "it-a2-vorrei-act-4",
       "assistanceAffectsEvidence": [
@@ -15547,7 +16031,9 @@
         "grammar"
       ],
       "prompt": "Put the words in order: Where is the fitting room, please?",
-      "hints": [],
+      "hints": [
+        "Open with Dov'è, then il camerino with its comma, then per favore and the question mark."
+      ],
       "feedback": "Dov’è plus the place, then per favore: Dov’è il camerino, per favore?",
       "evidenceKey": "it-a2-vorrei-act-5",
       "assistanceAffectsEvidence": [
@@ -15606,7 +16092,9 @@
         "grammar"
       ],
       "prompt": "Type: Could you tell me the price?",
-      "hints": [],
+      "hints": [
+        "Potrebbe + the infinitive dirmi (dire + mi) + il prezzo, with a question mark. Keep the double r in potrebbe."
+      ],
       "feedback": "The polite question pattern: potrebbe plus the infinitive — potrebbe dirmi il prezzo?",
       "evidenceKey": "it-a2-vorrei-act-6",
       "assistanceAffectsEvidence": [
@@ -15617,10 +16105,22 @@
       "id": "it-a2-vorrei-act-6",
       "answer": {
         "answers": [
-          "Potrebbe dirmi il prezzo?"
+          "Potrebbe dirmi il prezzo?",
+          "Mi potrebbe dire il prezzo?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Può dirmi il prezzo?",
+            "category": "incorrect answer",
+            "explanation": "Può is the blunt present; politeness uses the conditional potrebbe."
+          },
+          {
+            "answer": "Potrebbe dire mi il prezzo?",
+            "category": "word-order problem",
+            "explanation": "The pronoun attaches to the infinitive: Potrebbe dirmi il prezzo? or Mi potrebbe dire il prezzo?"
+          }
+        ]
       }
     },
     {
@@ -15641,7 +16141,9 @@
         "vocabulary"
       ],
       "prompt": "La maglia è troppo ___. (small)",
-      "hints": [],
+      "hints": [
+        "Maglia is feminine singular, so the adjective ends in -a: piccola. Poco is an adverb, piccolezza a noun, piccolina a diminutive."
+      ],
       "feedback": "maglia is feminine singular, so the adjective is piccola. poco is an adverb; piccolezza is the noun “smallness”; piccolina is a diminutive — cute, but not what you mean here.",
       "evidenceKey": "it-a2-vorrei-act-7",
       "assistanceAffectsEvidence": [
@@ -15691,7 +16193,9 @@
         "grammar"
       ],
       "prompt": "Complete the sentence.",
-      "hints": [],
+      "hints": [
+        "The escape phrase is sto solo guardando — stare + the gerund (-ando) for an action in progress. The gerund of guardare is guardando."
+      ],
       "feedback": "The escape phrase every shopper needs: “Sto solo guardando, grazie” — I am just looking, thanks.",
       "evidenceKey": "it-a2-vorrei-act-8",
       "assistanceAffectsEvidence": [
@@ -15721,7 +16225,23 @@
             "guardando"
           ],
           "allowTypo": true,
-          "errors": []
+          "errors": [
+            {
+              "answer": "guardare",
+              "category": "wrong tense",
+              "explanation": "After sto the verb takes the gerund: guardando (I am looking), not the infinitive guardare."
+            },
+            {
+              "answer": "guardo",
+              "category": "wrong conjugation",
+              "explanation": "Sto already carries the present — the gerund guardando completes I am looking: sto solo guardando."
+            },
+            {
+              "answer": "cercando",
+              "category": "incorrect answer",
+              "explanation": "Cercando means looking FOR something; the phrase is just looking around: guardando."
+            }
+          ]
         }
       }
     },
@@ -15743,7 +16263,9 @@
         "grammar"
       ],
       "prompt": "The sweater fits! Type: I’ll take it. (feminine: la maglia)",
-      "hints": [],
+      "hints": [
+        "Take it with the object pronoun la (for la maglia) + prendo: La prendo. Keep the capital L."
+      ],
       "feedback": "The closing line of every purchase: la prendo — literally “I take it”. Short, friendly, final.",
       "evidenceKey": "it-a2-vorrei-act-9",
       "assistanceAffectsEvidence": [
@@ -15757,7 +16279,23 @@
           "La prendo."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Lo prendo.",
+            "category": "wrong gender",
+            "explanation": "The sweater is la maglia (feminine), so the pronoun is la: La prendo."
+          },
+          {
+            "answer": "Prendo la.",
+            "category": "word-order problem",
+            "explanation": "The pronoun comes before the verb: La prendo."
+          },
+          {
+            "answer": "La compro.",
+            "category": "incorrect answer",
+            "explanation": "Compro is buy; the closing line of the scene is prendo: La prendo."
+          }
+        ]
       }
     },
     {
@@ -15778,7 +16316,9 @@
         "grammar"
       ],
       "prompt": "The assistant asks: “Posso aiutarla?” (Can I help you?) Type your polite reply: you are just looking.",
-      "hints": [],
+      "hints": [
+        "Reuse the escape phrase: sto solo guardando, grazie. You may lead with a polite No, grazie."
+      ],
       "feedback": "Transfer: you reused “sto solo guardando, grazie” in a real exchange. That is the whole lesson in one sentence.",
       "evidenceKey": "it-a2-vorrei-act-10",
       "assistanceAffectsEvidence": [
@@ -15794,7 +16334,23 @@
           "No, grazie, sto solo guardando."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Solo guardando, grazie.",
+            "category": "missing word",
+            "explanation": "The phrase needs sto to say I am: Sto solo guardando, grazie."
+          },
+          {
+            "answer": "Sto solo guardando, prego.",
+            "category": "incorrect answer",
+            "explanation": "Prego is you're welcome — the polite closer here is grazie."
+          },
+          {
+            "answer": "Sto solo guardando.",
+            "category": "missing word",
+            "explanation": "The polite reply closes with grazie: Sto solo guardando, grazie."
+          }
+        ]
       }
     },
     {
@@ -18650,7 +19206,9 @@
         "vocabulary"
       ],
       "prompt": "The doctor asks «Da quanto tempo?» — since when? What do you answer?",
-      "hints": [],
+      "hints": [
+        "The doctor wants the timeline. Give the answer that says when the pain started — da ieri sera — not your appetite and not a goodbye."
+      ],
       "feedback": "Da ieri sera — since last night. The doctor needs the timeline before anything else.",
       "evidenceKey": "it-health-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18694,7 +19252,9 @@
         "vocabulary"
       ],
       "prompt": "The doctor asks: «Prende medicine?» — do you take any medicine? Choose your reply.",
-      "hints": [],
+      "hints": [
+        "Answer the medicine question directly. Only one reply does — the pill-a-day answer; the headache complaint repeats what you already told the doctor."
+      ],
       "feedback": "Una pastiglia al giorno — one pill a day. Clear answers get clear diagnoses.",
       "evidenceKey": "it-health-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18738,7 +19298,9 @@
         "vocabulary"
       ],
       "prompt": "The doctor says «Apra la bocca». What is he asking you to do?",
-      "hints": [],
+      "hints": [
+        "Bocca is the mouth, and apra is the polite command for open. That combination names exactly one option."
+      ],
       "feedback": "Apra la bocca — open your mouth. Doctors use the formal imperative: apra, not apri.",
       "evidenceKey": "it-health-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18786,7 +19348,9 @@
         "vocabulary"
       ],
       "prompt": "The visit is over. Message a friend in Italian: “The doctor says I have a fever.”",
-      "hints": [],
+      "hints": [
+        "Follow the pattern Il dottore dice che + your condition: ho la febbre (I have a fever). Either dottore or medico opens the sentence."
+      ],
       "feedback": "Il dottore dice che ho la febbre. — now go rest.",
       "evidenceKey": "it-health-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18799,7 +19363,28 @@
           "Il medico dice che ho la febbre."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Il dottore dice che io ho la febbre.",
+            "category": "incorrect answer",
+            "explanation": "Italian drops the subject pronoun io after dice che — che ho la febbre already means that I have."
+          },
+          {
+            "answer": "Il dottore dice che sono la febbre.",
+            "category": "incorrect answer",
+            "explanation": "The fever is something you HAVE, not something you are: ho la febbre, not sono la febbre."
+          },
+          {
+            "answer": "Il dottore dice ho la febbre.",
+            "category": "missing word",
+            "explanation": "The sentence needs che to link the doctor's words: dice che ho la febbre."
+          },
+          {
+            "answer": "Il dottore dice che ho febbre.",
+            "category": "missing word",
+            "explanation": "The fever keeps its article: ho la febbre."
+          }
+        ]
       }
     },
     {
@@ -18836,7 +19421,9 @@
         "vocabulary"
       ],
       "prompt": "It's for your headache. What do you reply?",
-      "hints": [],
+      "hints": [
+        "Say what the medicine is for: per il mal di testa. The cough answer names a different ailment, and Non lo so admits you don't know."
+      ],
       "feedback": "Per il mal di testa, per favore — precise beats vague at the counter.",
       "evidenceKey": "it-pharmacy-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18880,7 +19467,9 @@
         "vocabulary"
       ],
       "prompt": "The pharmacist says: «Sono cinque euro.» What do you say as you pay?",
-      "hints": [],
+      "hints": [
+        "The price is set — hand over the money and thank: Ecco, grazie. Complaining it's too dear or saying you don't understand does not close the sale."
+      ],
       "feedback": "Ecco, grazie — here you go, thanks. Short, warm, done.",
       "evidenceKey": "it-pharmacy-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18924,7 +19513,9 @@
         "vocabulary"
       ],
       "prompt": "«Prenda una pastiglia dopo i pasti.» What does the pharmacist mean?",
-      "hints": [],
+      "hints": [
+        "Prenda is the polite command for take, una pastiglia is one pill, and dopo i pasti is after meals. Only one option has all three."
+      ],
       "feedback": "Dopo i pasti — after meals. Prenda is the formal imperative: take.",
       "evidenceKey": "it-pharmacy-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18972,7 +19563,9 @@
         "vocabulary"
       ],
       "prompt": "You're leaving. Write in Italian: “Thank you, goodbye.”",
-      "hints": [],
+      "hints": [
+        "Two courtesy words: grazie for thanks, then the formal goodbye arrivederci — with a comma between them, or e."
+      ],
       "feedback": "Grazie, arrivederci. — the two words that close every Italian errand.",
       "evidenceKey": "it-pharmacy-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18985,7 +19578,23 @@
           "Grazie e arrivederci."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Grazie, ciao.",
+            "category": "incorrect answer",
+            "explanation": "Ciao is for friends; with a shopkeeper the formal goodbye is arrivederci."
+          },
+          {
+            "answer": "Arrivederci, grazie.",
+            "category": "word-order problem",
+            "explanation": "Thanks comes first, then the goodbye: Grazie, arrivederci."
+          },
+          {
+            "answer": "Grazie.",
+            "category": "missing word",
+            "explanation": "The farewell pairs thanks with the goodbye: Grazie, arrivederci."
+          }
+        ]
       }
     },
     {
@@ -19022,7 +19631,9 @@
         "vocabulary"
       ],
       "prompt": "Sofia invites you to dinner Saturday. You'd love to go. What do you say?",
-      "hints": [],
+      "hints": [
+        "You are delighted and you want the details: Sì, volentieri! A che ora? — the flat No and the hesitant Forse do not accept the invitation."
+      ],
       "feedback": "Sì, volentieri! — yes, gladly. Volentieri is the warmest yes in Italian.",
       "evidenceKey": "it-invitations-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19066,7 +19677,9 @@
         "vocabulary"
       ],
       "prompt": "Sofia asks: «Porti qualcosa da bere?» — will you bring something to drink? Reply like a good guest.",
-      "hints": [],
+      "hints": [
+        "She asks what you will bring — say what you are bringing: porto il vino. Refusing with nothing does not fit a good guest."
+      ],
       "feedback": "Sì, porto il vino — never arrive empty-handed.",
       "evidenceKey": "it-invitations-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -19110,7 +19723,9 @@
         "vocabulary"
       ],
       "prompt": "You can't make it after all. How do you decline politely?",
-      "hints": [],
+      "hints": [
+        "A polite no = Mi dispiace + the reason: non posso. The bare No and the blunt Non voglio venire skip the apology."
+      ],
       "feedback": "Mi dispiace, non posso — I'm sorry, I can't. It softens every no.",
       "evidenceKey": "it-invitations-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19158,7 +19773,9 @@
         "vocabulary"
       ],
       "prompt": "Now it's your turn to invite. Write in Italian: “Do you want to come to my house on Sunday?”",
-      "hints": [],
+      "hints": [
+        "Open with Vuoi venire a (do you want to come to), add casa mia (my house), then domenica — and keep the question mark."
+      ],
       "feedback": "Vuoi venire a casa mia domenica? — your turn to cook.",
       "evidenceKey": "it-invitations-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -19171,7 +19788,23 @@
           "Vieni a casa mia domenica?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Vuoi andare a casa mia domenica?",
+            "category": "incorrect answer",
+            "explanation": "To invite someone TO you, use venire (to come), not andare (to go): Vuoi venire a casa mia domenica?"
+          },
+          {
+            "answer": "Vuoi venire a la casa mia domenica?",
+            "category": "wrong article",
+            "explanation": "Casa mia drops the article — a casa mia means to my house."
+          },
+          {
+            "answer": "Vieni a casa mia domenica?",
+            "category": "incorrect answer",
+            "explanation": "Vieni is the plain question form; the step asks the full invitation Vuoi venire a casa mia domenica?"
+          }
+        ]
       }
     },
     {
@@ -19194,7 +19827,9 @@
         "vocabulary"
       ],
       "prompt": "How many nights? You need three. Reply.",
-      "hints": [],
+      "hints": [
+        "The receptionist asks how long you are staying — answer with the nights: per tre notti. A room answer and a bare grazie do not reply to the question."
+      ],
       "feedback": "Per tre notti — answer the question asked; the conditional already did the polite work.",
       "evidenceKey": "it-a2-condizionale-cortesia-act-rb1",
       "assistanceAffectsEvidence": [
@@ -19240,7 +19875,9 @@
         "vocabulary"
       ],
       "prompt": "The receptionist says: «La colazione è alle sette e mezza.» You'd prefer eight. Ask politely.",
-      "hints": [],
+      "hints": [
+        "Soften the request with sarebbe possibile + the new time: farla alle otto. The imperative Dammi is the opposite of polite."
+      ],
       "feedback": "Sarebbe possibile…? — would it be possible: the softest tool in the drawer.",
       "evidenceKey": "it-a2-condizionale-cortesia-act-rb2",
       "assistanceAffectsEvidence": [
@@ -19286,7 +19923,9 @@
         "vocabulary"
       ],
       "prompt": "You're checking out. Write politely in Italian: “Could you call me a taxi?”",
-      "hints": [],
+      "hints": [
+        "The polite question pattern: potrebbe + infinitive. The pronoun mi attaches to the infinitive (chiamarmi) or stands before the verb (mi potrebbe chiamare)."
+      ],
       "feedback": "Potrebbe chiamarmi un taxi? — the conditional closes the stay as politely as it opened it.",
       "evidenceKey": "it-a2-condizionale-cortesia-act-rb3",
       "assistanceAffectsEvidence": [
@@ -19299,7 +19938,23 @@
           "Mi potrebbe chiamare un taxi, per favore?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Può chiamarmi un taxi?",
+            "category": "incorrect answer",
+            "explanation": "Può is the blunt present; politeness takes the conditional: Potrebbe."
+          },
+          {
+            "answer": "Chiami un taxi?",
+            "category": "incorrect answer",
+            "explanation": "Chiami commands; the request needs the conditional potrebbe + chiamare."
+          },
+          {
+            "answer": "Potrebbe mi chiamare un taxi?",
+            "category": "word-order problem",
+            "explanation": "The pronoun goes before the whole verb group or attaches to the infinitive: Mi potrebbe chiamare… or Potrebbe chiamarmi…"
+          }
+        ]
       }
     },
     {
@@ -27039,7 +27694,7 @@
           "id": "it-market-foundation-step-it-market-foundation-listen-model",
           "purpose": "practice",
           "activityId": "it-market-foundation-listen-model",
-          "required": false,
+          "required": true,
           "nextStepId": null
         }
       ],
@@ -27052,7 +27707,8 @@
           "it-market-foundation-cloze",
           "it-market-foundation-produce",
           "it-market-foundation-read",
-          "it-market-foundation-review"
+          "it-market-foundation-review",
+          "it-market-foundation-listen-model"
         ]
       },
       "prerequisites": [
@@ -27273,7 +27929,8 @@
         "it-market-foundation-cloze",
         "it-market-foundation-produce",
         "it-market-foundation-read",
-        "it-market-foundation-review"
+        "it-market-foundation-review",
+        "it-market-foundation-listen-model"
       ]
     },
     {

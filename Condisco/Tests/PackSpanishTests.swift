@@ -739,6 +739,49 @@ final class PackSpanishTests: XCTestCase {
         ],
     ]
 
+    // MARK: - Wave E (conversation family, rubric H4/H3 + M5)
+
+    /// The six conversation-family lessons in wave E scope (units 3, 4, 8,
+    /// 9, 12, 15), keyed by their seven graded path activities.
+    private static let batch5Lessons: [String: [String]] = [
+        "es-shopping-foundation": [
+            "es-shopping-foundation-act-rb2", "es-shopping-foundation-meet",
+            "es-shopping-foundation-think", "es-shopping-foundation-act-rb5",
+            "es-shopping-foundation-act-rb4", "es-shopping-foundation-vary",
+            "es-shopping-foundation-ask",
+        ],
+        "es-family-people-foundation": [
+            "es-family-people-foundation-act-rb2", "es-family-people-foundation-meet",
+            "es-family-people-foundation-think", "es-family-people-foundation-act-rb3",
+            "es-family-people-foundation-notice", "es-family-people-foundation-read",
+            "es-family-people-foundation-vary",
+        ],
+        "es-questions-foundation": [
+            "es-questions-foundation-act-rb2", "es-questions-foundation-meet",
+            "es-questions-foundation-think", "es-questions-foundation-act-rb3",
+            "es-questions-foundation-notice", "es-questions-foundation-write",
+            "es-questions-foundation-read",
+        ],
+        "es-requests-foundation": [
+            "es-requests-foundation-act-rb2", "es-requests-foundation-meet",
+            "es-requests-foundation-think", "es-requests-foundation-act-rb3",
+            "es-requests-foundation-notice", "es-requests-foundation-write",
+            "es-requests-foundation-read",
+        ],
+        "es-invitations-foundation": [
+            "es-invitations-foundation-act-rb2", "es-invitations-foundation-meet",
+            "es-invitations-foundation-think", "es-invitations-foundation-act-rb3",
+            "es-invitations-foundation-notice", "es-invitations-foundation-write",
+            "es-invitations-foundation-read",
+        ],
+        "es-a2-condicional": [
+            "es-a2-condicional-act-rb2", "es-a2-condicional-meet",
+            "es-a2-condicional-think", "es-a2-condicional-act-rb3",
+            "es-a2-condicional-notice", "es-a2-condicional-write",
+            "es-a2-condicional-read",
+        ],
+    ]
+
     /// Every graded step in wave-D discovery lessons has a real authored hint
     /// (audit_editorial hint-gap must stay 0 for these lessons).
     func testBatch4GradedStepsHaveAuthoredHints() throws {
@@ -959,6 +1002,170 @@ final class PackSpanishTests: XCTestCase {
         result = try gradeClozeBlank("es-a2-tecnologia-fill", in: pack, blank: "b1", "envío")
         XCTAssertTrue(result.accepted)
         result = try gradeClozeBlank("es-a2-subjuntivo-intro-fill", in: pack, blank: "b1", "vengas")
+        XCTAssertTrue(result.accepted)
+    }
+
+    // MARK: - Wave E (conversation family, rubric H4/H3 + M5)
+
+    /// Every graded step in wave-E conversation lessons has a real authored
+    /// hint (audit_editorial hint-gap must stay 0 for these lessons).
+    func testBatch5GradedStepsHaveAuthoredHints() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text answer in wave-E lessons authors error-specific feedback
+    /// (audit_editorial error-gap must stay 0 for these lessons).
+    func testBatch5TextActivitiesAuthorErrors() throws {
+        let pack = try spanishPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Every wave-E conversation lesson carries a non-empty objective (M2)
+    /// and closes with a text final-response step (M5 outcome coherence).
+    func testBatch5ConversationLessonsEndWithTextFinalResponse() throws {
+        let pack = try spanishPack()
+        for lessonId in Self.batch5Lessons.keys {
+            let lesson = try XCTUnwrap(pack.lessons.first { $0.id == lessonId }, "missing lesson \(lessonId)")
+            XCTAssertEqual(lesson.family, .conversation, "\(lessonId) must be a conversation lesson")
+            XCTAssertFalse(
+                lesson.objective.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                "\(lessonId) must have an objective")
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            var hasTextTerminal = false
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                if case .text = act { hasTextTerminal = true }
+            }
+            XCTAssertTrue(hasTextTerminal, "\(lessonId) must end with a text final-response step (M5)")
+        }
+    }
+
+    /// Plausible wrong answers in wave-E lessons hit their authored category
+    /// + explanation (text surfaces).
+    func testBatch5AuthoredErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try spanishPack()
+
+        // es-shopping-foundation
+        var result = try gradeText("es-shopping-foundation-think", in: pack, "¿Cuánto cuestan un café?")
+        XCTAssertEqual(result.category, "wrong number")
+        XCTAssertFalse(result.accepted)
+        result = try gradeText("es-shopping-foundation-vary", in: pack, "Es no caro.")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("es-shopping-foundation-ask", in: pack, "El cuenta, por favor.")
+        XCTAssertEqual(result.category, "wrong article")
+
+        // es-family-people-foundation
+        result = try gradeText("es-family-people-foundation-think", in: pack, "Tene un hermano.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-family-people-foundation-vary", in: pack, "Tengo dos hermana.")
+        XCTAssertEqual(result.category, "wrong number")
+        result = try gradeText("es-family-people-foundation-read", in: pack, "Sevilla.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-questions-foundation
+        result = try gradeText("es-questions-foundation-think", in: pack, "¿Qué comer?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-questions-foundation-write", in: pack, "¿Quien trabaja aquí?")
+        XCTAssertEqual(result.category, "accent/diacritic issue")
+        result = try gradeText("es-questions-foundation-read", in: pack, "A las ocho.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-requests-foundation
+        result = try gradeText("es-requests-foundation-think", in: pack, "¿Puede ayudarme?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-requests-foundation-write", in: pack, "Quería un café, por favor.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-requests-foundation-read", in: pack, "La cuenta.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-invitations-foundation
+        result = try gradeText("es-invitations-foundation-think", in: pack, "¿Quiere venir?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-invitations-foundation-write", in: pack, "Lo siento, no poder.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("es-invitations-foundation-read", in: pack, "No.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // es-a2-condicional
+        result = try gradeText("es-a2-condicional-think", in: pack, "me gustaría")
+        XCTAssertEqual(result.category, "extra word")
+        result = try gradeText("es-a2-condicional-write", in: pack, "Debes descansar más.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("es-a2-condicional-read", in: pack, "A comer sushi.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// The authored accepted answers for wave-E text surfaces stay accepted,
+    /// including the natural explicit-subject alternative.
+    func testBatch5AcceptsAuthoredAnswers() throws {
+        let pack = try spanishPack()
+
+        var result = try gradeText("es-shopping-foundation-think", in: pack, "¿Cuánto cuesta un café?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-shopping-foundation-vary", in: pack, "No es caro.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-shopping-foundation-ask", in: pack, "La cuenta, por favor.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-shopping-foundation-ask", in: pack, "La cuenta por favor.")
+        XCTAssertTrue(result.accepted, "comma-less polite form is authored")
+
+        result = try gradeText("es-family-people-foundation-think", in: pack, "Tengo un hermano.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-family-people-foundation-vary", in: pack, "Tengo dos hermanas.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-family-people-foundation-read", in: pack, "Madrid.")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-questions-foundation-think", in: pack, "¿Qué come?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-questions-foundation-think", in: pack, "¿Qué come él?")
+        XCTAssertTrue(result.accepted, "explicit-subject question is authored")
+        result = try gradeText("es-questions-foundation-write", in: pack, "¿Quién trabaja aquí?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-questions-foundation-read", in: pack, "En mi casa.")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-requests-foundation-think", in: pack, "¿Puedes ayudarme?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-requests-foundation-write", in: pack, "Querría un café, por favor.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-requests-foundation-read", in: pack, "Un café.")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-invitations-foundation-think", in: pack, "¿Quieres venir?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-invitations-foundation-write", in: pack, "Lo siento, no puedo.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-invitations-foundation-read", in: pack, "¡Claro que sí!")
+        XCTAssertTrue(result.accepted)
+
+        result = try gradeText("es-a2-condicional-think", in: pack, "gustaría")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-condicional-write", in: pack, "Deberías descansar más.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("es-a2-condicional-read", in: pack, "A Japón.")
         XCTAssertTrue(result.accepted)
     }
 

@@ -1089,4 +1089,334 @@ final class PackFrenchTests: XCTestCase {
             textSpec.answer.answers.contains { $0.hasSuffix("la.") },
             "the accentless la must not sit in the accepted list")
     }
+
+    // MARK: - Wave E (the seven French conversation lessons)
+
+    /// The seven conversation lessons of Wave E (fr-units 4–6), keyed by the
+    /// path activity ids each lesson references (graded steps only). These
+    /// cover polite requests, weather small talk, market prices, doctor and
+    /// pharmacy visits, invitations, and café ordering/paying.
+    private static let batch5Lessons: [String: [String]] = [
+        "fr-weather-foundation": [
+            "fr-weather-foundation-act-rb2", "fr-weather-foundation-meet",
+            "fr-weather-foundation-produce", "fr-weather-foundation-act-rb3",
+            "fr-weather-foundation-act-rb4", "fr-weather-foundation-meaning",
+            "fr-weather-foundation-act-rb5",
+        ],
+        "fr-market-foundation": [
+            "fr-market-foundation-act-rb2", "fr-market-foundation-meet",
+            "fr-market-foundation-produce", "fr-market-foundation-act-rb3",
+            "fr-market-foundation-act-rb4", "fr-market-foundation-meaning",
+            "fr-market-foundation-act-rb5",
+        ],
+        "fr-health-foundation": [
+            "fr-health-foundation-act-rb2", "fr-health-foundation-meet",
+            "fr-health-foundation-produce", "fr-health-foundation-act-rb3",
+            "fr-health-foundation-act-rb4", "fr-health-foundation-meaning",
+            "fr-health-foundation-act-rb5",
+        ],
+        "fr-pharmacy-foundation": [
+            "fr-pharmacy-foundation-act-rb2", "fr-pharmacy-foundation-meet",
+            "fr-pharmacy-foundation-produce", "fr-pharmacy-foundation-act-rb3",
+            "fr-pharmacy-foundation-act-rb4", "fr-pharmacy-foundation-meaning",
+            "fr-pharmacy-foundation-act-rb5",
+        ],
+        "fr-invitations-foundation": [
+            "fr-invitations-foundation-act-rb2", "fr-invitations-foundation-meet",
+            "fr-invitations-foundation-produce", "fr-invitations-foundation-act-rb3",
+            "fr-invitations-foundation-act-rb4", "fr-invitations-foundation-meaning",
+            "fr-invitations-foundation-act-rb5",
+        ],
+        "fr-requests-foundation": [
+            "fr-requests-foundation-act-rb2", "fr-requests-foundation-meet",
+            "fr-requests-foundation-produce", "fr-requests-foundation-act-rb3",
+            "fr-requests-foundation-act-rb4", "fr-requests-foundation-meaning",
+            "fr-requests-foundation-act-rb5",
+        ],
+        "fr-cafe-order-foundation": [
+            "fr-cafe-order-foundation-meet", "fr-cafe-order-foundation-meaning",
+            "fr-cafe-order-foundation-cloze", "fr-cafe-order-foundation-order",
+            "fr-cafe-order-foundation-transform", "fr-cafe-order-foundation-produce",
+            "fr-cafe-order-foundation-read", "fr-cafe-order-foundation-review",
+            "fr-cafe-order-foundation-listen-model", "fr-cafe-order-transfer",
+        ],
+    ]
+
+    /// Every graded step in the seven Wave E conversation lessons has a real
+    /// authored hint, not the runtime generic fallbacks.
+    func testBatch5GradedStepsHaveAuthoredHints() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                let base = try XCTUnwrap(act.base, "\(lessonId): \(activityId) has no graded base")
+                XCTAssertFalse(
+                    base.hints.allSatisfy { Self.genericHints.contains($0) },
+                    "\(lessonId): \(activityId) lacks an authored hint: \(base.hints)")
+            }
+        }
+    }
+
+    /// Every text activity and cloze blank in the Wave E conversation lessons
+    /// authors error-specific feedback.
+    func testBatch5TextActivitiesAuthorErrors() throws {
+        let pack = try frenchPack()
+        for (lessonId, activityIds) in Self.batch5Lessons {
+            for activityId in activityIds {
+                let act = try activity(activityId, in: pack)
+                switch act {
+                case .text(let spec):
+                    XCTAssertFalse(
+                        spec.answer.errors.isEmpty,
+                        "\(lessonId): \(activityId) must author error feedback")
+                case .cloze(let spec):
+                    for (blank, blankSpec) in spec.blanks {
+                        XCTAssertFalse(
+                            blankSpec.errors.isEmpty,
+                            "\(lessonId): \(activityId)#\(blank) must author error feedback")
+                    }
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    /// Plausible wrong answers in the Wave E conversations hit their authored
+    /// category + explanation and are never accepted.
+    func testBatch5ErrorsFireForPlausibleWrongAnswers() throws {
+        let pack = try frenchPack()
+
+        // fr-weather-foundation — faire vs être, target adjective slips.
+        var result = try gradeText("fr-weather-foundation-produce", in: pack, "Aujourd'hui, il est froid.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-weather-foundation-produce", in: pack, "Il fait chaud aujourd'hui.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-weather-foundation-meaning", in: pack, "It is cold.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-weather-foundation-meaning", in: pack, "There is sun.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-weather-foundation-act-rb5", in: pack, "Quel temps fait-il ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-market-foundation — singular verb with un kilo, item named.
+        result = try gradeText("fr-market-foundation-produce", in: pack, "Combien coûtent un kilo de pommes ?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-market-foundation-produce", in: pack, "Combien coûte le kilo de pommes ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-market-foundation-meaning", in: pack, "I have three euros.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-market-foundation-act-rb5", in: pack, "Combien coûtent un kilo de pain ?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-market-foundation-act-rb5", in: pack, "Ça coûte combien ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-health-foundation — avoir mal à construction, fever symptom.
+        result = try gradeText("fr-health-foundation-produce", in: pack, "Ma tête est mal.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-health-foundation-produce", in: pack, "J'ai mal la tête.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-health-foundation-meaning", in: pack, "I have a headache.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-health-foundation-meaning", in: pack, "I am a fever.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-health-foundation-act-rb5", in: pack, "J'ai mal à la tête.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-health-foundation-act-rb5", in: pack, "Ma tête est mal depuis hier.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-pharmacy-foundation — masculine médicament, je veux register.
+        result = try gradeText("fr-pharmacy-foundation-produce", in: pack, "Je voudrais une médicament.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-pharmacy-foundation-produce", in: pack, "Je veux un médicament.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-pharmacy-foundation-meaning", in: pack, "It costs fifty euros.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-pharmacy-foundation-act-rb5", in: pack, "Je veux un médicament, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-pharmacy-foundation-act-rb5", in: pack, "Je voudrais une médicament, s'il vous plaît.")
+        XCTAssertEqual(result.category, "wrong gender")
+
+        // fr-invitations-foundation — venir not aller, refusal register.
+        result = try gradeText("fr-invitations-foundation-produce", in: pack, "Tu veux aller dîner samedi ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-invitations-foundation-produce", in: pack, "Je veux venir dîner samedi ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-invitations-foundation-meaning", in: pack, "I am sorry, I do not want.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-invitations-foundation-act-rb5", in: pack, "Avec plaisir !")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-invitations-foundation-act-rb5", in: pack, "Désolé, je ne peux pas.")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // fr-requests-foundation — infinitive after peux, tu/je mix.
+        result = try gradeText("fr-requests-foundation-produce", in: pack, "Je peux prends un café.")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-requests-foundation-produce", in: pack, "Est-ce que je peux prendre le café ?")
+        XCTAssertEqual(result.category, "wrong article")
+        result = try gradeText("fr-requests-foundation-meaning", in: pack, "I can study at home.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-requests-foundation-act-rb5", in: pack, "Tu peux prendre un café, s'il vous plaît ?")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-requests-foundation-act-rb5", in: pack, "Je peux prends un café, s'il vous plaît ?")
+        XCTAssertEqual(result.category, "wrong conjugation")
+
+        // fr-cafe-order-foundation — re-authored from invitation to café theme:
+        // voudrais register, un café gender, false-friend addition, price word
+        // order, and the terminal price question.
+        result = try gradeText("fr-cafe-order-foundation-meaning", in: pack, "The addition, please.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-cafe-order-foundation-cloze", blank: "b1", in: pack, "addition")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeBlank("fr-cafe-order-foundation-cloze", blank: "b1", in: pack, "thé")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-order-foundation-transform", in: pack, "Je veux un café, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-order-foundation-transform", in: pack, "Je voudrais une café, s'il vous plaît.")
+        XCTAssertEqual(result.category, "wrong gender")
+        result = try gradeText("fr-cafe-order-foundation-produce", in: pack, "Je veux un café, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-order-foundation-produce", in: pack, "Je voudrais un café.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-cafe-order-foundation-read", in: pack, "deux")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-order-foundation-read", in: pack, "three")
+        XCTAssertEqual(result.category, "incorrect answer")
+        result = try gradeText("fr-cafe-order-foundation-review", in: pack, "Appelez une ambulance !")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-cafe-order-foundation-review", in: pack, "Au secours ! Appeler une ambulance !")
+        XCTAssertEqual(result.category, "wrong conjugation")
+        result = try gradeText("fr-cafe-order-foundation-listen-model", in: pack, "Je voudrais un café.")
+        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-cafe-order-transfer", in: pack, "Combien coûte ça ?")
+        XCTAssertEqual(result.category, "word-order problem")
+        result = try gradeText("fr-cafe-order-transfer", in: pack, "Je voudrais un café, s'il vous plaît.")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
+
+    /// Wave E alignment fixes (H1/M4): natural renderings and natural spoken
+    /// French variants accepted where the prompt legitimately allows them.
+    func testBatch5AcceptsNaturalAlternatives() throws {
+        let pack = try frenchPack()
+
+        // English meanings — contracted natural forms.
+        var result = try gradeText("fr-weather-foundation-meaning", in: pack, "It's sunny.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-market-foundation-meaning", in: pack, "That's three euros.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-market-foundation-meaning", in: pack, "It makes three euros.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-health-foundation-meaning", in: pack, "I've got a fever.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-pharmacy-foundation-meaning", in: pack, "That costs five euros.")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-invitations-foundation-meaning", in: pack, "Sorry, I can't.")
+        XCTAssertTrue(result.accepted)
+
+        // The café bill: US "check" is as natural as UK "bill".
+        result = try gradeText("fr-cafe-order-foundation-meaning", in: pack, "The check, please.")
+        XCTAssertTrue(result.accepted)
+
+        // Natural spoken price questions for the café terminal.
+        result = try gradeText("fr-cafe-order-transfer", in: pack, "Ça coûte combien ?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-cafe-order-transfer", in: pack, "C'est combien ?")
+        XCTAssertTrue(result.accepted)
+
+        // Weather opener short form and the read answer with the unit.
+        result = try gradeText("fr-weather-foundation-act-rb5", in: pack, "Il fait beau, non ?")
+        XCTAssertTrue(result.accepted)
+        result = try gradeText("fr-cafe-order-foundation-read", in: pack, "trois euros")
+        XCTAssertTrue(result.accepted)
+
+        // Pharmacy transfer: with or without s'il vous plaît.
+        result = try gradeText("fr-pharmacy-foundation-act-rb5", in: pack, "Je voudrais un médicament.")
+        XCTAssertTrue(result.accepted)
+    }
+
+    /// Wave E prompt/answer alignment (H1): the transfer prompts previously
+    /// invited open speech against a fixed list; each now dictates the exact
+    /// taught line, and the old open answers are rejectable authored errors.
+    func testBatch5PromptNarrowingHolds() throws {
+        let pack = try frenchPack()
+
+        // Weather transfer: the model opener is dictated; the generic
+        // "Quel temps fait-il ?" is a rejectable authored error.
+        var base = try XCTUnwrap(pack.activity(id: "fr-weather-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("Write in French"),
+                      "weather transfer must dictate the model opener")
+
+        // Market transfer: names the kilo of bread.
+        base = try XCTUnwrap(pack.activity(id: "fr-market-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("un kilo de pain"),
+                      "market transfer must name the item and quantity")
+
+        // Health transfer: dictates the depuis hier line, so the bare
+        // symptom sentence is an authored missing-word error.
+        base = try XCTUnwrap(pack.activity(id: "fr-health-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("since yesterday"),
+                      "health transfer must dictate the depuis hier line")
+
+        // Pharmacy transfer: polite register dictated.
+        base = try XCTUnwrap(pack.activity(id: "fr-pharmacy-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("I would like some medicine"),
+                      "pharmacy transfer must dictate the polite request")
+
+        // Invitations transfer: the warm refusal reply is dictated, so the
+        // acceptance phrase is a rejectable authored error.
+        base = try XCTUnwrap(pack.activity(id: "fr-invitations-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("warm reply"),
+                      "invitations transfer must dictate the warm reply")
+        let inviteResult = try gradeText("fr-invitations-foundation-act-rb5", in: pack, "Avec plaisir !")
+        XCTAssertFalse(inviteResult.accepted, "acceptance phrase must not auto-grade on a refusal step")
+
+        // Requests transfer: the polite café request with s'il vous plaît is
+        // dictated, so the uninverted "Je peux prendre un café." is an
+        // authored missing-word error, not an accepted answer.
+        base = try XCTUnwrap(pack.activity(id: "fr-requests-foundation-act-rb5")?.base)
+        XCTAssertTrue(base.prompt.contains("please"),
+                      "requests transfer must dictate the polite register")
+        let requestResult = try gradeText("fr-requests-foundation-act-rb5", in: pack, "Je peux prendre un café.")
+        XCTAssertFalse(requestResult.accepted, "s'il vous plaît must stay required")
+
+        // Café-order re-authoring: no invitation content may survive in the
+        // café lesson's answers, prompts, or read passage.
+        let oldInvite = try gradeText("fr-cafe-order-foundation-produce", in: pack, "Tu veux venir dîner samedi ?")
+        XCTAssertFalse(oldInvite.accepted, "invitation line must not be accepted in the café lesson")
+        let oldTransform = try activity("fr-cafe-order-foundation-transform", in: pack)
+        guard case .text(let transformSpec) = oldTransform else {
+            return XCTFail("fr-cafe-order-foundation-transform must be a text activity")
+        }
+        XCTAssertFalse(
+            transformSpec.answer.answers.contains { $0.contains("venir café") },
+            "the broken 'venir café' answer must be gone")
+        let readSpec = try activity("fr-cafe-order-foundation-read", in: pack)
+        guard case .text(let readTextSpec) = readSpec else {
+            return XCTFail("fr-cafe-order-foundation-read must be a text activity")
+        }
+        XCTAssertFalse(
+            readTextSpec.answer.answers.contains { $0.contains("aujourd") },
+            "the invitation-era 'aujourd'hui' answer must be gone")
+        XCTAssertTrue(
+            readTextSpec.answer.answers.contains { $0 == "trois" },
+            "the café read must answer the price with the French number")
+    }
+
+    /// Every Wave E conversation ends on a text final-response step (M5-style
+    /// outcome coherence, audit final-response shape).
+    func testBatch5ConversationsEndWithTextFinalResponse() throws {
+        let pack = try frenchPack()
+        for lessonId in Self.batch5Lessons.keys.sorted() {
+            let lesson = try XCTUnwrap(pack.lesson(id: lessonId), lessonId)
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertFalse(terminals.isEmpty, "\(lessonId) must have a terminal step")
+            for step in terminals {
+                let act = try activity(step.activityId, in: pack)
+                guard case .text = act else {
+                    XCTFail("\(lessonId): terminal step \(step.id) must be a text activity")
+                    continue
+                }
+            }
+        }
+    }
 }

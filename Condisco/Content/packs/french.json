@@ -2448,19 +2448,19 @@
       "pairs": [
         {
           "target": "Je voudrais un café, s’il vous plaît.",
-          "meaning": "Would you like to dinner Saturday?"
+          "meaning": "I would like a coffee, please."
         },
         {
-          "target": "Oui, merci, avec plaisir.",
-          "meaning": "Yes, thanks, gladly."
+          "target": "Combien ça coûte ?",
+          "meaning": "How much does it cost?"
         }
       ]
     },
     {
       "kind": "text",
       "id": "fr-cafe-order-foundation-read-passage",
-      "body": "Anna invite Marco : Je voudrais un café, s’il vous plaît. Oui, merci, avec plaisir, dit Marco.",
-      "translation": "Anna invites Marco: Would you like to dinner Saturday? “Yes, thanks, gladly,” says Marco."
+      "body": "Au café, Anna commande : « Je voudrais un café, s'il vous plaît. » Le serveur répond : « Voilà. Ça fait trois euros. » Anna paie : « Merci, au revoir ! »",
+      "translation": "At the café, Anna orders: “I would like a coffee, please.” The waiter answers: “Here you go. That's three euros.” Anna pays: “Thanks, goodbye!”"
     },
     {
       "kind": "audio",
@@ -7069,7 +7069,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “I can”?",
-      "hints": [],
+      "hints": [
+        "je peux is 'I can' — the je-form of pouvoir; tu peux is the you-form."
+      ],
       "feedback": "Pouvoir means can or be able to: je peux, tu peux. After it, use the infinitive: je peux prendre. Do not conjugate both verbs. Est-ce que makes the request a question. S’il vous plaît adds politeness.",
       "evidenceKey": "fr-requests-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7117,7 +7119,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Tu peux étudier à la maison.",
-      "hints": [],
+      "hints": [
+        "Tu peux = you can; étudier = to study; à la maison = at home."
+      ],
       "feedback": "Pouvoir means can or be able to: je peux, tu peux. After it, use the infinitive: je peux prendre. Do not conjugate both verbs. Est-ce que makes the request a question. S’il vous plaît adds politeness.",
       "evidenceKey": "fr-requests-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7131,7 +7135,23 @@
           "You can study at home."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I can study at home.",
+            "category": "incorrect answer",
+            "explanation": "The subject is tu (you): You can study at home."
+          },
+          {
+            "answer": "You can work at home.",
+            "category": "incorrect answer",
+            "explanation": "Étudier is to study, not to work (travailler)."
+          },
+          {
+            "answer": "You can study at the house.",
+            "category": "incorrect answer",
+            "explanation": "À la maison means at home, not 'at the house'."
+          }
+        ]
       }
     },
     {
@@ -7150,7 +7170,9 @@
         "grammar"
       ],
       "prompt": "Write in French: Can I have a coffee?",
-      "hints": [],
+      "hints": [
+        "Two-beat request: Est-ce que + je peux + prendre un café — infinitive after peux."
+      ],
       "feedback": "Pouvoir means can or be able to: je peux, tu peux. After it, use the infinitive: je peux prendre. Do not conjugate both verbs. Est-ce que makes the request a question. S’il vous plaît adds politeness.",
       "evidenceKey": "fr-requests-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7167,8 +7189,18 @@
         "errors": [
           {
             "answer": "Je peux prends un café.",
-            "category": "incorrect answer",
+            "category": "wrong conjugation",
             "explanation": "After peux, use the infinitive prendre."
+          },
+          {
+            "answer": "Est-ce que je peux prendre le café ?",
+            "category": "wrong article",
+            "explanation": "The dictation says un café (a coffee), not le café."
+          },
+          {
+            "answer": "Est-ce que je peux prendre un thé ?",
+            "category": "incorrect answer",
+            "explanation": "The dictation asks for a coffee: un café."
           }
         ]
       }
@@ -7767,7 +7799,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “cold”?",
-      "hints": [],
+      "hints": [
+        "froid is the French for cold; chaud is its opposite (hot)."
+      ],
       "feedback": "Describe the weather with il fait plus an adjective: il fait chaud for hot, il fait froid for cold. Say il y a du soleil for sunny and il pleut for it rains. Two seasons to know now are l’été (summer, masculine) and l’hiver (winter, masculine).",
       "evidenceKey": "fr-weather-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7815,7 +7849,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Il y a du soleil.",
-      "hints": [],
+      "hints": [
+        "Il y a du soleil = there is sun → the natural English is 'it is sunny'."
+      ],
       "feedback": "Describe the weather with il fait plus an adjective: il fait chaud for hot, il fait froid for cold. Say il y a du soleil for sunny and il pleut for it rains. Two seasons to know now are l’été (summer, masculine) and l’hiver (winter, masculine).",
       "evidenceKey": "fr-weather-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7826,10 +7862,27 @@
       "id": "fr-weather-foundation-meaning",
       "answer": {
         "answers": [
-          "It is sunny."
+          "It is sunny.",
+          "It's sunny."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "It is cold.",
+            "category": "incorrect answer",
+            "explanation": "The sentence is about sun: il y a du soleil = it is sunny."
+          },
+          {
+            "answer": "It is raining.",
+            "category": "incorrect answer",
+            "explanation": "Rain would be il pleut. This sentence says there is sun."
+          },
+          {
+            "answer": "There is sun.",
+            "category": "incorrect answer",
+            "explanation": "Translate the meaning, not the words: il y a du soleil = it is sunny."
+          }
+        ]
       }
     },
     {
@@ -7848,7 +7901,9 @@
         "grammar"
       ],
       "prompt": "Write in French: It is cold today.",
-      "hints": [],
+      "hints": [
+        "Weather uses il fait + adjective: il fait froid. Put aujourd'hui at the start or the end of the sentence."
+      ],
       "feedback": "Describe the weather with il fait plus an adjective: il fait chaud for hot, il fait froid for cold. Say il y a du soleil for sunny and il pleut for it rains. Two seasons to know now are l’été (summer, masculine) and l’hiver (winter, masculine).",
       "evidenceKey": "fr-weather-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7866,8 +7921,18 @@
         "errors": [
           {
             "answer": "Aujourd’hui, il est froid.",
-            "category": "incorrect answer",
+            "category": "wrong conjugation",
             "explanation": "Weather uses faire: Aujourd’hui, il fait froid."
+          },
+          {
+            "answer": "Il fait chaud aujourd’hui.",
+            "category": "incorrect answer",
+            "explanation": "The dictation says cold (froid), not hot (chaud)."
+          },
+          {
+            "answer": "Aujourd’hui, il pleut.",
+            "category": "incorrect answer",
+            "explanation": "The dictation says it is cold: il fait froid — not rain."
           }
         ]
       }
@@ -7888,7 +7953,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “kilo”?",
-      "hints": [],
+      "hints": [
+        "kilo is the same word in French — the unit you buy the apples in."
+      ],
       "feedback": "Ask the price with Combien coûte ? for one thing and Combien coûtent ? for several: Combien coûte un kilo de pommes ? Answer with the price: Ça fait trois euros. Un kilo is one kilo and le marché is the market.",
       "evidenceKey": "fr-market-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -7936,7 +8003,9 @@
         "grammar"
       ],
       "prompt": "Write in French: How much is a kilo of apples?",
-      "hints": [],
+      "hints": [
+        "Ask with Combien coûte + un kilo de pommes ? — singular verb because un kilo is one thing."
+      ],
       "feedback": "Ask the price with Combien coûte ? for one thing and Combien coûtent ? for several: Combien coûte un kilo de pommes ? Answer with the price: Ça fait trois euros. Un kilo is one kilo and le marché is the market.",
       "evidenceKey": "fr-market-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -7953,8 +8022,18 @@
         "errors": [
           {
             "answer": "Combien coûtent un kilo de pommes ?",
-            "category": "incorrect answer",
+            "category": "wrong conjugation",
             "explanation": "Un kilo is singular: Combien coûte un kilo de pommes ?"
+          },
+          {
+            "answer": "Combien coûte le kilo de pommes ?",
+            "category": "incorrect answer",
+            "explanation": "The dictation says un kilo (a kilo), not le kilo (the kilo)."
+          },
+          {
+            "answer": "Combien coûte des pommes ?",
+            "category": "missing word",
+            "explanation": "Keep the kilo unit: Combien coûte un kilo de pommes ?"
           }
         ]
       }
@@ -7975,7 +8054,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Ça fait trois euros.",
-      "hints": [],
+      "hints": [
+        "Ça fait = that comes to / that makes; trois euros = three euros."
+      ],
       "feedback": "Ask the price with Combien coûte ? for one thing and Combien coûtent ? for several: Combien coûte un kilo de pommes ? Answer with the price: Ça fait trois euros. Un kilo is one kilo and le marché is the market.",
       "evidenceKey": "fr-market-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -7986,10 +8067,31 @@
       "id": "fr-market-foundation-meaning",
       "answer": {
         "answers": [
-          "That is three euros."
+          "That is three euros.",
+          "That's three euros.",
+          "It is three euros.",
+          "It's three euros.",
+          "That makes three euros.",
+          "It makes three euros."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I have three euros.",
+            "category": "incorrect answer",
+            "explanation": "Ça fait is about the price (that costs/makes), not what you have."
+          },
+          {
+            "answer": "Three apples.",
+            "category": "incorrect answer",
+            "explanation": "The sentence is about the price in euros, not the fruit."
+          },
+          {
+            "answer": "Two euros.",
+            "category": "incorrect answer",
+            "explanation": "The price stated is trois (three) euros."
+          }
+        ]
       }
     },
     {
@@ -8008,7 +8110,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “head”?",
-      "hints": [],
+      "hints": [
+        "tête is the head — the part that hurts in this visit."
+      ],
       "feedback": "Say pain with J’ai mal plus the body part: J’ai mal à la tête. Headache is le mal de tête and fever is la fièvre. Answer Où avez-vous mal? (Where does it hurt?) with J’ai mal plus the spot.",
       "evidenceKey": "fr-health-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8056,7 +8160,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: J’ai de la fièvre.",
-      "hints": [],
+      "hints": [
+        "J'ai de la fièvre = I have a fever — avoir + de la + fièvre."
+      ],
       "feedback": "Say pain with J’ai mal plus the body part: J’ai mal à la tête. Headache is le mal de tête and fever is la fièvre. Answer Où avez-vous mal? (Where does it hurt?) with J’ai mal plus the spot.",
       "evidenceKey": "fr-health-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8067,10 +8173,27 @@
       "id": "fr-health-foundation-meaning",
       "answer": {
         "answers": [
-          "I have a fever."
+          "I have a fever.",
+          "I've got a fever."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I have a headache.",
+            "category": "incorrect answer",
+            "explanation": "Fièvre is fever; a headache is mal à la tête."
+          },
+          {
+            "answer": "I am a fever.",
+            "category": "incorrect answer",
+            "explanation": "You have a fever with avoir: J’ai de la fièvre."
+          },
+          {
+            "answer": "He has a fever.",
+            "category": "incorrect answer",
+            "explanation": "The sentence is j'ai (I have), not il a (he has)."
+          }
+        ]
       }
     },
     {
@@ -8089,7 +8212,9 @@
         "grammar"
       ],
       "prompt": "Write in French: My head hurts.",
-      "hints": [],
+      "hints": [
+        "Pain is avoir mal à + the body part: J'ai mal à la tête."
+      ],
       "feedback": "Say pain with J’ai mal plus the body part: J’ai mal à la tête. Headache is le mal de tête and fever is la fièvre. Answer Où avez-vous mal? (Where does it hurt?) with J’ai mal plus the spot.",
       "evidenceKey": "fr-health-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8108,6 +8233,16 @@
             "answer": "Ma tête est mal.",
             "category": "incorrect answer",
             "explanation": "Pain uses avoir mal: J’ai mal à la tête."
+          },
+          {
+            "answer": "J'ai mal la tête.",
+            "category": "missing word",
+            "explanation": "The spot needs the preposition à: J’ai mal à la tête."
+          },
+          {
+            "answer": "J'ai mal à le tête.",
+            "category": "wrong article",
+            "explanation": "Tête is feminine: à la tête."
           }
         ]
       }
@@ -8128,7 +8263,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “medicine”?",
-      "hints": [],
+      "hints": [
+        "médicament is the medicine; comprimé is a pill and sirop is syrup."
+      ],
       "feedback": "Ask for medicine with Je voudrais…: Je voudrais un médicament. Un comprimé is a pill and le sirop is syrup. Ask the price with C’est combien ?: Ça coûte cinq euros.",
       "evidenceKey": "fr-pharmacy-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8176,7 +8313,9 @@
         "grammar"
       ],
       "prompt": "Write in French: I would like some medicine.",
-      "hints": [],
+      "hints": [
+        "Use the polite conditional voudrais: Je voudrais + un médicament."
+      ],
       "feedback": "Ask for medicine with Je voudrais…: Je voudrais un médicament. Un comprimé is a pill and le sirop is syrup. Ask the price with C’est combien ?: Ça coûte cinq euros.",
       "evidenceKey": "fr-pharmacy-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8193,8 +8332,18 @@
         "errors": [
           {
             "answer": "Je voudrais une médicament.",
-            "category": "incorrect answer",
+            "category": "wrong gender",
             "explanation": "Médicament is masculine: un médicament."
+          },
+          {
+            "answer": "Je veux un médicament.",
+            "category": "incorrect answer",
+            "explanation": "The polite request uses je voudrais, not je veux."
+          },
+          {
+            "answer": "Je voudrais médicament.",
+            "category": "missing word",
+            "explanation": "Keep the article: Je voudrais un médicament."
           }
         ]
       }
@@ -8215,7 +8364,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Ça coûte cinq euros.",
-      "hints": [],
+      "hints": [
+        "Ça coûte = it costs; cinq euros = five euros."
+      ],
       "feedback": "Ask for medicine with Je voudrais…: Je voudrais un médicament. Un comprimé is a pill and le sirop is syrup. Ask the price with C’est combien ?: Ça coûte cinq euros.",
       "evidenceKey": "fr-pharmacy-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8226,10 +8377,27 @@
       "id": "fr-pharmacy-foundation-meaning",
       "answer": {
         "answers": [
-          "It costs five euros."
+          "It costs five euros.",
+          "That costs five euros."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "It costs fifty euros.",
+            "category": "incorrect answer",
+            "explanation": "Cinq is five; fifty would be cinquante."
+          },
+          {
+            "answer": "I cost five euros.",
+            "category": "incorrect answer",
+            "explanation": "The subject is ça (it): it costs five euros."
+          },
+          {
+            "answer": "It is five euros.",
+            "category": "incorrect answer",
+            "explanation": "Ça coûte says costs, not is: It costs five euros."
+          }
+        ]
       }
     },
     {
@@ -8461,7 +8629,9 @@
         "vocabulary"
       ],
       "prompt": "Which French word means “dinner”?",
-      "hints": [],
+      "hints": [
+        "dîner is the dinner — the meal you're inviting to."
+      ],
       "feedback": "Invite with Tu veux venir… ?: Tu veux venir dîner ? Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
       "evidenceKey": "fr-invitations-foundation-meet",
       "assistanceAffectsEvidence": [
@@ -8509,7 +8679,9 @@
         "vocabulary"
       ],
       "prompt": "Give the English meaning: Désolé, je ne peux pas.",
-      "hints": [],
+      "hints": [
+        "Désolé = sorry; je ne peux pas = I cannot (peux, not veux)."
+      ],
       "feedback": "Invite with Tu veux venir… ?: Tu veux venir dîner ? Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
       "evidenceKey": "fr-invitations-foundation-meaning",
       "assistanceAffectsEvidence": [
@@ -8520,10 +8692,28 @@
       "id": "fr-invitations-foundation-meaning",
       "answer": {
         "answers": [
-          "I am sorry, I cannot."
+          "I am sorry, I cannot.",
+          "I'm sorry, I can't.",
+          "Sorry, I can't."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "I am sorry, I do not want.",
+            "category": "incorrect answer",
+            "explanation": "The refusal is I cannot (je ne peux pas), not I do not want."
+          },
+          {
+            "answer": "You are sorry, you cannot.",
+            "category": "incorrect answer",
+            "explanation": "The sentence is je (I): Désolé, je ne peux pas."
+          },
+          {
+            "answer": "Excuse me, I cannot.",
+            "category": "incorrect answer",
+            "explanation": "Désolé is sorry/apology, not excuse me (excusez-moi)."
+          }
+        ]
       }
     },
     {
@@ -8542,7 +8732,9 @@
         "grammar"
       ],
       "prompt": "Write in French: Do you want to come to dinner Saturday?",
-      "hints": [],
+      "hints": [
+        "Tu veux venir dîner samedi ? — tu form, venir infinitive, day at the end."
+      ],
       "feedback": "Invite with Tu veux venir… ?: Tu veux venir dîner ? Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
       "evidenceKey": "fr-invitations-foundation-produce",
       "assistanceAffectsEvidence": [
@@ -8561,6 +8753,16 @@
             "answer": "Tu veux aller dîner samedi ?",
             "category": "incorrect answer",
             "explanation": "Aller is to go; invite with venir: Tu veux venir dîner samedi ?"
+          },
+          {
+            "answer": "Tu veux venir dîner le samedi ?",
+            "category": "incorrect answer",
+            "explanation": "Le samedi means 'on Saturdays'; the dictation is simply samedi."
+          },
+          {
+            "answer": "Je veux venir dîner samedi ?",
+            "category": "incorrect answer",
+            "explanation": "You are inviting: the question is with tu — Tu veux venir… ?"
           }
         ]
       }
@@ -8596,9 +8798,11 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "Which French word means “dinner”?",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Which French word means “coffee”?",
+      "hints": [
+        "Café is the coffee — the drink of the order."
+      ],
+      "feedback": "Café = coffee. The others are café words too: addition is the bill and prix is the price.",
       "evidenceKey": "fr-cafe-order-foundation-meet",
       "assistanceAffectsEvidence": [
         "translation",
@@ -8644,9 +8848,11 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "Give the English meaning: Désolé, je ne peux pas.",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Give the English meaning: L'addition, s'il vous plaît.",
+      "hints": [
+        "addition at a café = the bill — a false friend, not 'addition'."
+      ],
+      "feedback": "L'addition = the bill. You ask for it with s'il vous plaît.",
       "evidenceKey": "fr-cafe-order-foundation-meaning",
       "assistanceAffectsEvidence": [
         "translation",
@@ -8656,10 +8862,27 @@
       "id": "fr-cafe-order-foundation-meaning",
       "answer": {
         "answers": [
-          "How much does it cost?"
+          "The bill, please.",
+          "The check, please."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "The addition, please.",
+            "category": "incorrect answer",
+            "explanation": "At a café, l'addition is the bill — a false friend."
+          },
+          {
+            "answer": "The receipt, please.",
+            "category": "incorrect answer",
+            "explanation": "L'addition is the bill; the receipt would be le reçu."
+          },
+          {
+            "answer": "The table, please.",
+            "category": "incorrect answer",
+            "explanation": "Table is the table; l'addition is the bill."
+          }
+        ]
       }
     },
     {
@@ -8677,9 +8900,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Complete the invitation: Tu veux ___ café aujourd’hui ?",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Complete the polite order: Je voudrais un ___ , s'il vous plaît. (coffee)",
+      "hints": [
+        "The drink of the polite order: un + café."
+      ],
+      "feedback": "Je voudrais un café, s'il vous plaît. — la commande polie.",
       "evidenceKey": "fr-cafe-order-foundation-cloze",
       "assistanceAffectsEvidence": [
         "hint",
@@ -8690,7 +8915,7 @@
       "segments": [
         {
           "kind": "text",
-          "text": "Complete the invitation: Tu veux "
+          "text": "Complete the polite order: Je voudrais un "
         },
         {
           "kind": "blank",
@@ -8699,16 +8924,32 @@
         },
         {
           "kind": "text",
-          "text": " café aujourd’hui ?"
+          "text": " , s'il vous plaît. (coffee)"
         }
       ],
       "blanks": {
         "b1": {
           "answers": [
-            "venir"
+            "café"
           ],
           "allowTypo": false,
-          "errors": []
+          "errors": [
+            {
+              "answer": "addition",
+              "category": "incorrect answer",
+              "explanation": "That's the bill — the drink in the order is café."
+            },
+            {
+              "answer": "thé",
+              "category": "incorrect answer",
+              "explanation": "The dictation says coffee: café, not tea."
+            },
+            {
+              "answer": "prix",
+              "category": "incorrect answer",
+              "explanation": "Prix is the price; the item ordered is café."
+            }
+          ]
         }
       }
     },
@@ -8727,9 +8968,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Arrange the words to say: Would you like to dinner Saturday?",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Arrange the words to say: I would like a coffee, please.",
+      "hints": [
+        "The polite order starts with Je voudrais un café, then s'il vous plaît."
+      ],
+      "feedback": "Je voudrais un café, s'il vous plaît. — la commande complète.",
       "evidenceKey": "fr-cafe-order-foundation-order",
       "assistanceAffectsEvidence": [
         "hint",
@@ -8740,32 +8983,42 @@
       "tokens": [
         {
           "id": "t1",
-          "text": "aujourd’hui"
+          "text": "Je"
         },
         {
           "id": "t2",
-          "text": "café"
+          "text": "voudrais"
         },
         {
           "id": "t3",
-          "text": "venir"
+          "text": "un"
         },
         {
           "id": "t4",
-          "text": "veux"
+          "text": "café"
         },
         {
           "id": "t5",
-          "text": "Tu"
+          "text": "s'il"
+        },
+        {
+          "id": "t6",
+          "text": "vous"
+        },
+        {
+          "id": "t7",
+          "text": "plaît"
         }
       ],
       "acceptedOrders": [
         [
-          "t5",
-          "t4",
-          "t3",
+          "t1",
           "t2",
-          "t1"
+          "t3",
+          "t4",
+          "t5",
+          "t6",
+          "t7"
         ]
       ]
     },
@@ -8784,9 +9037,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Turn the invitation round so that it is you who wants to come: Je voudrais un café, s’il vous plaît.",
-      "hints": [],
-      "feedback": "Je veux and tu veux are the same form of vouloir, so only the subject changes: Je veux venir café aujourd’hui.",
+      "prompt": "Make the direct order polite: Je veux un café.",
+      "hints": [
+        "Swap veux for the polite voudrais and add s'il vous plaît."
+      ],
+      "feedback": "Je voudrais un café, s'il vous plaît. — voudrais est le cousin poli de veux.",
       "evidenceKey": "fr-cafe-order-foundation-transform",
       "assistanceAffectsEvidence": [
         "hint",
@@ -8796,10 +9051,26 @@
       "id": "fr-cafe-order-foundation-transform",
       "answer": {
         "answers": [
-          "Je veux venir café aujourd’hui."
+          "Je voudrais un café, s'il vous plaît."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je veux un café, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "Keep the polite form: voudrais, not veux."
+          },
+          {
+            "answer": "Je veux un café.",
+            "category": "incorrect answer",
+            "explanation": "Polite French softens it: Je voudrais un café, s'il vous plaît."
+          },
+          {
+            "answer": "Je voudrais une café, s'il vous plaît.",
+            "category": "wrong gender",
+            "explanation": "Café is masculine: un café."
+          }
+        ]
       }
     },
     {
@@ -8817,9 +9088,11 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Write in French: Would you like to dinner Saturday?",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Write in French: I would like a coffee, please.",
+      "hints": [
+        "The model order: Je voudrais un café, s'il vous plaît."
+      ],
+      "feedback": "Je voudrais un café, s'il vous plaît. — la commande polie en entier.",
       "evidenceKey": "fr-cafe-order-foundation-produce",
       "assistanceAffectsEvidence": [
         "hint",
@@ -8829,14 +9102,24 @@
       "id": "fr-cafe-order-foundation-produce",
       "answer": {
         "answers": [
-          "Je voudrais un café, s’il vous plaît."
+          "Je voudrais un café, s'il vous plaît."
         ],
         "allowTypo": false,
         "errors": [
           {
-            "answer": "Tu veux aller café aujourd’hui ?",
+            "answer": "Je veux un café, s'il vous plaît.",
             "category": "incorrect answer",
-            "explanation": "Aller is to go; invite with venir: Je voudrais un café, s’il vous plaît."
+            "explanation": "The polite order uses voudrais: Je voudrais un café, s'il vous plaît."
+          },
+          {
+            "answer": "Je voudrais une café, s'il vous plaît.",
+            "category": "wrong gender",
+            "explanation": "Café is masculine: un café."
+          },
+          {
+            "answer": "Je voudrais un café.",
+            "category": "missing word",
+            "explanation": "The dictated order ends with s'il vous plaît."
           }
         ]
       }
@@ -8856,9 +9139,11 @@
         "reading",
         "vocabulary"
       ],
-      "prompt": "When is dinner? Answer with the French day. (Reading 24)",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "How much does the coffee cost? Answer with the French number. (Reading 24)",
+      "hints": [
+        "The waiter names the price: trois euros. Answer with the French number."
+      ],
+      "feedback": "Le passage dit « Ça fait trois euros » — le café coûte trois euros.",
       "evidenceKey": "fr-cafe-order-foundation-read",
       "assistanceAffectsEvidence": [
         "translation",
@@ -8869,10 +9154,27 @@
       "stimulusId": "fr-cafe-order-foundation-read-passage",
       "answer": {
         "answers": [
-          "aujourd’hui"
+          "trois",
+          "trois euros"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "deux",
+            "category": "incorrect answer",
+            "explanation": "The waiter says trois euros — three, not two."
+          },
+          {
+            "answer": "cinq",
+            "category": "incorrect answer",
+            "explanation": "The price in the passage is trois euros."
+          },
+          {
+            "answer": "three",
+            "category": "incorrect answer",
+            "explanation": "Answer with the French number: trois."
+          }
+        ]
       }
     },
     {
@@ -8891,7 +9193,9 @@
         "grammar"
       ],
       "prompt": "Recall from Urgences: Help! Call an ambulance!",
-      "hints": [],
+      "hints": [
+        "The two emergency phrases: Au secours ! (help!), then the polite command Appelez une ambulance !"
+      ],
       "feedback": "Call for help with Au secours ! Ask for an ambulance with Appelez une ambulance ! The emergency number is le cent-douze (112). Say C’est urgent when it is urgent.",
       "evidenceKey": "fr-cafe-order-foundation-review",
       "assistanceAffectsEvidence": [
@@ -8910,6 +9214,16 @@
             "answer": "Au secours ! J’appelle une ambulance !",
             "category": "incorrect answer",
             "explanation": "Do not announce yourself; command politely: Appelez une ambulance !"
+          },
+          {
+            "answer": "Au secours ! Appeler une ambulance !",
+            "category": "wrong conjugation",
+            "explanation": "The command is the vous-form Appelez, not the infinitive."
+          },
+          {
+            "answer": "Appelez une ambulance !",
+            "category": "missing word",
+            "explanation": "The taught cry opens with Au secours !"
           }
         ]
       }
@@ -8928,9 +9242,11 @@
       "skills": [
         "listening"
       ],
-      "prompt": "Listen and write the model: inviting and replying.",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "prompt": "Listen and write the model: ordering a coffee.",
+      "hints": [
+        "The model order heard: Je voudrais un café, s'il vous plaît."
+      ],
+      "feedback": "Je voudrais un café, s'il vous plaît. — la commande, exactement comme dans l'audio.",
       "evidenceKey": "fr-cafe-order-foundation-listen-model",
       "assistanceAffectsEvidence": [
         "transcript",
@@ -8941,10 +9257,26 @@
       "stimulusId": "fr-cafe-order-foundation-listen-model-audio",
       "answer": {
         "answers": [
-          "Je voudrais un café, s’il vous plaît."
+          "Je voudrais un café, s'il vous plaît."
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je voudrais un café.",
+            "category": "missing word",
+            "explanation": "The model order ends with s'il vous plaît."
+          },
+          {
+            "answer": "Je veux un café, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "The polite order uses voudrais."
+          },
+          {
+            "answer": "Je voudrais une café, s'il vous plaît.",
+            "category": "wrong gender",
+            "explanation": "Café is masculine: un café."
+          }
+        ]
       }
     },
     {
@@ -8962,8 +9294,10 @@
         "writing"
       ],
       "prompt": "Transfer: You have finished your coffee. Ask politely how much it costs.",
-      "hints": [],
-      "feedback": "Invite with Tu veux venir… ?: Je voudrais un café, s’il vous plaît. Accept with Oui, merci, avec plaisir. Decline politely with Désolé, je ne peux pas.",
+      "hints": [
+        "The polite price question: Combien ça coûte ? — or start with the thing: Ça coûte combien ?"
+      ],
+      "feedback": "Combien ça coûte ? — poli, court, et exactement ce qu'un client demande.",
       "evidenceKey": "fr-cafe-order-transfer",
       "assistanceAffectsEvidence": [
         "hint",
@@ -8973,10 +9307,28 @@
       "id": "fr-cafe-order-transfer",
       "answer": {
         "answers": [
-          "Combien ça coûte ?"
+          "Combien ça coûte ?",
+          "Ça coûte combien ?",
+          "C'est combien ?"
         ],
         "allowTypo": false,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Combien coûte ça ?",
+            "category": "word-order problem",
+            "explanation": "The natural order: Combien ça coûte ? or Ça coûte combien ?"
+          },
+          {
+            "answer": "Je voudrais un café, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "You already ordered; now ask the price: Combien ça coûte ?"
+          },
+          {
+            "answer": "Ça coûte deux euros.",
+            "category": "incorrect answer",
+            "explanation": "That states a price; this step asks the question."
+          }
+        ]
       }
     },
     {
@@ -17934,7 +18286,9 @@
         "vocabulary"
       ],
       "prompt": "La vendeuse demande : « Je peux vous aider ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Reply with the polite request: Je peux + prendre + the drink + s'il vous plaît ?"
+      ],
       "feedback": "Je peux prendre un café, s'il vous plaît ? — pouvoir + infinitif, et s'il vous plaît : poli et parfait.",
       "evidenceKey": "fr-requests-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -17981,7 +18335,9 @@
         "vocabulary"
       ],
       "prompt": "« Vous payez comment ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Make paying a soft request: Je peux + payer par carte ?"
+      ],
       "feedback": "Je peux payer par carte ? — pouvoir rend la question douce.",
       "evidenceKey": "fr-requests-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18028,7 +18384,9 @@
         "vocabulary"
       ],
       "prompt": "La vendeuse sourit : « Merci, bonne journée ! » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Return the wish politely: Merci, à vous aussi !"
+      ],
       "feedback": "Merci, à vous aussi — la politesse rend la pareille.",
       "evidenceKey": "fr-requests-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18075,8 +18433,10 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "À ton tour : écris en français une demande polie que tu feras demain dans un magasin.",
-      "hints": [],
+      "prompt": "Write in French: Can I have a coffee, please?",
+      "hints": [
+        "The counter request: Je peux + prendre un café + s'il vous plaît ?"
+      ],
       "feedback": "Je peux prendre un café, s'il vous plaît ? — poli et parfait.",
       "evidenceKey": "fr-requests-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18089,7 +18449,23 @@
           "Je peux avoir un café, s'il vous plaît ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je peux prendre un café.",
+            "category": "missing word",
+            "explanation": "The polite request ends with s'il vous plaît."
+          },
+          {
+            "answer": "Tu peux prendre un café, s'il vous plaît ?",
+            "category": "incorrect answer",
+            "explanation": "You are the one asking — use je peux, not tu peux."
+          },
+          {
+            "answer": "Je peux prends un café, s'il vous plaît ?",
+            "category": "wrong conjugation",
+            "explanation": "After peux, use the infinitive prendre."
+          }
+        ]
       }
     },
     {
@@ -18126,7 +18502,9 @@
         "vocabulary"
       ],
       "prompt": "Tu croises Léa. Comment l'invites-tu ?",
-      "hints": [],
+      "hints": [
+        "Invite with Tu veux + venir + dîner + samedi ? — the classic invitation opener."
+      ],
       "feedback": "Tu veux venir dîner samedi ? — l'invitation classique : « Tu veux venir… ? »",
       "evidenceKey": "fr-invitations-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18173,7 +18551,9 @@
         "vocabulary"
       ],
       "prompt": "Marc répond : « Désolé, je ne peux pas. » Que dis-tu ?",
-      "hints": [],
+      "hints": [
+        "A polite refusal gets a warm reply: Pas de problème ! À bientôt."
+      ],
       "feedback": "Pas de problème ! À bientôt. — un refus poli mérite une réponse souriante.",
       "evidenceKey": "fr-invitations-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18220,7 +18600,9 @@
         "vocabulary"
       ],
       "prompt": "Léa accepte : « Avec plaisir ! » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Close the accepted invitation: Super, à samedi !"
+      ],
       "feedback": "Super, à samedi ! — l'invitation est lancée.",
       "evidenceKey": "fr-invitations-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18267,9 +18649,11 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "Écris ta propre invitation en français : invite un ami à dîner.",
-      "hints": [],
-      "feedback": "Tu veux venir dîner samedi ? — et maintenant, envoie-la pour de vrai.",
+      "prompt": "Transfer: A friend just said no to your invitation. Write in French the warm reply from the dialogue.",
+      "hints": [
+        "The dialogue's warm reply to a refusal: Pas de problème ! + À bientôt."
+      ],
+      "feedback": "Pas de problème ! À bientôt. — un refus poli mérite une réponse souriante.",
       "evidenceKey": "fr-invitations-foundation-act-rb5",
       "assistanceAffectsEvidence": [
         "hint",
@@ -18277,11 +18661,26 @@
       ],
       "answer": {
         "answers": [
-          "Tu veux venir dîner samedi ?",
-          "Tu veux venir dîner ?"
+          "Pas de problème ! À bientôt."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Pas de problème !",
+            "category": "missing word",
+            "explanation": "The warm close adds À bientôt: Pas de problème ! À bientôt."
+          },
+          {
+            "answer": "Avec plaisir !",
+            "category": "incorrect answer",
+            "explanation": "That is for accepting; this friend refused, so reply warmly: Pas de problème ! À bientôt."
+          },
+          {
+            "answer": "Désolé, je ne peux pas.",
+            "category": "incorrect answer",
+            "explanation": "That is the refusal itself — you are answering it."
+          }
+        ]
       }
     },
     {
@@ -18318,7 +18717,9 @@
         "vocabulary"
       ],
       "prompt": "« Il pleut encore ce matin ! » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Agree with the neighbor first (Oui, il pleut !), then add your own weather observation with et il fait + an adjective."
+      ],
       "feedback": "Oui, il pleut ! Et il fait froid. — d'accord d'abord, puis ton observation : la petite conversation parfaite.",
       "evidenceKey": "fr-weather-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18365,7 +18766,9 @@
         "vocabulary"
       ],
       "prompt": "Le soleil est revenu. Qu'en dis-tu à ta voisine ?",
-      "hints": [],
+      "hints": [
+        "The sun is back — open with the model observation Il fait beau aujourd'hui, non ? The … non ? invites the other person to answer."
+      ],
       "feedback": "Il fait beau aujourd'hui, non ? — « …non ? » invite l'autre à répondre : c'est ça, la conversation.",
       "evidenceKey": "fr-weather-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18412,7 +18815,9 @@
         "vocabulary"
       ],
       "prompt": "Ton voisin dit : « Demain, il fera chaud. » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Tant mieux ! means 'so much the better' — the short warm reaction to good news."
+      ],
       "feedback": "Tant mieux ! — “So much the better!” Short, warm, true: small-talk gold.",
       "evidenceKey": "fr-weather-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18459,9 +18864,11 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "Demain matin, au café : écris en français une petite phrase sur le temps pour lancer la conversation.",
-      "hints": [],
-      "feedback": "Il fait beau aujourd'hui, non ? — et la conversation est lancée.",
+      "prompt": "Write in French: It's nice today, isn't it?",
+      "hints": [
+        "The dialogue's opener: Il fait beau + aujourd'hui + non ? — the weather observation that launches small talk."
+      ],
+      "feedback": "Il fait beau aujourd'hui, non ? — the model opener from the dialogue.",
       "evidenceKey": "fr-weather-foundation-act-rb5",
       "assistanceAffectsEvidence": [
         "hint",
@@ -18469,12 +18876,27 @@
       ],
       "answer": {
         "answers": [
-          "Il fait beau aujourd'hui, non ?",
-          "Il fait beau, non ?",
-          "Quel temps fait-il ?"
+          "Il fait beau aujourd’hui, non ?",
+          "Il fait beau, non ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Quel temps fait-il ?",
+            "category": "incorrect answer",
+            "explanation": "A good opener too, but the target here is the observation Il fait beau aujourd’hui, non ?"
+          },
+          {
+            "answer": "Il fait froid, non ?",
+            "category": "incorrect answer",
+            "explanation": "The sun is back: the dictated opener says beau (nice)."
+          },
+          {
+            "answer": "Il pleut, non ?",
+            "category": "incorrect answer",
+            "explanation": "The dictated opener for this step is Il fait beau, non ?"
+          }
+        ]
       }
     },
     {
@@ -18511,7 +18933,9 @@
         "vocabulary"
       ],
       "prompt": "« Combien de kilos ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "State the quantity and item first (Un kilo de pommes), then ask the price: Combien ça coûte ?"
+      ],
       "feedback": "Un kilo de pommes, s'il vous plaît. Combien ça coûte ? — la quantité + la question du prix : tout y est.",
       "evidenceKey": "fr-market-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18558,7 +18982,9 @@
         "vocabulary"
       ],
       "prompt": "« Ça fait trois euros. » Tu paies et tu dis…",
-      "hints": [],
+      "hints": [
+        "Pay while speaking: Voilà, then thank and say goodbye — Merci, au revoir !"
+      ],
       "feedback": "Voilà. Merci, au revoir ! — payer + remercier + saluer : la sortie parfaite.",
       "evidenceKey": "fr-market-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18605,7 +19031,9 @@
         "vocabulary"
       ],
       "prompt": "Le marchand ajoute : « Et avec ceci ? » (Anything else?) Tu as tout. Que dis-tu ?",
-      "hints": [],
+      "hints": [
+        "You have everything you need: Ce sera tout, merci — the standard 'that'll be all, thanks'."
+      ],
       "feedback": "Ce sera tout, merci. — “That'll be all, thanks.”",
       "evidenceKey": "fr-market-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18653,7 +19081,9 @@
         "vocabulary"
       ],
       "prompt": "Au prochain stand : écris en français ce que tu diras pour demander le prix d'un kilo de pain.",
-      "hints": [],
+      "hints": [
+        "Name the item and quantity in the price question: Combien coûte + un kilo de pain ?"
+      ],
       "feedback": "Combien coûte un kilo de pain ? — au stand suivant !",
       "evidenceKey": "fr-market-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -18666,7 +19096,23 @@
           "Combien coûte un kilo de pain, s'il vous plaît ?"
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Combien coûtent un kilo de pain ?",
+            "category": "wrong conjugation",
+            "explanation": "Un kilo is singular: Combien coûte un kilo de pain ?"
+          },
+          {
+            "answer": "Combien coûte le pain ?",
+            "category": "incorrect answer",
+            "explanation": "The dictated question names the quantity: un kilo de pain."
+          },
+          {
+            "answer": "Ça coûte combien ?",
+            "category": "incorrect answer",
+            "explanation": "Natural French, but the target asks about un kilo de pain by name."
+          }
+        ]
       }
     },
     {
@@ -18703,7 +19149,9 @@
         "vocabulary"
       ],
       "prompt": "« Qu'est-ce qui vous amène ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Say where it hurts first: J'ai mal + à la tête — the body part comes after mal à."
+      ],
       "feedback": "J'ai mal à la tête, docteur. — J'ai mal + la partie du corps : exactement ce qu'il faut.",
       "evidenceKey": "fr-health-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18750,7 +19198,9 @@
         "vocabulary"
       ],
       "prompt": "« Vous avez de la fièvre ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Answer the fever question fully: a short yes (Oui, un peu), then the detail with depuis hier."
+      ],
       "feedback": "Oui, un peu. J'ai de la fièvre depuis hier. — oui + le détail + depuis quand : réponse complète.",
       "evidenceKey": "fr-health-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18797,7 +19247,9 @@
         "vocabulary"
       ],
       "prompt": "Le docteur conclut : « Reposez-vous bien. » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Thank the doctor and leave: Merci, docteur. Au revoir !"
+      ],
       "feedback": "Merci, docteur. Au revoir ! — on remercie toujours le médecin.",
       "evidenceKey": "fr-health-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -18844,9 +19296,11 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "À la pharmacie, après : écris en français ce que tu diras au pharmacien.",
-      "hints": [],
-      "feedback": "J'ai mal à la tête. — le pharmacien comprendra.",
+      "prompt": "Transfer: At the pharmacy, tell the pharmacist your head has hurt since yesterday. Write in French.",
+      "hints": [
+        "The full symptom sentence: J'ai mal à la tête + depuis hier."
+      ],
+      "feedback": "J'ai mal à la tête depuis hier. — le pharmacien comprendra.",
       "evidenceKey": "fr-health-foundation-act-rb5",
       "assistanceAffectsEvidence": [
         "hint",
@@ -18854,11 +19308,26 @@
       ],
       "answer": {
         "answers": [
-          "J'ai mal à la tête.",
-          "J'ai mal à la tête, s'il vous plaît."
+          "J'ai mal à la tête depuis hier."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "J'ai mal à la tête.",
+            "category": "missing word",
+            "explanation": "The dictated sentence includes depuis hier: J’ai mal à la tête depuis hier."
+          },
+          {
+            "answer": "Ma tête est mal depuis hier.",
+            "category": "incorrect answer",
+            "explanation": "Pain uses avoir mal à: J’ai mal à la tête depuis hier."
+          },
+          {
+            "answer": "J'ai mal la tête depuis hier.",
+            "category": "missing word",
+            "explanation": "Keep the à: J’ai mal à la tête depuis hier."
+          }
+        ]
       }
     },
     {
@@ -18895,7 +19364,9 @@
         "vocabulary"
       ],
       "prompt": "« Je peux vous aider ? » Que réponds-tu ?",
-      "hints": [],
+      "hints": [
+        "Open with the polite je voudrais + the item, then add the symptom: J'ai mal à la tête."
+      ],
       "feedback": "Je voudrais un médicament, s'il vous plaît. J'ai mal à la tête. — je voudrais + le symptôme : parfait.",
       "evidenceKey": "fr-pharmacy-foundation-act-rb2",
       "assistanceAffectsEvidence": [
@@ -18942,7 +19413,9 @@
         "vocabulary"
       ],
       "prompt": "« Ça coûte cinq euros. » Tu paies et tu dis…",
-      "hints": [],
+      "hints": [
+        "Pay while speaking: Voilà, then thank warmly — Merci beaucoup !"
+      ],
       "feedback": "Voilà. Merci beaucoup ! — payer et remercier : la politesse jusqu'au bout.",
       "evidenceKey": "fr-pharmacy-foundation-act-rb3",
       "assistanceAffectsEvidence": [
@@ -18989,7 +19462,9 @@
         "vocabulary"
       ],
       "prompt": "« Un comprimé ou du sirop ? » Que choisis-tu ?",
-      "hints": [],
+      "hints": [
+        "Pick one form and ask politely: Un comprimé, s'il vous plaît."
+      ],
       "feedback": "Un comprimé, s'il vous plaît. — choix clair, demande polie.",
       "evidenceKey": "fr-pharmacy-foundation-act-rb4",
       "assistanceAffectsEvidence": [
@@ -19036,8 +19511,10 @@
         "writing",
         "vocabulary"
       ],
-      "prompt": "Demain, pour un ami : écris en français comment demander un médicament à la pharmacie.",
-      "hints": [],
+      "prompt": "Write in French: I would like some medicine, please.",
+      "hints": [
+        "The polite request: Je voudrais + un médicament + s'il vous plaît."
+      ],
       "feedback": "Je voudrais un médicament, s'il vous plaît. — tu sais faire.",
       "evidenceKey": "fr-pharmacy-foundation-act-rb5",
       "assistanceAffectsEvidence": [
@@ -19050,7 +19527,23 @@
           "Je voudrais un médicament."
         ],
         "allowTypo": true,
-        "errors": []
+        "errors": [
+          {
+            "answer": "Je veux un médicament, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "The polite request uses je voudrais, not je veux."
+          },
+          {
+            "answer": "Je voudrais une médicament, s'il vous plaît.",
+            "category": "wrong gender",
+            "explanation": "Médicament is masculine: un médicament."
+          },
+          {
+            "answer": "Je voudrais un pharmacie, s'il vous plaît.",
+            "category": "incorrect answer",
+            "explanation": "La pharmacie is the shop; the thing you ask for is un médicament."
+          }
+        ]
       }
     },
     {

@@ -14,6 +14,18 @@ Every pack ships with review-open language in `attribution` (pack JSON top level
 
 So: German has partial review (lessons 1–8, dated 2026-09-11); the other four packs have none recorded. Review order matches the rubric: **first two units of each language, then the 40 missions, then the remaining stories and lessons** (plan P1.1/P1.2).
 
+## Review methods
+
+Every review record must say **how** it was produced (`reviewMethod`). A review method is an evidence label, not a quality claim:
+
+| `reviewMethod` | What it means | `modelOrTool` | Clears "native-speaker review pending"? |
+|----------------|---------------|---------------|------------------------------------------|
+| `external-human` | A person outside the project (for native review: a native speaker) reviewed the lesson. | Tool used to view the lesson (e.g. `condisco-ios 1.5.x`) — optional. | Yes, if the reviewer is a native speaker of the pack's variant and `variant` is recorded. |
+| `developer` | The maintainer's own review against the rubric. | Optional (e.g. `audit_editorial --jsonl`). | **No.** |
+| `AI-assisted` | An AI model reviewed a lesson (full or in part), possibly reviewed by the developer afterwards. | Required, with version where applicable (e.g. `claude-sonnet-4-5`, `gpt-4o`, `deepseek-v4-flash`). | **No — never.** AI-assisted review is *not* native review and must never be recorded as such. |
+
+**Native-speaker review requires `reviewMethod: "external-human"` with a named human reviewer and a recorded `variant`.** Records with `reviewMethod` `AI-assisted` or `developer` keep the pack's "native-speaker review pending" language in `attribution` untouched — they do not clear it.
+
 ## Review dimensions
 
 | Dimension | What the reviewer checks | Typical finding to record |
@@ -49,21 +61,28 @@ One record per reviewed lesson, at minimum:
 | `packVersion` | `0.7.3` |
 | `unitId` | `pt-unit-1` |
 | `lessonId` | `pt-cafe-mission` |
+| `reviewMethod` | `AI-assisted` \| `developer` \| `external-human` (null → `unreviewed`) |
+| `modelOrTool` | `claude-sonnet-4-5` (required for `AI-assisted`; version where applicable) |
 | `reviewer` | "M. Silva (European Portuguese)" |
 | `date` | `2026-10-02` |
 | `variant` | `pt-PT` (vs `pt-BR`) |
-| `disposition` | `pass` \| `pass-with-notes` \| `needs-work` \| `reject` |
+| `sourcesChecked` | `["pt-foundations v0.7.3 pack JSON", "editorial-rubric H1–H4"]` |
+| `disposition` | `unreviewed` \| `pass` \| `pass-with-notes` \| `needs-work` \| `reject` |
+| `unresolvedQuestions` | `["pt-cafe-mission-act-4: is 'obrigado' accepted for the female speaker?"]` |
 | `notes` | Findings as `lessonId → step/activity id: issue` |
 
 Record granularity below the lesson (step/activity id, e.g. `pt-cafe-mission-act-2`) goes in `notes`; the record itself is per lesson, matching how the pack and the plan treat review ("record … on each reviewed lesson").
+
+`pass` means every applicable rubric check (M1–M5, S1–S4, H1–H4) is complete for the lesson. Anything short is `needs-work` (or `reject`), and `needs-work` keeps the pack out of release-quality claims. `unreviewed` is the initial state of every seeded record — a lesson is never `pass` before it has been reviewed.
 
 ## Tracking schema
 
 ### CSV column spec
 
-Columns, in order: `date,pack_id,pack_version,unit_id,lesson_id,reviewer,variant,disposition,notes`
+Columns, in order:
+`date,pack_id,pack_version,unit_id,lesson_id,review_method,model_or_tool,reviewer,variant,disposition,sources_checked,unresolved_questions,notes`
 
-Rules: ISO dates (`2026-10-02`); `variant` uses BCP-47 (`pt-PT`, `pt-BR`, `es-ES`, `es-MX`, `fr-FR`, `fr-CA`, `de-DE`, `it-IT`); `disposition` from the enum; `notes` may contain the `\n`-escaped list of findings. One row per lesson review; a re-review is a new row with a new date.
+Rules: ISO dates (`2026-10-02`); `review_method` from the enum (`AI-assisted`, `developer`, `external-human`; empty for `unreviewed`); `model_or_tool` required when `review_method` is `AI-assisted`; `variant` uses BCP-47 (`pt-PT`, `pt-BR`, `es-ES`, `es-MX`, `fr-FR`, `fr-CA`, `de-DE`, `it-IT`); `sources_checked`/`unresolved_questions` are `;`-joined lists; `disposition` from the enum; `notes` may contain the `\n`-escaped list of findings. One row per lesson review; a re-review is a new row with a new date.
 
 ### JSON record (one object per lesson)
 
@@ -74,9 +93,16 @@ Rules: ISO dates (`2026-10-02`); `variant` uses BCP-47 (`pt-PT`, `pt-BR`, `es-ES
   "packVersion": "0.7.3",
   "unitId": "pt-unit-1",
   "lessonId": "pt-cafe-mission",
+  "reviewMethod": "external-human",
+  "modelOrTool": null,
   "reviewer": "M. Silva",
   "variant": "pt-PT",
   "disposition": "needs-work",
+  "sourcesChecked": [
+    "pt-foundations v0.7.3 pack JSON",
+    "editorial-rubric H1"
+  ],
+  "unresolvedQuestions": [],
   "notes": [
     "pt-cafe-mission-act-3: missing accepted answer 'obrigada' for a female speaker",
     "pt-cafe-mission-act-2: prompt invites open output but activity is text-graded (rubric H1)"
@@ -84,7 +110,29 @@ Rules: ISO dates (`2026-10-02`); `variant` uses BCP-47 (`pt-PT`, `pt-BR`, `es-ES
 }
 ```
 
-Files to keep in `docs/reviews/` once tracking starts (e.g. `docs/reviews/review-log.csv` and `docs/reviews/2026-10-pt-unit-1.json`). No tracker exists in the repo today; this kit is its specification.
+An `AI-assisted` record differs only in the method fields — note the required `modelOrTool` and that it does **not** clear native review:
+
+```json
+{
+  "date": "2026-09-25",
+  "packId": "pt-foundations",
+  "packVersion": "0.7.3",
+  "unitId": "pt-unit-1",
+  "lessonId": "pt-cafe-mission",
+  "reviewMethod": "AI-assisted",
+  "modelOrTool": "claude-sonnet-4-5",
+  "reviewer": "solo maintainer",
+  "variant": null,
+  "disposition": "needs-work",
+  "sourcesChecked": ["pt-foundations v0.7.3 pack JSON", "editorial-rubric M1–M5"],
+  "unresolvedQuestions": ["confirm 'obrigado' vs 'obrigada' with a native speaker"],
+  "notes": []
+}
+```
+
+### Tracker: `docs/reviews/review-log.jsonl`
+
+The repo tracker is `docs/reviews/review-log.jsonl` — one JSON object per lesson (255 today), seeded by `tools/gen_review_log.py` with `disposition: "unreviewed"`, `reviewMethod: null`, empty `sourcesChecked`/`unresolvedQuestions`/`notes`. Rows are keyed by `lessonId`; updating a lesson means editing its line in place (reviews are recorded, never deleted). The generator is re-runnable: it re-derives the seed from the packs and preserves any row whose `disposition` is no longer `unreviewed` verbatim, so re-running never overwrites review work. Per-date JSON snapshots (`docs/reviews/2026-10-pt-unit-1.json`) remain optional for sharing a batch.
 
 ## Per-lesson checklist
 
@@ -106,5 +154,5 @@ Reviewer walks the lesson's steps in order (`Lesson.steps`, entry step → `next
 
 1. UI copy and pack descriptions may say what the pack covers, not that the learner is certified or CEFR-certified at any level. The browser (`Condisco/Lesson/CoursesView.swift`) today shows pack description text verbatim — edit pack copy, not the browser, if a claim is too strong.
 2. The P1 exit gate ("first two units of each language pass editorial and native review", plan P1) is the earliest point at which level claims for those units can be made.
-3. The existing `attribution` strings already say review remains open — they are the floor. When a lesson passes, record it; when it has not been reviewed, the same "review remains open" language applies to it.
+3. The existing `attribution` strings already say review remains open — they are the floor. When a lesson passes native review, record it (`reviewMethod: external-human`); when it has not been reviewed, the same "review remains open" language applies to it. Records with `reviewMethod` `AI-assisted` or `developer` are evidence toward editorial review only and must never be presented as, or recorded as, native review.
 4. The product promise "Learn without limits" (`Onboarding/Welcome.swift:71`) is about finding a next step — it must never be read as "full proficiency" (plan, product promise).

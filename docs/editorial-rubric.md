@@ -6,7 +6,7 @@ One rubric for all five packs (French, Italian, German, Portuguese, Spanish). Ev
 
 1. Review one lesson at a time, against the scorecard at the end.
 2. Work in the plan's order: **the first two units of each language, then the 40 missions**, then the remaining stories and lessons. (Plan: `docs/roadmaps/2026-09-25-condisco-quality-and-growth.md`, P1.1.)
-3. Mark one disposition per lesson: `pass`, `pass-with-notes`, `needs-work`, `reject`. Feed the result into the review tracker defined in `docs/native-review-kit.md`.
+3. Mark one disposition per lesson: `unreviewed` (initial state), `pass`, `pass-with-notes`, `needs-work`, `reject`. Record `reviewMethod` (`AI-assisted`, `developer`, or `external-human`), `modelOrTool` where applicable, `sourcesChecked`, and unresolved questions alongside it. Feed the result into the review tracker `docs/reviews/review-log.jsonl` (schema in `docs/native-review-kit.md`).
 4. Cite the failing element by `lesson id` → step/activity id. A finding without an identifier is not actionable.
 
 Families in the schema (`Condisco/Models/CoursePack.swift:111-114`): `discovery, story, conversation, listening, construction, scene, mission, recall`. Missions are `family == "mission"`, stories `family == "story"`.
@@ -45,7 +45,7 @@ These rules exist because of how the engine actually grades. In `Condisco/Engine
 
 ## Scorecard
 
-Fill one row per lesson in the review tracker. `Pass`/`Needs work` are the verdicts from the tables above.
+Fill one row per lesson in the review tracker `docs/reviews/review-log.jsonl`. `Pass`/`Needs work` are the verdicts from the tables above. `pass` requires every applicable rubric check to be complete; `needs-work` keeps the pack out of release-quality claims. Record the `reviewMethod` (and `modelOrTool` for `AI-assisted`) on the same record — an AI-assisted or developer review is editorial evidence only, never native review.
 
 | Criterion | Pass | Needs work | Notes (lesson id → element) |
 |-----------|------|------------|------------------------------|
@@ -62,7 +62,8 @@ Fill one row per lesson in the review tracker. `Pass`/`Needs work` are the verdi
 | H2 Ungraded steps labeled | ☐ | ☐ | |
 | H3 Error-specific feedback | ☐ | ☐ | |
 | H4 Useful hints | ☐ | ☐ | |
-| **Disposition** | | | `pass` / `pass-with-notes` / `needs-work` / `reject` |
+| **Review method** | `external-human` (native review) | `AI-assisted` / `developer` (evidence only — native review stays open) | `reviewMethod` + `modelOrTool` on the ledger record |
+| **Disposition** | | | `unreviewed` / `pass` / `pass-with-notes` / `needs-work` / `reject` |
 
 ## Scope note
 

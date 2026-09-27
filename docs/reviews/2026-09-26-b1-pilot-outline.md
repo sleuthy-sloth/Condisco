@@ -188,7 +188,7 @@ dispositions). Coverage map:
 | # | Capability | Covered by | Status |
 |---|---|---|---|
 | B1 | Connected narration (3+ sentences, time/order markers) | `es-b1-retraso-narracion` (u18L1) — the pack's first 3+ sentence connected narration with primero/luego/después/al final (closing the `es-a2-fin-de-semana` sequence-word drift — the drift itself stays a deferred pack-copy fix); reinforced by every OTW lesson | ✓ covered |
-| B2 | Explanation of a preference with reasons (`porque` absent pack-wide) | **porque + sentence is first taught at u18L4 (`es-b1-reprogramar-dialogo`, reason frame) and u18L5 (`es-b1-viaje-escrito`, first in written output)** — corrected 2026-09-26; `es-b1-preferencia-razones` (u20L1) then reinforces it over the u11 gustar/encantar repertoire (no longer the pack's first use); further reinforced u20L4 dialogue, u20L5 OTW, checkpoint writing item, u19 OTWs | ✓ covered — **flag F4**: rubric/bridge disposition said "needs a **bridging lesson in A2**"; the pilot teaches it at B1 instead — first at u18L4/L5 (corrected 2026-09-26). Either the disposition is revised to "B1 path teaches it first" for the pilot (and the A2 bridge lesson stays backlog), or an A2 bridge lesson is authored separately first. Decision needed from the orchestrator — not a structural blocker. |
+| B2 | Explanation of a preference with reasons (`porque` absent pack-wide) | **porque + sentence is first taught at u18L4 (`es-b1-reprogramar-dialogo`, reason frame) and u18L5 (`es-b1-viaje-escrito`, first in written output)** — corrected 2026-09-26; `es-b1-preferencia-razones` (u20L1) then reinforces it over the u11 gustar/encantar repertoire (no longer the pack's first use); further reinforced u20L4 dialogue, u20L5 OTW, checkpoint writing item, u19 OTWs | ✓ covered — **flag F4 — decided 2026-09-26**: disposition revised to "B1 path teaches it first" (porque first at u18L4/L5, shipped and gated); the A2 bridge lesson stays backlog (later slice). `docs/editorial-rubric.md` §A2→B1 and `docs/reviews/2026-09-26-a1a2-bridge-spanish.md` updated to match. |
 | B3 | Following multi-turn exchanges | 3 × DB lessons on `dialogues[]` (u18L4, u19L4, u20L4): 3+ turn branched graphs with repair/clear nodes (pattern of shipped `es-a2-planes-sabado`); the 3 SL calls are multi-turn spoken exchanges | ✓ covered |
 | B4 | Extracting main point + supporting detail | All 6 SR/SL lessons include a gist step + ≥2 detail checks (precedent `es-cafe-listen-gist/-drink/-here`); checkpoint reading item; FT reading surfaces in missions | ✓ covered |
 | B5 | Short connected written response (2–4 sentences) | 3 × OTW written; checkpoint writing item. **The B5 product dependency is already resolved**: the bridge review pins this on a new ungraded/self-assessed written step type, and `open-task` (mode written) shipped with 5.3/6.2 (`es-a2-fin-de-semana-open-task`) — H1-compliant (self-assessed, never fixed-list graded) | ✓ covered, dependency met |
@@ -286,8 +286,9 @@ with the aspect worth two-source verification.
   entry with 3 items is the honest shape for "three independent checkpoint
   tasks" (see §3).
 - **F4 — B2 disposition wording** (rubric says A2 bridge lesson; pilot teaches
-  porque at B1 — first at u18L4/L5, corrected 2026-09-26). Needs an orchestrator
-  decision, not a mechanism.
+  porque at B1 — first at u18L4/L5, corrected 2026-09-26). **Decided
+  2026-09-26: disposition revised to "B1 path teaches it first"; A2 bridge
+  lesson stays backlog.** Rubric and bridge-review dispositions updated.
 - **F5 — variant review spans es-ES + es-MX.** The shipped SL pattern
   alternates es-ES/es-MX device voices; pilot SL pieces will too, so the
   regional-variant review in the ledger must cover both. Not a blocker.

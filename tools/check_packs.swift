@@ -106,7 +106,7 @@ struct CheckPacks {
         }
         for failure in failures { print("FAIL \(failure)") }
         precondition(failures.isEmpty, "Bundled languages failed to load")
-        precondition(Set(loaded) == Set(["french", "italian", "german", "portuguese", "spanish"]))
+        precondition(Set(loaded) == Set(CourseRegistry.slugs))
         let pickerPacks = try PackLoader.loadPacks()
         precondition(pickerPacks.map { $0.language.slug } == loaded,
                      "The onboarding loader must return all five languages")

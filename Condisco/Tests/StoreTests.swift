@@ -2781,7 +2781,13 @@ final class DataExportTests: XCTestCase {
     }
 
     private func makeStore() throws -> LearningStore {
-        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+        try makeStore(fileName: "store.sqlite")
+    }
+
+    /// A throwaway store on a distinct file — `fileName` lets a test pair
+    /// two stores (source and target) that must not share a database.
+    private func makeStore(fileName: String) throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent(fileName).path)
     }
 
     private func frenchPack() throws -> CoursePack {
@@ -2930,7 +2936,7 @@ final class DataExportTests: XCTestCase {
         let store = try makeStore()
         let export = try loadExport(store: store)
         XCTAssertEqual(export.formatVersion, DataExport.formatVersion)
-        XCTAssertEqual(export.formatVersion, 1)
+        XCTAssertEqual(export.formatVersion, 2)
         XCTAssertEqual(export.app, "Condisco")
         XCTAssertGreaterThan(export.exportedAt.timeIntervalSince1970, 0)
     }
@@ -3054,6 +3060,7 @@ final class DataExportTests: XCTestCase {
             "app", "formatVersion", "exportedAt", "events", "checkpoints",
             "checkpointTombstones", "listenState", "savedPhrases",
             "savedPhraseTombstones", "placement",
+            "importedDocuments", "importedPhraseLinks",
         ]
         XCTAssertEqual(Set(json.keys), expectedKeys)
 
@@ -3073,6 +3080,486 @@ final class DataExportTests: XCTestCase {
                 text.contains(needle),
                 "export must not contain \(needle)")
         }
+    }
+
+    // MARK: Library documents (8.2 slice 4)
+
+    private func makeDocument(
+        id: String, title: String, content: String, pack: CoursePack,
+        at: Date, sourceFileName: String = ""
+    ) -> ImportedDocument {
+        ImportedDocument(
+            id: id, title: title, content: content,
+            byteSize: content.data(using: .utf8)!.count,
+            languageSlug: pack.language.slug,
+            sourceFileName: sourceFileName,
+            importedAt: at)
+    }
+
+    /// A deterministic saved phrase (id = language|target|meaning).
+    private func makePhrase(pack: CoursePack, at: Date) -> SavedPhrase {
+        let target = "la gare"
+        let meaning = "the station"
+        return SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: pack.language.slug, target: target, meaning: meaning),
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: target, meaning: meaning,
+            source: "Ma première lecture",
+            savedAt: at)
+    }
+
+    /// The document-linked save sequence the library's save sheet runs
+    /// (§6.5): document row + phrase row (provenance = title) + link.
+    private func saveLibraryPhrase(
+        store: LearningStore, phrase: SavedPhrase, document: ImportedDocument
+    ) throws {
+        try store.saveDocument(document)
+        var fromDocument = phrase
+        fromDocument.source = document.title
+        try store.savePhrase(fromDocument)
+        try store.linkPhrase(phraseId: phrase.id, documentId: document.id)
+    }
+
+    /// A phrase-review attempt of the exact shape
+    /// `ReviewItem.makeAttempt(verdict:)` records (pack id
+    /// `practice-library`), so the evidence chain is the real review one.
+    private func makePhraseReviewAttempt(
+        id: String, phraseId: String, at: Date
+    ) -> ActivityAttempt {
+        let verdict = ReviewVerdict.close
+        return ActivityAttempt(
+            id: id,
+            packId: LibraryReview.packId,
+            packVersion: LibraryReview.packVersion,
+            lessonId: "",
+            lessonRevision: 0,
+            stepId: "review",
+            activityId: "phrase-review",
+            activityRevision: 0,
+            evidenceKey: LibraryReview.evidenceKey(phraseId: phraseId),
+            response: verdict.response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: verdict.outcome,
+                independent: verdict.independent,
+                feedback: ""),
+            at: at)
+    }
+
+    /// Raw millisecond timestamp of a date, matching the store's `millis`.
+    private func millis(_ date: Date) -> Int64 {
+        Int64((date.timeIntervalSince1970 * 1_000).rounded())
+    }
+
+    /// Exact row count in `table` as a second connection sees it.
+    private func rawCount(_ table: String) throws -> Int {
+        let db = try Database(path: tempDir.appendingPathComponent("store.sqlite").path)
+        var count = 0
+        try db.query(
+            "SELECT COUNT(*) FROM \(table);",
+            row: { count = Int($0.int64(0)) })
+        return count
+    }
+
+    /// The exact stored event rows (id + payload), byte-for-byte, one
+    /// string per row joined with NUL.
+    private func rawEventRows() throws -> [String] {
+        let db = try Database(path: tempDir.appendingPathComponent("store.sqlite").path)
+        var rows: [String] = []
+        try db.query(
+            "SELECT id, payload FROM events ORDER BY at_ms, id;",
+            row: { rows.append(($0.text(0) ?? "") + "\u{0}" + ($0.text(1) ?? "")) })
+        return rows
+    }
+
+    /// Decodes a validated preview or fails the test.
+    private func requirePreview(
+        _ data: Data, file: StaticString = #filePath, line: UInt = #line
+    ) throws -> ImportPreview {
+        switch ImportValidator.validate(data) {
+        case .success(let preview): return preview
+        case .failure(let error):
+            XCTFail("expected a valid import, got \(error)", file: file, line: line)
+            throw error
+        }
+    }
+
+    /// Encodes a genuine version-1 export: the v1 field set,
+    /// `formatVersion` 1, and no document sections.
+    private func encodeV1Export(
+        events: [LearningEvent] = [],
+        savedPhrases: [StoredSavedPhrase] = [],
+        exportedAt: Date = Date(timeIntervalSince1970: 1_730_000_000)
+    ) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = [.sortedKeys]
+        let payload = ExportedLearningData(
+            app: "Condisco",
+            formatVersion: 1,
+            exportedAt: exportedAt,
+            events: events,
+            checkpoints: [],
+            checkpointTombstones: [],
+            listenState: [],
+            savedPhrases: savedPhrases,
+            savedPhraseTombstones: [],
+            placement: [])
+        return try encoder.encode(payload)
+    }
+
+    /// The `flds` field of every note in an exported .apkg, so a test can
+    /// assert what text actually reached the deck. The package is a zip of
+    /// stored (uncompressed) entries written by `ZipStoreWriter`, so the
+    /// SQLite collection is extracted by scanning local file headers
+    /// directly, then read with the app's own `Database`.
+    private func ankiNoteRows(deckURL: URL) throws -> [String] {
+        let bytes = [UInt8](try Data(contentsOf: deckURL))
+        var notes: [String] = []
+        var i = 0
+        while i + 30 <= bytes.count {
+            let sig = UInt32(bytes[i])
+                | UInt32(bytes[i + 1]) << 8
+                | UInt32(bytes[i + 2]) << 16
+                | UInt32(bytes[i + 3]) << 24
+            guard sig == 0x0403_4B50 else { break }
+            let nameLength = Int(bytes[i + 26]) | Int(bytes[i + 27]) << 8
+            let extraLength = Int(bytes[i + 28]) | Int(bytes[i + 29]) << 8
+            let contentStart = i + 30 + nameLength + extraLength
+            if i + 30 + nameLength <= bytes.count,
+               String(bytes: bytes[i + 30 ..< i + 30 + nameLength], encoding: .utf8)
+                   == "collection.anki2" {
+                // Stored entry: advertised size sits at header + 18.
+                let size = Int(bytes[i + 18]) | Int(bytes[i + 19]) << 8
+                    | Int(bytes[i + 20]) << 16 | Int(bytes[i + 21]) << 24
+                guard contentStart + size <= bytes.count else { break }
+                let extract = tempDir.appendingPathComponent(
+                    "collection-\(UUID().uuidString).anki2")
+                try Data(bytes[contentStart ..< contentStart + size]).write(to: extract)
+                let db = try Database(path: extract.path)
+                try db.query(
+                    "SELECT flds FROM notes ORDER BY id;",
+                    row: { notes.append($0.text(0) ?? "") })
+            }
+            i = contentStart
+        }
+        return notes
+    }
+
+    /// The v2 export carries the library: documents with raw-ms import
+    /// timestamps and the phrase links, and a fresh store fed the decoded
+    /// file restores rows byte-equal on content, byte size, source file
+    /// name, and import date (plus the link pairs).
+    func testExportRoundTripsDocumentsTitlesDatesContentAndLinks() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000.123)
+        let doc = makeDocument(
+            id: "doc-rt-1", title: "Ma première lecture",
+            content: "Bonjour tout le monde, je m'appelle Marie.\nDeuxième ligne avec des accents : é à ç.",
+            pack: pack, at: at, sourceFileName: "ma-lecture.txt")
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        let export = try loadExport(store: store)
+        XCTAssertEqual(export.formatVersion, DataExport.formatVersion)
+        XCTAssertEqual(export.importedDocuments?.count, 1)
+        XCTAssertEqual(export.importedPhraseLinks?.count, 1)
+        let exportedDoc = try XCTUnwrap(export.importedDocuments?.first)
+        XCTAssertEqual(exportedDoc.id, doc.id)
+        XCTAssertEqual(exportedDoc.title, doc.title)
+        XCTAssertEqual(exportedDoc.content, doc.content)
+        XCTAssertEqual(exportedDoc.byteSize, doc.byteSize)
+        XCTAssertEqual(exportedDoc.languageSlug, pack.language.slug)
+        XCTAssertEqual(exportedDoc.sourceFileName, "ma-lecture.txt")
+        XCTAssertEqual(exportedDoc.importedAtMs, millis(at))
+        XCTAssertEqual(
+            export.importedPhraseLinks?.first,
+            StoredImportedPhraseLink(phraseId: phrase.id, documentId: doc.id))
+
+        // A fresh store fed the decoded FILE (not the in-memory struct)
+        // restores the same rows, byte-equal at the stored-row level.
+        let url = try DataExport.buildFile(store: store)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let preview = try requirePreview(try Data(contentsOf: url))
+        XCTAssertEqual(preview.documents.count, 1)
+        XCTAssertEqual(preview.phraseLinks.count, 1)
+        XCTAssertEqual(preview.documents[0].importedAtMs, millis(at))
+
+        let restored = try makeStore(fileName: "restored.sqlite")
+        XCTAssertNoThrow(try restored.applyImport(preview))
+        XCTAssertEqual(
+            try restored.allImportedDocuments(),
+            [StoredImportedDocument(
+                id: doc.id, title: doc.title, content: doc.content,
+                byteSize: doc.byteSize, languageSlug: doc.languageSlug,
+                sourceFileName: doc.sourceFileName,
+                importedAtMs: millis(at))])
+        XCTAssertEqual(
+            try restored.phraseLinks(),
+            [ImportedPhraseLink(phraseId: phrase.id, documentId: doc.id)])
+        let restoredDoc = try XCTUnwrap(restored.documents().first)
+        XCTAssertEqual(restoredDoc.title, doc.title)
+        XCTAssertEqual(restoredDoc.content, doc.content)
+        XCTAssertEqual(restoredDoc.byteSize, doc.byteSize)
+        XCTAssertEqual(restoredDoc.sourceFileName, doc.sourceFileName)
+        XCTAssertEqual(restoredDoc.importedAt, at)
+    }
+
+    /// Back-compat is mandatory (§7): a version-1 file — no document
+    /// sections — validates unchanged, restores its own sections, and
+    /// writes zero document/link rows. A legacy (pre-1.1) file does the
+    /// same.
+    func testExportDocumentSectionAbsentInLegacyAndVersion1Files() throws {
+        let store = try makeStore()
+        let phrase = StoredSavedPhrase(
+            id: "v1-phrase-1", languageSlug: "french", languageName: "French",
+            target: "Le chat", meaning: "The cat", source: "src",
+            sourcePackId: "", sourceLessonId: "", savedAtMs: 1_700_000_000_000)
+
+        let v1Preview = try requirePreview(try encodeV1Export(savedPhrases: [phrase]))
+        XCTAssertEqual(v1Preview.formatVersion, 1)
+        XCTAssertFalse(v1Preview.isLegacy)
+        XCTAssertTrue(v1Preview.documents.isEmpty,
+                      "a v1 file never carries a document section")
+        XCTAssertTrue(v1Preview.phraseLinks.isEmpty)
+        XCTAssertNoThrow(try store.applyImport(v1Preview))
+        XCTAssertEqual(try rawCount("imported_documents"), 0)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 0)
+        XCTAssertEqual(try store.allSavedPhrases().map(\.id), ["v1-phrase-1"],
+                       "the v1 sections still restore")
+
+        // A v2 build exporting an empty library also emits empty arrays —
+        // the keys exist (a v2 contract), the rows are absent.
+        let v2Empty = try loadExport(store: store)
+        XCTAssertEqual(v2Empty.importedDocuments, [])
+        XCTAssertEqual(v2Empty.importedPhraseLinks, [])
+
+        // Legacy (pre-1.1): app marker, no formatVersion, no documents.
+        let legacy = try XCTUnwrap(
+            "{\"app\":\"Condisco\",\"exportedAt\":\"2024-01-01T00:00:00Z\"}"
+                .data(using: .utf8))
+        let legacyPreview = try requirePreview(legacy)
+        XCTAssertTrue(legacyPreview.isLegacy)
+        XCTAssertTrue(legacyPreview.documents.isEmpty)
+        XCTAssertNoThrow(try store.applyImport(legacyPreview))
+        XCTAssertEqual(try rawCount("imported_documents"), 0)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 0)
+    }
+
+    /// Restoring a v2 export adds the document and link rows and leaves
+    /// every other section exactly as it would have been without them —
+    /// the library section is additive JSON (design §11.1).
+    func testImportRestoresDocumentsAndLinksWithoutTouchingOtherSections() throws {
+        let source = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let doc = makeDocument(
+            id: "doc-imp", title: "Doc", content: "Contenu.", pack: pack, at: at)
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: source, phrase: phrase, document: doc)
+        try source.record(.attempt(makePhraseReviewAttempt(
+            id: "pr-imp-1", phraseId: phrase.id, at: at)))
+        try source.saveListenPosition(trackId: "t-imp", seconds: 5, at: at)
+
+        let url = try DataExport.buildFile(store: source)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let preview = try requirePreview(try Data(contentsOf: url))
+
+        // A fresh store with unrelated lesson-known history: the merge
+        // must add the file's rows and leave the local ones alone.
+        let target = try makeStore(fileName: "target.sqlite")
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        try target.setLessonKnown(pack: pack, lessonId: lesson.id, known: true)
+        let targetEventsBefore = try target.allEvents()
+        XCTAssertNoThrow(try target.applyImport(preview))
+
+        XCTAssertEqual(try target.documents(), [doc])
+        XCTAssertEqual(
+            try target.phraseLinks(),
+            [ImportedPhraseLink(phraseId: phrase.id, documentId: doc.id)])
+        XCTAssertEqual(try target.allSavedPhrases(), try source.allSavedPhrases())
+        XCTAssertEqual(try target.allEvents().count, targetEventsBefore.count + 1)
+        XCTAssertTrue(try target.allEvents().contains { event in
+            guard case .attempt(let attempt) = event else { return false }
+            return attempt.id == "pr-imp-1"
+        })
+        XCTAssertEqual(try target.listenPosition(trackId: "t-imp"), 5)
+        XCTAssertEqual(try target.allListenState().count, 1)
+        XCTAssertEqual(try target.allListenState(), try source.allListenState())
+    }
+
+    /// The restore-preview count lines (`YouView.swift` shows "N library
+    /// documents") are fed by the preview's document/link counts, so the
+    /// UI numbers and the merge are the same data.
+    func testImportPreviewCountsLinesIncludeDocuments() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let first = makeDocument(
+            id: "doc-prev-1", title: "Un", content: "Premier texte.",
+            pack: pack, at: at)
+        let second = makeDocument(
+            id: "doc-prev-2", title: "Deux", content: "Deuxième texte.",
+            pack: pack, at: at.addingTimeInterval(60))
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: first)
+        try store.saveDocument(second)
+        try store.linkPhrase(phraseId: phrase.id, documentId: second.id)
+
+        let url = try DataExport.buildFile(store: store)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let preview = try requirePreview(try Data(contentsOf: url))
+        XCTAssertEqual(preview.documents.count, 2)
+        XCTAssertEqual(preview.phraseLinks.count, 2)
+        XCTAssertEqual(preview.savedPhrases.count, 1)
+        XCTAssertEqual(
+            preview.documents.map(\.id).sorted(), ["doc-prev-1", "doc-prev-2"])
+    }
+
+    /// Re-importing the same file is a no-op across the library tables:
+    /// document and link row counts stay put, and the other sections are
+    /// untouched too (the repeat-import contract, extended from the
+    /// existing `testRepeatImportIsANoOp` to the document sections).
+    func testReimportingExportIsIdempotent() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let doc = makeDocument(
+            id: "doc-idem", title: "Texte", content: "Un texte.", pack: pack, at: at)
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        try store.record(.attempt(makePhraseReviewAttempt(
+            id: "pr-idem-1", phraseId: phrase.id, at: at)))
+
+        let url = try DataExport.buildFile(store: store)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let preview = try requirePreview(try Data(contentsOf: url))
+        XCTAssertNoThrow(try store.applyImport(preview))
+        XCTAssertNoThrow(try store.applyImport(preview))
+
+        XCTAssertEqual(try rawCount("imported_documents"), 1)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+        XCTAssertEqual(try store.documents().count, 1)
+        XCTAssertEqual(try store.allEvents().count, 1)
+        XCTAssertEqual(try store.allSavedPhrases().count, 1)
+        XCTAssertEqual(try store.allListenState().count, 0)
+    }
+
+    /// §8 × slice 4: deleting a document removes its rows; re-importing
+    /// an older export restores the document and its links while the
+    /// phrase's review history — the append-only event log — stays
+    /// byte-identical.
+    func testDeletingThenReimportingRestoresDocumentWithoutTouchingPhraseReviewState() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let doc = makeDocument(
+            id: "doc-del-rt", title: "À supprimer", content: "Le contenu privé.",
+            pack: pack, at: at)
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        try store.record(.attempt(makePhraseReviewAttempt(
+            id: "pr-del-1", phraseId: phrase.id, at: at)))
+
+        // The export taken BEFORE the delete carries the document.
+        let url = try DataExport.buildFile(store: store)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let file = try Data(contentsOf: url)
+
+        try store.deleteDocument(id: doc.id)
+        XCTAssertTrue(try store.documents().isEmpty)
+        XCTAssertTrue(try store.phraseLinks().isEmpty)
+        let eventsAfterDelete = try rawEventRows()
+
+        // Re-importing the older file brings the document and its link
+        // back. The phrase's review events are untouched: the delete wrote
+        // no events and the import adds none.
+        try store.applyImport(try requirePreview(file))
+        XCTAssertEqual(try store.documents(), [doc])
+        XCTAssertEqual(
+            try store.phraseLinks(),
+            [ImportedPhraseLink(phraseId: phrase.id, documentId: doc.id)])
+        XCTAssertEqual(try rawEventRows(), eventsAfterDelete)
+        XCTAssertEqual(try store.allSavedPhrases().count, 1)
+
+        // And the review queue schedules the phrase again — the link is
+        // back, its FSRS history is intact.
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1)
+    }
+
+    /// The library's only exit is the learner's own DataExport (§7): the
+    /// export payload includes the documents, while every other surface —
+    /// the CloudKit record types (sync compiled off), the widget snapshot,
+    /// the Spotlight/Anki phrase feed, and the sync upload queue — never
+    /// sees document rows or content.
+    func testExportContainsNoDocumentContentInCloudKitOrWidgetPaths() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let doc = makeDocument(
+            id: "doc-excl", title: "Lecture privée",
+            content: "Le contenu privé de cette lecture.", pack: pack, at: at)
+        let phrase = makePhrase(pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        try store.record(.attempt(makePhraseReviewAttempt(
+            id: "pr-excl-1", phraseId: phrase.id, at: at)))
+
+        // 1. Include path: DataExport carries the documents.
+        let export = try loadExport(store: store)
+        XCTAssertEqual(export.importedDocuments?.first?.content, doc.content)
+
+        // 2. Sync queue: the phrase-review attempt is the only uploadable
+        // row; documents never reach sync.
+        let syncFeed = try store.unsyncedEvents()
+        XCTAssertEqual(syncFeed.count, 1)
+        XCTAssertEqual(try rawCount("sync_uploads"), 0)
+        XCTAssertFalse(String(describing: syncFeed).contains(doc.content))
+
+        // 3. CloudKit: the compiled-off sync layer declares record types
+        // for every table it syncs and none for documents (the document
+        // tables have no read path there at all — pinned here).
+        let recordTypes = [
+            CloudKitSync.recordType,
+            CloudKitSync.checkpointRecordType,
+            CloudKitSync.checkpointTombstoneRecordType,
+            CloudKitSync.listenRecordType,
+            CloudKitSync.savedPhraseRecordType,
+            CloudKitSync.savedPhraseTombstoneRecordType,
+        ]
+        XCTAssertFalse(recordTypes.contains { $0.contains("Document") })
+
+        // 4. Widget snapshot: the fixed snapshot shape carries no document
+        // fields.
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(
+            packs: [pack], focusSlug: pack.language.slug, progress: [:],
+            dueCount: 0, weekFlags: [false], practiceDays: 0)
+        XCTAssertFalse(String(describing: snapshot).contains(doc.content))
+        XCTAssertFalse(String(describing: snapshot).contains(doc.title))
+
+        // 5. Spotlight + Anki feed: `savedPhrases()` — the only input
+        // both surfaces read — carries target/meaning, never document
+        // content. Its source is the document title by design (§3.3).
+        let phrases = try store.savedPhrases()
+        XCTAssertFalse(phrases.contains {
+            $0.target.contains(doc.content) || $0.meaning.contains(doc.content)
+        })
+        XCTAssertEqual(phrases.map(\.source), [doc.title])
+
+        // 6. Anki deck: the .apkg's notes carry target/meaning only.
+        let deckURL = try AnkiExporter.export(phrases: phrases)
+        defer { try? FileManager.default.removeItem(at: deckURL) }
+        let notes = try ankiNoteRows(deckURL: deckURL)
+        XCTAssertEqual(notes.count, 1)
+        XCTAssertTrue(notes[0].contains(phrase.target))
+        XCTAssertTrue(notes[0].contains(phrase.meaning))
+        XCTAssertFalse(notes[0].contains(doc.content))
+        XCTAssertFalse(notes[0].contains(doc.title))
     }
 }
 
@@ -3277,10 +3764,10 @@ final class ImportRestoreTests: XCTestCase {
 
     // MARK: Valid import
 
-    /// A format-1 export restores every section with its identifiers and
-    /// raw timestamps intact, and the store's projections (evidence, due
-    /// set, practice days) reflect the imported history.
-    func testValidFormat1ImportRestoresCountsIdentifiersAndProjections() throws {
+    /// A current-format export restores every section with its identifiers
+    /// and raw timestamps intact, and the store's projections (evidence,
+    /// due set, practice days) reflect the imported history.
+    func testValidExportImportRestoresCountsIdentifiersAndProjections() throws {
         let store = try makeStore()
         let pack = try frenchPack()
         let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
@@ -3325,7 +3812,7 @@ final class ImportRestoreTests: XCTestCase {
 
         // The preview carries the counts the UI shows before confirmation.
         let preview = try requirePreview(data)
-        XCTAssertEqual(preview.formatVersion, 1)
+        XCTAssertEqual(preview.formatVersion, DataExport.formatVersion)
         XCTAssertFalse(preview.isLegacy)
         XCTAssertEqual(preview.events.count, 2)
         XCTAssertEqual(preview.checkpoints.count, 1)
@@ -5770,7 +6257,7 @@ final class PackUpdateTests: XCTestCase {
             selfRating: CheckpointSelfRating(criteriaMet: ["c4"], rating: .hard),
             at: t0))
 
-        // The update: the live 0.7.9 bundle projects over the same store.
+        // The update: the live 0.7.11 bundle projects over the same store.
         let after = try store.project(pack: v2)
         XCTAssertEqual(
             after.participationCompleted, Set(["es-plural-foundation"]),
@@ -6394,7 +6881,7 @@ final class OpenTaskFlowTests: XCTestCase {
             if case .openTask(let spec) = activity { return spec }
             return nil
         }
-        XCTAssertEqual(tasks.count, 6, "the Spanish pack must ship its six open tasks")
+        XCTAssertEqual(tasks.count, 12, "the Spanish pack must ship its twelve open tasks")
 
         var all: [String] = OpenTaskCopy.allStrings
         for task in tasks {
@@ -6704,5 +7191,1406 @@ final class DialogueStoreTests: XCTestCase {
         XCTAssertTrue(DialoguePracticeCopy.allStrings.contains(
             DialoguePracticeCopy.recapNote))
         XCTAssertEqual(DialoguePracticeCopy.hero, "Conversation practice")
+    }
+}
+
+// MARK: - Practice library (8.2 slice 1): documents + links
+
+/// Store-level slice-1 pins for the practice library (design §3, §8):
+/// document CRUD, link dedup, delete semantics, and unsave cleanup.
+/// Every row-count assertion reads raw SQLite through a second connection
+/// (WAL allows concurrent readers), so "nothing else was written" is
+/// checked byte-for-byte.
+@MainActor
+final class ImportedDocumentTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-library-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func makeStore() throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+    }
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    private func storePath() -> String {
+        tempDir.appendingPathComponent("store.sqlite").path
+    }
+
+    /// Exact row count in `table` as a second connection sees it.
+    private func rawCount(_ table: String) throws -> Int {
+        let db = try Database(path: storePath())
+        var count = 0
+        try db.query(
+            "SELECT COUNT(*) FROM \(table);",
+            row: { count = Int($0.int64(0)) })
+        return count
+    }
+
+    /// The exact stored event rows (id + payload), byte-for-byte, one
+    /// string per row joined with NUL so the comparison type is Equatable
+    /// (arrays of tuples are not). SQLite WAL allows concurrent readers,
+    /// so a snapshot taken while `store` is open reflects committed state.
+    private func rawEventRows() throws -> [String] {
+        let db = try Database(path: storePath())
+        var rows: [String] = []
+        try db.query(
+            "SELECT id, payload FROM events ORDER BY at_ms, id;",
+            row: { rows.append(($0.text(0) ?? "") + "\u{0}" + ($0.text(1) ?? "")) })
+        return rows
+    }
+
+    /// A deterministic saved phrase (id = language|target|meaning).
+    private func makePhrase(pack: CoursePack, at: Date) -> SavedPhrase {
+        let target = "la gare"
+        let meaning = "the station"
+        return SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: pack.language.slug, target: target, meaning: meaning),
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: target,
+            meaning: meaning,
+            source: "My document",
+            savedAt: at)
+    }
+
+    /// A valid independent-correct attempt on the first practice step of
+    /// fr-home-foundation (a selection activity) — a realistic event row
+    /// the delete transaction must not touch.
+    private func makeAttempt(
+        id: String, pack: CoursePack, at: Date
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let step = try XCTUnwrap(
+            lesson.steps.first { $0.id == "fr-home-foundation-step-rb2" })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        guard case .selection(let spec) = activity else {
+            throw XCTSkip("expected a selection activity")
+        }
+        return ActivityAttempt(
+            id: id,
+            packId: pack.id,
+            packVersion: pack.version,
+            lessonId: lesson.id,
+            lessonRevision: lesson.revision,
+            stepId: step.id,
+            activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: .selection(ids: spec.acceptedIds),
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: .correct, independent: true, feedback: "correct"),
+            at: at)
+    }
+
+    private func makeDocument(
+        id: String, title: String, content: String, pack: CoursePack,
+        at: Date, sourceFileName: String = ""
+    ) -> ImportedDocument {
+        ImportedDocument(
+            id: id,
+            title: title,
+            content: content,
+            byteSize: content.data(using: .utf8)!.count,
+            languageSlug: pack.language.slug,
+            sourceFileName: sourceFileName,
+            importedAt: at)
+    }
+
+    func testDocumentSaveAndReadBackPreservesTitleDateAndContent() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let importedAt = Date(timeIntervalSince1970: 1_700_000_123)
+        let doc = makeDocument(
+            id: "doc-1", title: "Ma première lecture",
+            content: "Bonjour tout le monde, je m'appelle Marie.",
+            pack: pack, at: importedAt, sourceFileName: "ma-lecture.txt")
+
+        try store.saveDocument(doc)
+
+        let all = try store.documents()
+        XCTAssertEqual(all.count, 1)
+        XCTAssertEqual(all[0], doc)
+        let loaded = try XCTUnwrap(store.document(id: doc.id))
+        XCTAssertEqual(loaded.title, doc.title)
+        XCTAssertEqual(loaded.content, doc.content)
+        XCTAssertEqual(loaded.byteSize, doc.byteSize)
+        XCTAssertEqual(loaded.languageSlug, pack.language.slug)
+        XCTAssertEqual(loaded.sourceFileName, "ma-lecture.txt")
+        XCTAssertEqual(loaded.importedAt, importedAt)
+
+        // Import order, newest first.
+        let older = makeDocument(
+            id: "doc-0", title: "Older", content: "Un texte.",
+            pack: pack, at: importedAt.addingTimeInterval(-60))
+        try store.saveDocument(older)
+        XCTAssertEqual(try store.documents().map(\.id), ["doc-1", "doc-0"])
+
+        // Done-when (a) at the store level: the save wrote exactly the
+        // document row — zero new rows in the event log or any
+        // sync/export-facing table, so the document text lives only in
+        // the new tables.
+        XCTAssertEqual(try rawCount("events"), 0)
+        XCTAssertEqual(try rawCount("sync_uploads"), 0)
+        XCTAssertEqual(try rawCount("checkpoints"), 0)
+        XCTAssertEqual(try rawCount("checkpoint_tombstones"), 0)
+        XCTAssertEqual(try rawCount("saved_phrases"), 0)
+        XCTAssertEqual(try rawCount("saved_phrase_tombstones"), 0)
+        XCTAssertEqual(try rawCount("listen_state"), 0)
+        XCTAssertEqual(try rawCount("kv"), 0)
+        XCTAssertEqual(try rawCount("imported_documents"), 2)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 0)
+        XCTAssertTrue(try store.unsyncedEvents().isEmpty)
+    }
+
+    /// Done-when (c): deleting a document removes its own rows and links
+    /// and nothing else — the event log stays byte-identical, and the
+    /// phrasebook, checkpoints, tombstones, and sync bookkeeping are
+    /// untouched.
+    func testDocumentDeleteRemovesOnlyDocumentAndLinkRows() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+
+        // Seed the world the delete must NOT touch.
+        let phrase = makePhrase(pack: pack, at: at)
+        try store.savePhrase(phrase)
+        let attempt = try makeAttempt(id: "lib-event-1", pack: pack, at: at)
+        try store.record(.attempt(attempt))
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let checkpoint = LessonCheckpoint(
+            packId: pack.id, lessonId: lesson.id, revision: lesson.revision,
+            stepId: lesson.steps.first!.id, selectedBranches: [:],
+            assistance: [], draft: nil, at: at)
+        try store.saveCheckpoint(checkpoint)
+
+        let doc = makeDocument(
+            id: "doc-del", title: "À supprimer", content: "Le contenu privé.",
+            pack: pack, at: at)
+        try store.saveDocument(doc)
+        try store.linkPhrase(phraseId: phrase.id, documentId: doc.id)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+
+        // Snapshot everything the delete must leave identical.
+        let eventsBefore = try rawEventRows()
+        let checkpointsBefore = try store.allCheckpoints()
+        let savedBefore = try store.allSavedPhrases()
+        let tombstonesBefore = try store.allSavedPhraseTombstones()
+        let checkpointRowsBefore = try rawCount("checkpoints")
+        let syncUploadsBefore = try rawCount("sync_uploads")
+
+        try store.deleteDocument(id: doc.id)
+
+        // The document and its links are gone...
+        XCTAssertNil(try store.document(id: doc.id))
+        XCTAssertTrue(try store.documents().isEmpty)
+        XCTAssertTrue(try store.documentIDs(forPhrase: phrase.id).isEmpty)
+        XCTAssertEqual(try rawCount("imported_documents"), 0)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 0)
+        // ...and nothing else moved: the event log is byte-identical (row
+        // count AND content), and the phrasebook, checkpoints, tombstones,
+        // and sync bookkeeping are untouched.
+        XCTAssertEqual(try rawEventRows(), eventsBefore)
+        XCTAssertEqual(try store.allEvents().count, 1)
+        XCTAssertEqual(
+            try store.allEvents().compactMap { event -> ActivityAttempt? in
+                guard case .attempt(let stored) = event else { return nil }
+                return stored
+            },
+            [attempt])
+        XCTAssertEqual(try store.allCheckpoints(), checkpointsBefore)
+        XCTAssertEqual(try rawCount("checkpoints"), checkpointRowsBefore)
+        XCTAssertEqual(try store.allSavedPhrases(), savedBefore)
+        XCTAssertEqual(try store.savedPhrases().map(\.id), [phrase.id])
+        XCTAssertEqual(try store.allSavedPhraseTombstones(), tombstonesBefore)
+        XCTAssertEqual(try rawCount("sync_uploads"), syncUploadsBefore)
+        XCTAssertEqual(try store.unsyncedEvents().count, 1)
+    }
+
+    /// §3.3 cleanup: a phrase removed from the phrasebook must not leave
+    /// dangling provenance links — the document itself stays.
+    func testUnsavePhraseCleansLinks() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "Doc", content: "Un texte.", pack: pack, at: at)
+        try store.savePhrase(phrase)
+        try store.saveDocument(doc)
+        try store.linkPhrase(phraseId: phrase.id, documentId: doc.id)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+
+        try store.unsavePhrase(id: phrase.id)
+
+        XCTAssertFalse(try store.isPhraseSaved(id: phrase.id))
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 0)
+        XCTAssertNotNil(try store.document(id: doc.id),
+                        "unsaving a phrase never deletes its document")
+    }
+
+    /// §3.2/§6.5: re-linking an existing link is a no-op — one row.
+    func testPhraseLinkDeduplicatesOnDoubleInsert() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let doc = makeDocument(
+            id: "doc-1", title: "Doc", content: "Un texte.", pack: pack, at: at)
+        try store.saveDocument(doc)
+        let phraseId = "\(pack.language.slug)|la gare|the station"
+
+        try store.linkPhrase(phraseId: phraseId, documentId: doc.id)
+        try store.linkPhrase(phraseId: phraseId, documentId: doc.id)
+
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+        XCTAssertEqual(try store.documentIDs(forPhrase: phraseId), ["doc-1"])
+        XCTAssertEqual(try store.phraseLinks().count, 1)
+    }
+}
+
+// MARK: - Library import validator (8.2 §5)
+
+/// Pure, side-effect-free validation of raw UTF-8 text: size cap, UTF-8
+/// decodability, and non-empty — with plain-language errors, mirroring
+/// `ImportValidator`'s discipline.
+final class LibraryImportValidatorTests: XCTestCase {
+
+    func testValidUTF8TextAccepted() throws {
+        let text = "Bonjour ! Ceci est un texte UTF-8. ✨"
+        let data = try XCTUnwrap(text.data(using: .utf8))
+        let result = LibraryImportValidator.validate(data)
+        guard case .success(let decoded) = result else {
+            return XCTFail("valid UTF-8 must pass, got \(result)")
+        }
+        XCTAssertEqual(decoded, text)
+        let reencoded = try XCTUnwrap(decoded.data(using: .utf8))
+        XCTAssertEqual(reencoded, data,
+                       "the decoded text is returned as-is, whitespace included")
+    }
+
+    func testOverSizedTextRejectedWithPlainCopy() {
+        // Exactly at the limit passes (boundary pinned), one byte over
+        // fails before any decoding.
+        let atLimit = Data(repeating: 0x61, count: LibraryImportValidator.maxDocumentBytes)
+        guard case .success = LibraryImportValidator.validate(atLimit) else {
+            return XCTFail("text at exactly the limit must pass")
+        }
+        let over = Data(repeating: 0x61, count: LibraryImportValidator.maxDocumentBytes + 1)
+        let result = LibraryImportValidator.validate(over)
+        guard case .failure(let error) = result else {
+            return XCTFail("oversize text must be rejected, got \(result)")
+        }
+        XCTAssertEqual(error, .tooLarge(
+            actualBytes: LibraryImportValidator.maxDocumentBytes + 1,
+            limitBytes: LibraryImportValidator.maxDocumentBytes))
+        XCTAssertEqual(
+            error.description,
+            "This text is too long to import (the limit is 1 MB).")
+    }
+
+    func testNonUTF8DataRejectedWithPlainCopy() {
+        // 0xC3 starts a two-byte sequence; 0x28 ('(') is not a valid
+        // continuation byte, so this is undecodable UTF-8.
+        let binary: [UInt8] = [0xC3, 0x28]
+        let result = LibraryImportValidator.validate(Data(binary))
+        guard case .failure(let error) = result else {
+            return XCTFail("undecodable data must be rejected, got \(result)")
+        }
+        XCTAssertEqual(error, .notUTF8)
+        XCTAssertEqual(
+            error.description,
+            "This file isn't readable as UTF-8 text. Nothing was imported.")
+    }
+
+    func testEmptyTextRejected() {
+        XCTAssertEqual(LibraryImportValidator.validate(Data()), .failure(.empty))
+        let whitespace = Data(" \n\t  ".utf8)
+        XCTAssertEqual(
+            LibraryImportValidator.validate(whitespace), .failure(.empty))
+        XCTAssertEqual(
+            LibraryImportError.empty.description,
+            "There's no text here to import.")
+    }
+}
+
+// MARK: - Library import/save commit path (8.2 §5-§6)
+
+/// Slice-3 model-layer tests for the two UI commit paths: the import
+/// gateway (raw bytes → validator → document row) and the save sheet's
+/// phrase + link action. The views themselves are thin — all of the logic
+/// they run lives in `LibraryImport` and `LibrarySavePhrase`, which are
+/// UIKit-free by construction.
+@MainActor
+final class LibraryCommitTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-library-commit-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func makeStore() throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+    }
+
+    private func storePath() -> String {
+        tempDir.appendingPathComponent("store.sqlite").path
+    }
+
+    private func rawCount(_ table: String) throws -> Int {
+        let db = try Database(path: storePath())
+        var count = 0
+        try db.query(
+            "SELECT COUNT(*) FROM \(table);",
+            row: { count = Int($0.int64(0)) })
+        return count
+    }
+
+    /// The import commit path both entry points run (§5): raw bytes →
+    /// `LibraryImport.makeDocument` (the single validator gateway) → the
+    /// store row, preserving title, content, byte count, language, and
+    /// the original file name.
+    func testImportCommitValidatesBytesAndWritesDocumentRow() throws {
+        let store = try makeStore()
+        let importedAt = Date(timeIntervalSince1970: 1_700_000_123)
+        let text = "Bonjour tout le monde, je m'appelle Marie."
+        let data = try XCTUnwrap(text.data(using: .utf8))
+
+        let made = LibraryImport.makeDocument(
+            data: data, title: "ma-lecture", languageSlug: "french",
+            sourceFileName: "ma-lecture.txt", importedAt: importedAt)
+        guard case .success(let document) = made else {
+            return XCTFail("valid UTF-8 text must commit, got \(made)")
+        }
+        try store.saveDocument(document)
+
+        let loaded = try XCTUnwrap(store.document(id: document.id))
+        XCTAssertEqual(loaded.title, "ma-lecture")
+        XCTAssertEqual(loaded.title, document.title)
+        XCTAssertEqual(loaded.content, text)
+        XCTAssertEqual(loaded.byteSize, data.count)
+        XCTAssertEqual(loaded.languageSlug, "french")
+        XCTAssertEqual(loaded.sourceFileName, "ma-lecture.txt")
+        XCTAssertEqual(loaded.importedAt, importedAt)
+        XCTAssertEqual(try rawCount("imported_documents"), 1)
+        XCTAssertEqual(try rawCount("events"), 0,
+                       "an import writes no event-log rows")
+    }
+
+    /// Safe rejection (§5.2): an oversized document fails the single
+    /// gateway with the pinned plain copy, and nothing is written.
+    func testImportCommitRejectsOversizeAndWritesNothing() throws {
+        let store = try makeStore()
+        let over = Data(repeating: 0x61,
+                        count: LibraryImportValidator.maxDocumentBytes + 1)
+
+        let made = LibraryImport.makeDocument(
+            data: over, title: "Big", languageSlug: "french",
+            sourceFileName: "big.txt", importedAt: Date())
+        guard case .failure(let error) = made else {
+            return XCTFail("oversize text must be rejected, got \(made)")
+        }
+        XCTAssertEqual(error, .tooLarge(
+            actualBytes: LibraryImportValidator.maxDocumentBytes + 1,
+            limitBytes: LibraryImportValidator.maxDocumentBytes))
+        XCTAssertEqual(
+            error.description,
+            "This text is too long to import (the limit is 1 MB).")
+        XCTAssertTrue(try store.documents().isEmpty,
+                      "a rejected import writes nothing")
+        XCTAssertEqual(try rawCount("imported_documents"), 0)
+    }
+
+    /// Safe rejection (§5.2): undecodable data fails the gateway with the
+    /// plain copy, and nothing is written.
+    func testImportCommitRejectsNonUTF8AndWritesNothing() throws {
+        let store = try makeStore()
+        let binary: [UInt8] = [0xC3, 0x28]
+
+        let made = LibraryImport.makeDocument(
+            data: Data(binary), title: "Binary", languageSlug: "french",
+            sourceFileName: "binary.txt", importedAt: Date())
+        guard case .failure(let error) = made else {
+            return XCTFail("undecodable data must be rejected, got \(made)")
+        }
+        XCTAssertEqual(error, .notUTF8)
+        XCTAssertEqual(
+            error.description,
+            "This file isn't readable as UTF-8 text. Nothing was imported.")
+        XCTAssertTrue(try store.documents().isEmpty)
+        XCTAssertEqual(try rawCount("imported_documents"), 0)
+    }
+
+    /// §3.1: a blank or whitespace title falls back to "Untitled"; the
+    /// paste default ("Pasted text") and file titles pass through as-is.
+    func testImportCommitFallsBackToUntitledForBlankTitle() throws {
+        for blank in ["", "   ", "\n\t"] {
+            let made = LibraryImport.makeDocument(
+                data: Data("Un texte.".utf8), title: blank,
+                languageSlug: "french", sourceFileName: "", importedAt: Date())
+            guard case .success(let document) = made else {
+                return XCTFail("valid text must commit, got \(made)")
+            }
+            XCTAssertEqual(document.title, "Untitled",
+                           "blank title \(blank.debugDescription) falls back")
+        }
+        let pasted = LibraryImport.makeDocument(
+            data: Data("Un texte.".utf8), title: "Pasted text",
+            languageSlug: "french", sourceFileName: "", importedAt: Date())
+        guard case .success(let document) = pasted else {
+            return XCTFail("valid text must commit, got \(pasted)")
+        }
+        XCTAssertEqual(document.title, "Pasted text")
+        XCTAssertEqual(document.sourceFileName, "",
+                       "paste imports carry no file name")
+    }
+
+    /// §5.1: the file-name title heuristic strips the extension, and a
+    /// name that doesn't survive stripping falls back to the paste label.
+    func testDocumentTitleFromFileURLStripsExtension() {
+        let url = URL(fileURLWithPath: "/tmp/ma-lecture.txt")
+        XCTAssertEqual(LibraryImport.title(fromFileURL: url), "ma-lecture")
+        let nested = URL(fileURLWithPath: "/some/dir/chapitre-3.md")
+        XCTAssertEqual(LibraryImport.title(fromFileURL: nested), "chapitre-3")
+        XCTAssertEqual(
+            LibraryImport.title(fromFileURL: URL(fileURLWithPath: "/tmp/README")),
+            "README")
+        XCTAssertEqual(
+            LibraryImport.title(fromFileURL: URL(fileURLWithPath: "/tmp/")),
+            "Pasted text")
+    }
+
+    /// §6.2/§11.3: the reader selection becomes a phrase only when it is
+    /// non-empty after trimming and at most 200 characters — boundary
+    /// pinned in both directions.
+    func testPhraseTargetTrimsSelectionAndCapsAtTwoHundredChars() {
+        XCTAssertNil(LibraryImport.phraseTarget(from: ""))
+        XCTAssertNil(LibraryImport.phraseTarget(from: "   \n\t  "))
+        XCTAssertEqual(
+            LibraryImport.phraseTarget(from: "  Le chat  "), "Le chat")
+        let atLimit = String(repeating: "a", count: LibraryImport.maxSelectionLength)
+        XCTAssertEqual(
+            LibraryImport.phraseTarget(from: atLimit), atLimit)
+        let over = String(repeating: "a", count: LibraryImport.maxSelectionLength + 1)
+        XCTAssertNil(LibraryImport.phraseTarget(from: over))
+    }
+
+    /// §6.5: the save sheet's single action writes exactly one phrase row
+    /// plus one link row, with the document title as `source` and empty
+    /// `sourcePackId`/`sourceLessonId` — so the phrasebook never
+    /// deep-links into a document (§3.3) — and the linked phrase becomes a
+    /// review candidate (§4.2).
+    func testSaveSheetCommitWritesPhraseAndLinkWithEmptyPackSources() throws {
+        let store = try makeStore()
+        let made = LibraryImport.makeDocument(
+            data: Data("La gare est grande.".utf8),
+            title: "La ville", languageSlug: "french",
+            sourceFileName: "la-ville.txt", importedAt: Date())
+        guard case .success(let document) = made else {
+            return XCTFail("valid text must commit, got \(made)")
+        }
+        try store.saveDocument(document)
+
+        let savedAt = Date(timeIntervalSince1970: 1_700_000_500)
+        let phrase = try LibrarySavePhrase.commit(
+            store: store, document: document,
+            target: "  la gare  ", meaning: "the station", savedAt: savedAt)
+
+        XCTAssertEqual(
+            phrase.id,
+            LearningStore.savedPhraseId(
+                languageSlug: "french", target: "la gare", meaning: "the station"),
+            "the phrase id stays the deterministic language|target|meaning key")
+        let rows = try store.savedPhrases()
+        XCTAssertEqual(rows.count, 1)
+        XCTAssertEqual(rows[0].source, document.title,
+                       "source is the document title (§6.5.3)")
+        XCTAssertEqual(rows[0].sourcePackId, "",
+                       "library saves never carry a pack id")
+        XCTAssertEqual(rows[0].sourceLessonId, "",
+                       "library saves never carry a lesson id")
+        XCTAssertEqual(rows[0].target, "la gare", "target is trimmed")
+        XCTAssertEqual(rows[0].meaning, "the station")
+
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+        XCTAssertEqual(try store.phraseLinks(), [ImportedPhraseLink(
+            phraseId: phrase.id, documentId: document.id)])
+
+        // The linked phrase is a live review candidate; the same save from
+        // a second document is one phrase + one due item (§4.3).
+        let candidates = LibraryReview.candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        XCTAssertEqual(candidates.map(\.id), [phrase.id])
+    }
+}
+
+// MARK: - Phrase-review projection (8.2 §4)
+
+/// The pure phrase-review projection: the exact FSRS fold from
+/// `project(pack:)`, the deterministic evidence key, and the
+/// link-joined candidate rule.
+@MainActor
+final class LibraryReviewTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-library-review-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func makeStore() throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+    }
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    private func storePath() -> String {
+        tempDir.appendingPathComponent("store.sqlite").path
+    }
+
+    private func rawCount(_ table: String) throws -> Int {
+        let db = try Database(path: storePath())
+        var count = 0
+        try db.query(
+            "SELECT COUNT(*) FROM \(table);",
+            row: { count = Int($0.int64(0)) })
+        return count
+    }
+
+    private func makePhrase(pack: CoursePack, at: Date) -> SavedPhrase {
+        let target = "la gare"
+        let meaning = "the station"
+        return SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: pack.language.slug, target: target, meaning: meaning),
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: target,
+            meaning: meaning,
+            source: "Ma première lecture",
+            savedAt: at)
+    }
+
+    /// A phrase-review attempt of the exact shape
+    /// `ReviewItem.makeAttempt(verdict:)` records: self-rated, verdict
+    /// mapped to outcome/independence, pack id `practice-library`.
+    private func makePhraseAttempt(
+        id: String, phraseId: String, verdict: ReviewVerdict, at: Date
+    ) -> ActivityAttempt {
+        ActivityAttempt(
+            id: id,
+            packId: LibraryReview.packId,
+            packVersion: LibraryReview.packVersion,
+            lessonId: "",
+            lessonRevision: 0,
+            stepId: "review",
+            activityId: "phrase-review",
+            activityRevision: 0,
+            evidenceKey: LibraryReview.evidenceKey(phraseId: phraseId),
+            response: verdict.response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: verdict.outcome,
+                independent: verdict.independent,
+                feedback: ""),
+            at: at)
+    }
+
+    /// A pack-valid attempt on fr-home-foundation-step-rb2 (a selection
+    /// activity) carrying the same verdict, so the pack fold sees the same
+    /// grade and timing as the phrase fold.
+    private func makeLessonVerdictAttempt(
+        id: String, pack: CoursePack, verdict: ReviewVerdict, at: Date
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let step = try XCTUnwrap(
+            lesson.steps.first { $0.id == "fr-home-foundation-step-rb2" })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        return ActivityAttempt(
+            id: id,
+            packId: pack.id,
+            packVersion: pack.version,
+            lessonId: lesson.id,
+            lessonRevision: lesson.revision,
+            stepId: step.id,
+            activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: verdict.response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: verdict.outcome,
+                independent: verdict.independent,
+                feedback: ""),
+            at: at)
+    }
+
+    /// §4.2: the phrase-review fold is the pack fold with a fixed mode —
+    /// identical grades and timings produce the identical `FsrsState` and
+    /// success/failure tallies from both paths, and the projected record
+    /// drives a due card exactly like the pack side.
+    func testLibraryProjectionMirrorsLessonFoldExactly() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let phraseId = "\(pack.language.slug)|la gare|the station"
+        // One-second spacings and good/again/hard grades keep the FSRS
+        // interval fuzz out of the picture (stability stays below the
+        // 2.5-day fuzz threshold), so this pins the exact same numbers.
+        let times = [
+            Date(timeIntervalSince1970: 1_700_000_000),
+            Date(timeIntervalSince1970: 1_700_000_001),
+            Date(timeIntervalSince1970: 1_700_000_002),
+            Date(timeIntervalSince1970: 1_700_000_003),
+        ]
+        let verdicts: [ReviewVerdict] = [.exact, .exact, .tryAgain, .close]
+
+        var lessonAttempts: [ActivityAttempt] = []
+        var phraseAttempts: [ActivityAttempt] = []
+        for (index, verdict) in verdicts.enumerated() {
+            lessonAttempts.append(try makeLessonVerdictAttempt(
+                id: "mirror-lesson-\(index)", pack: pack,
+                verdict: verdict, at: times[index]))
+            phraseAttempts.append(makePhraseAttempt(
+                id: "mirror-phrase-\(index)", phraseId: phraseId,
+                verdict: verdict, at: times[index]))
+        }
+        for attempt in lessonAttempts {
+            try store.record(.attempt(attempt))
+        }
+
+        let lessonKey = try XCTUnwrap(lessonAttempts.first?.evidenceKey)
+        let progress = try store.project(pack: pack)
+        let lessonRecord = try XCTUnwrap(progress.evidence[lessonKey])
+        let phraseKey = LibraryReview.evidenceKey(phraseId: phraseId)
+        let phraseRecord = try XCTUnwrap(
+            LibraryReview.project(attempts: phraseAttempts)[phraseKey])
+
+        XCTAssertEqual(phraseRecord.fsrs, lessonRecord.fsrs)
+        XCTAssertEqual(phraseRecord.successes, lessonRecord.successes)
+        XCTAssertEqual(phraseRecord.failures, lessonRecord.failures)
+        XCTAssertEqual(phraseRecord.successes, 2)
+        XCTAssertEqual(phraseRecord.failures, 2)
+        XCTAssertEqual(phraseRecord.mode, .production)
+
+        // The projected record drives a due card exactly like the pack
+        // side: same dueAt (the same fold), same presentation ordinal.
+        let phrase = SavedPhrase(
+            id: phraseId,
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: "la gare",
+            meaning: "the station",
+            source: "Ma première lecture",
+            savedAt: times[0])
+        // The card surfaces exactly when its folded schedule says it is
+        // due — ask one second past dueAt instead of assuming an absolute
+        // horizon (the FSRS interval after these four grades is longer
+        // than a minute). XCTUnwrap instead of subscript so a regression
+        // fails cleanly instead of crashing the whole test run.
+        let (due, _) = LibraryReview.loadDuePhrases(
+            phrases: [phrase], attempts: phraseAttempts,
+            now: phraseRecord.fsrs.dueAt.addingTimeInterval(1))
+        XCTAssertEqual(due.count, 1)
+        let card = try XCTUnwrap(due.first)
+        XCTAssertEqual(card.evidenceKey, phraseKey)
+        XCTAssertEqual(card.dueAt, phraseRecord.fsrs.dueAt)
+        XCTAssertEqual(card.dueAt, lessonRecord.fsrs.dueAt)
+        XCTAssertEqual(card.prompt, "la gare")
+        XCTAssertEqual(card.answerText, "the station")
+        XCTAssertEqual(card.courseTitle, "French")
+        XCTAssertEqual(card.lessonTitle, "Ma première lecture")
+        XCTAssertEqual(card.packId, LibraryReview.packId)
+        XCTAssertEqual(card.packVersion, LibraryReview.packVersion)
+    }
+
+    /// §4.3: the evidence key is a pure function of the deterministic
+    /// savedPhraseId — one phrase row ⇔ one evidence key, stable across
+    /// re-saves, distinct across distinct phrases.
+    func testPhraseReviewEvidenceKeyIsDeterministicPerPhraseId() {
+        let first = LibraryReview.evidenceKey(phraseId: "french|la gare|the station")
+        XCTAssertEqual(first, "phrase-review|french|la gare|the station")
+        // Deterministic: same phrase id → same key, every time.
+        XCTAssertEqual(
+            LibraryReview.evidenceKey(phraseId: "french|la gare|the station"),
+            first)
+        // Distinct phrase id → distinct key.
+        XCTAssertNotEqual(
+            LibraryReview.evidenceKey(phraseId: "french|la gare|the station"),
+            LibraryReview.evidenceKey(phraseId: "french|la gare|the bus stop"))
+        XCTAssertNotEqual(
+            LibraryReview.evidenceKey(phraseId: "french|la gare|the station"),
+            LibraryReview.evidenceKey(phraseId: "french|le train|the train"))
+        // The key is exactly the savedPhraseId under the phrase-review
+        // prefix — the identity chain the dedup story rests on.
+        XCTAssertEqual(
+            LibraryReview.evidenceKey(
+                phraseId: LearningStore.savedPhraseId(
+                    languageSlug: "french", target: "la gare",
+                    meaning: "the station")),
+            first)
+    }
+
+    /// §4.3.2: saving the same phrase twice — same document — collapses
+    /// to one saved_phrases row, one link row, one evidence key, and one
+    /// (immediately-due) card. No duplicate cards by construction.
+    func testDuplicateSaveProducesOneRowOneEvidenceKey() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = ImportedDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            byteSize: "La gare est grande.".data(using: .utf8)!.count,
+            languageSlug: pack.language.slug, sourceFileName: "",
+            importedAt: at)
+        try store.saveDocument(doc)
+
+        try store.savePhrase(phrase)
+        try store.linkPhrase(phraseId: phrase.id, documentId: doc.id)
+        // The same save again: deterministic id → no-op everywhere.
+        try store.savePhrase(phrase)
+        try store.linkPhrase(phraseId: phrase.id, documentId: doc.id)
+
+        XCTAssertEqual(try store.savedPhrases().count, 1)
+        XCTAssertEqual(try rawCount("saved_phrases"), 1)
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 1)
+
+        // One candidate, one evidence key, one due card.
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        let candidates = LibraryReview.candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        XCTAssertEqual(candidates.count, 1)
+        let (due, _) = LibraryReview.loadDuePhrases(
+            phrases: candidates, attempts: [], now: at.addingTimeInterval(60))
+        XCTAssertEqual(due.count, 1)
+        XCTAssertEqual(due[0].evidenceKey, key)
+        XCTAssertEqual(due[0].prompt, phrase.target)
+        // A fresh phrase is due immediately: Fsrs.initial at save time.
+        XCTAssertEqual(due[0].dueAt, at)
+    }
+
+    /// §4.2/§8.2: the queue reflects live documents only — a saved phrase
+    /// with no imported_phrase_links row (lesson-saved, or its documents
+    /// deleted) is not a candidate and never enters the due queue.
+    func testPhraseWithoutLinkIsNotACandidate() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let unlinked = makePhrase(pack: pack, at: at)
+        try store.savePhrase(unlinked)
+
+        // No links at all → no candidates.
+        let none = LibraryReview.candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        XCTAssertTrue(none.isEmpty)
+        let (dueNone, _) = LibraryReview.loadDuePhrases(
+            phrases: none, attempts: [], now: at.addingTimeInterval(60))
+        XCTAssertTrue(dueNone.isEmpty)
+
+        // Linking one of two phrases admits exactly that one.
+        let linked = SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: pack.language.slug, target: "le train",
+                meaning: "the train"),
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: "le train",
+            meaning: "the train",
+            source: "Doc",
+            savedAt: at)
+        try store.savePhrase(linked)
+        try store.linkPhrase(phraseId: linked.id, documentId: "doc-1")
+
+        let after = LibraryReview.candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        XCTAssertEqual(after.map(\.id), [linked.id])
+        let (due, _) = LibraryReview.loadDuePhrases(
+            phrases: after, attempts: [], now: at.addingTimeInterval(60))
+        XCTAssertEqual(
+            due.map(\.evidenceKey),
+            [LibraryReview.evidenceKey(phraseId: linked.id)])
+    }
+}
+
+// MARK: - ReviewModel × library merge (8.2 §4.2, slice 2)
+
+/// The library stream merged into the Review tab: phrases saved from live
+/// documents enter the All-courses due queue, tricky list, and forecast
+/// through `ReviewModel.reloadScoped()` — one phrase row ⇔ one evidence
+/// key ⇔ one FSRS chain, so duplicates collapse by construction. The
+/// focus-course scope, Home, widgets, reminders, and warm-ups stay on
+/// bundled packs only.
+@MainActor
+final class ReviewLibraryTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-review-library-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(
+            at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+        tempDir = nil
+    }
+
+    private func makeStore() throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+    }
+
+    private func storePath() -> String {
+        tempDir.appendingPathComponent("store.sqlite").path
+    }
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    private func rawCount(_ table: String) throws -> Int {
+        let db = try Database(path: storePath())
+        var count = 0
+        try db.query(
+            "SELECT COUNT(*) FROM \(table);",
+            row: { count = Int($0.int64(0)) })
+        return count
+    }
+
+    /// The exact stored event rows (id + payload), one string per row
+    /// joined with NUL — a byte-for-byte comparison of the event log.
+    private func rawEventRows() throws -> [String] {
+        let db = try Database(path: storePath())
+        var rows: [String] = []
+        try db.query(
+            "SELECT id, payload FROM events ORDER BY at_ms, id;",
+            row: { rows.append(($0.text(0) ?? "") + "\u{0}" + ($0.text(1) ?? "")) })
+        return rows
+    }
+
+    /// A deterministic saved phrase (id = language|target|meaning) whose
+    /// savedAt is the queue's "date saved" for a fresh, never-reviewed card.
+    private func makePhrase(pack: CoursePack, at: Date) -> SavedPhrase {
+        let target = "la gare"
+        let meaning = "the station"
+        return SavedPhrase(
+            id: LearningStore.savedPhraseId(
+                languageSlug: pack.language.slug, target: target, meaning: meaning),
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: target,
+            meaning: meaning,
+            source: "Ma première lecture",
+            savedAt: at)
+    }
+
+    private func makeDocument(
+        id: String, title: String, content: String, pack: CoursePack,
+        at: Date
+    ) -> ImportedDocument {
+        ImportedDocument(
+            id: id, title: title, content: content,
+            byteSize: content.data(using: .utf8)!.count,
+            languageSlug: pack.language.slug, sourceFileName: "",
+            importedAt: at)
+    }
+
+    /// Saves the phrase to a live document — the exact store calls the
+    /// save sheet runs (§6.5) — so the phrase becomes a review candidate.
+    /// The sheet prefills `source` with the document title (read-only,
+    /// §6.5.3), so the saved row carries it as its provenance (§3.3);
+    /// `sourcePackId`/`sourceLessonId` stay empty so the phrasebook's
+    /// "open lesson" tap never deep-links into a document (§3.3).
+    private func saveLibraryPhrase(
+        store: LearningStore, phrase: SavedPhrase, document: ImportedDocument
+    ) throws {
+        try store.saveDocument(document)
+        var fromDocument = phrase
+        fromDocument.source = document.title
+        try store.savePhrase(fromDocument)
+        try store.linkPhrase(phraseId: phrase.id, documentId: document.id)
+    }
+
+    /// A phrase-review attempt of the exact shape
+    /// `ReviewItem.makeAttempt(verdict:)` records: self-rated, verdict
+    /// mapped to outcome/independence, pack id `practice-library`.
+    private func makePhraseAttempt(
+        id: String, phraseId: String, verdict: ReviewVerdict, at: Date
+    ) -> ActivityAttempt {
+        ActivityAttempt(
+            id: id,
+            packId: LibraryReview.packId,
+            packVersion: LibraryReview.packVersion,
+            lessonId: "",
+            lessonRevision: 0,
+            stepId: "review",
+            activityId: "phrase-review",
+            activityRevision: 0,
+            evidenceKey: LibraryReview.evidenceKey(phraseId: phraseId),
+            response: verdict.response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: verdict.outcome,
+                independent: verdict.independent,
+                feedback: ""),
+            at: at)
+    }
+
+    /// A pack-valid due attempt (a selection or cloze step of the first
+    /// available lesson), so the merged queue has a pack card to coexist
+    /// with the phrase card.
+    private func makeDueAttempt(
+        id: String, pack: CoursePack, at: Date
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(
+            pack.lessons.first { lesson in
+                lesson.steps.contains { isChoiceStep($0, in: pack) }
+            }, "\(pack.id) needs a lesson with a selection or cloze step")
+        let step = try XCTUnwrap(
+            lesson.steps.first { isChoiceStep($0, in: pack) })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        let response: AttemptResponse
+        switch activity {
+        case .selection(let spec):
+            response = .selection(ids: spec.acceptedIds)
+        case .cloze(let spec):
+            response = .cloze(values: Dictionary(
+                uniqueKeysWithValues: spec.blanks.map {
+                    ($0.key, $0.value.answers.first ?? "")
+                }))
+        default:
+            throw XCTSkip("expected a selection or cloze step")
+        }
+        return ActivityAttempt(
+            id: id, packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            stepId: step.id, activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: response,
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: .correct, independent: true, feedback: "correct"),
+            at: at)
+    }
+
+    private func isChoiceStep(_ step: LessonStep, in pack: CoursePack) -> Bool {
+        guard let activity = pack.activity(id: step.activityId) else { return false }
+        if case .selection = activity { return true }
+        if case .cloze = activity { return true }
+        return false
+    }
+
+    /// The stored phrase-review attempt events, oldest first.
+    private func phraseAttempts(in events: [LearningEvent]) -> [ActivityAttempt] {
+        events.compactMap { event -> ActivityAttempt? in
+            guard case .attempt(let attempt) = event,
+                  attempt.packId == LibraryReview.packId else { return nil }
+            return attempt
+        }
+    }
+
+    // MARK: Due queue: one linked phrase, one due card
+
+    /// Done-when (b): a linked saved phrase with no review history is due
+    /// in the merged queue exactly once — immediately at its save time,
+    /// with one evidence key and provenance + TTS language on the card.
+    func testLibraryPhrasesEnterDueQueueAfterSave() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1,
+                       "a linked new phrase is due exactly once")
+        let item = try XCTUnwrap(
+            model.due.first { $0.evidenceKey == key })
+        XCTAssertEqual(item.packId, LibraryReview.packId)
+        // A fresh phrase is due immediately: Fsrs.initial at save time.
+        XCTAssertEqual(item.dueAt, at)
+        XCTAssertEqual(item.prompt, phrase.target)
+        XCTAssertEqual(item.answerText, phrase.meaning)
+        XCTAssertEqual(item.courseTitle, pack.language.displayName)
+        XCTAssertEqual(item.lessonTitle, doc.title)
+        // TTS resolves the phrase's saved language, not the English fallback.
+        XCTAssertEqual(model.languageCode(for: item),
+                       ShadowVoice.languageCode(for: phrase.languageSlug))
+        XCTAssertTrue(model.tricky.isEmpty)
+        XCTAssertEqual(model.dueTomorrowCount, 0)
+        XCTAssertNil(model.nextDueAt)
+    }
+
+    /// §4.3: saving the same phrase twice — from two different documents —
+    /// yields one saved row, one evidence key, and exactly ONE due item in
+    /// the merged queue. No duplicate cards, no duplicate keys.
+    func testSamePhraseSavedTwiceYieldsOneDueItem() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let firstDoc = makeDocument(
+            id: "doc-a", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        let secondDoc = makeDocument(
+            id: "doc-b", title: "Le train", content: "Le train part.",
+            pack: pack, at: at)
+        // The same deterministic phrase saved from both documents.
+        try saveLibraryPhrase(store: store, phrase: phrase, document: firstDoc)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: secondDoc)
+        XCTAssertEqual(try store.savedPhrases().count, 1,
+                       "re-saving the same phrase must not add a row")
+        XCTAssertEqual(try rawCount("imported_phrase_links"), 2,
+                       "one link row per source document")
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1,
+                       "two saves must still yield exactly one due item")
+        XCTAssertEqual(model.due.map(\.evidenceKey), [key],
+                       "exactly one evidence key in the due queue")
+    }
+
+    // MARK: Verdict round-trip through the existing pipeline
+
+    /// The graded phrase card records through the untouched
+    /// `ReviewItem.makeAttempt` → `store.record(.attempt)` pipeline with
+    /// the library pack id and the phrase evidence key, leaves the merged
+    /// due queue, and returns when its scheduled dueAt arrives —
+    /// schedule-relative, exactly like the projection mirror test.
+    func testPhraseSaveReschedulesThroughSameFsrsFoldAsLessonReview() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        let item = try XCTUnwrap(
+            model.due.first { $0.evidenceKey == key },
+            "the phrase card must be due before grading")
+        XCTAssertEqual(item.packId, LibraryReview.packId)
+
+        // Grade through the exact pipeline `ReviewModel.recordVerdict`
+        // uses (store.record of the item's attempt) minus the widget
+        // snapshot write.
+        let gradedAt = Date()
+        try store.record(.attempt(item.makeAttempt(verdict: .exact, at: gradedAt)))
+
+        // A new `.attempt` event landed: library pack id + phrase key.
+        let (events, _) = try store.allEventsWithQuarantine()
+        let attempts = phraseAttempts(in: events)
+        XCTAssertEqual(attempts.count, 1)
+        let recorded = try XCTUnwrap(attempts.first)
+        XCTAssertEqual(recorded.packId, LibraryReview.packId)
+        XCTAssertEqual(recorded.packVersion, LibraryReview.packVersion)
+        XCTAssertEqual(recorded.evidenceKey, key)
+        XCTAssertEqual(recorded.response, ReviewVerdict.exact.response)
+        XCTAssertTrue(recorded.evaluation.outcome == .correct)
+        XCTAssertTrue(recorded.evaluation.independent)
+
+        // The FSRS chain advanced and the card left the due queue.
+        let record = try XCTUnwrap(
+            LibraryReview.project(attempts: attempts)[key])
+        XCTAssertEqual(record.fsrs.reps, 1)
+        XCTAssertGreaterThan(record.fsrs.dueAt, gradedAt)
+        let refreshed = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        XCTAssertFalse(
+            refreshed.due.contains { $0.evidenceKey == key },
+            "a fresh verdict must schedule the phrase out of 'due'")
+
+        // ...and it returns when its scheduled dueAt arrives: ask one
+        // second past the projected dueAt (never an absolute horizon).
+        let candidates = LibraryReview.candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        let (dueAgain, _) = LibraryReview.loadDuePhrases(
+            phrases: candidates, attempts: attempts,
+            now: record.fsrs.dueAt.addingTimeInterval(1))
+        XCTAssertEqual(dueAgain.count, 1)
+        let returned = try XCTUnwrap(dueAgain.first)
+        XCTAssertEqual(returned.evidenceKey, key)
+        XCTAssertEqual(returned.dueAt, record.fsrs.dueAt)
+    }
+
+    /// §4.2/§8.2: a phrase with no live document link — saved from a
+    /// lesson, or its document deleted — never enters the merged queue.
+    /// Linking it admits exactly that one on the next reload.
+    func testUnlinkedPhraseNeverAppears() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        try store.savePhrase(phrase)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        XCTAssertTrue(model.due.isEmpty, "an unlinked phrase must never be due")
+
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        try store.saveDocument(doc)
+        try store.linkPhrase(phraseId: phrase.id, documentId: doc.id)
+        model.applyScope()
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1)
+    }
+
+    /// Integration does not double-count or re-init: a phrase already
+    /// carrying FSRS history (pre-seeded attempt events) projects with the
+    /// same dueAt in the merged queue as in the pure projection — one item,
+    /// not two, never re-initialized at its save time.
+    func testPhraseWithHistoryProjectsSameDueAtInMergedQueue() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        // Pre-seeded review history: two real phrase-review attempts.
+        for (index, verdict) in [ReviewVerdict.exact, .close].enumerated() {
+            try store.record(.attempt(makePhraseAttempt(
+                id: "lib-hist-\(index)", phraseId: phrase.id,
+                verdict: verdict, at: at.addingTimeInterval(Double(index)))))
+        }
+        let attempts = phraseAttempts(in: try store.allEventsWithQuarantine().events)
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        let expected = try XCTUnwrap(
+            LibraryReview.project(attempts: attempts)[key])
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let items = model.due.filter { $0.evidenceKey == key }
+        XCTAssertEqual(items.count, 1,
+                       "integration must not double-count a key with history")
+        let item = try XCTUnwrap(items.first)
+        XCTAssertEqual(item.dueAt, expected.fsrs.dueAt,
+                       "the merged queue reuses the pure projection's dueAt")
+        XCTAssertNotEqual(item.dueAt, at,
+                          "history must not re-init the chain at save time")
+        XCTAssertEqual(expected.fsrs.reps, 2)
+    }
+
+    /// No regression: a pack due item and a phrase due item coexist in one
+    /// `reloadScoped()` call, each exactly once, with distinct evidence
+    /// keys.
+    func testPackAndPhraseDueCardsCoexistInOneReload() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        try store.record(.attempt(
+            makeDueAttempt(id: "lib-pack-due", pack: pack, at: at)))
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let phraseKey = LibraryReview.evidenceKey(phraseId: phrase.id)
+        let packItem = try XCTUnwrap(
+            model.due.first { $0.packId == pack.id },
+            "pack due items must still appear in the merged queue")
+        XCTAssertEqual(model.due.count, 2)
+        XCTAssertEqual(model.due.filter { $0.packId == pack.id }.count, 1)
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == phraseKey }.count, 1)
+        XCTAssertNotEqual(phraseKey, packItem.evidenceKey)
+        // The pack card still gets its bundled-course voice.
+        XCTAssertEqual(model.languageCode(for: packItem),
+                       ShadowVoice.languageCode(for: pack.language.slug))
+    }
+
+    /// §4.2 scope semantics: the All-courses scope merges the library
+    /// stream; the focus-course scope excludes it (the library is not a
+    /// course). Switching mid-visit reveals and hides the phrase cards.
+    func testFocusScopeExcludesLibraryWhileAllIncludesIt() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+        XCTAssertEqual(model.scope, .all)
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1,
+                       "All courses must include the library stream")
+
+        model.scope = .focus
+        model.applyScope()
+        XCTAssertTrue(model.due.isEmpty,
+                      "the focus-course scope must exclude library phrases")
+
+        model.scope = .all
+        model.applyScope()
+        XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1)
+    }
+
+    /// §4.2: the library merge lives only inside `ReviewModel`. Home, the
+    /// widget, review reminders, and lesson warm-ups call `ReviewCatalog`
+    /// with the bundled packs directly, and their counts must be unchanged
+    /// by the library stream — a graded phrase never leaks into them.
+    func testLibraryDoesNotChangeHomeWidgetOrReminderCounts() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        // A pack due item, so the bundled path has exactly one card.
+        try store.record(.attempt(
+            makeDueAttempt(id: "lib-home-pack", pack: pack, at: at)))
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        // The phrase already has review history — the stream is live.
+        let seeded = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        let phraseItem = try XCTUnwrap(
+            seeded.due.first { $0.packId == LibraryReview.packId })
+        try store.record(.attempt(phraseItem.makeAttempt(verdict: .exact, at: Date())))
+
+        let due = try ReviewCatalog.loadDue(packs: [pack], store: store)
+        XCTAssertEqual(due.due.count, 1,
+                       "bundled-pack due count must ignore library phrases")
+        XCTAssertEqual(due.due.first?.packId, pack.id)
+        let tricky = try ReviewCatalog.loadTricky(packs: [pack], store: store)
+        XCTAssertTrue(tricky.isEmpty)
+        XCTAssertEqual(
+            try ReviewCatalog.countDueWithin(packs: [pack], store: store, days: 1),
+            0)
+    }
+
+    /// Done-when (b) + §8.2: deleting a document stops the queue from
+    /// scheduling its phrases — the phrase drops out of the merged due
+    /// queue, stays in the phrasebook, and every phrase-review event stays
+    /// in the append-only log.
+    func testDeletingDocumentStopsSchedulingButKeepsPhraseAndEvents() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-del", title: "À supprimer", content: "Le contenu privé.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+
+        let before = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        XCTAssertEqual(before.due.filter { $0.evidenceKey == key }.count, 1)
+
+        // Review history the delete must not touch.
+        try store.record(.attempt(makePhraseAttempt(
+            id: "lib-del-1", phraseId: phrase.id, verdict: .close, at: at)))
+        let eventsBefore = try rawEventRows()
+
+        try store.deleteDocument(id: doc.id)
+
+        let after = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        XCTAssertTrue(after.due.isEmpty,
+                      "deleting the document must stop scheduling its phrase")
+        XCTAssertEqual(try store.savedPhrases().map(\.id), [phrase.id],
+                       "the phrase stays in the phrasebook")
+        XCTAssertTrue(try store.documentIDs(forPhrase: phrase.id).isEmpty)
+        XCTAssertEqual(try rawEventRows(), eventsBefore,
+                       "the delete must not touch the event log")
+    }
+
+    /// The tricky list merges too: a phrase card rated "not yet" joins the
+    /// tricky pass, and a later clean rating retires it.
+    func testPhraseRatedNotYetEntersTrickyList() throws {
+        let store = try makeStore()
+        let pack = try frenchPack()
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let phrase = makePhrase(pack: pack, at: at)
+        let doc = makeDocument(
+            id: "doc-1", title: "La ville", content: "La gare est grande.",
+            pack: pack, at: at)
+        try saveLibraryPhrase(store: store, phrase: phrase, document: doc)
+        let key = LibraryReview.evidenceKey(phraseId: phrase.id)
+
+        let model = try ReviewModel(
+            store: store, packs: [pack], focusSlug: "french")
+        XCTAssertTrue(model.tricky.isEmpty)
+
+        let item = try XCTUnwrap(model.due.first { $0.evidenceKey == key })
+        try store.record(.attempt(item.makeAttempt(verdict: .tryAgain, at: Date())))
+        model.applyScope()
+        let tricky = model.tricky.filter { $0.evidenceKey == key }
+        XCTAssertEqual(tricky.count, 1,
+                       "a 'not yet' rating must put the phrase in the tricky list")
+        XCTAssertEqual(tricky.first?.packId, LibraryReview.packId)
+
+        // A clean rating retires it from the tricky list.
+        try store.record(.attempt(item.makeAttempt(verdict: .exact, at: Date())))
+        model.applyScope()
+        XCTAssertTrue(model.tricky.filter { $0.evidenceKey == key }.isEmpty)
     }
 }

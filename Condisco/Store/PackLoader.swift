@@ -28,8 +28,10 @@ enum PackLoadError: Error, LocalizedError {
 }
 
 enum PackLoader {
-    /// Pack basenames in the order the Courses tab lists them.
-    static let packFilenames = ["french", "italian", "german", "portuguese", "spanish"]
+    /// Pack basenames in the order the Courses tab lists them. Derived from
+    /// `CourseRegistry` so the registry is the single source of the
+    /// slug/order mapping for all five courses.
+    static let packFilenames = CourseRegistry.slugs
 
     static func contentDirectory() -> URL? {
         Bundle.main.url(forResource: "Content", withExtension: nil)

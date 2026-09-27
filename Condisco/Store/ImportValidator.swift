@@ -32,6 +32,11 @@ struct ImportPreview: Identifiable {
     var savedPhraseTombstones: [SavedPhraseTombstone]
     var listenState: [ListenStateRow]
     var placement: [ExportedPlacement]
+    /// Imported library documents and their phrase links (8.2 slice 4).
+    /// Empty for version-1 and legacy files, which never carried these
+    /// sections.
+    var documents: [StoredImportedDocument]
+    var phraseLinks: [StoredImportedPhraseLink]
 
     var id: String { UUID().uuidString }
 }
@@ -62,6 +67,8 @@ enum ImportValidationError: Error, CustomStringConvertible, Equatable {
     case invalidCheckpoint(packId: String, lessonId: String)
     /// A listen position is not a finite, non-negative number.
     case invalidListenPosition(trackId: String, position: Double)
+    /// The export lists the same library document id more than once.
+    case duplicateDocumentID(String)
 
     var description: String {
         switch self {
@@ -86,6 +93,8 @@ enum ImportValidationError: Error, CustomStringConvertible, Equatable {
             return "A checkpoint in \(packId)/\(lessonId) could not be read. Nothing was imported."
         case .invalidListenPosition(let trackId, let position):
             return "The listen position for \(trackId) is not a valid number (\(position)). Nothing was imported."
+        case .duplicateDocumentID(let id):
+            return "This export lists the library document \(id) more than once. Nothing was imported."
         }
     }
 }
@@ -97,9 +106,15 @@ enum ImportValidator {
     /// memory or battery risk. Named and pinned so the bound is auditable.
     static let maxImportSizeBytes = 50 * 1024 * 1024
 
-    /// The export-format version this build can read (see
-    /// `DataExport.formatVersion`).
-    static let supportedFormatVersion = 1
+    /// The export-format versions this build can read (see
+    /// `DataExport.formatVersion`). The range covers every version from 1
+    /// up to the current one: version-1 files carry no document sections —
+    /// a v1 file is a v2 file with empty document arrays — so they must
+    /// validate unchanged (back-compat is mandatory, 8.2 §7). Newer
+    /// versions are rejected so a future-format export can never be
+    /// misread as today's.
+    static let supportedFormatVersion = 2
+    static let readableFormatVersions = 1...Self.supportedFormatVersion
 
     /// The app marker every export carries. Files without it are not
     /// Condisco exports.
@@ -141,7 +156,7 @@ enum ImportValidator {
         let preview: ImportPreview
         if let version = object["formatVersion"] as? Int {
             // A versioned, modern export.
-            guard version == supportedFormatVersion else {
+            guard readableFormatVersions.contains(version) else {
                 return .failure(.unsupportedFormatVersion(version))
             }
             do {
@@ -157,7 +172,9 @@ enum ImportValidator {
                     savedPhrases: document.savedPhrases,
                     savedPhraseTombstones: document.savedPhraseTombstones,
                     listenState: document.listenState,
-                    placement: document.placement)
+                    placement: document.placement,
+                    documents: document.importedDocuments ?? [],
+                    phraseLinks: document.importedPhraseLinks ?? [])
             } catch {
                 return .failure(.malformedDocument(
                     detail: "The export data could not be decoded (\(error.localizedDescription))."))
@@ -188,7 +205,9 @@ enum ImportValidator {
                     savedPhrases: [],
                     savedPhraseTombstones: [],
                     listenState: legacy.listenState ?? [],
-                    placement: [])
+                    placement: [],
+                    documents: [],
+                    phraseLinks: [])
             } catch {
                 return .failure(.malformedDocument(
                     detail: "The file does not look like a Condisco export from any version (\(error.localizedDescription))."))
@@ -268,6 +287,16 @@ enum ImportValidator {
             guard row.positionSeconds.isFinite, row.positionSeconds >= 0 else {
                 return .failure(.invalidListenPosition(
                     trackId: row.trackId, position: row.positionSeconds))
+            }
+        }
+
+        // Document ids are the `imported_documents` primary key: a file
+        // listing the same id twice would silently collapse to one row on
+        // restore, so it is rejected up front like a duplicate event id.
+        var seenDocumentIDs: Set<String> = []
+        for document in preview.documents {
+            guard seenDocumentIDs.insert(document.id).inserted else {
+                return .failure(.duplicateDocumentID(document.id))
             }
         }
 

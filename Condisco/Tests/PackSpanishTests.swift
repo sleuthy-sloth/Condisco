@@ -245,10 +245,10 @@ final class PackSpanishTests: XCTestCase {
             from: JSONSerialization.data(withJSONObject: stripped))
         XCTAssertTrue(pack.checkpoints.isEmpty,
                       "packs without the key decode to an empty checkpoint bank")
-        XCTAssertEqual(pack.version, "0.7.9")
-        XCTAssertEqual(pack.lessons.count, 70)
-        XCTAssertEqual(pack.activities.count, 591)
-        XCTAssertEqual(pack.units.count, 20)
+        XCTAssertEqual(pack.version, "0.7.15")
+        XCTAssertEqual(pack.lessons.count, 106)
+        XCTAssertEqual(pack.activities.count, 899)
+        XCTAssertEqual(pack.units.count, 26)
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "an old five-pack JSON must still validate")
     }
@@ -1808,8 +1808,8 @@ final class PackSpanishTests: XCTestCase {
 
         // Remove the launch activities that backed the removed steps (the
         // four 6.1A pilots, Unit 18's sustained text and listening launches,
-        // Unit 19's, and Unit 20's — they would otherwise orphan after their
-        // steps strip).
+        // Unit 19's, Unit 20's, Unit 21's, Unit 22's, and Unit 23's — they
+        // would otherwise orphan after their steps strip).
         let launchActivities: Set<String> = [
             "es-sustained-text-mensajes-launch",
             "es-sustained-text-articulo-launch",
@@ -1821,6 +1821,14 @@ final class PackSpanishTests: XCTestCase {
             "es-b1-listen-oferta-launch",
             "es-b1-text-aniversario-launch",
             "es-b1-listen-fiesta-launch",
+            "es-b1-listen-anecdota-launch",
+            "es-b1-text-cambio-planes-launch",
+            "es-b1-listen-discusion-launch",
+            "es-b1-listen-reparacion-launch",
+            "es-b1-listen-charla-launch",
+            "es-b1-text-cronica-launch",
+            "es-b2-listen-debate-launch",
+            "es-b2-text-postura-launch",
         ]
         // Phase 6.2 open tasks are even newer than the sustained material:
         // the honest pre-6.1A pack strips their steps too and restores the
@@ -1832,6 +1840,12 @@ final class PackSpanishTests: XCTestCase {
             "es-b1-viaje-escrito-open-task",
             "es-b1-plan-escrito-open-task",
             "es-b1-decision-escrito-open-task",
+            "es-b1-historia-escrito-open-task",
+            "es-b1-consecuencia-escrito-open-task",
+            "es-b1-opinion-escrito-open-task",
+            "es-b1-problema-escrito-open-task",
+            "es-b1-resumen-escrito-open-task",
+            "es-b2-argumento-open-task",
         ]
         let removedActivities = launchActivities.union(openTaskActivities)
         let activities = try XCTUnwrap(old["activities"] as? [[String: Any]])
@@ -1851,6 +1865,12 @@ final class PackSpanishTests: XCTestCase {
             "es-b1-viaje-escrito-step-open-task",
             "es-b1-plan-escrito-step-open-task",
             "es-b1-decision-escrito-step-open-task",
+            "es-b1-historia-escrito-step-open-task",
+            "es-b1-consecuencia-escrito-step-open-task",
+            "es-b1-opinion-escrito-step-open-task",
+            "es-b1-problema-escrito-step-open-task",
+            "es-b1-resumen-escrito-step-open-task",
+            "es-b2-argumento-escrito-step-open-task",
         ]
         let lessons = try XCTUnwrap(old["lessons"] as? [[String: Any]])
         old["lessons"] = lessons.map { lesson -> [String: Any] in
@@ -1901,9 +1921,10 @@ final class PackSpanishTests: XCTestCase {
         XCTAssertTrue(pack.sustainedListenings.isEmpty,
                       "packs without the keys decode to an empty sustained-listening array")
         XCTAssertEqual(pack.version, "0.7.2")
-        XCTAssertEqual(pack.lessons.count, 70)
-        XCTAssertEqual(pack.activities.count, 575)
-        XCTAssertEqual(pack.units.count, 20)
+        XCTAssertEqual(pack.lessons.count, 106)
+        XCTAssertEqual(pack.activities.count, 869,
+                       "the pre-6.1A activity count (899 − 16 launch − 11 open tasks − 2 unit-26 launches − 1 unit-26 open task) is unchanged")
+        XCTAssertEqual(pack.units.count, 26)
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "an old five-pack JSON must still validate")
     }
@@ -1984,7 +2005,7 @@ final class PackSpanishTests: XCTestCase {
     func testSustainedListeningDecodesWithOrderedSectionsAndVoiceLabels() throws {
         let pack = try spanishPack()
         let passages = pack.sustainedListenings
-        XCTAssertEqual(passages.count, 4, "the pack ships the sustained listening passages")
+        XCTAssertEqual(passages.count, 9, "the pack ships the sustained listening passages")
         for passage in passages {
             XCTAssertGreaterThanOrEqual(passage.sections.count, 4,
                                         "\(passage.id) must be multi-section (multi-minute)")
@@ -2612,7 +2633,7 @@ final class SustainedExperienceTests: XCTestCase {
                 }
             }
         }
-        XCTAssertEqual(sustainedSteps, 10, "the pack ships ten sustained launch steps")
+        XCTAssertEqual(sustainedSteps, 18, "the pack ships eighteen sustained launch steps")
     }
 
     // MARK: Copy discipline
@@ -2798,6 +2819,12 @@ final class SustainedExperienceTests: XCTestCase {
             "es-b1-viaje-escrito-open-task",
             "es-b1-plan-escrito-open-task",
             "es-b1-decision-escrito-open-task",
+            "es-b1-historia-escrito-open-task",
+            "es-b1-consecuencia-escrito-open-task",
+            "es-b1-opinion-escrito-open-task",
+            "es-b1-problema-escrito-open-task",
+            "es-b1-resumen-escrito-open-task",
+            "es-b2-argumento-open-task",
         ]
         let openTaskSteps: Set<String> = [
             "es-a2-fin-de-semana-step-open-task",
@@ -2806,6 +2833,12 @@ final class SustainedExperienceTests: XCTestCase {
             "es-b1-viaje-escrito-step-open-task",
             "es-b1-plan-escrito-step-open-task",
             "es-b1-decision-escrito-step-open-task",
+            "es-b1-historia-escrito-step-open-task",
+            "es-b1-consecuencia-escrito-step-open-task",
+            "es-b1-opinion-escrito-step-open-task",
+            "es-b1-problema-escrito-step-open-task",
+            "es-b1-resumen-escrito-step-open-task",
+            "es-b2-argumento-escrito-step-open-task",
         ]
         var old = object
         let activities = try XCTUnwrap(old["activities"] as? [[String: Any]])
@@ -2853,10 +2886,10 @@ final class SustainedExperienceTests: XCTestCase {
         }
         XCTAssertEqual(taskCount, 0,
                        "packs without open tasks carry none")
-        XCTAssertEqual(pack.activities.count, 585,
-                       "the pre-6.2 activity count (591 − 6 open tasks) is unchanged")
-        XCTAssertEqual(pack.lessons.count, 70)
-        XCTAssertEqual(pack.version, "0.7.9",
+        XCTAssertEqual(pack.activities.count, 887,
+                       "the pre-6.2 activity count (899 − 11 open tasks − 1 unit-26 open task) is unchanged")
+        XCTAssertEqual(pack.lessons.count, 106)
+        XCTAssertEqual(pack.version, "0.7.15",
                        "only the version string may differ between 6.3 and its pre-6.3 shape")
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "a pack without open tasks must still validate")
@@ -3139,7 +3172,7 @@ final class SustainedExperienceTests: XCTestCase {
     func testHostedDialoguesBindToOneLessonEach() throws {
         let pack = try spanishPack()
         let hosted = pack.dialogues.filter { $0.hostLessonId != nil }
-        XCTAssertEqual(hosted.count, 5)
+        XCTAssertEqual(hosted.count, 11)
         var hosts = Set<String>()
         for dialogue in hosted {
             let host = try XCTUnwrap(dialogue.hostLessonId)
@@ -3154,8 +3187,14 @@ final class SustainedExperienceTests: XCTestCase {
                                    "es-a2-planes-intenciones",
                                    "es-b1-reprogramar-dialogo",
                                    "es-b1-decision-dialogo",
-                                   "es-b1-plan-dialogo"]),
-                       "the Foundation café exchange, the Developing plans exchange, the B1 rebooking dialogue, the B1 job-offer dialogue, and the B1 birthday-plan dialogue")
+                                   "es-b1-plan-dialogo",
+                                   "es-b1-reaccion-dialogo",
+                                   "es-b1-cambio-dialogo",
+                                   "es-b1-opinion-dialogo",
+                                   "es-b1-problema-dialogo",
+                                   "es-b1-aclarar-dialogo",
+                                   "es-b2-dialogo-mediar"]),
+                       "the Foundation café exchange, the Developing plans exchange, the B1 rebooking dialogue, the B1 job-offer dialogue, the B1 birthday-plan dialogue, the B1 storytelling-reaction dialogue, the B1 plan-change negotiation dialogue, the B1 opinion discussion dialogue, the B1 problem-fix negotiation dialogue, the B1 clarification dialogue, and the B2 street-debate mediation dialogue")
         // No orphaned host bindings — every host lesson exists (checked
         // above) and unhosted dialogues stay validated-only.
         for dialogue in pack.dialogues where dialogue.hostLessonId == nil {
@@ -3186,9 +3225,9 @@ final class SustainedExperienceTests: XCTestCase {
             from: JSONSerialization.data(withJSONObject: old))
         XCTAssertTrue(pack.dialogues.isEmpty,
                       "packs without the key decode to an empty exchange array")
-        XCTAssertEqual(pack.activities.count, 591)
-        XCTAssertEqual(pack.lessons.count, 70)
-        XCTAssertEqual(pack.version, "0.7.9",
+        XCTAssertEqual(pack.activities.count, 899)
+        XCTAssertEqual(pack.lessons.count, 106)
+        XCTAssertEqual(pack.version, "0.7.15",
                        "only the version string may differ between 6.3 and its pre-6.3 shape")
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "a pack without dialogues must still validate")
@@ -3267,6 +3306,6 @@ final class SustainedExperienceTests: XCTestCase {
             }
         }
         XCTAssertGreaterThan(checked, 50,
-                             "the pin must cover both exchanges' learner-facing strings")
+                             "the pin must cover every hosted exchange's learner-facing strings")
     }
 }

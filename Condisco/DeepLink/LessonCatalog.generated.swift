@@ -4,7 +4,7 @@
 // Regenerate with: python3 tools/gen_lesson_catalog.py <packs-dir> \
 //     Condisco/DeepLink/LessonCatalog.generated.swift
 //
-// Source: the five bundled course packs (273 lessons).
+// Source: the five bundled course packs (309 lessons).
 // This snapshot backs the Siri/Shortcuts lesson picker in processes
 // where the app bundle's Content folder is not reachable; the intent
 // query prefers the live packs via PackLoader when they are available.
@@ -1923,6 +1923,258 @@ enum GeneratedLessonCatalog {
             title: "El regalo del grupo",
             languageName: "Spanish",
             unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-historia-conectar",
+            title: "Contar una historia",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-anecdota-listen",
+            title: "Una anécdota del sábado",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-equivoco-historia",
+            title: "El mensaje equivocado",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-reaccion-dialogo",
+            title: "¿Y qué pasó?",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-historia-escrito",
+            title: "Cuéntame algo que te pasó",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-relato-mission",
+            title: "El relato",
+            languageName: "Spanish",
+            unitTitle: "Historias que cuento"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-consecuencia-conectar",
+            title: "Por eso, así que",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-cambio-planes-lectura",
+            title: "El cambio de planes",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-si-entonces",
+            title: "Si pasa esto…",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-cambio-dialogo",
+            title: "¿Y si cambiamos?",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-consecuencia-escrito",
+            title: "Tu plan y su consecuencia",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-plan-mission",
+            title: "El plan al aire libre",
+            languageName: "Spanish",
+            unitTitle: "Planes y consecuencias"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-opinion-frames",
+            title: "Dar una opinión",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-opinion-listen",
+            title: "¿Qué opináis?",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-opinion-construccion",
+            title: "Estoy de acuerdo",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-opinion-dialogo",
+            title: "¿Tú qué opinas?",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-opinion-escrito",
+            title: "Tu opinión",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-recomendacion-mission",
+            title: "Recomiéndalo",
+            languageName: "Spanish",
+            unitTitle: "Opiniones con razones"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-problema-frames",
+            title: "Describir un problema",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-problema-listen",
+            title: "La llamada al servicio técnico",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-problema-construccion",
+            title: "Pedir una solución",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-problema-dialogo",
+            title: "Resolverlo juntos",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-problema-escrito",
+            title: "Cuéntalo por escrito",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-arreglo-mission",
+            title: "El arreglo",
+            languageName: "Spanish",
+            unitTitle: "Problemas cotidianos"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-hilo-frames",
+            title: "Seguir el hilo",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-hilo-listen",
+            title: "Una charla más larga",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-cronica-lectura",
+            title: "Una crónica",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-aclarar-dialogo",
+            title: "¿Me explico?",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-resumen-escrito",
+            title: "El resumen",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-transmitir-mission",
+            title: "Pásalo",
+            languageName: "Spanish",
+            unitTitle: "Seguir el hilo"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-postura-frames",
+            title: "Ceder y contrastar",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-listen-debate",
+            title: "Un debate en el barrio",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-text-postura",
+            title: "Las dos posturas",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-dialogo-mediar",
+            title: "Acercar posturas",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-argumento-escrito",
+            title: "Tu postura por escrito",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b2-postura-mission",
+            title: "Defiéndela",
+            languageName: "Spanish",
+            unitTitle: "Ponerse en el otro lado"
         ),
     ]
 }

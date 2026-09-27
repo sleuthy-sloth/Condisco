@@ -87,25 +87,74 @@ enum CourseLanguage: String, Decodable {
     case portuguese = "pt"
     case german = "de"
 
-    var displayName: String {
+    /// Everything the app shell needs to know about one course language.
+    /// The single per-language metadata row: introducing a language is one
+    /// `CourseLanguage` case (carrying its pack JSON code) plus one
+    /// `Metadata` row below — no other app file needs to change.
+    struct Metadata {
+        /// Courses-tab slug; also the pack basename and listen-course slug.
+        let slug: String
+        /// Human-readable name (Courses tab, Listen, voice pickers, …).
+        let displayName: String
+        /// BCP-47 voice tag, used for TTS and the
+        /// `condisco.voice.<bcp47>` UserDefaults keys.
+        let bcp47: String
+    }
+
+    var metadata: Metadata {
         switch self {
-        case .italian: return "Italian"
-        case .french: return "French"
-        case .spanish: return "Spanish"
-        case .portuguese: return "Portuguese"
-        case .german: return "German"
+        case .italian: return Metadata(slug: "italian", displayName: "Italian", bcp47: "it-IT")
+        case .french: return Metadata(slug: "french", displayName: "French", bcp47: "fr-FR")
+        case .spanish: return Metadata(slug: "spanish", displayName: "Spanish", bcp47: "es-ES")
+        case .portuguese: return Metadata(slug: "portuguese", displayName: "Portuguese", bcp47: "pt-PT")
+        case .german: return Metadata(slug: "german", displayName: "German", bcp47: "de-DE")
         }
     }
 
+    var displayName: String { metadata.displayName }
+
     /// Matches ListenCourse.courseSlugs so the focus language re-aims Listen.
-    var slug: String {
-        switch self {
-        case .italian: return "italian"
-        case .french: return "french"
-        case .spanish: return "spanish"
-        case .portuguese: return "portuguese"
-        case .german: return "german"
-        }
+    var slug: String { metadata.slug }
+
+    /// BCP-47 tag for TTS voice selection (`fr-FR`, …), stable string used
+    /// as the `condisco.voice.<bcp47>` UserDefaults key.
+    var bcp47: String { metadata.bcp47 }
+}
+
+/// The single source of truth for which courses ship in this build and in
+/// which order the Courses tab lists them. Every slug↔display↔BCP-47 mapping
+/// in the app (PackLoader, VoiceStore, ShadowVoice, ListenCourse,
+/// LibraryLanguage, AppIntents) derives from here. Introducing a language is
+/// a `CourseLanguage` case + metadata row + one entry in `order`.
+enum CourseRegistry {
+    /// Course order, matching the pack load order (`PackLoader.packFilenames`
+    /// historically) — the Courses-tab sort, the Listen catalog iteration,
+    /// and the voice-picker row order all follow this exactly.
+    static let order: [CourseLanguage] = [
+        .french,
+        .italian,
+        .german,
+        .portuguese,
+        .spanish,
+    ]
+
+    /// Ordered pack basenames / listen-course slugs (= `order`'s slugs).
+    static let slugs: [String] = order.map(\.slug)
+
+    static func language(slug: String) -> CourseLanguage? {
+        order.first { $0.slug == slug }
+    }
+
+    /// Display name for a slug. A foreign/legacy slug falls back to the
+    /// slug-derived capitalization — never an English country name.
+    static func displayName(for slug: String) -> String {
+        language(slug: slug)?.displayName ?? slug.capitalized
+    }
+
+    /// BCP-47 voice tag for a slug, or nil when the slug is not a course —
+    /// callers skip speech on nil; an unknown slug never speaks English.
+    static func bcp47(for slug: String) -> String? {
+        language(slug: slug)?.bcp47
     }
 }
 

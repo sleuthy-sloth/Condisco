@@ -14,6 +14,7 @@
 		30877432D1026706D7E805DA /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A32C3BB81E3C29B621792 /* EngineTests.swift */; };
 		73C8EB5BB682575EC87A171A /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C826A6FCE48478DCB74F2134 /* StoreTests.swift */; };
 		4E1A0001C0FFEE0000000002 /* PackFrenchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1A0001C0FFEE0000000001 /* PackFrenchTests.swift */; };
+		9C1A2B3C4D5E6F708192A335 /* CourseRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1A2B3C4D5E6F708192A334 /* CourseRegistryTests.swift */; };
 		4E1A0001C0FFEE0000000004 /* PackItalianTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1A0001C0FFEE0000000003 /* PackItalianTests.swift */; };
 		4E1A0001C0FFEE0000000006 /* PackGermanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1A0001C0FFEE0000000005 /* PackGermanTests.swift */; };
 		4E1A0001C0FFEE0000000008 /* PackPortugueseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1A0001C0FFEE0000000007 /* PackPortugueseTests.swift */; };
@@ -79,6 +80,9 @@
 		F5311AAE72D4D51782AED610 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BCFEEBDEEFB8A0ECEEB5FC /* Database.swift */; };
 		F8A7341506FDC3F454E083F1 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D583D7028243CF415AD16BC /* Welcome.swift */; };
 		FAC15CBDD70E4F73A6121F68 /* HandsFreeReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */; };
+		AE7C4F1B6D3F9E25F8BAC61D /* LibraryReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8D5A2C7E4F0F36A9CBD72E /* LibraryReview.swift */; };
+		8C5A2E9F4B1D7C03E6F8A94B /* LibraryImportValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6B3F0A5C2E8D14F7A9B50C /* LibraryImportValidator.swift */; };
+		A5B6C7D8E9F0A1B2C3D4E5F6 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C9D0E1F2A3B4C5D6E7F80 /* LibraryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +127,7 @@
 		846A32C3BB81E3C29B621792 /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
 		C826A6FCE48478DCB74F2134 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		4E1A0001C0FFEE0000000001 /* PackFrenchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackFrenchTests.swift; sourceTree = "<group>"; };
+		9C1A2B3C4D5E6F708192A334 /* CourseRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRegistryTests.swift; sourceTree = "<group>"; };
 		4E1A0001C0FFEE0000000003 /* PackItalianTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackItalianTests.swift; sourceTree = "<group>"; };
 		4E1A0001C0FFEE0000000005 /* PackGermanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackGermanTests.swift; sourceTree = "<group>"; };
 		4E1A0001C0FFEE0000000007 /* PackPortugueseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackPortugueseTests.swift; sourceTree = "<group>"; };
@@ -198,6 +203,9 @@
 		F1E2D3C4B5A69788796A5B4C /* EmptyStateArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateArt.swift; sourceTree = "<group>"; };
 		F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsFreeReview.swift; sourceTree = "<group>"; };
 		FAEDADE850C640ECA5602F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D6B3F0A5C2E8D14F7A9B50C /* LibraryImportValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryImportValidator.swift; sourceTree = "<group>"; };
+		4B7C9D0E1F2A3B4C5D6E7F80 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		BF8D5A2C7E4F0F36A9CBD72E /* LibraryReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryReview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +252,7 @@
 				4E1A0001C0FFEE0000000005 /* PackGermanTests.swift */,
 				4E1A0001C0FFEE0000000007 /* PackPortugueseTests.swift */,
 				4E1A0001C0FFEE0000000009 /* PackSpanishTests.swift */,
+				9C1A2B3C4D5E6F708192A334 /* CourseRegistryTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -336,6 +345,7 @@
 				E7D549F75204DDE30F5A9471 /* StimulusViews.swift */,
 				28026503864E5A173343687C /* PhraseCard.swift */,
 				20691D824D7C2FB92C3CE74E /* Phrasebook.swift */,
+				4B7C9D0E1F2A3B4C5D6E7F80 /* LibraryView.swift */,
 				8A4F6B2C1D3E5F708192A3B4 /* Glossary.swift */,
 				8D7E6F5A4B3C2D1E0F18293A /* LessonMoments.swift */,
 				843AC5D09572075DBD7FB8A9 /* LessonPlayerView.swift */,
@@ -403,6 +413,7 @@
 				B755A7DD77ABAED5FB2A2EC3 /* FlashcardsView.swift */,
 				38920EECF51C06218ED9B5A3 /* AnkiExport.swift */,
 				F4F799D0EC8BA68579733E11 /* HandsFreeReview.swift */,
+				BF8D5A2C7E4F0F36A9CBD72E /* LibraryReview.swift */,
 			);
 			path = Review;
 			sourceTree = "<group>";
@@ -428,6 +439,7 @@
 				45D6AB89D028BACCF2E3BDBE /* WidgetSnapshot.swift */,
 				5D861EDEC15E210E10BB496E /* WidgetSnapshotWriter.swift */,
 				7C4E9B1D5F2A8C6039E7B4F2 /* ImportValidator.swift */,
+				9D6B3F0A5C2E8D14F7A9B50C /* LibraryImportValidator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -596,6 +608,7 @@
 				4E1A0001C0FFEE0000000006 /* PackGermanTests.swift in Sources */,
 				4E1A0001C0FFEE0000000008 /* PackPortugueseTests.swift in Sources */,
 				4E1A0001C0FFEE000000000A /* PackSpanishTests.swift in Sources */,
+				9C1A2B3C4D5E6F708192A335 /* CourseRegistryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,6 +690,9 @@
 				42D1DA050BDD3CECD2FC32A1 /* WidgetSnapshot.swift in Sources */,
 				84E2FBDD62E975CE207B46A6 /* WidgetSnapshotWriter.swift in Sources */,
 				9D2F4A6C8B1E3759F0A4C2D5 /* ImportValidator.swift in Sources */,
+				AE7C4F1B6D3F9E25F8BAC61D /* LibraryReview.swift in Sources */,
+				8C5A2E9F4B1D7C03E6F8A94B /* LibraryImportValidator.swift in Sources */,
+				A5B6C7D8E9F0A1B2C3D4E5F6 /* LibraryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

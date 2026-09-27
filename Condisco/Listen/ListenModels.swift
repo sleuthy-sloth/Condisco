@@ -41,15 +41,10 @@ enum ListenCourse {
     /// PackLoader so the course list has a single source of truth.
     static let courseSlugs = PackLoader.packFilenames
 
+    /// Display name resolved through the registry; a foreign slug falls back
+    /// to its own capitalization, never an English country name.
     static func displayName(for slug: String) -> String {
-        switch slug {
-        case "french": return "French"
-        case "italian": return "Italian"
-        case "german": return "German"
-        case "portuguese": return "Portuguese"
-        case "spanish": return "Spanish"
-        default: return slug.capitalized
-        }
+        CourseRegistry.displayName(for: slug)
     }
 }
 

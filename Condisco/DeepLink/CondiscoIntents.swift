@@ -15,6 +15,17 @@ import UIKit
 // MARK: - Language
 
 /// The five course languages, as Siri hears them.
+///
+/// AppIntents keeps its own enum rather than consuming `CourseLanguage`
+/// directly: a `@Parameter` of AppEnum type serializes its persisted value
+/// by the enum's rawValue, which stays the stable slug ("french", …) here —
+/// `CourseLanguage`'s rawValues are the pack JSON codes ("fr", …), so
+/// switching would change persisted Shortcut parameter values. The display
+/// strings below are additionally forced inline by the AppIntents metadata
+/// processor (it extracts literal titles at build time). Drift is pinned by
+/// `CourseRegistryTests.testAppIntentsLessonLanguageIsRegistryBacked`:
+/// adding a language is one registry row + one enum case + one display
+/// line here (the residual framework cost).
 enum LessonLanguage: String, AppEnum {
     case french
     case italian
@@ -24,6 +35,15 @@ enum LessonLanguage: String, AppEnum {
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Language"
 
+    // AppIntents forces this to be a stored dictionary of LITERAL strings:
+    // the build-time metadata processor statically extracts the titles and
+    // rejects computed values or function calls (attempted registry lookups
+    // as of plan 9.1 — the processor reports nil titles). The enum's case
+    // order and the display strings therefore stay spelled out here;
+    // `CourseRegistryTests.testAppIntentsLessonLanguageIsRegistryBacked`
+    // pins that every case ↔ registry row ↔ order without drift. Adding a
+    // language = one `CourseLanguage`/`CourseRegistry` row + one enum case
+    // + one literal line here (the residual AppIntents framework cost).
     static var caseDisplayRepresentations: [LessonLanguage: DisplayRepresentation] = [
         .french: "French",
         .italian: "Italian",

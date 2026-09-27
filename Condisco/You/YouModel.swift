@@ -501,8 +501,8 @@ final class YouModel: ObservableObject {
 struct ExportedLearningData: Codable {
     /// App identifier marker: which app produced this file.
     var app: String
-    /// Export format version. Current: 1 (tombstones, saved phrases,
-    /// placement, ms-precision timestamps included).
+    /// Export format version. Current: 2 (imported library documents and
+    /// their phrase links added; 8.2 §7).
     var formatVersion: Int
     var exportedAt: Date
     var events: [LearningEvent]
@@ -512,6 +512,13 @@ struct ExportedLearningData: Codable {
     var savedPhrases: [StoredSavedPhrase]
     var savedPhraseTombstones: [SavedPhraseTombstone]
     var placement: [ExportedPlacement]
+    /// 8.2: the learner's imported library documents and the phrases saved
+    /// from them (v2+). Optional so a version-1 file — which never carried
+    /// these sections — still decodes unchanged; nil encodes as an omitted
+    /// key, so v2 exports always carry the arrays while v1 files stay
+    /// byte-compatible with the older reader.
+    var importedDocuments: [StoredImportedDocument]? = nil
+    var importedPhraseLinks: [StoredImportedPhraseLink]? = nil
 }
 
 /// A placement recommendation: the lesson the level check suggested for a
@@ -525,8 +532,10 @@ struct ExportedPlacement: Codable, Equatable {
 enum DataExport {
     /// The current export format version. Bump when the shape of
     /// `ExportedLearningData` changes in a breaking way; readers compare
-    /// against this before decoding.
-    static let formatVersion = 1
+    /// against this before decoding. Version 2 adds the imported-library
+    /// document and phrase-link sections (8.2 §7); version 1 files stay
+    /// readable (back-compat is mandatory).
+    static let formatVersion = 2
 
     /// UserDefaults prefix `PlacementStore` uses for its keys.
     private static let placementPrefix = "condisco.placement."
@@ -534,6 +543,8 @@ enum DataExport {
     /// Builds the export file in a temporary directory, ready for a
     /// ShareLink. Throws when the store cannot be read or the file cannot
     /// be written. Fully offline: nothing here touches the network.
+    /// The learner's imported documents ride along — the only path that
+    /// lets them leave this device (8.2 §7).
     @MainActor
     static func buildFile(store: LearningStore) throws -> URL {
         let payload = ExportedLearningData(
@@ -546,7 +557,9 @@ enum DataExport {
             listenState: try store.allListenState(),
             savedPhrases: try store.allSavedPhrases(),
             savedPhraseTombstones: try store.allSavedPhraseTombstones(),
-            placement: Self.placementRecommendations())
+            placement: Self.placementRecommendations(),
+            importedDocuments: try store.allImportedDocuments(),
+            importedPhraseLinks: try store.allImportedPhraseLinks())
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         encoder.dateEncodingStrategy = .iso8601

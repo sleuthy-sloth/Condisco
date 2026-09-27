@@ -17,7 +17,7 @@ final class VoiceRecorder: NSObject, ObservableObject, AVAudioPlayerDelegate {
     enum Phase { case idle, recording, yourTake, native }
 
     let target: String
-    let languageCode: String
+    let languageCode: String?
 
     @Published private(set) var phase: Phase = .idle
     /// True after the user denies mic access. Surfaced as a quiet
@@ -31,7 +31,7 @@ final class VoiceRecorder: NSObject, ObservableObject, AVAudioPlayerDelegate {
     private var nativeWatch: Task<Void, Never>?
     private var fileURL: URL?
 
-    init(target: String, languageCode: String) {
+    init(target: String, languageCode: String?) {
         self.target = target
         self.languageCode = languageCode
     }
@@ -193,11 +193,11 @@ final class VoiceRecorder: NSObject, ObservableObject, AVAudioPlayerDelegate {
 /// caption labels the playback phases.
 struct RecordCompareButton: View {
     let target: String
-    let languageCode: String
+    let languageCode: String?
 
     @StateObject private var recorder: VoiceRecorder
 
-    init(target: String, languageCode: String) {
+    init(target: String, languageCode: String?) {
         self.target = target
         self.languageCode = languageCode
         _recorder = StateObject(

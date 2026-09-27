@@ -302,6 +302,54 @@ struct ListenStateRow: Codable, Equatable, Sendable {
     var updatedAtMs: Int64
 }
 
+/// A learner-imported reading document (8.2). Content lives only on
+/// device: document rows have no CloudKit record type, never enter the
+/// event log, and leave the app only through the learner's own explicit
+/// DataExport (slice 4).
+struct ImportedDocument: Hashable, Identifiable, Sendable {
+    var id: String
+    var title: String
+    /// The validated UTF-8 text as imported.
+    var content: String
+    /// Original UTF-8 byte count at import, so the UI can show size
+    /// provenance without re-measuring.
+    var byteSize: Int
+    /// One of the five bundled CourseLanguage slugs.
+    var languageSlug: String
+    /// File name for file imports; empty string for pasted text.
+    var sourceFileName: String
+    /// Import date (device clock at insert), preserved for display.
+    var importedAt: Date
+}
+
+/// The many-to-many join row "this phrase was saved from this document".
+/// Foreign-key-free like the rest of the schema: cleanup is explicit —
+/// `unsavePhrase` and `deleteDocument` delete their link rows (§8).
+struct ImportedPhraseLink: Hashable, Sendable {
+    var phraseId: String
+    var documentId: String
+}
+
+/// A document row with its raw import timestamp, for data export.
+/// The timestamp rides as raw milliseconds — same convention as
+/// `StoredSavedPhrase.savedAtMs` — so an export never rounds or
+/// reformats it (8.2 §7).
+struct StoredImportedDocument: Codable, Equatable, Sendable {
+    var id: String
+    var title: String
+    var content: String
+    var byteSize: Int
+    var languageSlug: String
+    var sourceFileName: String
+    var importedAtMs: Int64
+}
+
+/// A phrase↔document link row, for data export (8.2 §7).
+struct StoredImportedPhraseLink: Codable, Equatable, Sendable {
+    var phraseId: String
+    var documentId: String
+}
+
 /// Append-only learning event log plus projections, backed by SQLite.
 ///
 /// Events are the source of truth; everything else (SRS state, completion,
@@ -398,6 +446,22 @@ final class LearningStore: ObservableObject {
               id TEXT PRIMARY KEY,
               deleted_at_ms INTEGER NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS imported_documents(
+              id TEXT PRIMARY KEY,
+              title TEXT NOT NULL,
+              content TEXT NOT NULL,
+              byte_size INTEGER NOT NULL,
+              language_slug TEXT NOT NULL,
+              source_file_name TEXT NOT NULL DEFAULT '',
+              imported_at_ms INTEGER NOT NULL
+            );
+            CREATE INDEX IF NOT EXISTS idx_imported_docs_time
+              ON imported_documents(imported_at_ms, id);
+            CREATE TABLE IF NOT EXISTS imported_phrase_links(
+              phrase_id TEXT NOT NULL,
+              document_id TEXT NOT NULL,
+              PRIMARY KEY (phrase_id, document_id)
+            );
             """)
 
         // Migration: saved_phrases gained source_pack_id / source_lesson_id
@@ -413,6 +477,11 @@ final class LearningStore: ObservableObject {
                     "ALTER TABLE saved_phrases ADD COLUMN \(column) TEXT NOT NULL DEFAULT '';")
             }
         }
+
+        // Imported-document tables (8.2 §3) are brand new, so the
+        // CREATE IF NOT EXISTS arms above are the whole migration: existing
+        // databases gain them on next launch with zero ALTERs and zero
+        // changes to the pre-existing table column sets.
 
         // Observability (non-fatal): surface any undecodable stored event
         // rows at open, so local corruption is visible even before the first
@@ -1153,7 +1222,52 @@ final class LearningStore: ObservableObject {
             for row in preview.listenState {
                 try self.mergeListenStateRow(row)
             }
+            // 8.2 slice 4: the learner's own documents and their phrase
+            // links, merged after phrases (links reference phrase ids).
+            for document in preview.documents {
+                try self.mergeImportedDocumentRow(document)
+            }
+            for link in preview.phraseLinks {
+                try self.mergeImportedPhraseLinkRow(link)
+            }
         }
+    }
+
+    /// Transaction-free document merge, for batching inside one
+    /// transaction (data import). Same idempotent semantics as
+    /// `saveDocument`: a row with the same id already present locally is
+    /// left untouched, so re-importing a file twice never duplicates.
+    private func mergeImportedDocumentRow(_ document: StoredImportedDocument) throws {
+        try self.db.execute(
+            """
+            INSERT INTO imported_documents(id, title, content, byte_size, language_slug, source_file_name, imported_at_ms)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO NOTHING;
+            """,
+            bind: {
+                try $0.bindText(1, document.id)
+                try $0.bindText(2, document.title)
+                try $0.bindText(3, document.content)
+                try $0.bindInt64(4, Int64(document.byteSize))
+                try $0.bindText(5, document.languageSlug)
+                try $0.bindText(6, document.sourceFileName)
+                try $0.bindInt64(7, document.importedAtMs)
+            })
+    }
+
+    /// Transaction-free link merge, for batching inside one transaction
+    /// (data import). `INSERT OR IGNORE` matches `linkPhrase`, so a link
+    /// the file lists twice (or that already exists) is a no-op.
+    private func mergeImportedPhraseLinkRow(_ link: StoredImportedPhraseLink) throws {
+        try self.db.execute(
+            """
+            INSERT OR IGNORE INTO imported_phrase_links(phrase_id, document_id)
+            VALUES (?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, link.phraseId)
+                try $0.bindText(2, link.documentId)
+            })
     }
 
     /// The full immutable event log, oldest first, for data export.
@@ -1322,6 +1436,11 @@ final class LearningStore: ObservableObject {
             try self.db.execute(
                 "DELETE FROM saved_phrases WHERE id = ?;",
                 bind: { try $0.bindText(1, id) })
+            // A phrase removed from the phrasebook must not leave dangling
+            // provenance links (8.2 §3.3).
+            try self.db.execute(
+                "DELETE FROM imported_phrase_links WHERE phrase_id = ?;",
+                bind: { try $0.bindText(1, id) })
             try self.db.execute(
                 """
                 INSERT INTO saved_phrase_tombstones(id, deleted_at_ms)
@@ -1393,6 +1512,181 @@ final class LearningStore: ObservableObject {
                     savedAtMs: statement.int64(8)))
             })
         return phrases
+    }
+
+    // MARK: - Imported documents (practice library)
+
+    /// Saves an imported document. `ON CONFLICT(id) DO NOTHING` so a
+    /// re-save of the same document id is a no-op — import is the only
+    /// writer and always generates a fresh id. Content is stored as the
+    /// already-validated string; `LibraryImportValidator` is the gate (§5).
+    func saveDocument(_ doc: ImportedDocument) throws {
+        try db.transaction {
+            try self.db.execute(
+                """
+                INSERT INTO imported_documents(id, title, content, byte_size, language_slug, source_file_name, imported_at_ms)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id) DO NOTHING;
+                """,
+                bind: {
+                    try $0.bindText(1, doc.id)
+                    try $0.bindText(2, doc.title)
+                    try $0.bindText(3, doc.content)
+                    try $0.bindInt64(4, Int64(doc.byteSize))
+                    try $0.bindText(5, doc.languageSlug)
+                    try $0.bindText(6, doc.sourceFileName)
+                    try $0.bindInt64(7, LearningStore.millis(doc.importedAt))
+                })
+        }
+    }
+
+    /// All documents, newest first (import order).
+    func documents() throws -> [ImportedDocument] {
+        var docs: [ImportedDocument] = []
+        try db.query(
+            """
+            SELECT id, title, content, byte_size, language_slug, source_file_name, imported_at_ms
+            FROM imported_documents
+            ORDER BY imported_at_ms DESC, id;
+            """,
+            row: { statement in
+                docs.append(ImportedDocument(
+                    id: statement.text(0) ?? "",
+                    title: statement.text(1) ?? "",
+                    content: statement.text(2) ?? "",
+                    byteSize: Int(statement.int64(3)),
+                    languageSlug: statement.text(4) ?? "",
+                    sourceFileName: statement.text(5) ?? "",
+                    importedAt: LearningStore.date(statement.int64(6))))
+            })
+        return docs
+    }
+
+    func document(id: String) throws -> ImportedDocument? {
+        var result: ImportedDocument?
+        try db.query(
+            """
+            SELECT id, title, content, byte_size, language_slug, source_file_name, imported_at_ms
+            FROM imported_documents
+            WHERE id = ?;
+            """,
+            bind: { try $0.bindText(1, id) },
+            row: { statement in
+                result = ImportedDocument(
+                    id: statement.text(0) ?? "",
+                    title: statement.text(1) ?? "",
+                    content: statement.text(2) ?? "",
+                    byteSize: Int(statement.int64(3)),
+                    languageSlug: statement.text(4) ?? "",
+                    sourceFileName: statement.text(5) ?? "",
+                    importedAt: LearningStore.date(statement.int64(6)))
+            })
+        return result
+    }
+
+    /// Deletes a document and its phrase links — exactly the document's
+    /// own rows (§8.1). Phrases saved from it stay in the phrasebook and
+    /// their events stay in the append-only log; the review queue stops
+    /// scheduling them because candidates are link-joined (§4.2). No
+    /// tombstone is written and no event is recorded: documents never
+    /// sync, so nothing can resurrect them remotely.
+    func deleteDocument(id: String) throws {
+        try db.transaction {
+            try self.db.execute(
+                "DELETE FROM imported_phrase_links WHERE document_id = ?;",
+                bind: { try $0.bindText(1, id) })
+            try self.db.execute(
+                "DELETE FROM imported_documents WHERE id = ?;",
+                bind: { try $0.bindText(1, id) })
+        }
+    }
+
+    /// Document ids a phrase was saved from, for provenance display.
+    func documentIDs(forPhrase phraseId: String) throws -> [String] {
+        var ids: [String] = []
+        try db.query(
+            """
+            SELECT document_id FROM imported_phrase_links
+            WHERE phrase_id = ?
+            ORDER BY document_id;
+            """,
+            bind: { try $0.bindText(1, phraseId) },
+            row: { ids.append($0.text(0) ?? "") })
+        return ids
+    }
+
+    /// Every phrase↔document link, the input to the review projection's
+    /// candidate join (§4.2).
+    func phraseLinks() throws -> [ImportedPhraseLink] {
+        var links: [ImportedPhraseLink] = []
+        try db.query(
+            """
+            SELECT phrase_id, document_id FROM imported_phrase_links
+            ORDER BY phrase_id, document_id;
+            """,
+            row: {
+                links.append(ImportedPhraseLink(
+                    phraseId: $0.text(0) ?? "",
+                    documentId: $0.text(1) ?? ""))
+            })
+        return links
+    }
+
+    /// Every document row with its raw import timestamp, for data export.
+    /// Oldest first for a deterministic export (mirrors `allSavedPhrases`).
+    /// Documents leave the device only through the learner's own explicit
+    /// DataExport (8.2 §7); nothing else reads this.
+    func allImportedDocuments() throws -> [StoredImportedDocument] {
+        var docs: [StoredImportedDocument] = []
+        try db.query(
+            """
+            SELECT id, title, content, byte_size, language_slug, source_file_name, imported_at_ms
+            FROM imported_documents
+            ORDER BY imported_at_ms ASC, id;
+            """,
+            row: { statement in
+                docs.append(StoredImportedDocument(
+                    id: statement.text(0) ?? "",
+                    title: statement.text(1) ?? "",
+                    content: statement.text(2) ?? "",
+                    byteSize: Int(statement.int64(3)),
+                    languageSlug: statement.text(4) ?? "",
+                    sourceFileName: statement.text(5) ?? "",
+                    importedAtMs: statement.int64(6)))
+            })
+        return docs
+    }
+
+    /// Every phrase↔document link, for data export (same order as
+    /// `phraseLinks()`).
+    func allImportedPhraseLinks() throws -> [StoredImportedPhraseLink] {
+        var links: [StoredImportedPhraseLink] = []
+        try db.query(
+            """
+            SELECT phrase_id, document_id FROM imported_phrase_links
+            ORDER BY phrase_id, document_id;
+            """,
+            row: {
+                links.append(StoredImportedPhraseLink(
+                    phraseId: $0.text(0) ?? "",
+                    documentId: $0.text(1) ?? ""))
+            })
+        return links
+    }
+
+    /// Records "this phrase was saved from this document".
+    /// `INSERT OR IGNORE` so re-saving the same phrase from the same
+    /// document is a no-op everywhere (§6.5).
+    func linkPhrase(phraseId: String, documentId: String) throws {
+        try db.execute(
+            """
+            INSERT OR IGNORE INTO imported_phrase_links(phrase_id, document_id)
+            VALUES (?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, phraseId)
+                try $0.bindText(2, documentId)
+            })
     }
 
     // MARK: - Key/value (sync metadata, device id)

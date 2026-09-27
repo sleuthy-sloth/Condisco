@@ -568,7 +568,7 @@ struct LessonRecapView: View {
 /// contract as shadow mode.
 struct RolePlayView: View {
     let turns: [DialogueTurn]
-    let languageCode: String
+    let languageCode: String?
 
     @Environment(\.dismiss) private var dismiss
     @StateObject private var speaker = ShadowSpeaker()

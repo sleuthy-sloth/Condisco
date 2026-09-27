@@ -79,8 +79,14 @@ import Foundation
 // informational on the same line.
 @main
 struct AuditEditorial {
-    /// Pack basenames in the fixed Courses-tab order (PackLoader.packFilenames).
-    private static let packFilenames = ["french", "italian", "german", "portuguese", "spanish"]
+    /// Pack basenames in the fixed Courses-tab order — the registry's
+    /// order (this tool compiles CoursePack.swift standalone, so it can
+    /// consume `CourseRegistry` directly; no duplicated list lives here).
+    private static let packFilenames = CourseRegistry.slugs
+
+    /// Course-slug alternation for the controlled-prompt regexes below,
+    /// derived from the registry: adding a language needs no regex edit.
+    private static let courseSlugsAlternation = CourseRegistry.slugs.joined(separator: "|")
 
     /// Hint strings that only restate the engine's generic fallbacks
     /// (hintText "Try it", and the retry strings in ActivityEvaluation) add
@@ -126,8 +132,6 @@ struct AuditEditorial {
     private static var openEndedInstances: [OpenEndedInstance] = []
     private static var wiredInstances: [OpenEndedInstance] = []
 
-    private static let packLanguageNames = ["french", "italian", "german", "portuguese", "spanish"]
-
     /// Grading keys that belong on graded activities only; on an
     /// information/self-compare activity they mean the raw JSON is wired for
     /// auto-grading despite being presented as ungraded/self-assessed.
@@ -142,17 +146,17 @@ struct AuditEditorial {
     private static func isControlledPrompt(_ prompt: String) -> Bool {
         let low = prompt.lowercased()
         if low.range(
-            of: #"\bwrite in (?:french|italian|german|portuguese|spanish|english)\b"#,
+            of: "\\bwrite in (?:\(courseSlugsAlternation)|english)\\b",
             options: .regularExpression) != nil { return true }
         // "write it in …", "write politely in …", "write the plan in …"
         if low.range(
-            of: #"write[^:"“”]{0,24} in (?:french|italian|german|portuguese|spanish)\b"#,
+            of: "write[^:\"“”]{0,24} in (?:\(courseSlugsAlternation))\\b",
             options: .regularExpression) != nil { return true }
         if low.range(of: #"\b(?:type|predict|soften)\b"#, options: .regularExpression) != nil { return true }
         if low.range(of: #"^ask\b"#, options: .regularExpression) != nil { return true }
         if low.range(of: #"\banswer that\b"#, options: .regularExpression) != nil { return true }
         if low.range(
-            of: #"translate into (?:french|italian|german|portuguese|spanish)\b"#,
+            of: "translate into (?:\(courseSlugsAlternation))\\b",
             options: .regularExpression) != nil { return true }
         return ["give the english meaning", "listen and write the model",
                 "no help", "from memory", "think:"].contains { low.contains($0) }

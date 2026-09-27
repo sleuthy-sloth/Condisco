@@ -8,17 +8,12 @@ import SwiftUI
 // aloud before moving on. Manual advance only — no timers, no scoring.
 // The track itself pauses while shadowing.
 
-/// BCP-47 codes for the five courses, for TTS voice selection.
+/// BCP-47 codes for TTS voice selection, resolved through the registry.
+/// Nil for an unknown slug — callers skip speech, so an unrecognized
+/// course can never silently speak English.
 enum ShadowVoice {
-    static func languageCode(for courseSlug: String) -> String {
-        switch courseSlug {
-        case "french": return "fr-FR"
-        case "italian": return "it-IT"
-        case "german": return "de-DE"
-        case "portuguese": return "pt-PT"
-        case "spanish": return "es-ES"
-        default: return "en-US"
-        }
+    static func languageCode(for courseSlug: String) -> String? {
+        CourseRegistry.bcp47(for: courseSlug)
     }
 }
 
@@ -54,8 +49,12 @@ final class ShadowSpeaker: ObservableObject {
         }
     }
 
-    func speak(_ text: String, languageCode: String, slow: Bool = false) {
+    /// Speaks with the device's TTS voice for the language. A nil
+    /// `languageCode` (unknown course slug) is a graceful no-op: nothing is
+    /// spoken — never an English fallback, never a crash/assert.
+    func speak(_ text: String, languageCode: String?, slow: Bool = false) {
         stop()
+        guard let languageCode else { return }
         let utterance = AVSpeechUtterance(string: text)
         if let identifier = VoiceStore.voiceIdentifier(for: languageCode),
            let voice = AVSpeechSynthesisVoice(identifier: identifier) {
@@ -95,7 +94,7 @@ struct ShadowModeView: View {
         track.sections.compactMap(\.target)
     }
 
-    private var languageCode: String {
+    private var languageCode: String? {
         ShadowVoice.languageCode(for: track.courseSlug)
     }
 

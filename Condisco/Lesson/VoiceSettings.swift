@@ -10,14 +10,12 @@ import SwiftUI
 /// Reads and writes the learner's chosen TTS voice per course language.
 /// A nil identifier means the system default voice for the language.
 enum VoiceStore {
-    /// The five courses: slug, display name, BCP-47 code.
-    static let courses: [(slug: String, name: String, bcp47: String)] = [
-        (slug: "french", name: "French", bcp47: "fr-FR"),
-        (slug: "italian", name: "Italian", bcp47: "it-IT"),
-        (slug: "german", name: "German", bcp47: "de-DE"),
-        (slug: "portuguese", name: "Portuguese", bcp47: "pt-PT"),
-        (slug: "spanish", name: "Spanish", bcp47: "es-ES"),
-    ]
+    /// The courses: slug, display name, BCP-47 code. Derived from the
+    /// registry so slug/name/code live in one place; the BCP-47 STRINGS
+    /// (and therefore the `condisco.voice.<bcp47>` defaults keys) are
+    /// unchanged.
+    static let courses: [(slug: String, name: String, bcp47: String)] =
+        CourseRegistry.order.map { ($0.slug, $0.displayName, $0.bcp47) }
 
     private static func key(for bcp47: String) -> String {
         "condisco.voice.\(bcp47)"

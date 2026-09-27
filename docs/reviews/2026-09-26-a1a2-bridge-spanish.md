@@ -82,7 +82,7 @@ content's CEFR alignment, never a learner-level claim.
 | # | Capability | Gap found (2026-09-26) | Disposition |
 |---|-----------|------------------------|-------------|
 | B1 | Connected narration | No lesson strings 3+ sentences; `es-a2-fin-de-semana` objective names "sequence words" but steps retrieve only ayer/anoche; `luego` appears only in directions | **B1 path teaches it first** (+ pack-copy fix for the objective drift, deferred) |
-| B2 | Explanation of a preference (with reasons) | `porque` absent from the whole pack (0 occurrences across activities/stimuli/concepts/vocabulary — grepped) | **Needs a bridging lesson in A2** (flagged; NOT authored — `porque` + sentence over gustar/encantar/querer, near es-unit-11/-15) |
+| B2 | Explanation of a preference (with reasons) | `porque` absent from the whole pack (0 occurrences across activities/stimuli/concepts/vocabulary — grepped, pre-pilot) | **Disposition revised 2026-09-26 (F4): "B1 path teaches it first"** — `porque` now first at u18L4/L5 in the B1 pilot (shipped, gated); the A2 bridging lesson (near es-unit-11/-15) stays backlog |
 | B3 | Following multi-turn exchanges | Nothing longer than ~3 turns; only the pilot is audio; pilot `reviewPending: true` | **B1 path teaches it first** |
 | B4 | Extracting main point + supporting detail | Reading checks are single-detail selection; audio main-point+detail exists only in the pilot (`es-cafe-listen-gist/-drink/-here`) | **B1 path teaches it first** |
 | B5 | Short connected written response | No free written production exists anywhere (engine auto-grades fixed lists only; rubric H1) — requires a new ungraded/self-assessed written step type | **B1 path teaches it first**, with an explicit **product dependency** (H1-compliant affordance) |
@@ -176,6 +176,9 @@ under `Condisco/`, frozen for the walkthrough; route to later slices):
    fix (narrow the objective) — no lesson authoring.
 3. **B2 bridging lesson (`porque` + sentence over gustar/encantar/querer)** —
    flagged in the rubric (§2); author as a new A2 lesson near es-unit-11/-15.
+   *(Disposition revised 2026-09-26 (F4): the B1 path now teaches `porque`
+   first — u18L4/L5 — so this is a non-blocking backlog enrichment, not a
+   prerequisite.)*
 4. **B5 product dependency**: short connected written response needs a new
    ungraded/self-assessed written-production step type (H1/H2-compliant) —
    `Condisco/Models/CoursePack.swift` + `Condisco/Engine`/UI, then B1 lessons.

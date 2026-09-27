@@ -13,7 +13,7 @@ struct HandsFreeCardView: View {
     let item: ReviewItem
     let position: Int
     let total: Int
-    let languageCode: String
+    let languageCode: String?
     let saveError: String?
     let onVerdict: (ReviewVerdict) -> Void
 

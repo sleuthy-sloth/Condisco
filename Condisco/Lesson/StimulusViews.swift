@@ -263,7 +263,7 @@ struct AudioStimulusView: View {
         return MediaResolver.bundleURL(for: url)
     }
 
-    private var languageCode: String {
+    private var languageCode: String? {
         ShadowVoice.languageCode(for: pack.language.slug)
     }
 
@@ -383,7 +383,7 @@ struct ExamplesStimulusView: View {
     @State private var playingAll = false
     @State private var playAllTask: Task<Void, Never>?
 
-    private var languageCode: String {
+    private var languageCode: String? {
         ShadowVoice.languageCode(for: languageSlug)
     }
 

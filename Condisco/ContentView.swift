@@ -11,6 +11,7 @@ enum AppTab: Hashable {
 enum ReviewSection: String, CaseIterable {
     case review = "Review"
     case saved = "Saved"
+    case library = "Library"
 }
 
 struct ReviewSectionPicker: View {
@@ -150,6 +151,8 @@ struct ContentView: View {
                     ReviewView(section: $reviewSection, sessionLength: $reviewSessionLength)
                 case .saved:
                     SavedView(section: $reviewSection)
+                case .library:
+                    LibraryView(section: $reviewSection)
                 }
             }
                 .tabItem { Label("Review", systemImage: "arrow.triangle.2.circlepath") }

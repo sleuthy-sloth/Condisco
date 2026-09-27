@@ -53,6 +53,10 @@ Pack media attributions cite this directory:
   and French `fr-polite-coffee-audio` media entries.
 - `docs/audio-provenance/italian-market-listen.json` — cited by the Italian
   `it-market-listen-audio` media entry.
+- `docs/audio-provenance/spanish-cafe-listen-pilot.json` — cited by the Spanish
+  `es-cafe-listen-audio` and `es-cafe-listen-model` media entries (Phase 3.1
+  café listen pilot; device-speech assets with no shipped file, so no SHA-256
+  exists yet).
 
 `tools/check_packs.sh` verifies every `docs/...` citation in attribution
 strings resolves to a real file, so a citation cannot silently dangle again

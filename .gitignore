@@ -1,8 +1,10 @@
 # Xcode
 *.xcworkspace/xcuserdata/
+**/xcuserdata/
 Condisco.xcodeproj/xcuserdata/
 CondiscoWidget.appex/
 DerivedData/
+.scratch/
 *.ipa
 *.dSYM.zip
 *.dSYM

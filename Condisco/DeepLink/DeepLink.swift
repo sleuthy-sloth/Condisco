@@ -60,7 +60,7 @@ struct DeepLinkPlayerRequest: Identifiable {
 // matches, falling back to the first pack) and asks the shared
 // `CoursePack.firstUncompletedLesson(completed:)` helper for the next
 // uncompleted lesson, fed the SAME completed set every surface uses:
-// `PackProgress.participationCompleted`. Pure — no store, no I/O — so the
+// `PackProgress.finishedLessons`. Pure — no store, no I/O — so the
 // deep-link router (which resolves against the Documents store) and the
 // unit tests can both exercise exactly the choice a learner's deep link
 // makes, and Home and the widget can never drift from it.
@@ -71,7 +71,7 @@ struct DeepLinkPlayerRequest: Identifiable {
 /// - Parameters:
 ///   - packs: the bundled course packs, in catalog order.
 ///   - focusSlug: the learner's focus language slug (`condisco.focusLanguage`).
-///   - completedByPack: each pack's `PackProgress.participationCompleted`.
+///   - completedByPack: each pack's `PackProgress.finishedLessons`.
 /// - Returns: the resolved pack with its next lesson and unit.
 func continueLessonResolution(
     packs: [CoursePack],
@@ -86,12 +86,12 @@ func continueLessonResolution(
     return (pack, next.lesson, next.unit)
 }
 
-// MARK: - Lesson completion
+// MARK: - Progress changes
 //
-// Posted when a deep-linked lesson player closes, so Home and Courses can
-// refresh their progress (their own player exits refresh directly).
+// Posted when a deep-linked lesson player closes or a known mark changes,
+// so Home and Courses can refresh their progress.
 extension Notification.Name {
-    static let condiscoLessonCompleted = Notification.Name("condisco.lessonCompleted")
+    static let condiscoProgressChanged = Notification.Name("condisco.progressChanged")
     static let condiscoAudioDidFinish = Notification.Name("condisco.audioDidFinish")
 }
 
@@ -128,7 +128,7 @@ final class DeepLinkRouter: ObservableObject {
 
     func closePlayer() {
         playerRequest = nil
-        NotificationCenter.default.post(name: .condiscoLessonCompleted, object: nil)
+        NotificationCenter.default.post(name: .condiscoProgressChanged, object: nil)
     }
 
     private func resolve(_ link: DeepLink) async {
@@ -148,12 +148,12 @@ final class DeepLinkRouter: ObservableObject {
                 guard let pack = packs.first(where: { $0.language.slug == focusSlug }) ?? packs.first else { return }
                 let completed: Set<String>
                 do {
-                    completed = try store.project(pack: pack).participationCompleted
+                    completed = try store.project(pack: pack).finishedLessons
                 } catch {
                     return
                 }
                 // Same shared resolution Home's Today card and the widget
-                // snapshot use, fed the same participationCompleted set.
+                // snapshot use, fed the same finishedLessons set.
                 guard let (pack, lesson, _) = continueLessonResolution(
                     packs: packs,
                     focusSlug: focusSlug,

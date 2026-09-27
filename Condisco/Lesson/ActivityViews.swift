@@ -154,12 +154,15 @@ struct ActivityView: View {
     @Binding var draft: AttemptResponse?
     let disabled: Bool
     let onAssist: (AssistanceKind) -> Void
+    /// The open-task submit path, supplied by the lesson player (6.2).
+    /// Only open-task steps call it; other kinds ignore it.
+    var onOpenTaskSubmit: ((OpenTaskSubmission) -> Void)? = nil
 
     @State private var hintRevealed = false
 
     private var hintable: Bool {
         switch activity {
-        case .information, .selfCompare, .legacy, .sceneSelection:
+        case .information, .selfCompare, .legacy, .sceneSelection, .openTask:
             return false
         default:
             return !(activity.base?.hints.isEmpty ?? true)
@@ -212,6 +215,10 @@ struct ActivityView: View {
                 SelfCompareActivityView(activity: spec, draft: $draft, disabled: disabled,
                                         modelAudioURL: modelAudioURL, audioPlayer: audioPlayer,
                                         onAssist: onAssist)
+            case .openTask(let spec):
+                OpenTaskActivityView(activity: spec, draft: $draft, disabled: disabled,
+                                     onAssist: onAssist,
+                                     onSubmit: onOpenTaskSubmit ?? { _ in })
             case .sceneSelection(let spec):
                 SceneSelectionActivityView(activity: spec, stimulus: stimulus, draft: $draft, disabled: disabled)
             case .legacy:
@@ -355,6 +362,344 @@ struct SceneSelectionActivityView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+// MARK: - Open tasks (Phase 6.2)
+
+/// The learner's in-flight open-task state at submit time. Pure value
+/// type so the submission rules are testable headless. Written mode
+/// requires non-empty trimmed text; spoken mode requires a finished
+/// recording — or, when the microphone is blocked, at least one ticked
+/// criterion (the same honest degradation the self-compare and checkpoint
+/// lanes use). No length or timing rule can block a submission: the
+/// length guidance is a soft target, never a pass/fail.
+struct OpenTaskSubmission: Equatable {
+    var text: String = ""
+    var criteriaMet: [String] = []
+    var rating: AttemptResponse.SelfRating? = nil
+    var modelRevealed = false
+    var hasRecording = false
+    var micDenied = false
+
+    static func canSubmit(mode: OpenTaskMode, submission: OpenTaskSubmission) -> Bool {
+        switch mode {
+        case .written:
+            return !submission.text
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .spoken:
+            return submission.hasRecording
+                || (submission.micDenied && !submission.criteriaMet.isEmpty)
+        }
+    }
+}
+
+/// Learner-facing copy for the open-task lane (6.2). Plain, British
+/// spelling. Every new string lives here so tests can pin them.
+enum OpenTaskCopy {
+    // Player bar note (shown instead of a Check button).
+    static let barNote =
+        "Self-assessed — your judgement, not an automatic mark."
+    // Step slide labels.
+    static let includePoints = "Include these points:"
+    static func lengthGuidance(_ authored: String?) -> String {
+        authored?.isEmpty == false ? authored! :
+            "A few connected sentences — or, out loud, about a minute. This is a soft target, not a timer."
+    }
+    static let writtenCaption = "Nothing here is marked right or wrong."
+    static let recordMyself = "Record yourself"
+    static let stopRecording = "Stop recording"
+    static let starting = "Starting…"
+    static let playMyRecording = "Play my recording"
+    static let recordAgain = "Record again"
+    static let recordingNote =
+        "Hear it back, then record again to replace it. Nothing is uploaded or kept."
+    static let micBlocked =
+        "Microphone is blocked, so nothing could be recorded. Say it out loud "
+        + "anyway and tick what you hear yourself doing."
+    static let hint = "Hint"
+    static let selfAssessmentTitle = "Self-assessment"
+    static let selfAssessmentSubline =
+        "Your own judgement against the criteria — nothing here is marked right or wrong."
+    static let tickWhatYouDo = "Tick everything you hear yourself doing:"
+    static let rateYourself = "Overall, how did it feel?"
+    static let ratingOptional = "Optional — your own judgement, saved with the attempt."
+    static let revealModel = "Reveal a model response"
+    static let modelRevealedNote =
+        "The model is shown, so this attempt won't count as independent practice."
+    static let submit = "Submit self-assessment"
+    static func answerFirst(mode: OpenTaskMode) -> String {
+        mode == .written
+            ? "Write your response first."
+            : "Record your response first."
+    }
+    static let saveFailed =
+        "Not saved — check your connection and try again. Your response is intact."
+
+    /// Every learner-facing string, gathered for the copy pin test.
+    static let allStrings: [String] = [
+        barNote,
+        includePoints,
+        lengthGuidance(nil),
+        writtenCaption,
+        recordMyself, stopRecording, starting, playMyRecording, recordAgain,
+        recordingNote, micBlocked, hint,
+        selfAssessmentTitle, selfAssessmentSubline, tickWhatYouDo,
+        rateYourself, ratingOptional,
+        revealModel, modelRevealedNote, submit,
+        answerFirst(mode: .written), answerFirst(mode: .spoken),
+        saveFailed,
+    ]
+}
+
+/// A connected-production task: goal + required points up front, a private
+/// written draft or recording, optional hints, a model reveal on an
+/// explicit action, and a self-check rubric the learner ticks against
+/// their own response. Submit records completion, assistance, and the
+/// learner's own self-assessment only — never the response itself.
+struct OpenTaskActivityView: View {
+    let activity: OpenTaskActivity
+    @Binding var draft: AttemptResponse?
+    let disabled: Bool
+    let onAssist: (AssistanceKind) -> Void
+    let onSubmit: (OpenTaskSubmission) -> Void
+
+    @StateObject private var recorder = LessonStepRecorder()
+    @State private var criteriaMet: Set<String> = []
+    @State private var rating: AttemptResponse.SelfRating?
+    @State private var modelRevealed = false
+    @State private var hintShown = false
+
+    /// The written draft lives in the shared player draft so the lesson
+    /// checkpoint persists it for resume (a view re-init restores it).
+    private var text: String {
+        if case .text(let value) = draft { return value }
+        return ""
+    }
+
+    private var submission: OpenTaskSubmission {
+        OpenTaskSubmission(
+            text: text,
+            criteriaMet: criteriaMet.sorted(),
+            rating: rating,
+            modelRevealed: modelRevealed,
+            hasRecording: recorder.recordingURL != nil && recorder.state != .recording,
+            micDenied: recorder.denied)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(OpenTaskCopy.includePoints)
+                .font(DesignTokens.text(14, weight: .medium))
+                .foregroundStyle(DesignTokens.muted)
+            ForEach(activity.requiredPoints, id: \.self) { point in
+                HStack(alignment: .top, spacing: 8) {
+                    Text("•")
+                        .foregroundStyle(DesignTokens.primary)
+                    Text(point)
+                        .font(DesignTokens.text(15))
+                        .foregroundStyle(DesignTokens.ink)
+                }
+            }
+
+            Text(OpenTaskCopy.lengthGuidance(activity.lengthGuidance))
+                .font(DesignTokens.text(13))
+                .foregroundStyle(DesignTokens.muted)
+
+            if activity.mode == .written {
+                TextEditor(text: Binding(
+                    get: { text },
+                    set: { draft = .text($0) }
+                ))
+                .font(DesignTokens.text(17))
+                .foregroundStyle(DesignTokens.ink)
+                .frame(minHeight: 130)
+                .padding(8)
+                .background(DesignTokens.canvas)
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(DesignTokens.edge, lineWidth: 1.5)
+                )
+                .disabled(disabled)
+                .accessibilityLabel(activity.goal)
+                Text(OpenTaskCopy.writtenCaption)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            } else {
+                spokenRecorder
+            }
+
+            if !activity.hints.isEmpty && !hintShown {
+                StudioSecondaryButton(OpenTaskCopy.hint) {
+                    hintShown = true
+                    onAssist(.hint)
+                }
+            }
+            if hintShown {
+                Text(activity.hints.joined(separator: "\n"))
+                    .font(DesignTokens.text(15))
+                    .foregroundStyle(DesignTokens.muted)
+                    .padding(10)
+                    .background(DesignTokens.stock2)
+                    .cornerRadius(8)
+            }
+
+            // Self-assessment card — the learner's own judgement.
+            VStack(alignment: .leading, spacing: 10) {
+                Text(OpenTaskCopy.selfAssessmentTitle)
+                    .font(DesignTokens.text(14, weight: .semibold))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                Text(OpenTaskCopy.selfAssessmentSubline)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                Text(OpenTaskCopy.tickWhatYouDo)
+                    .font(DesignTokens.text(15, weight: .medium))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                ForEach(activity.rubric) { criterion in
+                    OptionRow(
+                        text: criterion.text,
+                        selected: criteriaMet.contains(criterion.id),
+                        multi: true,
+                        disabled: disabled
+                    ) {
+                        toggleCriterion(criterion.id)
+                    }
+                }
+
+                Text(OpenTaskCopy.rateYourself)
+                    .font(DesignTokens.text(15, weight: .medium))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                ratingPicker
+                Text(OpenTaskCopy.ratingOptional)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(DesignTokens.stock)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(DesignTokens.edge, lineWidth: 1.5)
+            )
+
+            // Model reveal: an explicit action; after it the attempt is
+            // not independent.
+            if modelRevealed {
+                Text(activity.modelResponse)
+                    .font(DesignTokens.display(19))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(DesignTokens.primarySoft)
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(DesignTokens.primary, lineWidth: 1.5)
+                    )
+                Text(OpenTaskCopy.modelRevealedNote)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            } else {
+                StudioSecondaryButton(OpenTaskCopy.revealModel, disabled: disabled) {
+                    modelRevealed = true
+                    onAssist(.model)
+                }
+            }
+
+            StudioPrimaryButton(
+                label: OpenTaskCopy.submit,
+                disabled: disabled || !OpenTaskSubmission.canSubmit(
+                    mode: activity.mode, submission: submission)
+            ) {
+                onSubmit(submission)
+            }
+            if !OpenTaskSubmission.canSubmit(mode: activity.mode, submission: submission) {
+                Text(OpenTaskCopy.answerFirst(mode: activity.mode))
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+        }
+        .onDisappear {
+            // The recording exists only for this step; remove the temp
+            // file when the step goes away.
+            recorder.discard()
+        }
+    }
+
+    /// Record → play back → tick. The same recorder class the self-compare
+    /// and checkpoint lanes use; nothing is uploaded or kept, and the
+    /// take is deletable in-UI ("Record again" discards it).
+    private var spokenRecorder: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if recorder.canRecord {
+                if let _ = recorder.recordingURL, recorder.state != .recording {
+                    HStack(spacing: 10) {
+                        StudioSecondaryButton(OpenTaskCopy.playMyRecording, disabled: disabled) {
+                            recorder.playRecording()
+                        }
+                        StudioSecondaryButton(OpenTaskCopy.recordAgain, disabled: disabled) {
+                            recorder.discard()
+                        }
+                    }
+                    Text(OpenTaskCopy.recordingNote)
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                } else {
+                    StudioSecondaryButton(
+                        recorder.state == .recording ? OpenTaskCopy.stopRecording
+                            : recorder.state == .requesting ? OpenTaskCopy.starting
+                            : OpenTaskCopy.recordMyself,
+                        disabled: disabled || recorder.state == .requesting
+                    ) {
+                        recorder.toggle()
+                    }
+                }
+            }
+
+            if recorder.denied {
+                Text(OpenTaskCopy.micBlocked)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+        }
+    }
+
+    private var ratingPicker: some View {
+        HStack(spacing: 8) {
+            ForEach([AttemptResponse.SelfRating.again,
+                     .hard, .good, .easy], id: \.self) { option in
+                let selected = rating == option
+                Button {
+                    rating = rating == option ? nil : option
+                } label: {
+                    Text(checkpointRatingLabel(option))
+                        .font(DesignTokens.text(14, weight: .medium))
+                        .foregroundStyle(selected ? DesignTokens.stock : DesignTokens.ink)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .frame(maxWidth: .infinity)
+                        .background(selected ? DesignTokens.primary : DesignTokens.canvas)
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(DesignTokens.edge, lineWidth: 1.5)
+                        )
+                }
+                .buttonStyle(.plain)
+                .disabled(disabled)
+            }
+        }
+    }
+
+    private func toggleCriterion(_ criterionId: String) {
+        if criteriaMet.contains(criterionId) {
+            criteriaMet.remove(criterionId)
+        } else {
+            criteriaMet.insert(criterionId)
         }
     }
 }

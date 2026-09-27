@@ -1,6 +1,583 @@
 import AVFoundation
 import SwiftUI
 
+// MARK: - Branching exchange practice (Phase 6.3)
+//
+// A hosted `Dialogue` from the pack, rendered as a live two-sided
+// exchange: the partner's authored lines, the learner's own replies
+// (picked choices or composed drafts), deterministic choice turns and
+// open turns with the 6.2 self-check rubric. Nothing here grades: choice
+// turns route the authored graph, open turns are self-assessed, and the
+// end-of-exchange recap shows ONLY what the learner themselves supplied.
+// Every answered turn records one `DialogueTurnEvent` (the player holds
+// the pending event + session until the save lands).
+
+/// Learner-facing copy for the exchange lane. Plain, British spelling;
+/// no CEFR/ability/correctness-claim language (pinned in tests like the
+/// 6.2 open-task copy).
+enum DialoguePracticeCopy {
+    static let hero = "Conversation practice"
+    static let freshCta = "Start conversation"
+    static let continueCta = "Continue conversation"
+    static let replayCta = "Practise again"
+    static let done = "Done"
+    static let chooseYourReply = "Choose your reply"
+    static let writeYourReply = "Write your reply in Spanish"
+    static let answerFirst = "Write your reply first."
+    static let sendReply = "Send reply"
+    static let yourLine = "What you said"
+    static let recapTitle = "Your conversation"
+    static let recapNote =
+        "Here is the exchange as it happened. Your replies are your own — written or picked — nothing is invented here."
+    static let endedNote = "That's the end of this conversation."
+    static let partnerFallback = "Partner"
+    static let saveFailed =
+        "Not saved — check your connection and try again. Your reply is intact."
+    static let retry = "Retry save"
+    static let couldNotStart = "This conversation could not be opened."
+
+    /// Every new learner-facing string, gathered for the copy pin test.
+    static let allStrings: [String] = [
+        hero, freshCta, continueCta, replayCta, done, chooseYourReply,
+        writeYourReply, answerFirst, sendReply, yourLine, recapTitle,
+        recapNote, endedNote, partnerFallback, saveFailed, retry, couldNotStart,
+    ]
+}
+
+struct DialogueExchangeView: View {
+    let pack: CoursePack
+    let store: LearningStore
+    let lesson: Lesson
+    let dialogue: Dialogue
+    @Binding var session: DialogueSession?
+    let onClose: () -> Void
+
+    @State private var openDraftText = ""
+    @State private var criteriaMet: Set<String> = []
+    @State private var rating: AttemptResponse.SelfRating?
+    @State private var modelRevealed = false
+    @State private var saveError = false
+    @State private var pendingEvent: DialogueTurnEvent?
+    @State private var pendingSession: DialogueSession?
+
+    private var current: DialogueNode? {
+        session.flatMap { dialogue.node(id: $0.currentNodeId) }
+    }
+
+    private var partnerName: String {
+        dialogue.partner ?? DialoguePracticeCopy.partnerFallback
+    }
+
+    /// The learner's own reply to an answered turn: the picked choice
+    /// text (authored) or their composed draft — never an invented line.
+    private func learnerReply(_ turn: DialogueTurnRecord) -> String? {
+        if let choiceId = turn.choiceId,
+           let node = dialogue.node(id: turn.nodeId),
+           let choice = node.choices.first(where: { $0.id == choiceId }) {
+            return choice.text
+        }
+        return turn.draft
+    }
+
+    private func feedback(for turn: DialogueTurnRecord) -> String? {
+        guard let choiceId = turn.choiceId,
+              let node = dialogue.node(id: turn.nodeId),
+              let choice = node.choices.first(where: { $0.id == choiceId }),
+              !choice.feedback.isEmpty else { return nil }
+        return choice.feedback
+    }
+
+    private func resetOpenState() {
+        openDraftText = ""
+        criteriaMet = []
+        rating = nil
+        modelRevealed = false
+        if let session, session.openDraft != nil {
+            openDraftText = session.openDraft ?? ""
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if session == nil {
+                    PlayerErrorView(message: DialoguePracticeCopy.couldNotStart,
+                                    onExit: onClose)
+                } else {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            headerCard
+                            transcript
+                            turnArea
+                            if session?.status == .complete {
+                                learnerRecap
+                            }
+                        }
+                        .padding(16)
+                    }
+                    .safeAreaInset(edge: .bottom, spacing: 0) {
+                        bottomBar
+                    }
+                }
+            }
+            .navigationTitle(dialogue.title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(DialoguePracticeCopy.done) { onClose() }
+                }
+            }
+        }
+        .onAppear { resetOpenState() }
+        .onChange(of: session) { _, _ in
+            if pendingEvent == nil, pendingSession == nil {
+                resetOpenState()
+            }
+        }
+        .onChange(of: openDraftText) { _, newValue in
+            guard let current, current.prompt != nil,
+                  session?.currentNodeId == current.id else { return }
+            if session?.openDraft != newValue {
+                session?.openDraft = newValue
+            }
+        }
+    }
+
+    private var headerCard: some View {
+        PaperCard {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(DialoguePracticeCopy.hero)
+                    .font(DesignTokens.text(11, weight: .semibold))
+                    .tracking(1)
+                    .foregroundStyle(DesignTokens.primary)
+                Text(dialogue.goal)
+                    .font(DesignTokens.text(15))
+                    .foregroundStyle(DesignTokens.ink)
+            }
+        }
+    }
+
+    /// The conversation so far: partner lines and the learner's own
+    /// replies, one bubble per turn, in the order they happened.
+    private var transcript: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if let session {
+                ForEach(Array(session.turns.enumerated()), id: \.offset) { _, turn in
+                    if let node = dialogue.node(id: turn.nodeId) {
+                        partnerBubble(node: node)
+                        learnerBubble(turn: turn)
+                    }
+                }
+            }
+        }
+    }
+
+    private func partnerBubble(node: DialogueNode) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(partnerName)
+                .font(DesignTokens.text(12, weight: .medium))
+                .foregroundStyle(DesignTokens.muted)
+            Text(node.line)
+                .font(DesignTokens.text(17))
+                .foregroundStyle(DesignTokens.inkDeep)
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(DesignTokens.stock2)
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(DesignTokens.edgeSoft, lineWidth: 1)
+                )
+            Text(node.meaning)
+                .font(DesignTokens.text(13))
+                .foregroundStyle(DesignTokens.muted)
+        }
+    }
+
+    private func learnerBubble(turn: DialogueTurnRecord) -> some View {
+        VStack(alignment: .trailing, spacing: 3) {
+            Text(DialoguePracticeCopy.yourLine)
+                .font(DesignTokens.text(12, weight: .medium))
+                .foregroundStyle(DesignTokens.muted)
+            if let reply = learnerReply(turn) {
+                Text(reply)
+                    .font(DesignTokens.text(17))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(DesignTokens.primarySoft)
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(DesignTokens.primary, lineWidth: 1.5)
+                    )
+            }
+            if let feedback = feedback(for: turn), !feedback.isEmpty {
+                Text(feedback)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+        }
+    }
+
+    /// The live turn: the partner's latest line plus the input the learner
+    /// replies with (choices, or the open composer), or the end state.
+    @ViewBuilder
+    private var turnArea: some View {
+        if let current {
+            partnerBubble(node: current)
+            if current.complete {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(DialoguePracticeCopy.endedNote)
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.muted)
+                    HStack(spacing: 10) {
+                        StudioSecondaryButton(DialoguePracticeCopy.replayCta,
+                                              disabled: saveError) { practiseAgain() }
+                        StudioPrimaryButton(label: DialoguePracticeCopy.done,
+                                            disabled: false) { onClose() }
+                    }
+                }
+            } else if !current.choices.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(DialoguePracticeCopy.chooseYourReply)
+                        .font(DesignTokens.text(14, weight: .medium))
+                        .foregroundStyle(DesignTokens.muted)
+                    ForEach(current.choices, id: \.text) { choice in
+                        OptionRow(
+                            text: choice.text,
+                            selected: false,
+                            multi: false,
+                            disabled: saveError || pendingEvent != nil
+                        ) {
+                            choose(choice)
+                        }
+                    }
+                }
+            } else {
+                openComposer(node: current)
+            }
+        }
+    }
+
+    /// Open turn: compose + self-assess against the authored rubric. The
+    /// draft and judgement are the learner's own; the model is revealed
+    /// only on an explicit action and marks the turn non-independent.
+    @ViewBuilder
+    private func openComposer(node: DialogueNode) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if let prompt = node.prompt, !prompt.isEmpty {
+                Text(prompt)
+                    .font(DesignTokens.text(15, weight: .medium))
+                    .foregroundStyle(DesignTokens.inkDeep)
+            }
+            if let guidance = node.lengthGuidance, !guidance.isEmpty {
+                Text(guidance)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+            Text(DialoguePracticeCopy.writeYourReply)
+                .font(DesignTokens.text(14, weight: .medium))
+                .foregroundStyle(DesignTokens.muted)
+            TextEditor(text: $openDraftText)
+                .font(DesignTokens.text(17))
+                .foregroundStyle(DesignTokens.ink)
+                .frame(minHeight: 110)
+                .padding(8)
+                .background(DesignTokens.canvas)
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(DesignTokens.edge, lineWidth: 1.5)
+                )
+                .disabled(disabled)
+                .accessibilityLabel(promptText(node))
+            Text(OpenTaskCopy.writtenCaption)
+                .font(DesignTokens.text(13))
+                .foregroundStyle(DesignTokens.muted)
+
+            rubricCard(node: node)
+
+            if modelRevealed {
+                Text(node.modelResponse ?? "")
+                    .font(DesignTokens.display(19))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(DesignTokens.primarySoft)
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(DesignTokens.primary, lineWidth: 1.5)
+                    )
+                Text(OpenTaskCopy.modelRevealedNote)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            } else {
+                StudioSecondaryButton(OpenTaskCopy.revealModel, disabled: disabled) {
+                    modelRevealed = true
+                }
+            }
+
+            StudioPrimaryButton(
+                label: DialoguePracticeCopy.sendReply,
+                disabled: disabled || !canSubmitOpen(node)
+            ) {
+                submitOpenTurn(node: node)
+            }
+            if !canSubmitOpen(node) {
+                Text(DialoguePracticeCopy.answerFirst)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+        }
+    }
+
+    private var disabled: Bool { saveError || pendingEvent != nil }
+
+    private func promptText(_ node: DialogueNode) -> String {
+        node.prompt ?? dialogue.goal
+    }
+
+    private func canSubmitOpen(_ node: DialogueNode) -> Bool {
+        OpenTaskSubmission.canSubmit(mode: .written, submission: openSubmission)
+    }
+
+    private var openSubmission: OpenTaskSubmission {
+        OpenTaskSubmission(
+            text: openDraftText,
+            criteriaMet: criteriaMet.sorted(),
+            rating: rating,
+            modelRevealed: modelRevealed)
+    }
+
+    private func rubricCard(node: DialogueNode) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(OpenTaskCopy.selfAssessmentTitle)
+                .font(DesignTokens.text(14, weight: .semibold))
+                .foregroundStyle(DesignTokens.inkDeep)
+            Text(OpenTaskCopy.selfAssessmentSubline)
+                .font(DesignTokens.text(13))
+                .foregroundStyle(DesignTokens.muted)
+            Text(OpenTaskCopy.tickWhatYouDo)
+                .font(DesignTokens.text(15, weight: .medium))
+                .foregroundStyle(DesignTokens.inkDeep)
+            ForEach(node.rubric ?? [], id: \.id) { criterion in
+                OptionRow(
+                    text: criterion.text,
+                    selected: criteriaMet.contains(criterion.id),
+                    multi: true,
+                    disabled: disabled
+                ) {
+                    if criteriaMet.contains(criterion.id) {
+                        criteriaMet.remove(criterion.id)
+                    } else {
+                        criteriaMet.insert(criterion.id)
+                    }
+                }
+            }
+            Text(OpenTaskCopy.rateYourself)
+                .font(DesignTokens.text(15, weight: .medium))
+                .foregroundStyle(DesignTokens.inkDeep)
+            HStack(spacing: 8) {
+                ForEach([AttemptResponse.SelfRating.again,
+                         .hard, .good, .easy], id: \.self) { option in
+                    let selected = rating == option
+                    Button {
+                        rating = rating == option ? nil : option
+                    } label: {
+                        Text(checkpointRatingLabel(option))
+                            .font(DesignTokens.text(14, weight: .medium))
+                            .foregroundStyle(selected ? DesignTokens.stock : DesignTokens.ink)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                            .background(selected ? DesignTokens.primary : DesignTokens.canvas)
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(DesignTokens.edge, lineWidth: 1.5)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(disabled)
+                }
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(DesignTokens.stock)
+        .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(DesignTokens.edge, lineWidth: 1.5)
+        )
+    }
+
+    /// End-of-exchange recap: exactly what the learner supplied (picked
+    /// choices and composed drafts), nothing invented, no grading claims.
+    @ViewBuilder
+    private var learnerRecap: some View {
+        PaperCard {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(DialoguePracticeCopy.recapTitle)
+                    .font(DesignTokens.text(14, weight: .semibold))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                Text(DialoguePracticeCopy.recapNote)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                if let session {
+                    ForEach(Array(session.turns.enumerated()), id: \.offset) { _, turn in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(DialoguePracticeCopy.yourLine)
+                                .font(DesignTokens.text(12, weight: .medium))
+                                .foregroundStyle(DesignTokens.muted)
+                            if let reply = learnerReply(turn) {
+                                Text(reply)
+                                    .font(DesignTokens.text(16, weight: .medium))
+                                    .foregroundStyle(DesignTokens.inkDeep)
+                                    .padding(10)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(DesignTokens.primarySoft)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(DesignTokens.primary, lineWidth: 1.5)
+                                    )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var bottomBar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if saveError {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(DialoguePracticeCopy.saveFailed)
+                        .font(DesignTokens.text(14))
+                        .foregroundStyle(DesignTokens.attentionInk)
+                    StudioSecondaryButton(DialoguePracticeCopy.retry) { retrySave() }
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(DesignTokens.canvas)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(DesignTokens.edgeSoft)
+                .frame(height: 1)
+        }
+    }
+
+    // MARK: Actions
+
+    private func choose(_ choice: DialogueChoice) {
+        guard let session, let current = current,
+              pendingEvent == nil, let choiceId = choice.id else { return }
+        let next: DialogueSession
+        do {
+            next = try submitDialogueChoice(
+                pack: pack, session: session, choiceId: choiceId)
+        } catch {
+            return
+        }
+        recordTurn(from: session, engineNext: next, node: current,
+                   choiceId: choiceId, criteriaMet: [], rating: nil,
+                   modelRevealed: false)
+    }
+
+    private func submitOpenTurn(node: DialogueNode) {
+        guard let session, pendingEvent == nil else { return }
+        let submission = openSubmission
+        guard OpenTaskSubmission.canSubmit(mode: .written, submission: submission) else {
+            return
+        }
+        let next: DialogueSession
+        do {
+            next = try submitDialogueOpenTurn(
+                pack: pack, session: session, draft: submission.text,
+                criteriaMet: submission.criteriaMet, rating: submission.rating,
+                modelRevealed: submission.modelRevealed)
+        } catch {
+            return
+        }
+        recordTurn(from: session, engineNext: next, node: node,
+                   choiceId: nil, criteriaMet: submission.criteriaMet,
+                   rating: submission.rating, modelRevealed: submission.modelRevealed)
+    }
+
+    /// Record the turn event (idempotent insert) BEFORE advancing the
+    /// presented session, so a failed save holds the exchange in place and
+    /// retry applies the same pending turn — never a duplicate, never a
+    /// reorder.
+    private func recordTurn(from previous: DialogueSession,
+                            engineNext: DialogueSession,
+                            node: DialogueNode,
+                            choiceId: String?,
+                            criteriaMet: [String],
+                            rating: AttemptResponse.SelfRating?,
+                            modelRevealed: Bool) {
+        let isOpen = choiceId == nil
+        let event = DialogueTurnEvent(
+            id: UUID().uuidString,
+            packId: pack.id,
+            packVersion: pack.version,
+            dialogueId: dialogue.id,
+            hostLessonId: lesson.id,
+            hostLessonRevision: lesson.revision,
+            nodeId: node.id,
+            turnIndex: engineNext.turns.count,
+            isOpen: isOpen,
+            choiceId: choiceId,
+            criteriaMet: criteriaMet,
+            rating: rating,
+            modelRevealed: modelRevealed,
+            at: Date())
+        pendingEvent = event
+        pendingSession = engineNext
+        do {
+            try store.record(.dialogueTurn(event))
+            pendingEvent = nil
+            pendingSession = nil
+            self.session = engineNext
+            resetOpenState()
+        } catch {
+            saveError = true
+        }
+    }
+
+    private func retrySave() {
+        guard let event = pendingEvent, let pending = pendingSession else { return }
+        do {
+            try store.record(.dialogueTurn(event))
+            pendingEvent = nil
+            pendingSession = nil
+            saveError = false
+            session = pending
+            resetOpenState()
+        } catch {
+            saveError = true
+        }
+    }
+
+    private func practiseAgain() {
+        guard pendingEvent == nil else { return }
+        do {
+            session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+            resetOpenState()
+        } catch {
+            // The exchange is already presented; nothing to recover here.
+        }
+    }
+}
+
 // MARK: - Ordering
 
 struct OrderingActivityView: View {

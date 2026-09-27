@@ -1,18 +1,180 @@
 # Skill map (P1.3)
 
-Scope of this document: **every unit of all five packs** (`Condisco/Content/packs/*.json`, as of 2026-09-25 working tree): French 13 units / 50 lessons, Italian 13 units / 49 lessons, German 17 units / 52 lessons, Portuguese 17 units / 52 lessons, Spanish 17 units / 52 lessons — **77 units, 255 lessons** (40 missions, 36 stories, verified by counting `lessons[]` per pack and per unit). P1.1/P1.3 context: `docs/roadmaps/2026-09-25-condisco-quality-and-growth.md`. Nothing here claims coverage it does not map: level labels describe what the mapped lessons actually do, and gaps are backlog, not promises.
+Scope of this document: **every unit of all five packs** (`Condisco/Content/packs/*.json`, as of 2026-09-26 working tree): French 13 units / 50 lessons, Italian 13 units / 49 lessons, German 17 units / 52 lessons, Portuguese 17 units / 52 lessons, Spanish 17 units / 52 lessons — **77 units, 255 lessons** (40 missions, 36 stories, verified by counting `lessons[]` per pack and per unit). P1.1/P1.3 context: `docs/roadmaps/2026-09-25-condisco-quality-and-growth.md`. Nothing here claims coverage it does not map: level labels describe what the mapped lessons actually do, and gaps are backlog, not promises.
 
 ## Legend
 
 - **Real-world act** — what the learner should be able to manage after the unit. Where the unit's lessons do not reach the unit `objective`, the act is marked **partial** and the missing part is named.
 - **Evidence** — where the ability is demonstrated: reading = text/dialogue stimuli (stories, mission transcripts, example pairs, prompt text); listening = audio stimuli (`media`-backed steps); speaking = `self-compare` (self-assessed production, `outcome: .selfAssessed`); writing = typed answers (`text`, `cloze`, `ordering`). A skill that is not trained in a unit is stated as **not trained here** — nothing is invented.
-- **Listening caveat (pack-wide, see backlog #1):** every audio step today plays synthesized audio — either the on-device course voice for the 21 allowlisted asset ids (`tools/device-speech-media.txt`, French 5 + Italian 16), or the bundled Listen tracks (5 files, still synthesized at author time, `reviewPending: true`, see `docs/audio-provenance/index.md`). There is **no native recording** in any pack yet; `check_packs.sh` passes on the allowlist basis (2026-09-25 baseline). `de`, `pt`, `es` declare **no media at all**, so listening is *not trained here* in those packs.
+- **Listening caveat (pack-wide, see backlog #1):** every audio step today plays synthesized audio — either the on-device course voice for the 23 allowlisted asset ids (`tools/device-speech-media.txt`, French 5 + Italian 16 + Spanish 2 from the 2026-09-26 café listen pilot), or the bundled Listen tracks (5 files, still synthesized at author time, `reviewPending: true`, see `docs/audio-provenance/index.md`). There is **no native recording** in any pack yet; `check_packs.sh` passes on the allowlist basis (2026-09-25 baseline, extended 2026-09-26). `de` and `pt` declare **no media at all**, so listening is *not trained here* in those packs; `es` declared no media until 2026-09-26, when the café listen pilot added two device-speech assets (listening now trained only in es-unit-1).
 - **Prerequisites** — declared `lesson.prerequisites` (chains are `legacy-success` on the preceding lesson) or, for entry units, the runtime "Suggested start" tag (`PlacementStore.recommendedLessonId` in the lesson browser, `Condisco/Lesson/CoursesView.swift`). Units whose lessons declare `prerequisites: []` are open-access consolidation units (the placement recommendation may point there, but nothing gates).
 - **Revisit points** — the FSRS review queue: every graded activity writes a per-`evidenceKey` FSRS state (`Condisco/Store/Fsrs.swift`, FSRS v6, desired retention 0.9); due items (`dueAt <= now`, `LearningStore.swift:1397`) surface in the Review tab as a `ReviewItem` that recalls the original prompt and accepted answer (`Condisco/Review/ReviewModels.swift`). Revisit = that queue, otherwise the phrases decay. Each unit below names the evidence keys that should return.
 
 ---
 
-## French (`fr`, pack `fr-foundations`, v1.5.7)
+## Audio inventory (2026-09-26)
+
+Media-backed lesson steps per language, verified against `Condisco/Content/packs/*.json` and `tools/device-speech-media.txt` on 2026-09-26. "Device-speech" = an allowlisted asset id with **no file on disk**: at lesson time the on-device synthesized course voice reads the declared transcript (see `docs/audio-provenance/index.md` and `docs/audio-provenance/spanish-cafe-listen-pilot.json`).
+
+| Pack | Device-speech assets (allowlisted) | Bundled listen clip (file on disk) | Media-backed lesson steps |
+|------|-------------------------------------|-------------------------------------|---------------------------|
+| French (`fr`) | 5 — `fr-identity-foundation-model`, `fr-people-foundation-model`, `fr-family-foundation-model`, `fr-numbers-foundation-model`, `fr-polite-coffee-audio` | none | 5 (model-audio steps in the four unit-1 discovery lessons; `fr-polite-coffee-audio` self-compare step in `fr-cafe-order-foundation`) |
+| Italian (`it`) | 16 — `it-polite-coffee-audio` + 15 `*-foundation-model` clips | 1 — `it-market-listen-audio` (`/audio/italian-foundations/it-market-foundation-listen.mp3`, sha256 `4b62a0f6…`) | 16 model-audio steps + the 5-step listen sequence in `it-market-foundation` (gist / prosciutto / pesche / ordine / grazie, all bound to `it-market-listen-stim`) |
+| German (`de`) | 0 | none | none — de declares no media at all; listening is not trained here |
+| Portuguese (`pt`) | 0 | none | none — pt declares no media at all; listening is not trained here |
+| Spanish (`es`) | **2 (new, 2026-09-26)** — `es-cafe-listen-audio`, `es-cafe-listen-model` | none | **1 pilot sequence (5 steps)** in `es-cafe-mission`: listen (step-10) → interpret (steps 11–13, gist + two key details) → respond (step-14 self-compare). Previously es declared **no media at all** |
+
+Statement of record: before 2026-09-26, `de`, `pt` and `es` had **no media-backed step anywhere** — listening was *not trained here* in those packs. The Spanish café listen pilot is the first listening evidence in the Spanish pack; de and pt remain media-free. The Spanish pilot assets are not reviewed recordings: they are authored transcripts synthesized on-device (`reviewPending: true`, naturalness unverified — see `docs/audio-provenance/spanish-cafe-listen-pilot.json`).
+
+The five standalone Listen tracks (bundled files, still synthesized at author time; `reviewPending: true` in every transcript):
+
+| Track (lessonId) | Duration | File |
+|------------------|----------|------|
+| `it-market-foundation` | 663.92 s | `/audio/italian-foundations/it-market-foundation-listen.mp3` |
+| `fr-identity-foundation` | 755.58 s | `/audio/french-foundations/fr-identity-listen.mp3` |
+| `de-introductions-foundation` | 772.92 s | `/audio/german-foundations/de-introductions-foundation-listen.mp3` |
+| `pt-introductions-foundation` | 785.17 s | `/audio/portuguese-foundations/pt-introductions-foundation-listen.mp3` |
+| `es-introductions-foundation` | 795.60 s | `/audio/spanish-foundations/es-introductions-foundation-listen.mp3` |
+
+Durations are the declared `durationS` values in `Condisco/Content/listen-tracks/*.json` (verified by `tools/check_packs.sh` against the real files). These five tracks are standalone Listen-list content, not lesson steps; the Spanish track is **not** wired into any lesson (the 2026-09-26 pilot deliberately does not reuse it).
+
+---
+
+## Per-unit evidence matrix (2026-09-26)
+
+Dated machine-derived evidence matrix for every unit of all five packs, extracted from the actual pack JSONs (`Condisco/Content/packs/*.json`) on 2026-09-26. One table per language, unit rows. Every mark is a **claim about what an activity actually does**, not what it is tagged with. The per-unit prose sections below remain the canonical walkthrough; this matrix is the scannable evidence layer and takes precedence where the prose disagrees (two stale lines were corrected on this date — the French pack version and the review-log claim in "Description claims vs mapped coverage").
+
+**Legend (modality → activity evidence that actually exercises it)**
+
+- **R = reading** — at least one text-bearing step in the unit: story/mission transcript, example pairs, an `information` read body, or prompt text.
+- **L = listening** — at least one audio-backed step: a stimulus with `mediaId` (kind `audio`), or a `modelAudioId` reference. Device-speech steps count here — the allowlisted on-device course voice reads the transcript at lesson time (see Audio inventory 2026-09-26 and backlog #1). German/Portuguese/Spanish lessons have **no in-lesson listening**; that is a real `—`.
+- **SP = spoken production** — at least one `self-compare` activity (`outcome: .selfAssessed`). A `speaking` *skill tag* on a choice/text/dialogue-choice step is **not** speaking evidence (plan rule, 2026-09-26); the Spanish pilot's `es-cafe-listen-say` is the only production step outside Italian.
+- **WP = written production** — at least one `text`/`cloze`/`ordering` activity (constrained production; dictated answers only — see rubric H1).
+- **I = interaction** — at least one `dialogue-choice` activity (multi-turn exchange, receptive choice). Missions that lack a dialogue-choice step show `—`: their steps rehearse your side of the exchange, not the exchange itself.
+- ✓ = the unit contains an exercising activity type; **—** = not trained in any lesson of the unit.
+- **Ⓛ = standalone Listen track** (`Condisco/Content/listen-tracks/*.json`): separate bundled-audio content, **not** lesson steps, and **not** unit L evidence. Listed once per language below its table for completeness.
+
+**Footnotes:** ‡1 the unit objective names "descriptions", but that content lives in the preceding home/descriptions unit — not this one. ‡2 "Getting around" unit has **1 lesson**: prices and quantities in errands are promised in the objective but not practiced. ‡3 "follow **spoken** directions" requires listening; the unit only traces directions on paper/text. ‡4 "where you live" is not trained here (it arrives in a later unit). † Italian unit array order: `it-unit-9` renders last in the browser (see its section note).
+
+### French
+
+| Unit | Lessons | Target task (`unit.objective`, trimmed) | Prereq chain | Vocab/grammar focus | R | L | SP | WP | I |
+|------|--------:|------------------------------------------|--------------|----------------------|---|---|---|---|---|
+| fr-unit-1 | 5 | Order a coffee; introduce yourself and your family | Entry — mission is Suggested start | Greetings, être/avoir, numbers, café order | ✓ | ✓ | — | ✓ | — |
+| fr-unit-2 | 4 | Describe your home and daily routine | u1 chain (fr-home ← fr-numbers-foundation) | House vocab, adjectives, plurals, routine | ✓ | — | — | ✓ | — |
+| fr-unit-3 | 4 | Questions, descriptions and requests ‡1 | u2 chain | Negation, question words, market, possessives | ✓ | — | — | ✓ | — |
+| fr-unit-4 | 4 | Destinations, past actions, plans | u3 chain | Transport, pouvoir, passé composé, futur proche | ✓ | — | — | ✓ | ✓ |
+| fr-unit-5 | 4 | Days, time, weather, market prices | fr-days → u1 numbers, then chain | Days, time, weather, prices | ✓ | — | — | ✓ | ✓ |
+| fr-unit-6 | 5 | Aches, pharmacy, emergencies, invitations | u5 chain | Health, pharmacy, emergency, invitations, café order | ✓ | ✓ | — | ✓ | ✓ |
+| fr-unit-7 | 3 | Consolidation — build, decide, remember | Open-access (none declared) | Café build, picnic mission, first-steps recall | ✓ | — | — | ✓ | — |
+| fr-unit-8 | 3 | Missions — navigate Paris, pharmacy, home build | Open-access (none declared) | Paris mission, pharmacy mission, agreement | ✓ | — | — | ✓ | — |
+| fr-unit-9 | 4 | Passé composé and imparfait, chosen and told | u8 chain | Passé composé, imparfait, tense choice, day narrative | ✓ | — | — | ✓ | — |
+| fr-unit-10 | 3 | Futur simple: promises, predictions, projects | u9 chain | Futur simple endings, aller + infinitif | ✓ | — | — | ✓ | — |
+| fr-unit-11 | 3 | Conditional politeness, wishes, si + imparfait | u10 chain | Conditionnel, souhaits, si-clauses | ✓ | — | — | ✓ | — |
+| fr-unit-12 | 4 | y/en, relatives, comparatives, superlatives | u11 chain | y/en, qui/que/où, plus/moins, superlatifs | ✓ | — | — | ✓ | — |
+| fr-unit-13 | 4 | Subjunctive intro, work vocab, hotel, A1 review | u12 chain | Subjonctif (il faut que), travail, hôtel, rappel A1 | ✓ | — | — | ✓ | — |
+
+Counts (13 units, 50 lessons): **R 13 · L 2 · SP 0 · WP 13 · I 3**. Notable absences: **no spoken production anywhere in French** (no `self-compare` anywhere in the pack; the recognition-only `speaking` tags on fr-cafe-mission/fr-a2-hotel-mission steps were removed in the 2026-09-26 outcomes repair — `audit_outcomes.py` now exits 0); listening only in unit 1 (four model audio steps) and unit 6 (one café-order model audio step). Standalone Ⓛ `fr-identity-foundation`.
+
+### Italian
+
+| Unit | Lessons | Target task (`unit.objective`, trimmed) | Prereq chain | Vocab/grammar focus | R | L | SP | WP | I |
+|------|--------:|------------------------------------------|--------------|----------------------|---|---|---|---|---|
+| it-unit-1 | 5 | Order a caffè; introduce yourself and your family | Entry — mission is Suggested start | Names, essere, avere, numbers | ✓ | ✓ | ✓ | ✓ | — |
+| it-unit-2 | 4 | Describe your home and daily routine | u1 chain (it-home ← it-numbers-foundation) | Home, articles, colors, plurals | ✓ | ✓ | ✓ | ✓ | — |
+| it-unit-3 | 4 | Questions, descriptions and requests ‡1 | u2 chain | Negation, prendere, possessives, transport | ✓ | ✓ | ✓ | ✓ | — |
+| it-unit-4 | 4 | Destinations, past actions, plans | u3 chain | Modals, polite requests, past, future plans | ✓ | ✓ | ✓ | ✓ | ✓ |
+| it-unit-5 | 4 | Days, time, weather, market prices | it-days → u1 numbers, then chain | Days, time, weather, market (incl. price-list listen) | ✓ | ✓ | ✓ | ✓ | — |
+| it-unit-6 | 5 | Aches, pharmacy, emergencies, invitations | u5 chain | Health, pharmacy, emergency, invitations, café order | ✓ | ✓ | ✓ | ✓ | ✓ |
+| it-unit-7 | 3 | Consolidation — build, decide, remember | Open-access (none declared) | Café build, market run, early-words recall | ✓ | — | — | ✓ | — |
+| it-unit-8 | 3 | Missions — dinner, directions, bar build | Open-access (none declared) | Pizzeria dinner, directions, bar orders | ✓ | — | — | ✓ | — |
+| it-unit-10 | 3 | Futuro semplice: promises, predictions, plans | u9 chain (← it-a2-passato-imperfetto) | Futuro endings, promesse, progetti | ✓ | — | — | ✓ | — |
+| it-unit-11 | 3 | Conditional wishes and polite requests | u10 chain | Condizionale, vorrei/potrebbe | ✓ | — | — | ✓ | ✓ |
+| it-unit-12 | 4 | Link ideas: congiuntivo, ne/ci, relatives, gerundio | u11 chain | Congiuntivo, ne/ci, che/cui, stare+gerundio | ✓ | — | — | ✓ | — |
+| it-unit-13 | 3 | Comparatives, work, hotel stay | u12 chain | Comparativi, lavoro, albergo | ✓ | — | — | ✓ | — |
+| it-unit-9 † | 4 | Il passato: passato prossimo, imperfetto, choice | From u8 (← it-food-construction; array-last) | Passato prossimo (avere/essere), imperfetto, choice | ✓ | — | — | ✓ | — |
+
+Counts (13 units, 49 lessons, array order 1–8, 10–13, 9): **R 13 · L 6 · SP 6 · WP 13 · I 3**. Notable absences: the whole A2 block (units 9–13) has no listening and no self-compare — the pack's listening and spoken production live entirely in units 1–6. Standalone Ⓛ `it-market-foundation` (the only shipped audio file, still `reviewPending: true`).
+
+### German
+
+| Unit | Lessons | Target task (`unit.objective`, trimmed) | Prereq chain | Vocab/grammar focus | R | L | SP | WP | I |
+|------|--------:|------------------------------------------|--------------|----------------------|---|---|---|---|---|
+| de-unit-1 | 3 | Introduce yourself; order a drink politely | Entry — mission is Suggested start | heißen, verb-fronted questions, accusative einen | ✓ | — | — | ✓ | — |
+| de-unit-2 | 1 | Prices and quantities in errands ‡2 | u1 | Numbers 1–10, reversed number words | ✓ | — | — | ✓ | — |
+| de-unit-3 | 2 | Ask where things are; follow directions ‡3 | u2 | Directions story, haggling at the flea market | ✓ | — | — | ✓ | ✓ |
+| de-unit-4 | 2 | Days, times, the people around you | u3 | Weekdays, time, family introductions | ✓ | — | — | ✓ | ✓ |
+| de-unit-5 | 2 | Weather and free time ‡4 | u4 | Weather, free-time talk | ✓ | — | — | ✓ | — |
+| de-unit-6 | 3 | Consolidation — build, decide, remember | Open-access (none declared) | Café requests build, market run, recall | ✓ | — | — | ✓ | — |
+| de-unit-7 | 3 | Missions — train, family dinner, week build | Open-access (none declared) | Ticket/platform, dinner small talk, weekly routine | ✓ | — | — | ✓ | — |
+| de-unit-8 | 4 | Home and your day | u5 | der/die/das, invariable adjectives, plurals, routine | ✓ | — | — | ✓ | — |
+| de-unit-9 | 4 | Everyday exchanges: no, questions, food, mine/yours | u8 | kein/nicht, question words, food, possessives | ✓ | — | — | ✓ | ✓ |
+| de-unit-10 | 4 | Move around, ask politely, past and plans | u9 | Night-train story, Perfekt, plans | ✓ | — | — | ✓ | — |
+| de-unit-11 | 3 | Time words and the market | u10 | Months/dates, time-telling, market mission | ✓ | — | — | ✓ | — |
+| de-unit-12 | 4 | Health and social life | u11 | Doctor, pharmacy, emergency, invitations | ✓ | — | — | ✓ | ✓ |
+| de-unit-13 | 4 | Perfekt and the storyteller's Präteritum | u12 | haben/sein, irregular participles, modals, weekend | ✓ | — | — | ✓ | — |
+| de-unit-14 | 3 | Futur I: plans and guesses | u13 | werden + infinitive, wird wohl, resolutions | ✓ | — | — | ✓ | — |
+| de-unit-15 | 3 | würde, polite requests, unreal wishes | u14 | Konjunktiv II, hotel front desk, wäre/hätte | ✓ | — | — | ✓ | ✓ |
+| de-unit-16 | 4 | Connect ideas: relatives, comparisons, wo/wohin | u15 | Relativsätze, -er/als, am besten, case choice | ✓ | — | — | ✓ | — |
+| de-unit-17 | 3 | Work talk: passive, job vocab, interview | u16 | Passiv mit werden, Beruf/Bewerbung | ✓ | — | — | ✓ | — |
+
+Counts (17 units, 52 lessons): **R 17 · L 0 · SP 0 · WP 17 · I 5**. Notable absences: **no in-lesson listening at all** (de declares no media) and **no spoken production** (no `self-compare` anywhere; the recognition-only `speaking` tags on the choice/text/dialogue-choice steps of ten lessons — mission and `conversation` family, the pack with the most unbacked speaking claims — were removed in the 2026-09-26 outcomes repair; `audit_outcomes.py` now exits 0). Standalone Ⓛ `de-introductions-foundation`.
+
+### Portuguese
+
+| Unit | Lessons | Target task (`unit.objective`, trimmed) | Prereq chain | Vocab/grammar focus | R | L | SP | WP | I |
+|------|--------:|------------------------------------------|--------------|----------------------|---|---|---|---|---|
+| pt-unit-1 | 3 | Order a coffee; introduce yourself (European PT) | Entry — mission is Suggested start | gostaria de, é vs e accents, introductions | ✓ | — | — | ✓ | — |
+| pt-unit-2 | 1 | Prices and quantities in errands ‡2 | u1 | Numbers 1–10, dois/duas agreement | ✓ | — | — | ✓ | — |
+| pt-unit-3 | 2 | Ask where things are; follow directions ‡3 | u2 | ficar for location, price frame | ✓ | — | — | ✓ | ✓ |
+| pt-unit-4 | 2 | Days, times, the people around you | u3 | Week from domingo, hyphenated days, relatives | ✓ | — | — | ✓ | ✓ |
+| pt-unit-5 | 3 | Consolidation — build, decide, remember | Open-access (none declared) | Café order build, market mission, look-back | ✓ | — | — | ✓ | — |
+| pt-unit-6 | 3 | Missions — station, hotel, family build | Open-access (none declared) | Directions, check-in, family sentences | ✓ | — | — | ✓ | — |
+| pt-unit-7 | 4 | Home and your day | u4 | em+article fusions, agreement, plurals, routine | ✓ | — | — | ✓ | — |
+| pt-unit-8 | 4 | Everyday exchanges: no, questions, food, mine/yours | u7 | não, question words, food, possessives | ✓ | — | — | ✓ | — |
+| pt-unit-9 | 4 | Move around, ask politely, past and plans | u8 | ir, Pode…/Gostaria de…, pretérito, plans | ✓ | — | — | ✓ | ✓ |
+| pt-unit-10 | 4 | Time words, weather, the market | u9 | Weather frames, time, months/dates, quantities | ✓ | — | — | ✓ | — |
+| pt-unit-11 | 1 | Free time and hobbies (thinnest unit) | u10 | Gosto de…, hobbies | ✓ | — | — | ✓ | — |
+| pt-unit-12 | 4 | Health and social life | u11 | Dói-me, pharmacy, emergencies, invitations | ✓ | — | — | ✓ | ✓ |
+| pt-unit-13 | 4 | Pretérito perfeito and imperfeito | u12 | Perfeito, imperfeito, choice, weekend narrative | ✓ | — | — | ✓ | — |
+| pt-unit-14 | 3 | Future: ir + infinitivo, futuro simples | u13 | vou fazer, falarei, intentions | ✓ | — | — | ✓ | — |
+| pt-unit-15 | 3 | Desejos: condicional, gostaria/queria, conjuntivo | u14 | Condicional, queria um café, quero que… | ✓ | — | — | ✓ | ✓ |
+| pt-unit-16 | 4 | Link ideas: relatives, comparisons, pronoun forms | u15 | que/quem/onde, mais/menos, lhe/lhes, comigo | ✓ | — | — | ✓ | — |
+| pt-unit-17 | 3 | Superlatives, hotel check-in, A1 review | u16 | -íssimo, check-in mission, revisão A1 | ✓ | — | — | ✓ | — |
+
+Counts (17 units, 52 lessons): **R 17 · L 0 · SP 0 · WP 17 · I 5**. Notable absences: **no in-lesson listening** (pt declares no media) and **no spoken production** (no `self-compare` anywhere; the recognition-only `speaking` tags on pt-cafe-mission/pt-station-mission/pt-hotel-mission steps were removed in the 2026-09-26 outcomes repair — `audit_outcomes.py` now exits 0). Standalone Ⓛ `pt-introductions-foundation`.
+
+### Spanish
+
+| Unit | Lessons | Target task (`unit.objective`, trimmed) | Prereq chain | Vocab/grammar focus | R | L | SP | WP | I |
+|------|--------:|------------------------------------------|--------------|----------------------|---|---|---|---|---|
+| es-unit-1 | 3 | Introduce yourself; order a drink; first café listen | Entry — mission is Suggested start | llamarse, quisiera, accents (café/té) | ✓ | ✓ | ✓ | ✓ | — |
+| es-unit-2 | 1 | Prices and quantities in errands ‡2 | u1 | Numbers 1–10, welded number words (veintiuno) | ✓ | — | — | ✓ | — |
+| es-unit-3 | 2 | Ask where things are; follow directions ‡3 | u2 | dónde/donde accent, costar agreement | ✓ | — | — | ✓ | ✓ |
+| es-unit-4 | 2 | Days, times, the people around you | u3 | Weekdays, mi/mis, siblings | ✓ | — | — | ✓ | ✓ |
+| es-unit-5 | 3 | Consolidation — build, decide, remember | Open-access (none declared) | Polite-request build, find-café mission, recall | ✓ | — | — | ✓ | — |
+| es-unit-6 | 3 | Missions — museum, party, family build | Open-access (none declared) | Directions/ticket, birthday party, family sentences | ✓ | — | — | ✓ | — |
+| es-unit-7 | 4 | Home and your day | u4 | el/la/los/las, ser + adjective, plurals, routine | ✓ | — | — | ✓ | — |
+| es-unit-8 | 4 | Everyday exchanges: no, questions, food, mine/yours | u7 | no/nunca/nada, question accents, food, mi/tu/su | ✓ | — | — | ✓ | ✓ |
+| es-unit-9 | 4 | Move around, ask politely, past and plans | u8 | ir, poder/querría, pretérito first look, ir a | ✓ | — | — | ✓ | ✓ |
+| es-unit-10 | 4 | Time words, weather, the market | u9 | hace sol/frío, time (es/son), dates, quantities | ✓ | — | — | ✓ | — |
+| es-unit-11 | 1 | Free time and hobbies (thinnest unit) | u10 | me gusta/me encanta + infinitive | ✓ | — | — | ✓ | — |
+| es-unit-12 | 4 | Health and social life | u11 | Body parts, Me duele, pharmacy, emergencias, invitations | ✓ | — | — | ✓ | ✓ |
+| es-unit-13 | 4 | Pretérito e imperfecto, chosen and told | u12 | Pretérito endings/irregulars, imperfecto, choice, fin de semana | ✓ | — | — | ✓ | — |
+| es-unit-14 | 3 | Future: formation, uses, plans | u13 | Future endings (rebel stems), promises, ir a | ✓ | — | — | ✓ | — |
+| es-unit-15 | 3 | Deseos y cortesía, subjunctive trigger | u14 | Condicional, me gustaría/quisiera, quiero que… | ✓ | — | — | ✓ | ✓ |
+| es-unit-16 | 4 | Link ideas: relatives, comparisons, pronouns, por/para | u15 | que/quien/donde, más/menos, lo/la/le, por vs para | ✓ | — | — | ✓ | — |
+| es-unit-17 | 3 | Work, superlatives, hotel mission, tech talk | u16 | -ísimo/el más, check-in mission, tecnología | ✓ | — | — | ✓ | — |
+
+Counts (17 units, 52 lessons): **R 17 · L 1 · SP 1 · WP 17 · I 6**. Notable absences: in-lesson listening exists **only** in unit 1 (the 2026-09-26 café listen pilot: 5 steps in `es-cafe-mission`, `reviewPending: true`); every other unit has no listening and no spoken production. Interaction is the most exercised modality after reading/writing (6 units) via the `conversation`-family dialogue-choice lessons. Standalone Ⓛ `es-introductions-foundation` (not wired into any lesson).
+
+### Cross-language totals (2026-09-26)
+
+77 units, 255 lessons: **R 77 · L 9 · SP 7 · WP 77 · I 22** (unit-level marks). Reading and constrained written production are exercised in every unit of every pack; listening, spoken production and interaction are the scarce columns. Speaking evidence (self-compare) exists only in Italian units 1–6 and the Spanish pilot unit 1; in-lesson listening only in French units 1/6, Italian units 1–6, and the Spanish pilot unit 1; interaction only in the dialogue-choice-bearing conversation/mission units listed above. These are the numbers the 2026-09-26 audit report builds on (`docs/reviews/2026-09-26-a1a2-bridge-spanish.md`).
+
+---
+
+## French (`fr`, pack `fr-foundations`, v1.5.8)
 
 ### fr-unit-1 · "Meeting people" · objective: "Introduce yourself and your family."
 
@@ -190,15 +352,15 @@ Scope of this document: **every unit of all five packs** (`Condisco/Content/pack
 | `fr-a2-rappel-a1` | "Retour sur le niveau A1" (recall) | Retrieval: introductions, negation, questions, numbers, requests… |
 
 - Real-world act: say what must be done (il faut que + subjunctive), check into a hotel, and hold onto the A1 foundations.
-- Evidence: **reading** – example pairs and the hotel mission transcript; **listening** – not trained here; **speaking** – not trained here (the hotel mission's activities carry a "speaking" skill tag on recognition steps only; there is no `self-compare` production step); **writing** – typed, cloze, ordering and matching answers.
+- Evidence: **reading** – example pairs and the hotel mission transcript; **listening** – not trained here; **speaking** – not trained here (the hotel mission's recognition-only "speaking" skill tags were removed in the 2026-09-26 outcomes repair; there is no `self-compare` production step); **writing** – typed, cloze, ordering and matching answers.
 - Prerequisites: fr-unit-12 chain (`fr-a2-subjonctif-intro` requires `fr-a2-superlatifs`).
 - Revisit: subjunctive stem keys, hotel check-in phrases, and the A1 retrieval items (rappel).
 
-**Level claim:** A1 foundation (units 1–8: introductions, home, routine, everyday exchanges, time/weather/market, health/social, consolidation) and an 18-lesson A2 block (units 9–13). Structured `cefr` tags exist **only on the A2 lessons** (18 × `"A2"`, units 9–13 — machine-checkable); the 32 A1 lessons are untagged, so the A1 label rests on content alignment with CEFR A1 descriptors. Note: an earlier version of this map stated "zero `"cefr"` keys in `french.json`" — stale against the current v1.5.7 working tree, which carries the 18 A2 tags.
+**Level claim:** A1 foundation (units 1–8: introductions, home, routine, everyday exchanges, time/weather/market, health/social, consolidation) and an 18-lesson A2 block (units 9–13). Structured `cefr` tags exist **only on the A2 lessons** (18 × `"A2"`, units 9–13 — machine-checkable); the 32 A1 lessons are untagged, so the A1 label rests on content alignment with CEFR A1 descriptors. Note: an earlier version of this map stated "zero `"cefr"` keys in `french.json`" — stale against the current v1.5.8 working tree, which carries the 18 A2 tags.
 
 ---
 
-## Italian (`it`, pack `it-foundations`, v1.5.5)
+## Italian (`it`, pack `it-foundations`, v1.5.6)
 
 Note on unit order: this pack's `units` array places **it-unit-9 last** (order 1–8, 10, 11, 12, 13, 9) — the lesson browser shows that array order, so "Il passato" appears after the A2 work units. Unit ids are unaffected; the map below follows the pack's array order and flags the placement.
 
@@ -605,7 +767,7 @@ Note on unit order: this pack's `units` array places **it-unit-9 last** (order 1
 | `de-a2-bewerbungsgespraech-mission` | "Mission: Das Bewerbungsgespräch" (mission) | Introduce yourself, describe experience, stay polite |
 
 - Real-world act: describe processes passively, talk about jobs and applications, and survive a job interview.
-- Evidence: **reading** – example pairs and the interview mission transcript; **listening** – not trained here; **speaking** – not trained here (the mission's activities carry a "speaking" skill tag on recognition steps only; no `self-compare` production step); **writing** – cloze, ordering and typed answers.
+- Evidence: **reading** – example pairs and the interview mission transcript; **listening** – not trained here; **speaking** – not trained here (the mission's recognition-only "speaking" skill tags were removed in the 2026-09-26 outcomes repair; no `self-compare` production step); **writing** – cloze, ordering and typed answers.
 - Prerequisites: de-unit-16 chain (`de-a2-passiv-intro` requires `de-a2-wechselpraepositionen`).
 - Revisit: werden-passive frame keys and interview phrase keys.
 
@@ -852,9 +1014,9 @@ Note on unit order: this pack's `units` array places **it-unit-9 last** (order 1
 | `es-cafe-requests-foundation` | "At the café" (conversation) | Ordering with `quisiera`; accents on café/té |
 
 - Real-world act: introduce yourself and order a drink politely.
-- Evidence: **reading** – mission/conversation text; **listening** – not trained here (no audio declared in this pack); **speaking** – not trained here; **writing** – typed answers (accent-sensitive).
+- Evidence: **reading** – mission/conversation text; **listening** – started 2026-09-26 with the café listen pilot in `es-cafe-mission` (5 steps: listen → interpret → respond) on two allowlisted device-speech assets (`es-cafe-listen-audio`, `es-cafe-listen-model`; synthesized on-device course voice, `reviewPending: true` — see Audio inventory 2026-09-26 and `docs/audio-provenance/spanish-cafe-listen-pilot.json`); **speaking** – first `self-compare` in the same pilot (`es-cafe-listen-say`, self-assessed production); **writing** – typed answers (accent-sensitive).
 - Prerequisites: entry unit; mission is "Suggested start".
-- Revisit: reflexives and accented order words via Review queue.
+- Revisit: reflexives and accented order words via Review queue; the three listen comprehension evidence keys (`es-cafe-listen-gist` / `-drink` / `-here`) return as listening review items.
 
 ### es-unit-2 · "Getting around" · objective: "Understand prices and quantities in everyday errands."
 
@@ -1080,7 +1242,7 @@ Where a pack description says more than the mapped lessons can support, the gap 
 | Italian | "Twenty-four original A1 foundation lessons" | A1 units (1–8) hold **32** lessons. | **Understates A1 count** (24 vs 32). |
 | Italian | "Adds 17 new CEFR A2 lessons (units 9–13)" | **17** lessons carrying `cefr: "A2"` ✓; unit ids 9–13 are correct, but **it-unit-9 sits last in the pack's `units` array** (order 1–8, 10–13, 9) — the browser lists it after unit 13. | Count/level claim machine-checkable; display order quirk worth fixing (see backlog #10). |
 | German | "35 A1 German lessons … **plus 19 new discovery lessons** … 17 new A2" | Pack has **52** lessons total (35 A1 + 17 A2), not 35+19+17=71. The 19 listed topics are the units 8–12 lessons already inside the 35; several of those lessons are not `discovery` family (missions, stories, conversations, recall). | **Double count + family mislabel** in pack copy. Needs copy fix (backlog #7). |
-| German | "Lessons 1-8 have been through native-speaker review." | `docs/reviews/review-log.jsonl` records all 255 lessons as `disposition: "unreviewed"` with `reviewMethod`, `reviewer`, `variant` and `date` all `null` — including de-unit-1/2. `docs/native-review-kit.md` requires `reviewMethod: "external-human"` + named reviewer + recorded variant to clear "pending". | **Unverified claim of native review.** Also present in pack `attribution` ("lessons 1-8 reviewed 2026-09-11"). Needs routing (backlog #7). |
+| German | "Lessons 1-8 have been through native-speaker review." | `docs/reviews/review-log.jsonl` records all 255 lessons with an AI-assisted disposition (183 `pass`, 72 `pass-with-notes`, dated 2026-09-25/26 — the earlier "all 255 unreviewed" record is stale, corrected 2026-09-26), but **none** with `reviewMethod: "external-human"`. `docs/native-review-kit.md` requires `reviewMethod: "external-human"` + named reviewer + recorded variant to clear "pending". | **Unverified claim of native review.** Also present in pack `attribution` ("lessons 1-8 reviewed 2026-09-11"). Needs routing (backlog #7). |
 | Portuguese | "European Portuguese throughout. 52 A1–A2 lessons; native-speaker review pending." | 52 lessons ✓; 45 of 52 carry `cefr` tags (28 A1, 17 A2), 7 untagged (unit-1 mission, units 5–6); review-pending language is honest and verified against the review log. | Count OK; "A1–A2" is a lumped label over mixed tagging; variant is uniformly European Portuguese. Keep. |
 | Spanish | "Fifty-two Spanish lessons: the full A1 arc … plus seventeen new CEFR A2 lessons in five units" | 52 lessons ✓; A1 = 35, A2 = 17; tagging partial (7 untagged). The arc is now fully mapped here, but "full A1 arc" reads as a completion claim, and native review is open (the description itself says "Native-speaker editorial review remains open"). | Counts match; "full A1 arc" phrasing implies completion — soften or keep only as coverage disclosure (backlog #8). |
 
@@ -1088,13 +1250,13 @@ Where a pack description says more than the mapped lessons can support, the gap 
 
 | # | Gap | Evidence | Fix / decision |
 |---|-----|----------|----------------|
-| 1 | **Listening evidence is synthesized, not recorded.** 22 lesson audio assets are declared across packs: 1 shipped recording (Italian market Listen track file); the other 21 are allowlisted as **intentional device speech** (`tools/device-speech-media.txt`) — labeled synthesized course voice, not recorded native audio — and `check_packs.sh` passes on that basis (2026-09-25 baseline). The 5 standalone Listen tracks have files but are themselves synthesized at author time with `reviewPending: true` (`docs/audio-provenance/index.md`). So: no native listening evidence anywhere yet. | Media declarations + allowlist; `tools/check_packs.sh`; `docs/audio-provenance/index.md` | P0.1's repair took the device-speech alternative (allowlisted, labeled); marked as synthesized in the map. On-device audio verification and native review of the 21 synthesized steps remain pending |
+| 1 | **Listening evidence is synthesized, not recorded.** 24 lesson audio assets are declared across packs: 1 shipped recording (Italian market Listen track file); the other 23 are allowlisted as **intentional device speech** (`tools/device-speech-media.txt`) — French 5 + Italian 16 + Spanish 2 (the 2026-09-26 café listen pilot in `es-cafe-mission`) — labeled synthesized course voice, not recorded native audio, and `check_packs.sh` passes on that basis (2026-09-25 baseline, extended 2026-09-26). The 5 standalone Listen tracks have files but are themselves synthesized at author time with `reviewPending: true` (`docs/audio-provenance/index.md`). So: no native listening evidence anywhere yet. | Media declarations + allowlist; `tools/check_packs.sh`; `docs/audio-provenance/index.md` + `docs/audio-provenance/spanish-cafe-listen-pilot.json` | P0.1's repair took the device-speech alternative (allowlisted, labeled); marked as synthesized in the map. On-device audio verification and native review of the 23 synthesized steps remain pending |
 | 2 | **de/pt/es unit 2 "Getting around" = 1 lesson** — prices and quantities in errands are promised in the unit objective but not practiced | `de-numbers-quantities-foundation`, `pt-numbers-quantities-foundation`, `es-numbers-quantities-foundation` | Author 1–2 lessons, or narrow the unit objective |
 | 3 | **Speaking evidence missing in 4 of 5 languages** — only Italian has `self-compare` (12 activities, verified per lesson: people/family/numbers, descriptions/plural, negation/food/possession, requests, days/market, café-order); fr/de/pt/es have none | grep `"kind": "self-compare"` → italian.json only | Add self-compare steps for high-value phrases (rubric H1/H2) |
 | 4 | **Open-ended prompts auto-graded against fixed lists** produce silent generic-fallback feedback ("That is not the form we are looking for…", `AnswerEngine.swift:210-212`) wherever `errors: []` | `"errors": []` is the decode default (`CoursePack.swift:316`); search each pack | Apply rubric H1/H3 per lesson: narrow prompts or author error entries |
 | 5 | **Partial structured CEFR tagging.** French A1 (32 lessons) and Italian A1 (32) carry no tags — only their A2 blocks are tagged (18 and 17 × "A2"). German/Portuguese/Spanish tag 45 of 52 each; the untagged 7 per pack are the unit-1 café mission and the two consolidation units (de units 6–7; pt/es units 5–6). | counts of `"cefr"` per pack (2026-09-25) | Add `cefr` to the untagged lessons when levels are re-verified; earlier "fr/pt have zero cefr keys" record is stale and closed |
 | 6 | **Totals reconciliation** — **resolved, not a discrepancy.** Verified by counting `lessons[]` per pack: fr 50, it 49, de 52, pt 52, es 52 = **255** (77 units, 40 missions, 36 stories). No orphan `unitId`s, no duplicate lesson ids. | `lessons[]` per pack | Closed |
-| 7 | **German pack copy (description + attribution) is inaccurate and over-claims review.** Description arithmetic double counts (35 + 19 + 17 ≠ 52), calls missions/stories/conversations/recall lessons "19 new discovery lessons", and claims "Lessons 1-8 have been through native-speaker review" while the review log records every lesson as unreviewed (no `reviewMethod`/`reviewer`/`variant`). | `german.json` `description` (line 9) and `attribution` (line 10); `docs/reviews/review-log.jsonl` | Route to pack-copy lane: correct the count and family labels; align the review claim with the log or record the missing review records first |
+| 7 | **German pack copy (description + attribution) is inaccurate and over-claims review.** Description arithmetic double counts (35 + 19 + 17 ≠ 52), calls missions/stories/conversations/recall lessons "19 new discovery lessons", and claims "Lessons 1-8 have been through native-speaker review" while the review log's 255 AI-assisted dispositions (183 pass / 72 pass-with-notes as of 2026-09-26) contain no `reviewMethod: "external-human"` entry — the native-review claim stays unverified for every lesson. | `german.json` `description` (line 9) and `attribution` (line 10); `docs/reviews/review-log.jsonl` | Route to pack-copy lane: correct the count and family labels; align the review claim with the log or record the missing native review records first |
 | 8 | **Spanish description "the full A1 arc" reads as completion.** Mapping now covers every lesson, but "full" implies verified completeness while native review is open and per-lesson tags are partial (7 untagged). | `spanish.json` `description` (line 9) | Route to pack-copy lane: rephrase as coverage ("covers the A1 arc") or add the review-open disclosure to the phrase itself |
 | 9 | **pt/es unit 11 "Tempo livre"/"Tiempo libre" = 1 lesson** — the objective is reached but with no practice variety; thin units decay faster | `pt-free-time-foundation`, `es-free-time-foundation` | Author 1–2 supporting lessons (e.g. a hobbies conversation), or accept and note the thin review surface |
 | 10 | **Italian unit array order: it-unit-9 is last** (1–8, 10–13, 9). Unit ids are fine; the browser and this map follow the array, so the A2 "Il passato" unit appears after the units that presuppose it. | `italian.json` `units[]` order | Reorder the `units` array (id 9 before 10) — low risk, or accept as authoring order |
@@ -1104,7 +1266,7 @@ Where a pack description says more than the mapped lessons can support, the gap 
 
 - **Every lesson appears exactly once** across the five sections above (count check method: sum of per-unit rows per pack = pack `lessons[]` count; see per-pack tallies in the report accompanying this file).
 - **Unit ids in the headings match pack `units[].id` verbatim** (spot-checked across all 77 units; Italian headings follow the pack's array order, flagged where that differs from numeric order).
-- **Evidence is derived from the packs, not from intent**: reading = text/dialogue stimuli present in each lesson's activities; listening = only where a `mediaId`-backed step exists (fr/it, synthesized); speaking = only `self-compare` activities (it only); writing = `text`/`cloze`/`ordering` activities (present in every lesson). A skill with no such activity in a unit is written as **not trained here**.
+- **Evidence is derived from the packs, not from intent**: reading = text/dialogue stimuli present in each lesson's activities; listening = only where a `mediaId`-backed step exists (fr/it, plus the es café listen pilot as of 2026-09-26; all synthesized); speaking = only `self-compare` activities (it, plus the es pilot as of 2026-09-26); writing = `text`/`cloze`/`ordering` activities (present in every lesson). A skill with no such activity in a unit is written as **not trained here**.
 - **Pack `description` / `attribution` copy is owned by other lanes**: this document records discrepancies (table above) but does not edit pack JSON. Routed items: German `description` line 9 + `attribution` line 10; Spanish `description` line 9. No other in-app copy repeats these claims — `Condisco/Lesson/CoursesView.swift` renders `pack.description` verbatim (line 151) and adds no level claims of its own.
 
 ## Template for future packs/units

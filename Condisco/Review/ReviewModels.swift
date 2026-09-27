@@ -106,12 +106,31 @@ extension ReviewItem {
     }
 }
 
+// MARK: - Review scope
+//
+// Where the review queue comes from: every course, or just the focus
+// course — the same `condisco.focusLanguage` Home, Listen, and the
+// widget re-aim by. Purely session state: the Review tab always opens
+// on All courses, so the all-courses due count Home shows and the
+// queue it opens stay in agreement.
+
+enum ReviewScope: String, CaseIterable {
+    case all = "All courses"
+    case focus = "Focus course"
+}
+
 // MARK: - Review catalog
 
 enum ReviewCatalog {
     /// Due items across every pack, oldest first. Also returns the
     /// soonest upcoming due date (for the empty state) when nothing is due.
     /// Main-actor isolated because it reads from LearningStore.
+    ///
+    /// Each item's displayed cue rotates through the activity's authored
+    /// variants seeded by FSRS `reps` — the key's completed-review count,
+    /// the natural per-key counter the projection already persists. The
+    /// item's identity, due time, and FSRS scheduling are untouched: only
+    /// which authored cue text the card shows changes.
     @MainActor
     static func loadDue(
         packs: [CoursePack], store: LearningStore, now: Date = Date()
@@ -124,7 +143,8 @@ enum ReviewCatalog {
                 if record.fsrs.dueAt <= now {
                     if let item = makeItem(
                         pack: pack, evidenceKey: key,
-                        dueAt: record.fsrs.dueAt) {
+                        dueAt: record.fsrs.dueAt,
+                        presentationOrdinal: record.fsrs.reps) {
                         due.append(item)
                     }
                 } else if nextDueAt == nil || record.fsrs.dueAt < nextDueAt! {
@@ -136,8 +156,15 @@ enum ReviewCatalog {
         return (due, nextDueAt)
     }
 
+    /// Resolves a due evidence key back to its activity and lesson, with
+    /// the cue text rotated deterministically over the activity's authored
+    /// variants (`presentationOrdinal` counts prior rated presentations:
+    /// FSRS `reps` in the due pass, the per-key attempt count in the tricky
+    /// pass). Ordinal 0 — the default, used by callers that are not showing
+    /// the card — always yields the authored lesson prompt.
     internal static func makeItem(
-        pack: CoursePack, evidenceKey: String, dueAt: Date
+        pack: CoursePack, evidenceKey: String, dueAt: Date,
+        presentationOrdinal: Int = 0
     ) -> ReviewItem? {
         guard let activity = pack.activities.first(where: {
             $0.evidenceKey == evidenceKey
@@ -170,7 +197,8 @@ enum ReviewCatalog {
             stepId: stepId,
             activityId: activity.id,
             activityRevision: activity.revision,
-            prompt: base.prompt,
+            prompt: ReviewCueRotation.cue(
+                for: presentationOrdinal, base: base),
             answerText: answerText(for: activity, base: base),
             feedback: base.feedback,
             dueAt: dueAt)
@@ -217,7 +245,7 @@ enum ReviewCatalog {
             // No plain-text answer available; the authored feedback
             // explains what was being tested.
             return base.feedback
-        case .information, .selfCompare:
+        case .information, .selfCompare, .openTask:
             return base.feedback
         }
     }
@@ -250,9 +278,20 @@ enum ReviewCatalog {
         if !skipped.isEmpty {
             LearningStore.logCorruptRows(skipped)
         }
+        // Rated attempts per (pack, key) — the same filter the FSRS
+        // projection counts (outcome correct/incorrect), so the tricky
+        // pass seeds the cue rotation with the same natural counter the
+        // due pass takes from `FsrsState.reps`.
+        var ratedCount: [String: Int] = [:]
         for event in events {
             guard case .attempt(let attempt) = event,
                   let key = attempt.evidenceKey else { continue }
+            switch attempt.evaluation.outcome {
+            case .correct, .incorrect:
+                ratedCount["\(attempt.packId)|\(key)", default: 0] += 1
+            case .blocked, .ungraded, .selfAssessed:
+                break
+            }
             if let current = latestByKey[key], current.at >= attempt.at {
                 continue
             }
@@ -263,7 +302,8 @@ enum ReviewCatalog {
             guard attempt.response == .selfRating(.again),
                   let pack = packsById[attempt.packId],
                   let item = makeItem(
-                    pack: pack, evidenceKey: key, dueAt: attempt.at)
+                    pack: pack, evidenceKey: key, dueAt: attempt.at,
+                    presentationOrdinal: ratedCount["\(attempt.packId)|\(key)"] ?? 0)
             else { continue }
             tricky.append(item)
         }
@@ -297,6 +337,49 @@ enum ReviewCatalog {
             }
         }
         return count
+    }
+}
+
+// MARK: - Changed-context cues (plan §5.2 item 3)
+//
+// A review card's cue rotates among the *authored* cue texts its activity
+// ships: the lesson prompt first, then the authored hint when one exists.
+// Authored-only — no synthesized text, no invented variants — so a key
+// whose activity carries a single cue always shows that one cue. FSRS
+// stays the one scheduler: the rotation picks only which cue text a due
+// item displays; the item's evidence key, due time, and the verdicts it
+// records are untouched. The rotation index is the count of prior rated
+// presentations of the key (FSRS `reps`, or the equivalent per-key
+// attempt count in the tricky pass), so the same key shows the same cue
+// at the same presentation ordinal — deterministic and stable for tests,
+// with nothing new persisted.
+
+enum ReviewCueRotation {
+    /// The authored cue texts for an evidence key's activity, in the
+    /// order the lesson presents them: the prompt, then any authored
+    /// hints. Deduplicated and trimmed; never synthesized. Non-empty for
+    /// every graded base, whose prompt is required by the schema.
+    static func authoredCues(base: GradedBase) -> [String] {
+        var cues: [String] = []
+        func append(_ text: String) {
+            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty, !cues.contains(trimmed) else { return }
+            cues.append(trimmed)
+        }
+        append(base.prompt)
+        for hint in base.hints { append(hint) }
+        return cues
+    }
+
+    /// The cue for the presentation at `ordinal` (0-based count of prior
+    /// rated presentations of this key): deterministic rotation over the
+    /// authored variants, wrapping when the cycle repeats. A single
+    /// authored cue (or none) degrades to that cue — rotation can never
+    /// invent text.
+    static func cue(for ordinal: Int, base: GradedBase) -> String {
+        let cues = authoredCues(base: base)
+        guard cues.count > 1 else { return cues.first ?? base.prompt }
+        return cues[max(0, ordinal) % cues.count]
     }
 }
 

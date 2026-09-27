@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "it-foundations",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "language": "it",
   "status": "active",
   "title": "Italian foundations",
@@ -50,6 +50,11 @@
       "objective": "Put your Italian to the test: order dinner, find the piazza, build sentences at the bar."
     },
     {
+      "id": "it-unit-9",
+      "title": "Il passato",
+      "objective": "Talk about the past: passato prossimo with avere and essere, the imperfetto, and choosing between them."
+    },
+    {
       "id": "it-unit-10",
       "title": "Il futuro",
       "objective": "Talk about the future: forming the futuro semplice, promises and predictions, plans and intentions."
@@ -68,11 +73,6 @@
       "id": "it-unit-13",
       "title": "Lavoro e tecnologia",
       "objective": "Compare things, talk about work, and survive a hotel stay — in Italian."
-    },
-    {
-      "id": "it-unit-9",
-      "title": "Il passato",
-      "objective": "Talk about the past: passato prossimo with avere and essere, the imperfetto, and choosing between them."
     }
   ],
   "concepts": [
@@ -3523,7 +3523,6 @@
         "it-requests-word-4"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "At the bar counter, the barista looks up. What is a polite morning greeting?",
@@ -3624,7 +3623,6 @@
         "it-requests-word-4"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "The barista hands you the cup. What do you say?",
@@ -3799,8 +3797,7 @@
         "it-requests-word-4"
       ],
       "skills": [
-        "writing",
-        "speaking"
+        "writing"
       ],
       "prompt": "Write the three lines in order: Good morning. / A coffee, please. / Thank you.",
       "hints": [
@@ -4115,7 +4112,8 @@
       "stimulusId": "it-identity-foundation-read-passage",
       "answer": {
         "answers": [
-          "Anna"
+          "Anna",
+          "Her name is Anna."
         ],
         "allowTypo": false,
         "errors": [
@@ -4465,7 +4463,8 @@
       "stimulusId": "it-people-foundation-read-passage",
       "answer": {
         "answers": [
-          "Anna"
+          "Anna",
+          "Anna is Italian."
         ],
         "allowTypo": false,
         "errors": [
@@ -4853,7 +4852,8 @@
       "stimulusId": "it-family-foundation-read-passage",
       "answer": {
         "answers": [
-          "Marco"
+          "Marco",
+          "His name is Marco."
         ],
         "allowTypo": false,
         "errors": [
@@ -6757,7 +6757,10 @@
         "answers": [
           "no",
           "No, he doesn't.",
-          "He doesn't work at home."
+          "He doesn't work at home.",
+          "No, she doesn't.",
+          "She doesn't work at home.",
+          "No, I don't."
         ],
         "allowTypo": false,
         "errors": [
@@ -7554,7 +7557,8 @@
       "stimulusId": "it-possession-foundation-read-passage",
       "answer": {
         "answers": [
-          "il libro"
+          "il libro",
+          "il mio libro"
         ],
         "allowTypo": false,
         "errors": [
@@ -9465,7 +9469,8 @@
       "stimulusId": "it-days-foundation-read-passage",
       "answer": {
         "answers": [
-          "il tre maggio"
+          "il tre maggio",
+          "il 3 maggio"
         ],
         "allowTypo": false,
         "errors": [
@@ -18081,7 +18086,8 @@
       "answer": {
         "answers": [
           "Perché viaggia molto.",
-          "Perché è più leggero e migliore per il suo lavoro."
+          "Perché è più leggero e migliore per il suo lavoro.",
+          "Perché è migliore per il mio lavoro."
         ],
         "allowTypo": true,
         "errors": [
@@ -30231,6 +30237,385 @@
       ]
     },
     {
+      "id": "it-a2-passato-prossimo",
+      "unitId": "it-unit-9",
+      "title": "Il passato prossimo con avere",
+      "objective": "Talk about what you did yesterday using the passato prossimo with avere.",
+      "family": "construction",
+      "revision": 1,
+      "estimatedMinutes": 8,
+      "entryStepId": "it-a2-passato-prossimo-step-rb1",
+      "steps": [
+        {
+          "id": "it-a2-passato-prossimo-step-rb1",
+          "purpose": "notice",
+          "activityId": "it-a2-passato-prossimo-intro",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb2"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb2",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-build",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb3"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb3",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-act-rb1",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb4"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb4",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-meet",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb5"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb5",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-cloze",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb6"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb6",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-think",
+          "required": true,
+          "nextStepId": "it-a2-passato-prossimo-step-rb7"
+        },
+        {
+          "id": "it-a2-passato-prossimo-step-rb7",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-prossimo-notice",
+          "required": true,
+          "nextStepId": null
+        }
+      ],
+      "completionPolicy": {
+        "kind": "participation"
+      },
+      "prerequisites": [
+        {
+          "lessonId": "it-food-construction",
+          "requirement": {
+            "kind": "legacy-success"
+          }
+        }
+      ],
+      "conceptIds": [
+        "it-a2-passato-prossimo-concept"
+      ],
+      "vocabulary": [
+        "it-a2-passato-prossimo-word-1",
+        "it-a2-passato-prossimo-word-2",
+        "it-a2-passato-prossimo-word-3",
+        "it-a2-passato-prossimo-word-4",
+        "it-a2-passato-prossimo-word-5",
+        "it-a2-passato-prossimo-word-6"
+      ],
+      "legacyCompletionExerciseIds": [
+        "it-a2-passato-prossimo-meet",
+        "it-a2-passato-prossimo-think",
+        "it-a2-passato-prossimo-notice",
+        "it-a2-passato-prossimo-build",
+        "it-a2-passato-prossimo-vary",
+        "it-a2-passato-prossimo-cloze",
+        "it-a2-passato-prossimo-read"
+      ],
+      "cefr": "A2",
+      "culturalNote": "Italians love recounting their day in detail — raccontare la giornata is a national sport at the dinner table. The passato prossimo is your ticket into those conversations."
+    },
+    {
+      "id": "it-a2-essere-participi",
+      "unitId": "it-unit-9",
+      "title": "Il passato prossimo con essere",
+      "objective": "Remember the passato prossimo with avere: the helper that changes with the person, the participle that never does.",
+      "family": "recall",
+      "revision": 1,
+      "estimatedMinutes": 8,
+      "entryStepId": "it-a2-essere-participi-step-rb1",
+      "steps": [
+        {
+          "id": "it-a2-essere-participi-step-rb1",
+          "purpose": "notice",
+          "activityId": "it-a2-essere-participi-act-rb1",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb2"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb2",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb2",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb3"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb3",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb3",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb4"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb4",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb4",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb5"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb5",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb5",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb6"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb6",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb6",
+          "required": true,
+          "nextStepId": "it-a2-essere-participi-step-rb7"
+        },
+        {
+          "id": "it-a2-essere-participi-step-rb7",
+          "purpose": "practice",
+          "activityId": "it-a2-essere-participi-act-rb7",
+          "required": true,
+          "nextStepId": null
+        }
+      ],
+      "completionPolicy": {
+        "kind": "participation"
+      },
+      "prerequisites": [
+        {
+          "lessonId": "it-a2-passato-prossimo",
+          "requirement": {
+            "kind": "legacy-success"
+          }
+        }
+      ],
+      "conceptIds": [
+        "it-a2-passato-prossimo-concept"
+      ],
+      "vocabulary": [
+        "it-a2-passato-prossimo-word-1",
+        "it-a2-passato-prossimo-word-2",
+        "it-a2-passato-prossimo-word-3",
+        "it-a2-passato-prossimo-word-4",
+        "it-a2-passato-prossimo-word-5",
+        "it-a2-passato-prossimo-word-6"
+      ],
+      "legacyCompletionExerciseIds": [
+        "it-a2-essere-participi-meet",
+        "it-a2-essere-participi-think",
+        "it-a2-essere-participi-notice",
+        "it-a2-essere-participi-build",
+        "it-a2-essere-participi-vary",
+        "it-a2-essere-participi-cloze",
+        "it-a2-essere-participi-read"
+      ],
+      "cefr": "A2",
+      "culturalNote": "Italian small talk runs on “dove sei andato in vacanza?” — where did you go on holiday. The essere past is the engine of every summer story."
+    },
+    {
+      "id": "it-a2-imperfetto",
+      "unitId": "it-unit-9",
+      "title": "L’imperfetto",
+      "objective": "Remember the passato prossimo you first met in «A first look at the past»: ieri, ho mangiato, ho studiato.",
+      "family": "recall",
+      "revision": 1,
+      "estimatedMinutes": 8,
+      "entryStepId": "it-a2-imperfetto-step-rb1",
+      "steps": [
+        {
+          "id": "it-a2-imperfetto-step-rb1",
+          "purpose": "notice",
+          "activityId": "it-a2-imperfetto-act-rb1",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb2"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb2",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb2",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb3"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb3",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb3",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb4"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb4",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb4",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb5"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb5",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb5",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb6"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb6",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb6",
+          "required": true,
+          "nextStepId": "it-a2-imperfetto-step-rb7"
+        },
+        {
+          "id": "it-a2-imperfetto-step-rb7",
+          "purpose": "practice",
+          "activityId": "it-a2-imperfetto-act-rb7",
+          "required": true,
+          "nextStepId": null
+        }
+      ],
+      "completionPolicy": {
+        "kind": "participation"
+      },
+      "prerequisites": [
+        {
+          "lessonId": "it-a2-essere-participi",
+          "requirement": {
+            "kind": "legacy-success"
+          }
+        }
+      ],
+      "conceptIds": [
+        "it-past-concept"
+      ],
+      "vocabulary": [
+        "it-past-word-1",
+        "it-past-word-2",
+        "it-past-word-3",
+        "it-past-word-4"
+      ],
+      "legacyCompletionExerciseIds": [
+        "it-a2-imperfetto-meet",
+        "it-a2-imperfetto-think",
+        "it-a2-imperfetto-notice",
+        "it-a2-imperfetto-build",
+        "it-a2-imperfetto-vary",
+        "it-a2-imperfetto-cloze",
+        "it-a2-imperfetto-read"
+      ],
+      "cefr": "A2",
+      "culturalNote": "“Quando ero piccolo…” (when I was little) opens a thousand Italian family stories. The imperfetto is how Italians do nostalgia."
+    },
+    {
+      "id": "it-a2-passato-imperfetto",
+      "unitId": "it-unit-9",
+      "title": "Passato prossimo o imperfetto?",
+      "objective": "Remember both passes over the past — «Il passato prossimo con avere» and «A first look at the past» — mixed retrieval, one sentence at a time.",
+      "family": "recall",
+      "revision": 1,
+      "estimatedMinutes": 8,
+      "entryStepId": "it-a2-passato-imperfetto-step-rb1",
+      "steps": [
+        {
+          "id": "it-a2-passato-imperfetto-step-rb1",
+          "purpose": "notice",
+          "activityId": "it-a2-passato-imperfetto-act-rb1",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb2"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb2",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb2",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb3"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb3",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb3",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb4"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb4",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb4",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb5"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb5",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb5",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb6"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb6",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb6",
+          "required": true,
+          "nextStepId": "it-a2-passato-imperfetto-step-rb7"
+        },
+        {
+          "id": "it-a2-passato-imperfetto-step-rb7",
+          "purpose": "practice",
+          "activityId": "it-a2-passato-imperfetto-act-rb7",
+          "required": true,
+          "nextStepId": null
+        }
+      ],
+      "completionPolicy": {
+        "kind": "participation"
+      },
+      "prerequisites": [
+        {
+          "lessonId": "it-a2-imperfetto",
+          "requirement": {
+            "kind": "legacy-success"
+          }
+        }
+      ],
+      "conceptIds": [
+        "it-a2-passato-prossimo-concept",
+        "it-past-concept"
+      ],
+      "vocabulary": [
+        "it-a2-passato-prossimo-word-1",
+        "it-a2-passato-prossimo-word-2",
+        "it-a2-passato-prossimo-word-3",
+        "it-a2-passato-prossimo-word-4",
+        "it-a2-passato-prossimo-word-5",
+        "it-a2-passato-prossimo-word-6",
+        "it-past-word-1",
+        "it-past-word-2",
+        "it-past-word-3",
+        "it-past-word-4"
+      ],
+      "legacyCompletionExerciseIds": [
+        "it-a2-passato-imperfetto-meet",
+        "it-a2-passato-imperfetto-think",
+        "it-a2-passato-imperfetto-notice",
+        "it-a2-passato-imperfetto-build",
+        "it-a2-passato-imperfetto-vary",
+        "it-a2-passato-imperfetto-cloze",
+        "it-a2-passato-imperfetto-read"
+      ],
+      "cefr": "A2",
+      "culturalNote": "Raccontare la giornata — telling the story of your day — is sacred in Italy. Getting the two past tenses right is what makes your story sound Italian instead of translated."
+    },
+    {
       "id": "it-a2-futuro-semplice",
       "unitId": "it-unit-10",
       "title": "Il futuro semplice",
@@ -31966,385 +32351,6 @@
         "it-a2-albergo-mission-word-6"
       ],
       "cefr": "A2"
-    },
-    {
-      "id": "it-a2-passato-prossimo",
-      "unitId": "it-unit-9",
-      "title": "Il passato prossimo con avere",
-      "objective": "Talk about what you did yesterday using the passato prossimo with avere.",
-      "family": "construction",
-      "revision": 1,
-      "estimatedMinutes": 8,
-      "entryStepId": "it-a2-passato-prossimo-step-rb1",
-      "steps": [
-        {
-          "id": "it-a2-passato-prossimo-step-rb1",
-          "purpose": "notice",
-          "activityId": "it-a2-passato-prossimo-intro",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb2"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb2",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-build",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb3"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb3",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-act-rb1",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb4"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb4",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-meet",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb5"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb5",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-cloze",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb6"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb6",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-think",
-          "required": true,
-          "nextStepId": "it-a2-passato-prossimo-step-rb7"
-        },
-        {
-          "id": "it-a2-passato-prossimo-step-rb7",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-prossimo-notice",
-          "required": true,
-          "nextStepId": null
-        }
-      ],
-      "completionPolicy": {
-        "kind": "participation"
-      },
-      "prerequisites": [
-        {
-          "lessonId": "it-food-construction",
-          "requirement": {
-            "kind": "legacy-success"
-          }
-        }
-      ],
-      "conceptIds": [
-        "it-a2-passato-prossimo-concept"
-      ],
-      "vocabulary": [
-        "it-a2-passato-prossimo-word-1",
-        "it-a2-passato-prossimo-word-2",
-        "it-a2-passato-prossimo-word-3",
-        "it-a2-passato-prossimo-word-4",
-        "it-a2-passato-prossimo-word-5",
-        "it-a2-passato-prossimo-word-6"
-      ],
-      "legacyCompletionExerciseIds": [
-        "it-a2-passato-prossimo-meet",
-        "it-a2-passato-prossimo-think",
-        "it-a2-passato-prossimo-notice",
-        "it-a2-passato-prossimo-build",
-        "it-a2-passato-prossimo-vary",
-        "it-a2-passato-prossimo-cloze",
-        "it-a2-passato-prossimo-read"
-      ],
-      "cefr": "A2",
-      "culturalNote": "Italians love recounting their day in detail — raccontare la giornata is a national sport at the dinner table. The passato prossimo is your ticket into those conversations."
-    },
-    {
-      "id": "it-a2-essere-participi",
-      "unitId": "it-unit-9",
-      "title": "Il passato prossimo con essere",
-      "objective": "Remember the passato prossimo with avere: the helper that changes with the person, the participle that never does.",
-      "family": "recall",
-      "revision": 1,
-      "estimatedMinutes": 8,
-      "entryStepId": "it-a2-essere-participi-step-rb1",
-      "steps": [
-        {
-          "id": "it-a2-essere-participi-step-rb1",
-          "purpose": "notice",
-          "activityId": "it-a2-essere-participi-act-rb1",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb2"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb2",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb2",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb3"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb3",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb3",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb4"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb4",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb4",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb5"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb5",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb5",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb6"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb6",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb6",
-          "required": true,
-          "nextStepId": "it-a2-essere-participi-step-rb7"
-        },
-        {
-          "id": "it-a2-essere-participi-step-rb7",
-          "purpose": "practice",
-          "activityId": "it-a2-essere-participi-act-rb7",
-          "required": true,
-          "nextStepId": null
-        }
-      ],
-      "completionPolicy": {
-        "kind": "participation"
-      },
-      "prerequisites": [
-        {
-          "lessonId": "it-a2-passato-prossimo",
-          "requirement": {
-            "kind": "legacy-success"
-          }
-        }
-      ],
-      "conceptIds": [
-        "it-a2-passato-prossimo-concept"
-      ],
-      "vocabulary": [
-        "it-a2-passato-prossimo-word-1",
-        "it-a2-passato-prossimo-word-2",
-        "it-a2-passato-prossimo-word-3",
-        "it-a2-passato-prossimo-word-4",
-        "it-a2-passato-prossimo-word-5",
-        "it-a2-passato-prossimo-word-6"
-      ],
-      "legacyCompletionExerciseIds": [
-        "it-a2-essere-participi-meet",
-        "it-a2-essere-participi-think",
-        "it-a2-essere-participi-notice",
-        "it-a2-essere-participi-build",
-        "it-a2-essere-participi-vary",
-        "it-a2-essere-participi-cloze",
-        "it-a2-essere-participi-read"
-      ],
-      "cefr": "A2",
-      "culturalNote": "Italian small talk runs on “dove sei andato in vacanza?” — where did you go on holiday. The essere past is the engine of every summer story."
-    },
-    {
-      "id": "it-a2-imperfetto",
-      "unitId": "it-unit-9",
-      "title": "L’imperfetto",
-      "objective": "Remember the passato prossimo you first met in «A first look at the past»: ieri, ho mangiato, ho studiato.",
-      "family": "recall",
-      "revision": 1,
-      "estimatedMinutes": 8,
-      "entryStepId": "it-a2-imperfetto-step-rb1",
-      "steps": [
-        {
-          "id": "it-a2-imperfetto-step-rb1",
-          "purpose": "notice",
-          "activityId": "it-a2-imperfetto-act-rb1",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb2"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb2",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb2",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb3"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb3",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb3",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb4"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb4",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb4",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb5"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb5",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb5",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb6"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb6",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb6",
-          "required": true,
-          "nextStepId": "it-a2-imperfetto-step-rb7"
-        },
-        {
-          "id": "it-a2-imperfetto-step-rb7",
-          "purpose": "practice",
-          "activityId": "it-a2-imperfetto-act-rb7",
-          "required": true,
-          "nextStepId": null
-        }
-      ],
-      "completionPolicy": {
-        "kind": "participation"
-      },
-      "prerequisites": [
-        {
-          "lessonId": "it-a2-essere-participi",
-          "requirement": {
-            "kind": "legacy-success"
-          }
-        }
-      ],
-      "conceptIds": [
-        "it-past-concept"
-      ],
-      "vocabulary": [
-        "it-past-word-1",
-        "it-past-word-2",
-        "it-past-word-3",
-        "it-past-word-4"
-      ],
-      "legacyCompletionExerciseIds": [
-        "it-a2-imperfetto-meet",
-        "it-a2-imperfetto-think",
-        "it-a2-imperfetto-notice",
-        "it-a2-imperfetto-build",
-        "it-a2-imperfetto-vary",
-        "it-a2-imperfetto-cloze",
-        "it-a2-imperfetto-read"
-      ],
-      "cefr": "A2",
-      "culturalNote": "“Quando ero piccolo…” (when I was little) opens a thousand Italian family stories. The imperfetto is how Italians do nostalgia."
-    },
-    {
-      "id": "it-a2-passato-imperfetto",
-      "unitId": "it-unit-9",
-      "title": "Passato prossimo o imperfetto?",
-      "objective": "Remember both passes over the past — «Il passato prossimo con avere» and «A first look at the past» — mixed retrieval, one sentence at a time.",
-      "family": "recall",
-      "revision": 1,
-      "estimatedMinutes": 8,
-      "entryStepId": "it-a2-passato-imperfetto-step-rb1",
-      "steps": [
-        {
-          "id": "it-a2-passato-imperfetto-step-rb1",
-          "purpose": "notice",
-          "activityId": "it-a2-passato-imperfetto-act-rb1",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb2"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb2",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb2",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb3"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb3",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb3",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb4"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb4",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb4",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb5"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb5",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb5",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb6"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb6",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb6",
-          "required": true,
-          "nextStepId": "it-a2-passato-imperfetto-step-rb7"
-        },
-        {
-          "id": "it-a2-passato-imperfetto-step-rb7",
-          "purpose": "practice",
-          "activityId": "it-a2-passato-imperfetto-act-rb7",
-          "required": true,
-          "nextStepId": null
-        }
-      ],
-      "completionPolicy": {
-        "kind": "participation"
-      },
-      "prerequisites": [
-        {
-          "lessonId": "it-a2-imperfetto",
-          "requirement": {
-            "kind": "legacy-success"
-          }
-        }
-      ],
-      "conceptIds": [
-        "it-a2-passato-prossimo-concept",
-        "it-past-concept"
-      ],
-      "vocabulary": [
-        "it-a2-passato-prossimo-word-1",
-        "it-a2-passato-prossimo-word-2",
-        "it-a2-passato-prossimo-word-3",
-        "it-a2-passato-prossimo-word-4",
-        "it-a2-passato-prossimo-word-5",
-        "it-a2-passato-prossimo-word-6",
-        "it-past-word-1",
-        "it-past-word-2",
-        "it-past-word-3",
-        "it-past-word-4"
-      ],
-      "legacyCompletionExerciseIds": [
-        "it-a2-passato-imperfetto-meet",
-        "it-a2-passato-imperfetto-think",
-        "it-a2-passato-imperfetto-notice",
-        "it-a2-passato-imperfetto-build",
-        "it-a2-passato-imperfetto-vary",
-        "it-a2-passato-imperfetto-cloze",
-        "it-a2-passato-imperfetto-read"
-      ],
-      "cefr": "A2",
-      "culturalNote": "Raccontare la giornata — telling the story of your day — is sacred in Italy. Getting the two past tenses right is what makes your story sound Italian instead of translated."
     }
   ],
   "dialogues": [

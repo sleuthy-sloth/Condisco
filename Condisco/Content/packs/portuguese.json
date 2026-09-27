@@ -3784,7 +3784,6 @@
         "pt-cafe-requests-word-4"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "At the pastelaria counter, the server looks up. How do you greet them?",
@@ -3885,7 +3884,6 @@
         "pt-cafe-requests-word-4"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "The server hands you the cup. What do you say?",
@@ -4059,8 +4057,7 @@
         "pt-cafe-requests-word-4"
       ],
       "skills": [
-        "writing",
-        "speaking"
+        "writing"
       ],
       "prompt": "Write the three lines in order: Hello. / A coffee, please. / Thank you.",
       "hints": [
@@ -5142,7 +5139,8 @@
       "answer": {
         "answers": [
           "Straight ahead.",
-          "Straight ahead"
+          "Straight ahead",
+          "em frente"
         ],
         "allowTypo": true,
         "errors": [
@@ -7887,8 +7885,7 @@
         "pt-first-words-word-2"
       ],
       "skills": [
-        "writing",
-        "speaking"
+        "writing"
       ],
       "prompt": "The station sign is in sight — ESTAÇÃO. Mission complete: recap the exchange that got you here — greet the local, ask where the station is, and thank them.",
       "hints": [
@@ -8260,8 +8257,7 @@
         "pt-shopping-word-4"
       ],
       "skills": [
-        "writing",
-        "speaking"
+        "writing"
       ],
       "prompt": "The key is in your hand. Mission complete: recap your side of the check-in — greet the receptionist, give your name, and close by asking for the bill.",
       "hints": [
@@ -9090,7 +9086,8 @@
           "In the living room.",
           "In the living room",
           "The living room.",
-          "The cat sleeps in the living room."
+          "The cat sleeps in the living room.",
+          "na sala"
         ],
         "allowTypo": true,
         "errors": [
@@ -9456,7 +9453,9 @@
         "answers": [
           "The bedroom.",
           "Bedroom.",
-          "My bedroom."
+          "My bedroom.",
+          "o meu quarto",
+          "o quarto"
         ],
         "allowTypo": true,
         "errors": [
@@ -9815,7 +9814,9 @@
           "Two",
           "2.",
           "2",
-          "He buys two."
+          "He buys two.",
+          "dois",
+          "dois pães"
         ],
         "allowTypo": true,
         "errors": [
@@ -10451,7 +10452,9 @@
           "Tea.",
           "Tea",
           "Only tea.",
-          "They drink tea."
+          "They drink tea.",
+          "chá",
+          "só chá"
         ],
         "allowTypo": true,
         "errors": [
@@ -11010,7 +11013,9 @@
         "answers": [
           "An apple.",
           "An apple",
-          "Apple."
+          "Apple.",
+          "uma maçã",
+          "maçã"
         ],
         "allowTypo": true,
         "errors": [
@@ -11378,7 +11383,8 @@
           "In the bag.",
           "In the bag",
           "In my bag.",
-          "The keys are in the bag."
+          "The keys are in the bag.",
+          "na mala"
         ],
         "allowTypo": true,
         "errors": [
@@ -11985,7 +11991,9 @@
         "answers": [
           "To book a table for two.",
           "To book a table for two",
-          "A table for two."
+          "A table for two.",
+          "reservar uma mesa",
+          "uma mesa para dois"
         ],
         "allowTypo": true,
         "errors": [
@@ -12864,7 +12872,9 @@
           "Cloudy and rainy",
           "Cloudy and rain.",
           "It will be cloudy and rainy.",
-          "It is going to be cloudy and rainy."
+          "It is going to be cloudy and rainy.",
+          "nublado",
+          "vai estar nublado"
         ],
         "allowTypo": true,
         "errors": [
@@ -13594,7 +13604,9 @@
           "On June 15th.",
           "On June 15th",
           "June 15th.",
-          "The party is on June 15th."
+          "The party is on June 15th.",
+          "em 15 de junho",
+          "15 de junho"
         ],
         "allowTypo": true,
         "errors": [
@@ -14236,7 +14248,8 @@
         "answers": [
           "To cook.",
           "To cook",
-          "Cooking."
+          "Cooking.",
+          "cozinhar"
         ],
         "allowTypo": true,
         "errors": [
@@ -22499,9 +22512,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "choice",
           "mode": "recognition",
           "options": [
@@ -22526,9 +22537,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "order",
           "mode": "production",
           "tokens": [
@@ -22566,9 +22575,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "translate",
           "mode": "production"
         },
@@ -22599,9 +22606,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "think",
           "mode": "production",
           "thinkSeconds": 8
@@ -22630,9 +22635,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "reading",
           "mode": "recognition",
           "passage": "— Olá! O meu nome é Ana.\n— Prazer, Ana. Sou Leo.\n— Prazer, Leo.",
@@ -22666,9 +22669,7 @@
             "pt-introductions-word-3",
             "pt-introductions-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "translate",
           "mode": "production"
         }
@@ -22789,9 +22790,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "choice",
           "mode": "recognition",
           "options": [
@@ -22816,9 +22815,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "order",
           "mode": "production",
           "tokens": [
@@ -22864,9 +22861,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "translate",
           "mode": "production"
         },
@@ -22897,9 +22892,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "think",
           "mode": "production",
           "thinkSeconds": 8
@@ -22931,9 +22924,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "reading",
           "mode": "recognition",
           "passage": "— Olá. Eu gostaria de um chá, por favor.\n— Um chá?\n— Sim. Obrigada!",
@@ -22968,9 +22959,7 @@
             "pt-cafe-requests-word-3",
             "pt-cafe-requests-word-4"
           ],
-          "reviewOf": [
-            "pt-first-words-foundation"
-          ],
+          "reviewOf": [],
           "kind": "translate",
           "mode": "recognition"
         }

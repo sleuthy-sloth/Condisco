@@ -1513,4 +1513,105 @@ final class PackPortugueseTests: XCTestCase {
             build.base.answers.contains("O meu nome é Ana."),
             "legacy build must carry the European form: \(build.base.answers)")
     }
+
+    // MARK: - Slice 2.2 comprehension fixes (2026-09-26 worklist)
+
+    /// The Portuguese foundation comprehension reads were English-only while
+    /// asking about Portuguese passages. Every flagged read now accepts the
+    /// passage's own Portuguese wording; the wrong-answer near misses stay
+    /// authored errors.
+    func testComprehensionReadsAcceptPortugueseForms() throws {
+        let pack = try portuguesePack()
+
+        // pt-directions-foundation-read
+        var result = try gradeText("pt-directions-foundation-read", in: pack, "em frente")
+        XCTAssertTrue(result.accepted, "the passage's first direction must be accepted")
+        result = try gradeText("pt-directions-foundation-read", in: pack, "To the left.")
+        XCTAssertFalse(result.accepted, "à esquerda is the second instruction")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-home-foundation-read
+        result = try gradeText("pt-home-foundation-read", in: pack, "na sala")
+        XCTAssertTrue(result.accepted, "the cat's room in Portuguese must be accepted")
+        result = try gradeText("pt-home-foundation-read", in: pack, "In the kitchen.")
+        XCTAssertFalse(result.accepted, "the kitchen is small but holds no cat")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-descriptions-foundation-read
+        result = try gradeText("pt-descriptions-foundation-read", in: pack, "o meu quarto")
+        XCTAssertTrue(result.accepted, "the passage's new-room phrase must be accepted")
+        result = try gradeText("pt-descriptions-foundation-read", in: pack, "o quarto")
+        XCTAssertTrue(result.accepted, "the bare room phrase must be accepted")
+        result = try gradeText("pt-descriptions-foundation-read", in: pack, "The kitchen.")
+        XCTAssertFalse(result.accepted, "the kitchen is small, not new")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-plural-foundation-read
+        result = try gradeText("pt-plural-foundation-read", in: pack, "dois")
+        XCTAssertTrue(result.accepted, "the number word must be accepted")
+        result = try gradeText("pt-plural-foundation-read", in: pack, "dois pães")
+        XCTAssertTrue(result.accepted, "the number with the noun must be accepted")
+        result = try gradeText("pt-plural-foundation-read", in: pack, "Three.")
+        XCTAssertFalse(result.accepted, "three is the croissants")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-negation-foundation-read
+        result = try gradeText("pt-negation-foundation-read", in: pack, "chá")
+        XCTAssertTrue(result.accepted, "the tea in Portuguese must be accepted")
+        result = try gradeText("pt-negation-foundation-read", in: pack, "só chá")
+        XCTAssertTrue(result.accepted, "the passage's only-tea phrase must be accepted")
+        result = try gradeText("pt-negation-foundation-read", in: pack, "Coffee.")
+        XCTAssertFalse(result.accepted, "nobody drinks coffee at home")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-food-foundation-read
+        result = try gradeText("pt-food-foundation-read", in: pack, "uma maçã")
+        XCTAssertTrue(result.accepted, "the daily fruit in Portuguese must be accepted")
+        result = try gradeText("pt-food-foundation-read", in: pack, "maçã")
+        XCTAssertTrue(result.accepted, "the bare fruit must be accepted")
+        result = try gradeText("pt-food-foundation-read", in: pack, "An orange.")
+        XCTAssertFalse(result.accepted, "orange is only a drink in the note")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-possession-foundation-read
+        result = try gradeText("pt-possession-foundation-read", in: pack, "na mala")
+        XCTAssertTrue(result.accepted, "where the keys are, in Portuguese, must be accepted")
+        result = try gradeText("pt-possession-foundation-read", in: pack, "In the garage.")
+        XCTAssertFalse(result.accepted, "the garage holds the other car")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-requests-foundation-read
+        result = try gradeText("pt-requests-foundation-read", in: pack, "reservar uma mesa")
+        XCTAssertTrue(result.accepted, "the booking in Portuguese must be accepted")
+        result = try gradeText("pt-requests-foundation-read", in: pack, "uma mesa para dois")
+        XCTAssertTrue(result.accepted, "the table-for-two phrase must be accepted")
+        result = try gradeText("pt-requests-foundation-read", in: pack, "The menu.")
+        XCTAssertFalse(result.accepted, "the menu is asked for later")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-weather-foundation-read
+        result = try gradeText("pt-weather-foundation-read", in: pack, "nublado")
+        XCTAssertTrue(result.accepted, "the cloudy word in Portuguese must be accepted")
+        result = try gradeText("pt-weather-foundation-read", in: pack, "vai estar nublado")
+        XCTAssertTrue(result.accepted, "the passage's forecast phrase must be accepted")
+        result = try gradeText("pt-weather-foundation-read", in: pack, "Sunny and hot.")
+        XCTAssertFalse(result.accepted, "sunny and hot is today")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-months-foundation-read
+        result = try gradeText("pt-months-foundation-read", in: pack, "em 15 de junho")
+        XCTAssertTrue(result.accepted, "the date in Portuguese must be accepted")
+        result = try gradeText("pt-months-foundation-read", in: pack, "15 de junho")
+        XCTAssertTrue(result.accepted, "the bare Portuguese date must be accepted")
+        result = try gradeText("pt-months-foundation-read", in: pack, "On May 15th.")
+        XCTAssertFalse(result.accepted, "May is the preparation month")
+        XCTAssertEqual(result.category, "incorrect answer")
+
+        // pt-free-time-foundation-read
+        result = try gradeText("pt-free-time-foundation-read", in: pack, "cozinhar")
+        XCTAssertTrue(result.accepted, "the brother's hobby in Portuguese must be accepted")
+        result = try gradeText("pt-free-time-foundation-read", in: pack, "To play football.")
+        XCTAssertFalse(result.accepted, "football is the writer's own habit")
+        XCTAssertEqual(result.category, "incorrect answer")
+    }
 }

@@ -912,8 +912,8 @@ final class PackFrenchTests: XCTestCase {
         XCTAssertEqual(result.category, "wrong tense")
         result = try gradeText("fr-a2-futur-formation-read", in: pack, "À neuf heures")
         XCTAssertEqual(result.category, "incorrect answer")
-        result = try gradeText("fr-a2-futur-formation-read", in: pack, "Dix heures")
-        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-futur-formation-read", in: pack, "Neuf heures")
+        XCTAssertEqual(result.category, "incorrect answer")
 
         // fr-a2-conditionnel-politesse
         result = try gradeText("fr-a2-conditionnel-politesse-think", in: pack, "Pouvez-vous m'aider ?")
@@ -928,8 +928,8 @@ final class PackFrenchTests: XCTestCase {
         XCTAssertEqual(result.category, "word-order problem")
         result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Une nuit")
         XCTAssertEqual(result.category, "incorrect answer")
-        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Two.")
-        XCTAssertEqual(result.category, "missing word")
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Trois nuits")
+        XCTAssertEqual(result.category, "incorrect answer")
 
         // fr-a2-pronoms-y-en
         result = try gradeText("fr-a2-pronoms-y-en-think", in: pack, "Tu veux du gâteau ?")
@@ -1761,6 +1761,52 @@ final class PackFrenchTests: XCTestCase {
                 XCTFail("\(lessonId): terminal step \(step.id) must be graded, not information")
             }
         }
+    }
+
+    // MARK: - Slice 2.2 comprehension fixes (2026-09-26 worklist)
+
+    /// Comprehension reads widened to standard surface forms: the written
+    /// digit date, the bare time, and the bare number answer now pass, while
+    /// meaning-changing near misses still fail. The promoted forms must also
+    /// be gone from the authored error lists.
+    func testComprehensionVariantWidening() throws {
+        let pack = try frenchPack()
+
+        // fr-days-foundation-read: the written digit date is standard French.
+        var result = try gradeText("fr-days-foundation-read", in: pack, "le 3 mai")
+        XCTAssertTrue(result.accepted, "digit date must be accepted")
+        result = try gradeText("fr-days-foundation-read", in: pack, "le 3 avril")
+        XCTAssertFalse(result.accepted, "a wrong month must still fail")
+
+        // fr-a2-futur-formation-read: the bare time answers the when-question.
+        result = try gradeText("fr-a2-futur-formation-read", in: pack, "dix heures")
+        XCTAssertTrue(result.accepted, "bare time must be accepted")
+        result = try gradeText("fr-a2-futur-formation-read", in: pack, "À neuf heures")
+        XCTAssertFalse(result.accepted, "the boss's nine o'clock must still fail")
+
+        // fr-a2-conditionnel-politesse-read: the bare number answers how many.
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Deux.")
+        XCTAssertTrue(result.accepted, "French bare number must be accepted")
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Two.")
+        XCTAssertTrue(result.accepted, "English bare number must be accepted")
+        result = try gradeText("fr-a2-conditionnel-politesse-read", in: pack, "Une nuit")
+        XCTAssertFalse(result.accepted, "one night must still fail")
+
+        // The promoted forms must not double as authored errors.
+        let futurAct = try activity("fr-a2-futur-formation-read", in: pack)
+        guard case .text(let futurSpec) = futurAct else {
+            return XCTFail("fr-a2-futur-formation-read must be a text activity")
+        }
+        XCTAssertFalse(
+            futurSpec.answer.errors.contains { $0.answer == "Dix heures" },
+            "accepted bare time must not be authored as a missing word")
+        let nightsAct = try activity("fr-a2-conditionnel-politesse-read", in: pack)
+        guard case .text(let nightsSpec) = nightsAct else {
+            return XCTFail("fr-a2-conditionnel-politesse-read must be a text activity")
+        }
+        XCTAssertFalse(
+            nightsSpec.answer.errors.contains { $0.answer == "Two." },
+            "accepted bare number must not be authored as a missing word")
     }
 
 }

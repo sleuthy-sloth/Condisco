@@ -1,0 +1,47 @@
+{
+  "assetIds": [
+    "es-cafe-listen-audio",
+    "es-cafe-listen-model"
+  ],
+  "assets": {
+    "es-cafe-listen-audio": {
+      "role": "listen stimulus of the Phase 3.1 café listen pilot",
+      "declaredUrl": "/audio/spanish-foundations/es-cafe-listen-exchange.wav",
+      "transcript": "Un café, por favor. ¿Para tomar aquí o para llevar? Para tomar aquí, gracias.",
+      "sha256": "",
+      "note": "Empty sha256 by design: no audio file is shipped. The on-device course voice reads the transcript at lesson time; the first reviewed recording that ships must fill in the real file hash (and then be removed from tools/device-speech-media.txt)."
+    },
+    "es-cafe-listen-model": {
+      "role": "self-compare model reading for the pilot's respond step",
+      "declaredUrl": "/audio/spanish-foundations/es-cafe-listen-model.wav",
+      "transcript": "Un café, por favor.",
+      "sha256": "",
+      "note": "Same empty-sha256 policy as es-cafe-listen-audio: on-device synthesis, no shipped file."
+    }
+  },
+  "packId": "spanish",
+  "lessonId": "es-cafe-mission",
+  "sequence": "es-cafe-listen — listen (es-cafe-mission-step-10, information on the audio stimulus) → interpret (es-cafe-mission-step-11/12/13, three selection steps bound to the stimulus: gist, order detail, here-vs-take-away detail) → respond (es-cafe-mission-step-14, self-compare with modelAudioId es-cafe-listen-model). The steps sit between the existing matching step (step-8) and the final-response text step (step-9); step-9 remains the lesson terminal.",
+  "delivery": "device-speech — intentionally NOT shipped as a recording. At lesson time AudioStimulusView (Condisco/Lesson/StimulusViews.swift, synthesizedAlternative) reads the declared transcript with the on-device synthesized course voice (AVSpeechSynthesizer via ShadowSpeaker / ShadowVoice, language es-ES); see tools/device-speech-media.txt allowlist entries es-cafe-listen-audio / es-cafe-listen-model.",
+  "generator": {
+    "class": "on-device speech synthesis (AVSpeechSynthesizer)",
+    "voice": "the learner's chosen Spanish course voice if set (VoiceStore), otherwise any installed es-* voice; rate 0.92 × default (see ShadowMode.swift)",
+    "note": "Not a fixed file voice: output varies by device and voice selection, so no static audio hash exists."
+  },
+  "method": "authored transcript rendered by device TTS at runtime",
+  "generatedDate": "n/a — rendered on demand on the learner's device",
+  "verificationStatus": "naturalness unverified",
+  "reviewPending": true,
+  "source": "authored content — original lesson text written for the es-cafe-mission listen sequence; no external recording, no template, no copied audio",
+  "sources": [
+    "Condisco/Content/packs/spanish.json — media entries \"es-cafe-listen-audio\" and \"es-cafe-listen-model\": \"Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/spanish-cafe-listen-pilot.json. Naturalness of the on-device Spanish voice unverified (reviewPending: true).\"",
+    "Condisco/Content/packs/spanish.json — stimulus \"es-cafe-listen-stim\" (kind audio) binds es-cafe-listen-audio; selection activities es-cafe-listen-gist / es-cafe-listen-drink / es-cafe-listen-here bind the stimulus; self-compare activity es-cafe-listen-say binds es-cafe-listen-model via modelAudioId",
+    "tools/device-speech-media.txt — allowlist entries \"es-cafe-listen-audio\" and \"es-cafe-listen-model\" (declared media ids with no shipped file, reported as device-speech intentional)",
+    "Condisco/Lesson/StimulusViews.swift — AudioStimulusView shows \"Course voice (synthesized)\" and reads the transcript via ShadowSpeaker when the declared url does not resolve in the bundle",
+    "Condisco/Listen/ShadowMode.swift — ShadowVoice.languageCode(for: \"spanish\") = \"es-ES\"; ShadowSpeaker renders utterances with AVSpeechSynthesizer"
+  ],
+  "unknownFacts": [
+    "naturalness/prosody of the on-device Spanish voice for these two transcripts: unverified — reviewPending: true until a human listens on-device (see the Phase 3.1 iPhone check list)",
+    "final on-device voice: depends on each learner's device and VoiceStore selection; there is no single recorded rendering to attest"
+  ]
+}

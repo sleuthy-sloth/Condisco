@@ -8,11 +8,11 @@ Every pack ships with review-open language in `attribution` (pack JSON top level
 
 - French: "…native-speaker editorial review remains open. The 18 new A2 lessons (version 0.7.0) are machine-authored and pending native-speaker review."
 - Italian: "…native-speaker editorial review remains open. The A2 lessons (units 9–13) are machine-authored and pending native-speaker review."
-- German: "…Native-speaker editorial review: lessons 1-8 reviewed 2026-09-11; lessons 9-10 pending; 19 discovery lessons added 2026-09-23 are machine-authored and pending native-speaker review. The 17 new A2 lessons added in v0.7.0 are machine-authored and pending native-speaker review."
+- German: native-speaker editorial review remains open for the whole pack, including the A2 lessons.
 - Portuguese: "…native-speaker editorial review remains open. The 21 foundation lessons in units 7–12 are machine-authored in European Portuguese and pending native-speaker review. Units 13–17 (CEFR A2) are likewise machine-authored and pending native-speaker review."
 - Spanish: "…native-speaker editorial review remains open for the whole pack. The 17 A2 lessons in units 13–17 were machine-authored in September 2026 and are pending native-speaker review."
 
-So: German has partial review (lessons 1–8, dated 2026-09-11); the other four packs have none recorded. Review order matches the rubric: **first two units of each language, then the 40 missions, then the remaining stories and lessons** (plan P1.1/P1.2).
+No current review-log entry records external native-speaker review in any pack. The 255 AI-assisted dispositions document an editorial pass only. Native review order matches the rubric: **first two units of each language, then the 40 missions, then the remaining stories and lessons** (plan P1.1/P1.2).
 
 ## Review methods
 
@@ -132,7 +132,7 @@ An `AI-assisted` record differs only in the method fields — note the required 
 
 ### Tracker: `docs/reviews/review-log.jsonl`
 
-The repo tracker is `docs/reviews/review-log.jsonl` — one JSON object per lesson (255 today), seeded by `tools/gen_review_log.py` with `disposition: "unreviewed"`, `reviewMethod: null`, empty `sourcesChecked`/`unresolvedQuestions`/`notes`. Rows are keyed by `lessonId`; updating a lesson means editing its line in place (reviews are recorded, never deleted). The generator is re-runnable: it re-derives the seed from the packs and preserves any row whose `disposition` is no longer `unreviewed` verbatim, so re-running never overwrites review work. Per-date JSON snapshots (`docs/reviews/2026-10-pt-unit-1.json`) remain optional for sharing a batch.
+The repo tracker is `docs/reviews/review-log.jsonl` — one JSON object per lesson (255 today: 183 `pass`, 72 `pass-with-notes`, 0 `unreviewed`; all AI-assisted). `tools/gen_review_log.py` seeds new lessons as `unreviewed` and preserves reviewed rows. Rows are keyed by `lessonId`; updating a lesson means editing its line in place. Per-date JSON snapshots remain optional for sharing a batch.
 
 ## Per-lesson checklist
 

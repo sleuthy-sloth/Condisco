@@ -8,6 +8,34 @@ enum EvidenceMode: String, Codable {
     case production, recognition, listening
 }
 
+// MARK: - Evidence categories (5.2A)
+//
+/// What the recorded attempts prove about how the learner worked with an
+/// evidence key. The five plan categories, derived from stored fields
+/// only — response kind (typed vs picked vs self-rated), the `independent`
+/// flag, and review timing. Conservative by design: a category is never
+/// assigned when the events cannot prove it, so replaying old databases
+/// yields old progress plus the weakest honest category, never invented
+/// mastery. No new payload field was needed; see `LearningStore.project`
+/// for the derivation table.
+enum EvidenceCategory: Hashable, CaseIterable {
+    /// Encountered the material, but no clean success on record.
+    case seen
+    /// Recognised it: a clean (independent) success on a picking/arranging
+    /// activity — selection, ordering, matching, dialogue-choice,
+    /// scene-selection.
+    case recognized
+    /// Produced target-language output correctly, but only with help
+    /// (typing or cloze with assistance).
+    case producedWithHelp
+    /// Produced target-language output correctly with no help (typing or
+    /// cloze, independent).
+    case producedIndependently
+    /// Recalled it later: a clean review success at least one full day
+    /// (86,400 s) after the key's first independent production.
+    case recalledLater
+}
+
 struct EvidenceRecord {
     var fsrs: FsrsState
     var successes: Int
@@ -31,8 +59,36 @@ struct PackProgress {
     var knownLessons: Set<String> = []
     /// SRS state per independent evidence key.
     var evidence: [String: EvidenceRecord] = [:]
+    /// Evidence categories per key: what the recorded attempts actually
+    /// prove (seen / recognised / produced with help / produced
+    /// independently / recalled later). Derived at read time from
+    /// response kind + independence + review timing; conservative for
+    /// old databases. See `EvidenceCategory`.
+    var evidenceCategories: [String: Set<EvidenceCategory>] = [:]
     /// Correct attempts per skill, split by independence.
     var skillCounts: [Skill: SkillCount] = [:]
+    /// Checkpoint task attempts (5.3A), oldest first: the learner's open
+    /// practice evidence for stage-end tasks. Practice evidence only — it
+    /// never grants completion, never locks, and never feeds SRS; a retake
+    /// merely adds a row. Rows whose checkpoint id is no longer in the
+    /// bundled pack land in `quarantined` instead (learner-owned history,
+    /// kept observable, never used for credit).
+    var checkpointAttempts: [CheckpointAttemptEvent] = []
+    /// Open-task attempts (6.2): the learner's connected-production
+    /// practice evidence from open tasks bound into lesson steps. Practice
+    /// evidence only — it never feeds SRS, never creates evidence
+    /// categories, and never duplicates completion; a retake adds a row.
+    /// Rows whose activity is no longer an open task in the bundled pack
+    /// land in `quarantined` instead (learner-owned history, kept
+    /// observable, never used for credit).
+    var openTaskAttempts: [OpenTaskAttemptEvent] = []
+    /// Branching-exchange turns (6.3): one `DialogueTurnEvent` per answered
+    /// turn of a practised hosted dialogue, in authored turn order (`turnIndex`).
+    /// Practice evidence only — it never feeds SRS, never creates evidence
+    /// categories, and never duplicates anything; a retake answers fresh
+    /// turns with fresh ids. Rows whose dialogue/node/host binding no longer
+    /// resolves in the bundled pack land in `quarantined` instead.
+    var dialogueTurns: [DialogueTurnEvent] = []
     /// Event ids held out of projection: stored rows whose payload could
     /// not be decoded (kept observable, never failing the read), plus
     /// revision drift and retired targets.
@@ -40,7 +96,7 @@ struct PackProgress {
 }
 
 extension PackProgress {
-    /// Every lesson that counts as finished for display: walked-through
+    /// Every lesson that counts as finished on the learner's path: walked-through
     /// lessons, legacy credits, and manual "I know this" marks.
     var finishedLessons: Set<String> {
         participationCompleted.union(legacyCredits).union(knownLessons)
@@ -59,7 +115,7 @@ extension CoursePack {
     /// are not part of the learner's path.
     ///
     /// - Parameter completed: lesson ids already finished along the chosen
-    ///   path — pass `PackProgress.participationCompleted`. Each caller
+    ///   path — pass `PackProgress.finishedLessons`. Each caller
     ///   projects its own set so it controls freshness (cached projection
     ///   on Home, fresh projection for a deep link).
     /// - Returns: the next lesson together with its unit, or nil when every
@@ -79,6 +135,20 @@ extension CoursePack {
         }
         return nil
     }
+
+    /// The next unfinished lesson after a recap, using the authored path.
+    func nextUncompletedLesson(
+        after lessonId: String,
+        completed: Set<String>
+    ) -> Lesson? {
+        guard let index = lessons.firstIndex(where: { $0.id == lessonId }) else {
+            return nil
+        }
+        let unitIds = Set(units.map(\.id))
+        return lessons.dropFirst(index + 1).first {
+            unitIds.contains($0.unitId) && !completed.contains($0.id)
+        }
+    }
 }
 
 // MARK: - Activity helpers (projection-only views over CoursePack models)
@@ -95,10 +165,14 @@ private func activityRevision(_ activity: Activity) -> Int {
     case .dialogueChoice(let a): return a.base.revision
     case .sceneSelection(let a): return a.base.revision
     case .selfCompare(let a): return a.revision
+    case .openTask(let a): return a.revision
     }
 }
 
-private func activitySkills(_ activity: Activity) -> [Skill] {
+/// The skills an activity exercises, from its authored `skills` token
+/// list. Shared by the SRS evidence projection and the You-screen
+/// per-skill practice profile, so both derive counts from one mapping.
+func activitySkills(_ activity: Activity) -> [Skill] {
     switch activity {
     case .legacy(let a): return a.base.skills
     case .information: return []
@@ -110,12 +184,13 @@ private func activitySkills(_ activity: Activity) -> [Skill] {
     case .dialogueChoice(let a): return a.base.skills
     case .sceneSelection(let a): return a.base.skills
     case .selfCompare: return []
+    case .openTask: return []
     }
 }
 
 private func isUngradedKind(_ activity: Activity) -> Bool {
     switch activity {
-    case .information, .selfCompare: return true
+    case .information, .selfCompare, .openTask: return true
     default: return false
     }
 }
@@ -126,11 +201,41 @@ private func skillMode(_ skills: [Skill]) -> EvidenceMode {
     return .recognition
 }
 
+// MARK: - Attempt proof kind (5.2A)
+
+/// How an attempt proves practice, for the evidence-category derivation.
+/// Reviews — the Review tab and the lesson warm-up — always carry a
+/// `.selfRating` response; lesson attempts never do, so the response kind
+/// reliably separates "self-rated recall" from typed/picked work even
+/// though review attempts reference the original activity.
+private enum AttemptProofKind {
+    /// Typed target-language output: text, cloze, and the retained legacy
+    /// text exercises.
+    case production
+    /// Picking or arranging: selection, ordering, matching,
+    /// dialogue-choice, scene-selection.
+    case recognition
+    /// Self-rated recall (Review tab / lesson warm-up).
+    case review
+    /// Information and self-compare moments prove nothing graded.
+    case none
+}
+
+private func proofKind(for activity: Activity, response: AttemptResponse) -> AttemptProofKind {
+    if case .selfRating = response { return .review }
+    switch activity {
+    case .information, .selfCompare, .openTask: return .none
+    case .text, .cloze, .legacy: return .production
+    case .selection, .ordering, .matching,
+         .dialogueChoice, .sceneSelection: return .recognition
+    }
+}
+
 // MARK: - Store
 
 /// A checkpoint row with its write timestamp, for cross-device merge
 /// (last-write-wins) and data export.
-struct StoredCheckpoint: Codable, Sendable {
+struct StoredCheckpoint: Codable, Equatable, Sendable {
     var packId: String
     var lessonId: String
     /// JSON-encoded LessonCheckpoint.
@@ -142,7 +247,7 @@ struct StoredCheckpoint: Codable, Sendable {
 /// least as new as a checkpoint row deletes it; a newer checkpoint row
 /// retires the tombstone. Without this, a cleared checkpoint would
 /// resurrect the next time another device's row synced down.
-struct CheckpointTombstone: Codable, Sendable {
+struct CheckpointTombstone: Codable, Equatable, Sendable {
     var packId: String
     var lessonId: String
     var deletedAtMs: Int64
@@ -152,7 +257,7 @@ struct CheckpointTombstone: Codable, Sendable {
 /// at least as new as a saved-phrase row deletes it; a newer save retires
 /// the tombstone. Without this, an unsaved phrase would resurrect the next
 /// time another device's row synced down.
-struct SavedPhraseTombstone: Codable, Sendable {
+struct SavedPhraseTombstone: Codable, Equatable, Sendable {
     var id: String
     var deletedAtMs: Int64
 }
@@ -174,8 +279,23 @@ struct SavedPhrase: Hashable, Identifiable, Sendable {
     var savedAt: Date
 }
 
+/// A saved-phrase row with its write timestamp, for cross-device merge
+/// (last-write-wins) and data export. The timestamp rides as raw
+/// milliseconds so an export never rounds or reformats it.
+struct StoredSavedPhrase: Codable, Equatable, Sendable {
+    var id: String
+    var languageSlug: String
+    var languageName: String
+    var target: String
+    var meaning: String
+    var source: String
+    var sourcePackId: String
+    var sourceLessonId: String
+    var savedAtMs: Int64
+}
+
 /// A listen-state row with its write timestamp, for merge and export.
-struct ListenStateRow: Codable, Sendable {
+struct ListenStateRow: Codable, Equatable, Sendable {
     var trackId: String
     var positionSeconds: Double
     var listenedAtMs: Int64?
@@ -357,6 +477,16 @@ final class LearningStore: ObservableObject {
     /// canonical (key-sorted) JSON form, so JSON key order never decides
     /// the outcome.
     func record(_ event: LearningEvent) throws {
+        try db.transaction {
+            try self.insertEvent(event)
+        }
+    }
+
+    /// Idempotent event insert WITHOUT its own transaction, so a batch
+    /// (data import) can record many events inside one surrounding
+    /// transaction. Same rules as `record`: identical content is a no-op,
+    /// different content throws `StoreError.conflict`.
+    private func insertEvent(_ event: LearningEvent) throws {
         let payloadData = try jsonEncoder.encode(event)
         guard let payload = String(data: payloadData, encoding: .utf8) else {
             throw StoreError.corruptPayload(event.id)
@@ -382,40 +512,47 @@ final class LearningStore: ObservableObject {
         case .lessonKnown(let e):
             version = 2; type = "lesson-known"
             lessonId = e.lessonId; activityId = nil; evidenceKey = nil
+        case .checkpointAttempt:
+            version = 2; type = "checkpoint-attempt"
+            lessonId = nil; activityId = nil; evidenceKey = nil
+        case .openTaskAttempt(let e):
+            version = 2; type = "open-task-attempt"
+            lessonId = e.lessonId; activityId = e.activityId; evidenceKey = nil
+        case .dialogueTurn(let e):
+            version = 2; type = "dialogue-turn"
+            lessonId = e.hostLessonId; activityId = nil; evidenceKey = nil
         }
 
-        try db.transaction {
-            var existing: String?
-            try self.db.query(
-                "SELECT payload FROM events WHERE id = ?;",
-                bind: { try $0.bindText(1, event.id) },
-                row: { existing = $0.text(0) })
-            if let old = existing {
-                // Compare content, not raw bytes: identical semantics in
-                // any JSON key order is a no-op; different content conflicts.
-                if canonicalPayloadJSON(stored: old) != canonicalPayload {
-                    throw StoreError.conflict(event.id)
-                }
-                return
+        var existing: String?
+        try self.db.query(
+            "SELECT payload FROM events WHERE id = ?;",
+            bind: { try $0.bindText(1, event.id) },
+            row: { existing = $0.text(0) })
+        if let old = existing {
+            // Compare content, not raw bytes: identical semantics in
+            // any JSON key order is a no-op; different content conflicts.
+            if canonicalPayloadJSON(stored: old) != canonicalPayload {
+                throw StoreError.conflict(event.id)
             }
-            try self.db.execute(
-                """
-                INSERT INTO events(id, pack_id, event_version, type, lesson_id,
-                                   activity_id, evidence_key, at_ms, payload)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-                """,
-                bind: {
-                    try $0.bindText(1, event.id)
-                    try $0.bindText(2, event.packId)
-                    try $0.bindInt64(3, Int64(version))
-                    try $0.bindText(4, type)
-                    try $0.bindText(5, lessonId)
-                    try $0.bindText(6, activityId)
-                    try $0.bindText(7, evidenceKey)
-                    try $0.bindInt64(8, atMs)
-                    try $0.bindText(9, payload)
-                })
+            return
         }
+        try self.db.execute(
+            """
+            INSERT INTO events(id, pack_id, event_version, type, lesson_id,
+                               activity_id, evidence_key, at_ms, payload)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            """,
+            bind: {
+                try $0.bindText(1, event.id)
+                try $0.bindText(2, event.packId)
+                try $0.bindInt64(3, Int64(version))
+                try $0.bindText(4, type)
+                try $0.bindText(5, lessonId)
+                try $0.bindText(6, activityId)
+                try $0.bindText(7, evidenceKey)
+                try $0.bindInt64(8, atMs)
+                try $0.bindText(9, payload)
+            })
     }
 
     /// Decodes stored event rows, returning the decodable events in query
@@ -678,46 +815,52 @@ final class LearningStore: ObservableObject {
     /// row retires its tombstone.
     func mergeCheckpoint(_ row: StoredCheckpoint) throws {
         try db.transaction {
-            try self.db.execute(
-                """
-                DELETE FROM checkpoint_tombstones
-                WHERE pack_id = ? AND lesson_id = ? AND deleted_at_ms < ?;
-                """,
-                bind: {
-                    try $0.bindText(1, row.packId)
-                    try $0.bindText(2, row.lessonId)
-                    try $0.bindInt64(3, row.updatedAtMs)
-                })
-            var tombstoneMs: Int64?
-            try self.db.query(
-                """
-                SELECT deleted_at_ms FROM checkpoint_tombstones
-                WHERE pack_id = ? AND lesson_id = ?;
-                """,
-                bind: {
-                    try $0.bindText(1, row.packId)
-                    try $0.bindText(2, row.lessonId)
-                },
-                row: { tombstoneMs = $0.int64(0) })
-            if let tombstoneMs, tombstoneMs >= row.updatedAtMs {
-                return
-            }
-            try self.db.execute(
-                """
-                INSERT INTO checkpoints(pack_id, lesson_id, payload, updated_at_ms)
-                VALUES (?, ?, ?, ?)
-                ON CONFLICT(pack_id, lesson_id)
-                DO UPDATE SET payload = excluded.payload,
-                              updated_at_ms = excluded.updated_at_ms
-                WHERE excluded.updated_at_ms > checkpoints.updated_at_ms;
-                """,
-                bind: {
-                    try $0.bindText(1, row.packId)
-                    try $0.bindText(2, row.lessonId)
-                    try $0.bindText(3, row.payload)
-                    try $0.bindInt64(4, row.updatedAtMs)
-                })
+            try self.mergeCheckpointRow(row)
         }
+    }
+
+    /// Transaction-free checkpoint merge, for batching inside one
+    /// transaction (data import). Same rules as `mergeCheckpoint`.
+    private func mergeCheckpointRow(_ row: StoredCheckpoint) throws {
+        try self.db.execute(
+            """
+            DELETE FROM checkpoint_tombstones
+            WHERE pack_id = ? AND lesson_id = ? AND deleted_at_ms < ?;
+            """,
+            bind: {
+                try $0.bindText(1, row.packId)
+                try $0.bindText(2, row.lessonId)
+                try $0.bindInt64(3, row.updatedAtMs)
+            })
+        var tombstoneMs: Int64?
+        try self.db.query(
+            """
+            SELECT deleted_at_ms FROM checkpoint_tombstones
+            WHERE pack_id = ? AND lesson_id = ?;
+            """,
+            bind: {
+                try $0.bindText(1, row.packId)
+                try $0.bindText(2, row.lessonId)
+            },
+            row: { tombstoneMs = $0.int64(0) })
+        if let tombstoneMs, tombstoneMs >= row.updatedAtMs {
+            return
+        }
+        try self.db.execute(
+            """
+            INSERT INTO checkpoints(pack_id, lesson_id, payload, updated_at_ms)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(pack_id, lesson_id)
+            DO UPDATE SET payload = excluded.payload,
+                          updated_at_ms = excluded.updated_at_ms
+            WHERE excluded.updated_at_ms > checkpoints.updated_at_ms;
+            """,
+            bind: {
+                try $0.bindText(1, row.packId)
+                try $0.bindText(2, row.lessonId)
+                try $0.bindText(3, row.payload)
+                try $0.bindInt64(4, row.updatedAtMs)
+            })
     }
 
     /// Every checkpoint tombstone, for CloudKit upload.
@@ -739,46 +882,52 @@ final class LearningStore: ObservableObject {
     /// row drops the tombstone instead.
     func mergeCheckpointTombstone(_ tombstone: CheckpointTombstone) throws {
         try db.transaction {
-            var localMs: Int64?
-            try self.db.query(
-                """
-                SELECT updated_at_ms FROM checkpoints
-                WHERE pack_id = ? AND lesson_id = ?;
-                """,
-                bind: {
-                    try $0.bindText(1, tombstone.packId)
-                    try $0.bindText(2, tombstone.lessonId)
-                },
-                row: { localMs = $0.int64(0) })
-            if let localMs, localMs > tombstone.deletedAtMs {
-                try self.db.execute(
-                    "DELETE FROM checkpoint_tombstones WHERE pack_id = ? AND lesson_id = ?;",
-                    bind: {
-                        try $0.bindText(1, tombstone.packId)
-                        try $0.bindText(2, tombstone.lessonId)
-                    })
-                return
-            }
-            try self.db.execute(
-                "DELETE FROM checkpoints WHERE pack_id = ? AND lesson_id = ?;",
-                bind: {
-                    try $0.bindText(1, tombstone.packId)
-                    try $0.bindText(2, tombstone.lessonId)
-                })
-            try self.db.execute(
-                """
-                INSERT INTO checkpoint_tombstones(pack_id, lesson_id, deleted_at_ms)
-                VALUES (?, ?, ?)
-                ON CONFLICT(pack_id, lesson_id)
-                DO UPDATE SET deleted_at_ms = excluded.deleted_at_ms
-                WHERE excluded.deleted_at_ms > checkpoint_tombstones.deleted_at_ms;
-                """,
-                bind: {
-                    try $0.bindText(1, tombstone.packId)
-                    try $0.bindText(2, tombstone.lessonId)
-                    try $0.bindInt64(3, tombstone.deletedAtMs)
-                })
+            try self.mergeCheckpointTombstoneRow(tombstone)
         }
+    }
+
+    /// Transaction-free checkpoint-tombstone merge, for batching inside
+    /// one transaction (data import).
+    private func mergeCheckpointTombstoneRow(_ tombstone: CheckpointTombstone) throws {
+        var localMs: Int64?
+        try self.db.query(
+            """
+            SELECT updated_at_ms FROM checkpoints
+            WHERE pack_id = ? AND lesson_id = ?;
+            """,
+            bind: {
+                try $0.bindText(1, tombstone.packId)
+                try $0.bindText(2, tombstone.lessonId)
+            },
+            row: { localMs = $0.int64(0) })
+        if let localMs, localMs > tombstone.deletedAtMs {
+            try self.db.execute(
+                "DELETE FROM checkpoint_tombstones WHERE pack_id = ? AND lesson_id = ?;",
+                bind: {
+                    try $0.bindText(1, tombstone.packId)
+                    try $0.bindText(2, tombstone.lessonId)
+                })
+            return
+        }
+        try self.db.execute(
+            "DELETE FROM checkpoints WHERE pack_id = ? AND lesson_id = ?;",
+            bind: {
+                try $0.bindText(1, tombstone.packId)
+                try $0.bindText(2, tombstone.lessonId)
+            })
+        try self.db.execute(
+            """
+            INSERT INTO checkpoint_tombstones(pack_id, lesson_id, deleted_at_ms)
+            VALUES (?, ?, ?)
+            ON CONFLICT(pack_id, lesson_id)
+            DO UPDATE SET deleted_at_ms = excluded.deleted_at_ms
+            WHERE excluded.deleted_at_ms > checkpoint_tombstones.deleted_at_ms;
+            """,
+            bind: {
+                try $0.bindText(1, tombstone.packId)
+                try $0.bindText(2, tombstone.lessonId)
+                try $0.bindInt64(3, tombstone.deletedAtMs)
+            })
     }
 
     /// Every saved-phrase tombstone, for CloudKit upload.
@@ -799,33 +948,40 @@ final class LearningStore: ObservableObject {
     /// save drops the tombstone instead.
     func mergeSavedPhraseTombstone(_ tombstone: SavedPhraseTombstone) throws {
         try db.transaction {
-            var localMs: Int64?
-            try self.db.query(
-                "SELECT saved_at_ms FROM saved_phrases WHERE id = ?;",
-                bind: { try $0.bindText(1, tombstone.id) },
-                row: { localMs = $0.int64(0) })
-            if let localMs, localMs > tombstone.deletedAtMs {
-                try self.db.execute(
-                    "DELETE FROM saved_phrase_tombstones WHERE id = ?;",
-                    bind: { try $0.bindText(1, tombstone.id) })
-                return
-            }
-            try self.db.execute(
-                "DELETE FROM saved_phrases WHERE id = ?;",
-                bind: { try $0.bindText(1, tombstone.id) })
-            try self.db.execute(
-                """
-                INSERT INTO saved_phrase_tombstones(id, deleted_at_ms)
-                VALUES (?, ?)
-                ON CONFLICT(id)
-                DO UPDATE SET deleted_at_ms = excluded.deleted_at_ms
-                WHERE excluded.deleted_at_ms > saved_phrase_tombstones.deleted_at_ms;
-                """,
-                bind: {
-                    try $0.bindText(1, tombstone.id)
-                    try $0.bindInt64(2, tombstone.deletedAtMs)
-                })
+            try self.mergeSavedPhraseTombstoneRow(tombstone)
         }
+    }
+
+    /// Transaction-free saved-phrase-tombstone merge, for batching inside
+    /// one transaction (data import). A tombstone wins over an older row;
+    /// a newer row retires the tombstone.
+    private func mergeSavedPhraseTombstoneRow(_ tombstone: SavedPhraseTombstone) throws {
+        var localMs: Int64?
+        try self.db.query(
+            "SELECT saved_at_ms FROM saved_phrases WHERE id = ?;",
+            bind: { try $0.bindText(1, tombstone.id) },
+            row: { localMs = $0.int64(0) })
+        if let localMs, localMs > tombstone.deletedAtMs {
+            try self.db.execute(
+                "DELETE FROM saved_phrase_tombstones WHERE id = ?;",
+                bind: { try $0.bindText(1, tombstone.id) })
+            return
+        }
+        try self.db.execute(
+            "DELETE FROM saved_phrases WHERE id = ?;",
+            bind: { try $0.bindText(1, tombstone.id) })
+        try self.db.execute(
+            """
+            INSERT INTO saved_phrase_tombstones(id, deleted_at_ms)
+            VALUES (?, ?)
+            ON CONFLICT(id)
+            DO UPDATE SET deleted_at_ms = excluded.deleted_at_ms
+            WHERE excluded.deleted_at_ms > saved_phrase_tombstones.deleted_at_ms;
+            """,
+            bind: {
+                try $0.bindText(1, tombstone.id)
+                try $0.bindInt64(2, tombstone.deletedAtMs)
+            })
     }
 
     /// Merges a phrase received from another device, last-write-wins by
@@ -834,47 +990,62 @@ final class LearningStore: ObservableObject {
     func mergeSavedPhrase(_ phrase: SavedPhrase) throws {
         let atMs = LearningStore.millis(phrase.savedAt)
         try db.transaction {
-            try self.db.execute(
-                "DELETE FROM saved_phrase_tombstones WHERE id = ? AND deleted_at_ms < ?;",
-                bind: {
-                    try $0.bindText(1, phrase.id)
-                    try $0.bindInt64(2, atMs)
-                })
-            var tombstoneMs: Int64?
-            try self.db.query(
-                "SELECT deleted_at_ms FROM saved_phrase_tombstones WHERE id = ?;",
-                bind: { try $0.bindText(1, phrase.id) },
-                row: { tombstoneMs = $0.int64(0) })
-            if let tombstoneMs, tombstoneMs >= atMs {
-                return
-            }
-            try self.db.execute(
-                """
-                INSERT INTO saved_phrases(id, language_slug, language_name, target, meaning, source, source_pack_id, source_lesson_id, saved_at_ms)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(id)
-                DO UPDATE SET language_slug = excluded.language_slug,
-                              language_name = excluded.language_name,
-                              target = excluded.target,
-                              meaning = excluded.meaning,
-                              source = excluded.source,
-                              source_pack_id = excluded.source_pack_id,
-                              source_lesson_id = excluded.source_lesson_id,
-                              saved_at_ms = excluded.saved_at_ms
-                WHERE excluded.saved_at_ms > saved_phrases.saved_at_ms;
-                """,
-                bind: {
-                    try $0.bindText(1, phrase.id)
-                    try $0.bindText(2, phrase.languageSlug)
-                    try $0.bindText(3, phrase.languageName)
-                    try $0.bindText(4, phrase.target)
-                    try $0.bindText(5, phrase.meaning)
-                    try $0.bindText(6, phrase.source)
-                    try $0.bindText(7, phrase.sourcePackId)
-                    try $0.bindText(8, phrase.sourceLessonId)
-                    try $0.bindInt64(9, atMs)
-                })
+            try self.mergeSavedPhraseRow(StoredSavedPhrase(
+                id: phrase.id,
+                languageSlug: phrase.languageSlug,
+                languageName: phrase.languageName,
+                target: phrase.target,
+                meaning: phrase.meaning,
+                source: phrase.source,
+                sourcePackId: phrase.sourcePackId,
+                sourceLessonId: phrase.sourceLessonId,
+                savedAtMs: atMs))
         }
+    }
+
+    /// Transaction-free saved-phrase merge by raw row, for batching inside
+    /// one transaction (data import). Same rules as `mergeSavedPhrase`.
+    private func mergeSavedPhraseRow(_ row: StoredSavedPhrase) throws {
+        try self.db.execute(
+            "DELETE FROM saved_phrase_tombstones WHERE id = ? AND deleted_at_ms < ?;",
+            bind: {
+                try $0.bindText(1, row.id)
+                try $0.bindInt64(2, row.savedAtMs)
+            })
+        var tombstoneMs: Int64?
+        try self.db.query(
+            "SELECT deleted_at_ms FROM saved_phrase_tombstones WHERE id = ?;",
+            bind: { try $0.bindText(1, row.id) },
+            row: { tombstoneMs = $0.int64(0) })
+        if let tombstoneMs, tombstoneMs >= row.savedAtMs {
+            return
+        }
+        try self.db.execute(
+            """
+            INSERT INTO saved_phrases(id, language_slug, language_name, target, meaning, source, source_pack_id, source_lesson_id, saved_at_ms)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id)
+            DO UPDATE SET language_slug = excluded.language_slug,
+                          language_name = excluded.language_name,
+                          target = excluded.target,
+                          meaning = excluded.meaning,
+                          source = excluded.source,
+                          source_pack_id = excluded.source_pack_id,
+                          source_lesson_id = excluded.source_lesson_id,
+                          saved_at_ms = excluded.saved_at_ms
+            WHERE excluded.saved_at_ms > saved_phrases.saved_at_ms;
+            """,
+            bind: {
+                try $0.bindText(1, row.id)
+                try $0.bindText(2, row.languageSlug)
+                try $0.bindText(3, row.languageName)
+                try $0.bindText(4, row.target)
+                try $0.bindText(5, row.meaning)
+                try $0.bindText(6, row.source)
+                try $0.bindText(7, row.sourcePackId)
+                try $0.bindText(8, row.sourceLessonId)
+                try $0.bindInt64(9, row.savedAtMs)
+            })
     }
 
     /// Every listen-state row with its write timestamp, for merge + export.
@@ -898,6 +1069,14 @@ final class LearningStore: ObservableObject {
 
     /// Merges listen state from another device, last-write-wins.
     func mergeListenState(_ row: ListenStateRow) throws {
+        try db.transaction {
+            try self.mergeListenStateRow(row)
+        }
+    }
+
+    /// Transaction-free listen-state merge, for batching inside one
+    /// transaction (data import). Same last-write-wins rule.
+    private func mergeListenStateRow(_ row: ListenStateRow) throws {
         try db.execute(
             """
             INSERT INTO listen_state(track_id, position_seconds, listened_at_ms, updated_at_ms)
@@ -932,6 +1111,49 @@ final class LearningStore: ObservableObject {
                 try $0.bindInt64(1, LearningStore.millis(Date()))
                 try $0.bindText(2, trackId)
             })
+    }
+
+    // MARK: - Restore (validated import)
+
+    /// Applies a fully validated export in ONE SQLite transaction.
+    ///
+    /// Every section reuses the store's existing merge rules, so a restore
+    /// behaves exactly like a third device syncing down:
+    /// - Events go through the idempotent insert (`record`'s rule): the
+    ///   same id with identical content is a no-op; the same id with
+    ///   different content throws `StoreError.conflict`, which aborts the
+    ///   whole transaction — rollback leaves the store exactly as it was.
+    /// - Saved phrases merge last-write-wins with their tombstones, and a
+    ///   tombstone wins over an older phrase row; checkpoint rows and
+    ///   tombstones follow the same rules; listen state is last-write-wins
+    ///   per track.
+    /// - Because every write is idempotent or where-guarded, re-importing
+    ///   the identical file changes nothing.
+    ///
+    /// Placement recommendations live in UserDefaults and are applied by
+    /// the caller (`YouModel.restore`) only after this transaction has
+    /// committed, so a failed import writes nothing anywhere.
+    func applyImport(_ preview: ImportPreview) throws {
+        try db.transaction {
+            for event in preview.events {
+                try self.insertEvent(event)
+            }
+            for checkpoint in preview.checkpoints {
+                try self.mergeCheckpointRow(checkpoint)
+            }
+            for tombstone in preview.checkpointTombstones {
+                try self.mergeCheckpointTombstoneRow(tombstone)
+            }
+            for phrase in preview.savedPhrases {
+                try self.mergeSavedPhraseRow(phrase)
+            }
+            for tombstone in preview.savedPhraseTombstones {
+                try self.mergeSavedPhraseTombstoneRow(tombstone)
+            }
+            for row in preview.listenState {
+                try self.mergeListenStateRow(row)
+            }
+        }
     }
 
     /// The full immutable event log, oldest first, for data export.
@@ -1148,6 +1370,31 @@ final class LearningStore: ObservableObject {
         return phrases
     }
 
+    /// Every saved phrase with its raw write timestamp, for merge + export.
+    /// Oldest first for a deterministic export.
+    func allSavedPhrases() throws -> [StoredSavedPhrase] {
+        var phrases: [StoredSavedPhrase] = []
+        try db.query(
+            """
+            SELECT id, language_slug, language_name, target, meaning, source, source_pack_id, source_lesson_id, saved_at_ms
+            FROM saved_phrases
+            ORDER BY saved_at_ms, id;
+            """,
+            row: { statement in
+                phrases.append(StoredSavedPhrase(
+                    id: statement.text(0) ?? "",
+                    languageSlug: statement.text(1) ?? "",
+                    languageName: statement.text(2) ?? "",
+                    target: statement.text(3) ?? "",
+                    meaning: statement.text(4) ?? "",
+                    source: statement.text(5) ?? "",
+                    sourcePackId: statement.text(6) ?? "",
+                    sourceLessonId: statement.text(7) ?? "",
+                    savedAtMs: statement.int64(8)))
+            })
+        return phrases
+    }
+
     // MARK: - Key/value (sync metadata, device id)
 
     func kvGet(_ key: String) throws -> String? {
@@ -1204,12 +1451,18 @@ final class LearningStore: ObservableObject {
         var attempts: [ActivityAttempt] = []
         var completions: [StepCompletion] = []
         var knownMarks: [LessonKnownEvent] = []
+        var checkpointAttempts: [CheckpointAttemptEvent] = []
+        var openTaskAttempts: [OpenTaskAttemptEvent] = []
+        var dialogueTurnEvents: [DialogueTurnEvent] = []
         for event in events {
             switch event {
             case .practiceV1(let e): v1.append(e)
             case .attempt(let e): attempts.append(e)
             case .stepCompleted(let e): completions.append(e)
             case .lessonKnown(let e): knownMarks.append(e)
+            case .checkpointAttempt(let e): checkpointAttempts.append(e)
+            case .openTaskAttempt(let e): openTaskAttempts.append(e)
+            case .dialogueTurn(let e): dialogueTurnEvents.append(e)
             }
         }
 
@@ -1415,6 +1668,64 @@ final class LearningStore: ObservableObject {
             }
         }
 
+        // Checkpoint attempts (5.3A): open practice evidence, never
+        // completion credit, SRS input, or a lock. A checkpoint no longer
+        // in the bundled pack quarantines the attempt (learner-owned
+        // history stays observable) instead of failing the read.
+        let checkpointsById = Dictionary(
+            uniqueKeysWithValues: pack.checkpoints.map { ($0.id, $0) })
+        var validCheckpointAttempts: [CheckpointAttemptEvent] = []
+        for attempt in checkpointAttempts {
+            guard checkpointsById[attempt.checkpointId] != nil else {
+                quarantined.append(attempt.id)
+                continue
+            }
+            validCheckpointAttempts.append(attempt)
+        }
+
+        // Open-task attempts (6.2): practice evidence bound to a lesson
+        // step, never completion credit, SRS input, or a lock. A row whose
+        // activity is no longer an open task in the bundled pack (or whose
+        // lesson/step/revision no longer resolves) quarantines the attempt
+        // instead of failing the read — learner-owned history stays
+        // observable.
+        var validOpenTaskAttempts: [OpenTaskAttemptEvent] = []
+        for attempt in openTaskAttempts {
+            guard let lesson = lessonsById[attempt.lessonId],
+                  lesson.revision == attempt.lessonRevision,
+                  let step = lesson.steps.first(where: { $0.id == attempt.stepId }),
+                  step.activityId == attempt.activityId,
+                  let activity = activitiesById[attempt.activityId],
+                  case .openTask(let spec) = activity,
+                  spec.revision == attempt.activityRevision,
+                  spec.mode == attempt.mode
+            else {
+                quarantined.append(attempt.id)
+                continue
+            }
+            validOpenTaskAttempts.append(attempt)
+        }
+
+        // Dialogue turns (6.3): practice evidence per answered exchange
+        // turn, never completion credit, SRS input, or a lock. A row whose
+        // dialogue/node is no longer in the bundled pack (or whose host
+        // binding/revision no longer resolves) quarantines the attempt —
+        // learner-owned history stays observable.
+        let dialoguesById = Dictionary(uniqueKeysWithValues: pack.dialogues.map { ($0.id, $0) })
+        var validDialogueTurns: [DialogueTurnEvent] = []
+        for turn in dialogueTurnEvents {
+            guard let dialogue = dialoguesById[turn.dialogueId],
+                  dialogue.nodes.contains(where: { $0.id == turn.nodeId }),
+                  let hostLesson = lessonsById[turn.hostLessonId],
+                  hostLesson.revision == turn.hostLessonRevision,
+                  dialogue.hostLessonId == turn.hostLessonId
+            else {
+                quarantined.append(turn.id)
+                continue
+            }
+            validDialogueTurns.append(turn)
+        }
+
         // Independent evidence SRS per evidence key.
         var evidence: [String: EvidenceRecord] = [:]
         for attempt in orderedAttempts {
@@ -1462,12 +1773,94 @@ final class LearningStore: ObservableObject {
             }
         }
 
+        // Evidence categories (5.2A): what the attempts prove per key,
+        // derived strictly from stored fields so old payloads replay
+        // conservatively. V1 rows carry no response kind, no independence
+        // flag, and no evidence key — they never contribute a category,
+        // so old history yields old progress (legacy credit) plus the
+        // weakest honest category, never invented production mastery.
+        //
+        // Derivation table (one category per attempt):
+        //   review (selfRating response, i.e. Review tab / lesson warm-up)
+        //     · clean success (correct + independent) ≥ 86,400 s after the
+        //       key's first independent production → .recalledLater
+        //     · clean success within the same day                          → (none;
+        //       the production categories already cover the key)
+        //     · anything else (miss, or correct-but-assisted)              → .seen
+        //   production kind (text / cloze / legacy) + correct + independent
+        //                                                               → .producedIndependently
+        //   production kind + correct + assisted                         → .producedWithHelp
+        //   production kind + incorrect                                  → .seen
+        //   recognition kind (selection / ordering / matching /
+        //     dialogue-choice / scene-selection) + correct + independent → .recognized
+        //   recognition kind otherwise (miss, or assisted correct —
+        //     a hint-guided pick cannot prove recognition)               → .seen
+        //   information / self-compare                                   → (none)
+        //
+        // "Recalled later" rule (documented at the implementation site):
+        // a successful, unassisted review on the evidence key at least one
+        // full day (86,400 s) after the key's first independent
+        // production. Same-session reviews never count.
+        var evidenceCategories: [String: Set<EvidenceCategory>] = [:]
+        var firstIndependentProductionAt: [String: Date] = [:]
+        for attempt in orderedAttempts {
+            guard let key = attempt.evidenceKey,
+                  let activity = activitiesById[attempt.activityId]
+            else { continue }
+            switch attempt.evaluation.outcome {
+            case .blocked, .ungraded, .selfAssessed:
+                continue  // nothing graded on record
+            case .correct, .incorrect:
+                break
+            }
+            switch proofKind(for: activity, response: attempt.response) {
+            case .none:
+                continue
+            case .review:
+                if attempt.evaluation.outcome == .correct,
+                   attempt.evaluation.independent,
+                   let first = firstIndependentProductionAt[key],
+                   attempt.at.timeIntervalSince(first) >= 86_400 {
+                    evidenceCategories[key, default: []].insert(.recalledLater)
+                } else if attempt.evaluation.outcome != .correct
+                            || !attempt.evaluation.independent {
+                    // A review the learner did not pass cleanly only proves
+                    // the card was seen.
+                    evidenceCategories[key, default: []].insert(.seen)
+                }
+            case .production:
+                if attempt.evaluation.outcome == .correct {
+                    if attempt.evaluation.independent {
+                        evidenceCategories[key, default: []].insert(.producedIndependently)
+                        if firstIndependentProductionAt[key] == nil {
+                            firstIndependentProductionAt[key] = attempt.at
+                        }
+                    } else {
+                        evidenceCategories[key, default: []].insert(.producedWithHelp)
+                    }
+                } else {
+                    evidenceCategories[key, default: []].insert(.seen)
+                }
+            case .recognition:
+                if attempt.evaluation.outcome == .correct
+                    && attempt.evaluation.independent {
+                    evidenceCategories[key, default: []].insert(.recognized)
+                } else {
+                    evidenceCategories[key, default: []].insert(.seen)
+                }
+            }
+        }
+
         return PackProgress(
             participationCompleted: participationCompleted,
             legacyCredits: legacyCredits,
             knownLessons: knownLessons,
             evidence: evidence,
+            evidenceCategories: evidenceCategories,
             skillCounts: skillCounts,
+            checkpointAttempts: validCheckpointAttempts,
+            openTaskAttempts: validOpenTaskAttempts,
+            dialogueTurns: validDialogueTurns,
             quarantined: quarantined)
     }
 
@@ -1485,6 +1878,176 @@ final class LearningStore: ObservableObject {
             lessonRevision: lesson.revision,
             known: known,
             at: Date())))
+    }
+
+    /// Records a checkpoint attempt as practice evidence (5.3A). Stage and
+    /// modality coverage are denormalised from the authored task at record
+    /// time; the projection re-validates against the pack.
+    ///
+    /// Semantics, enforced here:
+    /// - One SQLite transaction, idempotent insert (same rules as
+    ///   `record`): replaying the identical event is a no-op. A retake is a
+    ///   fresh event with a new id — the earlier attempt stays on record
+    ///   and no completion, known mark, or evidence is duplicated, because
+    ///   checkpoint rows carry no lesson/step/activity/evidence columns.
+    /// - The learner can always continue: no lock, no streak, no progress
+    ///   penalty. A low self-rating is practice evidence like any other.
+    /// - Reveal-before-answer guard: `independent` is derived as
+    ///   `itemsRevealed && assistance.isEmpty`, so an attempt saved without
+    ///   the reveal marker can never carry independent credit. The 5.3B UI
+    ///   lane must pass `itemsRevealed: true` only after presenting the
+    ///   task's items and rubric (then `selfRating` carries the ticks).
+    ///
+    /// - Returns: the stored event, or nil when the checkpoint is not in
+    ///   the bundled pack (nothing is recorded for an unknown id — the UI
+    ///   lane reads the task from the pack before offering it).
+    @discardableResult
+    func recordCheckpointAttempt(
+        pack: CoursePack,
+        checkpointId: String,
+        assistance: [AssistanceKind],
+        itemsRevealed: Bool,
+        selfRating: CheckpointSelfRating?,
+        at: Date = Date()
+    ) throws -> CheckpointAttemptEvent? {
+        guard let checkpoint = pack.checkpoints.first(where: { $0.id == checkpointId })
+        else { return nil }
+        let event = CheckpointAttemptEvent(
+            id: UUID().uuidString,
+            packId: pack.id,
+            packVersion: pack.version,
+            checkpointId: checkpoint.id,
+            stage: checkpoint.stage,
+            modalitySlots: checkpoint.modalities,
+            assistance: assistance,
+            selfRating: selfRating,
+            itemsRevealed: itemsRevealed,
+            at: at)
+        try record(.checkpointAttempt(event))
+        return event
+    }
+
+    /// Records an open-task completion as practice evidence (6.2). The
+    /// lesson/step/activity binding and the task's modality are
+    /// denormalised from the authored pack at record time; the projection
+    /// re-validates against the pack.
+    ///
+    /// Semantics, enforced here:
+    /// - One SQLite transaction, idempotent insert (same rules as
+    ///   `record`): replaying the identical event is a no-op. A retake is a
+    ///   fresh event with a new id — the earlier attempt stays on record
+    ///   and no completion, known mark, or evidence is duplicated, because
+    ///   the row carries no evidence column and an open-task step's
+    ///   completion is a bare step-completed row with no attemptId.
+    /// - The learner can always continue: no lock, no streak, no progress
+    ///   penalty. The response text or recording is NEVER stored here —
+    ///   the written draft stays local (lesson checkpoint) and the
+    ///   recording is a disposable temp file.
+    /// - Reveal-before-answer guard: `independent` is derived as
+    ///   `!modelRevealed && assistance.isEmpty`, so an attempt saved after
+    ///   the model was shown — or with any help — can never carry
+    ///   independent credit. A retry after the reveal records
+    ///   `modelRevealed: true`, keeping it distinguishable from
+    ///   independent production.
+    ///
+    /// - Returns: the stored event, or nil when the activity is not an
+    ///   open task bound to the given lesson step in the bundled pack
+    ///   (nothing is recorded for an unknown binding — the UI lane reads
+    ///   the task from the pack before offering it).
+    @discardableResult
+    func recordOpenTaskAttempt(
+        pack: CoursePack,
+        lessonId: String,
+        stepId: String,
+        activityId: String,
+        assistance: [AssistanceKind],
+        modelRevealed: Bool,
+        selfRating: OpenTaskSelfRating?,
+        at: Date = Date()
+    ) throws -> OpenTaskAttemptEvent? {
+        guard let lesson = pack.lessons.first(where: { $0.id == lessonId }),
+              let step = lesson.steps.first(where: { $0.id == stepId }),
+              step.activityId == activityId,
+              let activity = pack.activities.first(where: { $0.id == activityId }),
+              case .openTask(let spec) = activity
+        else { return nil }
+        let event = OpenTaskAttemptEvent(
+            id: UUID().uuidString,
+            packId: pack.id,
+            packVersion: pack.version,
+            lessonId: lesson.id,
+            lessonRevision: lesson.revision,
+            stepId: step.id,
+            activityId: activity.id,
+            activityRevision: spec.revision,
+            mode: spec.mode,
+            assistance: assistance,
+            selfRating: selfRating,
+            modelRevealed: modelRevealed,
+            at: at)
+        try record(.openTaskAttempt(event))
+        return event
+    }
+
+    /// Records one answered exchange turn as practice evidence (6.3). The
+    /// dialogue/host-lesson binding and revisions are denormalised from the
+    /// authored pack at record time; the projection re-validates against
+    /// the pack.
+    ///
+    /// Semantics, enforced here:
+    /// - One SQLite transaction, idempotent insert (same rules as
+    ///   `record`): replaying the identical event is a no-op. A retake of
+    ///   the exchange answers fresh turns with fresh ids — earlier rows are
+    ///   never erased, reordered, or duplicated.
+    /// - The learner can always continue: no lock, no streak, no progress
+    ///   penalty. Open turns are NEVER auto-graded — the event carries only
+    ///   the learner's own self-assessment (rubric ticks + optional rating)
+    ///   and the model-reveal marker; the composed draft is never stored
+    ///   here (it lives in the lesson checkpoint for the recap).
+    /// - `turnIndex` is the 1-based position of the turn within the
+    ///   attempt, so the exchange's events read back in authored order
+    ///   regardless of row ordering.
+    ///
+    /// - Returns: the stored event, or nil when the dialogue is not hosted
+    ///   by the given lesson in the bundled pack (nothing is recorded for
+    ///   an unknown binding — the UI lane reads the exchange from the pack
+    ///   before offering it).
+    @discardableResult
+    func recordDialogueTurn(
+        pack: CoursePack,
+        lessonId: String,
+        dialogueId: String,
+        nodeId: String,
+        turnIndex: Int,
+        isOpen: Bool,
+        choiceId: String?,
+        criteriaMet: [String],
+        rating: AttemptResponse.SelfRating?,
+        modelRevealed: Bool,
+        at: Date = Date()
+    ) throws -> DialogueTurnEvent? {
+        guard let lesson = pack.lessons.first(where: { $0.id == lessonId }),
+              let dialogue = pack.dialogues.first(where: { $0.id == dialogueId }),
+              dialogue.hostLessonId == lesson.id,
+              dialogue.nodes.contains(where: { $0.id == nodeId })
+        else { return nil }
+        let event = DialogueTurnEvent(
+            id: UUID().uuidString,
+            packId: pack.id,
+            packVersion: pack.version,
+            dialogueId: dialogue.id,
+            hostLessonId: lesson.id,
+            hostLessonRevision: lesson.revision,
+            nodeId: nodeId,
+            turnIndex: turnIndex,
+            isOpen: isOpen,
+            choiceId: choiceId,
+            criteriaMet: criteriaMet,
+            rating: rating,
+            modelRevealed: modelRevealed,
+            at: at)
+        try record(.dialogueTurn(event))
+        return event
     }
 
     /// Evidence keys due for review, oldest first.

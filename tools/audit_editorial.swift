@@ -316,6 +316,7 @@ struct AuditEditorial {
         var gradedStepHintGap = 0
         var informationCount = 0
         var selfCompareCount = 0
+        var openTaskCount = 0
         var missionStoryLessons = 0
         var objectiveGap = 0
         var finalResponseGap = 0
@@ -404,6 +405,8 @@ struct AuditEditorial {
                     ungradedKinds.insert("information")
                 case .selfCompare:
                     ungradedKinds.insert("self-compare")
+                case .openTask:
+                    ungradedKinds.insert("open-task")
                 default:
                     break
                 }
@@ -600,6 +603,8 @@ struct AuditEditorial {
                 c.informationCount += 1
             case .selfCompare:
                 c.selfCompareCount += 1
+            case .openTask:
+                c.openTaskCount += 1
             default:
                 break
             }
@@ -625,7 +630,7 @@ struct AuditEditorial {
 
         // 3. Ungraded activity counts: deliberate design (they must be
         //    presented as not auto-graded), reported for coverage planning.
-        print("ungraded: \(c.informationCount) information, \(c.selfCompareCount) self-compare")
+        print("ungraded: \(c.informationCount) information, \(c.selfCompareCount) self-compare, \(c.openTaskCount) open-task")
 
         // 4. Mission/story lessons: a non-empty objective and a free
         //    production (text) step at the end of the path — the final
@@ -680,6 +685,7 @@ struct AuditEditorial {
         case .dialogueChoice: return "dialogue-choice"
         case .sceneSelection: return "scene-selection"
         case .selfCompare: return "self-compare"
+        case .openTask: return "open-task"
         }
     }
 }

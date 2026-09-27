@@ -1,282 +1,92 @@
 # Condisco
 
-Condisco is a native iOS language-learning app: SwiftUI, iOS 17+, zero third-party
-dependencies. All five course packs (French, Italian, German, Portuguese, Spanish)
-ship bundled in the app; there is no server. The app keeps learner progress in a
-local SQLite store and mirrors it to CloudKit as a background copy when the learner
-signs in with Apple. Everything else — placement, spaced repetition, review,
-flashcards, a Home widget — is derived from that local store.
+Condisco is a free, offline-first iPhone app for practising useful language in context. It combines short lessons, stories, real-world missions, spaced review, listening, and self-assessed speaking and writing. The app uses SwiftUI, targets iOS 17+, and has no third-party runtime dependencies or required account.
 
-This is a **port of a sibling web app that is not in this repository.** The Engine
-files say so themselves: `LessonSession.swift` is a "faithful port of the web app's
-`lesson-session.ts`", `AnswerEngine.swift` of `answer.ts`, and
-`ActivityEvaluation.swift` of `activity-evaluation.ts`. `Models/CoursePack.swift`
-mirrors `schema-v2.ts`, and `LearningStore`'s projection "mirrors
-`projectLessonEvidence`". If you change behavior here, the web repo likely needs the
-same change mirrored.
+This repository is the **native iOS app**. The earlier VerbaLibera web app is preserved in the web-legacy branch. The iOS app is the active product; some web-era storage identifiers remain to preserve learner progress.
 
-## The naming trap
+## Current scope
 
-The directory is `VerbaLibera`, but the product is **Condisco**:
+Five bundled course packs contain **273 lessons**:
 
-- Xcode project and product: `Condisco` (`Condisco.xcodeproj`, app bundle id
-  `com.sleuthysloth.condisco`).
-- Widget extension bundle id: `com.sleuthysloth.condisco.CondiscoWidget`; shared
-  App Group `group.com.sleuthysloth.condisco`.
-- **Legacy `verbalibera` identifiers survive in runtime data.** The SQLite database
-  is `verbalibera.sqlite` (Documents dir), the keychain service is
-  `com.sleuthysloth.verbalibera`, and several UserDefaults keys are
-  `verbalibera.*` (`verbalibera.a11y.largeText`, `verbalibera.sync.lastSyncedAt`,
-  `verbalibera.appleDisplayName`, `verbalibera_listen_position:`, …).
+| Course | Lessons | Current scope |
+| --- | ---: | --- |
+| French | 50 | Beginner and developing practice |
+| Italian | 49 | Beginner and developing practice |
+| German | 52 | Beginner and developing practice |
+| Portuguese | 52 | Beginner and developing practice |
+| Spanish | 70 | Beginner and developing practice, plus an 18-lesson B1-oriented pilot in three units |
 
-Do not "clean up" the legacy identifiers: renaming the database file or keychain
-service would silently strand every existing learner's progress. There is no data
-migration for them — they are deltas of a name, not a bug.
+The Spanish pilot uses connected readings, multi-section synthesized listening, open writing and speaking tasks, and branching conversations. **B1-oriented describes curriculum design, not measured learner proficiency.** The pilot is still being verified; its lesson review ledger and iPhone walkthrough are not signed off. None of the five courses is native-speaker reviewed, certified, or a complete CEFR-level syllabus.
 
-## Building & running
+The app also includes placement suggestions, a Today path, a course browser, a phrasebook, an FSRS-based Review queue, five standalone Listen tracks, a Home Screen widget, deep links, Spotlight entries, Siri Shortcuts, accessibility settings, and a voluntary tip jar. Purchases unlock no lessons or features.
 
-Open `Condisco.xcodeproj` in Xcode, select the shared **`Condisco`** scheme, and run
-on a simulator or device with automatic signing. Minimum deployment target is
-iOS 17.0. The project has four targets:
+## Data, offline use, and sync
 
-1. **Condisco** — the app.
-2. **CondiscoWidget** — the Home screen widget extension.
-3. **CondiscoTests** — unit tests, sources in `Condisco/Tests/`.
-4. **CondiscoUITests** — UI tests, sources in `Condisco/UITests/`.
+Lessons, review, and the five packs are bundled and work without a network connection. Learner progress lives in a local SQLite event log. The app derives lesson completion, review schedules, and skill-practice summaries from that log. Re-inserting an event ID with identical content is harmless; conflicting content is rejected.
 
-CloudKit and Sign in with Apple are wired in code but their entitlements are
-**commented out** in `Condisco/Condisco.entitlements` (the file only declares the
-App Group). The comment there explains why: a personal-team build cannot use the
-iCloud/apple-signin capabilities; re-add them once the project is enrolled in the
-paid Apple Developer Program. Until then sync and sign-in degrade gracefully.
+The You tab can export learning data and restore a validated export after showing a preview. Exports include events, checkpoints, saved phrases and their deletion markers, Listen position, and placement recommendations. They exclude temporary recordings, device preferences, sign-in identity, and secrets. Restore merges into the local store in one SQLite transaction; it does not replace the database.
 
-## Repository layout
+CloudKit mirror code exists, but **iCloud and Sign in with Apple capabilities are disabled in this build**. The app tells learners that progress is saved on this device and sync is unavailable. Simulated two-store merge tests exist; real two-device CloudKit sync has not been verified. Local use never depends on CloudKit.
 
-Everything lives under `Condisco/`, organized by feature:
+Some persisted identifiers still use verbalibera: the verbalibera.sqlite database, keychain service com.sleuthysloth.verbalibera, and several UserDefaults keys. **Do not rename these without an explicit migration and upgrade test** or existing progress may become inaccessible. The app bundle ID remains com.sleuthysloth.condisco; the widget bundle ID is com.sleuthysloth.condisco.CondiscoWidget.
 
-- **`Models/`** — `CoursePack.swift`, the decode-only v2 pack models (see
-  "Working on content"). Never encoded on device.
-- **`Engine/`** — the pure evaluation core: `LessonSession` (session reducers),
-  `AnswerEngine` (text matching), `ActivityEvaluation` (per-activity grading).
-  No storage, clocks, or randomness; fully deterministic.
-- **`Store/`** — persistence: `Database` (a minimal raw-SQLite3 wrapper),
-  `LearningStore` (the event log, projection, checkpoints, phrasebook, key/value),
-  `Fsrs` (FSRS v6 spaced repetition), `PackLoader` (bundled packs), and
-  `WidgetSnapshotWriter`.
-- **`Lesson/`** — the lesson player UI (`LessonPlayerView` plus activity views,
-  glossary, vocabulary browser, phrasebook) and the Courses list.
-- **`Home/`, `Listen/`, `Review/`, `You/`** — the other tabs, plus `Theme/`
-  (`DesignTokens` — a warm "studio" palette — and `A11ySettings` accessibility
-  toggles) and `Onboarding/` (welcome flow + placement test).
-- **`Sync/`** — `CloudKitSync`, a background mirror of the local store.
-- **`Auth/`** — `AppleSignIn`, keychain-backed.
-- **`DeepLink/`** — the URL router (`DeepLink.swift`), Spotlight indexing
-  (`SpotlightIndex.swift`), Siri Shortcuts intents (`CondiscoIntents.swift`), and
-  `LessonCatalog.generated.swift` (see below).
-- **`Content/`** — bundled packs, audio, images, and listen tracks. Declared as an
-  Xcode **folder reference**, so its layout is copied verbatim into the bundle,
-  mirroring the web repo's `public/`.
-- **`CondiscoWidget/`** — the widget extension target.
-- **`tools/`** — pack validation and generation scripts (see below).
-- Supporting files: `CondiscoApp.swift` (entry point), `ContentView.swift` (tabs +
-  navigation), `Condisco.entitlements`, `Condisco.storekit`, `Previews/` (App Store
-  preview images), `Condisco/ArtworkStage/` (app-icon source artwork).
+## Build and run
 
-## Architecture
+1. Open Condisco.xcodeproj in Xcode.
+2. Select the shared Condisco scheme and an iOS 17+ simulator or iPhone.
+3. Configure automatic signing for your Apple team if installing on a device, then build and run.
 
-Condisco's centerpiece is an **append-only event log as the single source of
-truth**:
+The project contains the app, CondiscoWidget, CondiscoTests, and CondiscoUITests targets. Its bundled Condisco/Content directory is an Xcode folder reference; keep the pack, media, and Listen-track paths intact. Personal-team builds do not include CloudKit entitlements.
 
-```
-LessonPlayerView ──► Engine (pure evaluation) ──► LearningStore.record() ──► SQLite `events`
-                                                          │
-                                                          ▼
-                                      project(pack:) replays events ──► PackProgress
-                                                          │
-                              (FSRS state, completions, skill counts, …)
-                                                          ▼
-                                    Home · Review · Widget · CloudKit
-```
+## How it works
 
-The player never persists derived state. A lesson submission flows through the
-pure engines and into `LearningStore.record(_:)`, which appends one row to the
-SQLite `events` table. `project(pack:)` then replays those rows into a
-`PackProgress` — FSRS state per evidence key, completed lessons, skill counts —
-and every UI surface (Home, Review, the widget, even CloudKit's copy) is a
-consumer of that projection. Events are idempotent on insert: a duplicate id with
-identical payload is a no-op, a conflicting one throws. This is also what makes
-cross-device sync safe — the log merges, and projections are recomputed locally.
+~~~text
+Bundled pack → Lesson session → Evaluation → SQLite learning event
+                                                ↓
+                                    PackProgress projection
+                                                ↓
+                              Today · Review · Courses · Widget
+~~~
 
-Every entry point lands in the same player. Deep links (`condisco://continue`,
-`condisco://lesson/<packId>/<lessonId>`, `condisco://review`,
-`condisco://phrasebook`), Spotlight results, and Siri Shortcuts all funnel through
-`DeepLinkRouter` in `ContentView`, which presents the same `LessonPlayerView` as
-any in-app lesson.
+Condisco/Engine contains the deterministic lesson and answer evaluators. Condisco/Store owns SQLite, event replay, FSRS scheduling, checkpoints, import validation, and pack loading. Condisco/Lesson, Home, Review, Listen, Onboarding, and You contain learner flows. Condisco/Sync contains the optional CloudKit mirror. CondiscoWidget is the extension; Condisco/Store/WidgetSnapshot.swift is shared between the app and extension and must remain Foundation-only.
 
-One file to be careful with: **`Store/WidgetSnapshot.swift` is compiled into both
-the app target and the widget extension**, and must stay Foundation-only — no
-SwiftUI, no WidgetKit, no app modules. The app writes the snapshot to the shared
-App Group and the widget reads it.
+Open writing and speaking tasks use a model response and a learner-facing self-check rubric. They are **not automatically marked correct or incorrect** by the fixed-answer engine. Recordings are temporary and disposable. Checkpoint and conversation events record practice evidence without turning lesson completion into a proficiency claim.
 
-## Working on content
+## Course content and audio
 
-Course content is JSON, authored in the web repo's format:
+Each pack is a JSON file in Condisco/Content/packs. The schema decoder rejects unsupported kinds. When lesson metadata changes, regenerate Condisco/DeepLink/LessonCatalog.generated.swift:
 
-1. Edit the packs in `Condisco/Content/packs/*.json` (one per language).
-2. Validate offline with `./tools/check_packs.sh` — it compiles the *real* model
-   and store code with `xcrun swiftc` and decodes every pack, so a pack cannot
-   drift from the Swift types.
-3. Audio comes from `tools/render_cafe_audio.py` (the café-scenario clips the
-   packs reference); images live under `Content/images/`.
-4. Regenerate the Siri/Shortcuts lesson picker catalog when lessons change:
+~~~sh
+python3 tools/gen_lesson_catalog.py Condisco/Content/packs \
+  Condisco/DeepLink/LessonCatalog.generated.swift
+~~~
 
-   ```
-   python3 tools/gen_lesson_catalog.py Condisco/Content/packs \
-       Condisco/DeepLink/LessonCatalog.generated.swift
-   ```
+The generated catalog must match the packs byte-for-byte. New lessons need stable IDs and a deliberate revision policy so an update does not discard old progress. docs/editorial-rubric.md has the authoring template and review rules; docs/skill-map.md maps the original A1/A2 units and records coverage gaps. The Spanish B1 pilot has a separate outline and review ledger under docs/reviews.
 
-   `LessonCatalog.generated.swift` is a **generated file — never hand-edit it**.
-   The script reproduces the committed file byte-identically.
+Audio provenance matters: **23 declared lesson assets intentionally use labeled on-device synthesized speech** (French 5, Italian 16, Spanish 2), listed in tools/device-speech-media.txt. One Italian lesson clip and five standalone synthesized Listen tracks are bundled. Spanish sustained passages use per-section on-device speech. Missing media outside the explicit fallback list fails validation. The five Listen tracks have file, hash, duration, and section checks; naturalness, device playback, lock-screen behavior, and recording recovery still need human iPhone checks. Do not describe synthesized audio as native recorded speech.
 
-Packs use `schemaVersion` 2, enforced in the `CoursePack` decoder (it throws on
-anything else). Five packs: `french`, `italian`, `german`, `portuguese`, `spanish`.
+## Verification
 
-## Conventions
+Run the local gates from the repository root:
 
-- **File-header comments are the spec.** They carry invariants the code relies on —
-  "the caller persists events between `submitResponse` and `advanceLesson`;
-  advancing never writes", "engine evaluates before recording", "WidgetSnapshot
-  must stay extension-safe". Read them before editing a file.
-- **Best-effort, silent failures.** Spotlight indexing, deep links, and widget
-  refresh never surface errors to the learner — a missed refresh just leaves the
-  last good state in place until the next change. Match that when touching those
-  paths.
-- **UI tests opt in to a blank slate.** `FirstRunUITests` launches with
-  `--condisco-ui-test-reset`, which wipes UserDefaults and deletes
-  `verbalibera.sqlite*`. It is `#if DEBUG`-only and never part of a normal launch.
-- **The app is fully free.** StoreKit purchases are a tip jar — `Condisco.storekit`
-  defines three non-consumable "support" products (Espresso, Cappuccino, Feast)
-  whose descriptions literally say they unlock nothing. All features are available
-  without any purchase.
-- **Packs load once per process.** `PackLoader.loadPacks()` caches its result
-  (success *or* failure) in a lazy static — the five packs are ~4 MB of JSON and
-  are immutable at runtime, so the cache is safe and thread-safe under
-  `swift_once`.
+~~~sh
+bash tools/check_packs.sh
+bash tools/audit_editorial.sh --strict
+python3 tools/audit_outcomes.py
+bash tools/preflight.sh --with-ui
+git diff --check
+~~~
 
-## Testing
+check_packs.sh validates pack structure, references, lesson reachability, media, provenance links, and authored task shapes. The strict editorial audit rejects falsely auto-graded open responses; its other counts are an editorial report. audit_outcomes.py checks that declared reading, listening, speaking, and writing claims have matching activities. preflight.sh also checks generated catalog drift and runs unit tests; --with-ui adds the simulator UI smoke. Run the full preflight on the **exact candidate tree** before sharing a build. GitHub Actions was removed by developer decision, so local preflight is the automated gate.
 
-Unit tests live in `Condisco/Tests/` (target `CondiscoTests`); the UI
-end-to-end flow lives in `Condisco/UITests/` (target `CondiscoUITests`):
+The current 273-lesson tree passed the full gate on 2026-09-26: **519 unit tests and 6 simulator UI tests**, with no failures. See docs/verification/2026-09-26-phase7-verification.md and its raw log. The gate covers code and content, while the final README and verification note were added afterward. docs/release-checklist.md lists remaining manual checks and docs/performance-budget.md separates simulator probes from unmeasured device performance.
 
-- **`PlacementTests.swift`** — placement math (weighted scoring, victory-lap
-  clamping) and accent-tolerance cases for `AnswerEngine`, plus two
-  `LessonContextTests` that load the real French pack through `PackLoader` and
-  check story-stimulus selection.
-- **`EngineTests.swift`** — deterministic grading decisions (`AnswerEngine`:
-  exact match, tolerance, alternatives, authored errors, typo forgiveness).
-- **`StoreTests.swift`** — `LearningStore` event-log persistence against a
-  throwaway SQLite file per test.
-- **`Pack{French,Italian,German,Portuguese,Spanish}Tests.swift`** — per-pack
-  editorial regression tests, one file per bundled language.
-- **`Condisco/UITests/FirstRunUITests.swift`** — one end-to-end flow: fresh
-  install, onboarding, placement, first lesson (including an accent-missing
-  answer), leaving and resuming mid-lesson.
+## Known limits and next work
 
-Run the unit tests on the simulator (scheme `Condisco`, test target
-`CondiscoTests`; UI tests live in target `CondiscoUITests`):
+- Complete the Spanish pilot's per-lesson review records and walk it on an iPhone before describing it as a verified pilot. The other four courses do not have B1 paths.
+- Run the owned-iPhone walkthrough: fresh and update installs, force-quit resume, offline use, audio and microphone behavior, VoiceOver, large text, and export to fresh-install restore. Physical-device results are still unverified.
+- Measure launch, navigation, memory, audio start, and Listen battery on an iPhone before setting performance budgets. No learner outcome study or native-speaker review has been completed.
+- Resolve the conversation open-turn reveal-state issue before relying on its independent-practice label: editing a draft can reset the in-memory model-reveal marker.
+- Continue the solo improvement plan one reviewed unit at a time. The B1-oriented pilot is a first slice, not full B1 coverage; a B2 pilot and additional languages are future decisions.
 
-```
-xcodebuild test -project Condisco.xcodeproj -scheme Condisco \
-  -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
-  -only-testing:CondiscoTests \
-  ONLY_ACTIVE_ARCH=YES
-```
-
-### Automated gates and reports
-
-- `bash tools/check_packs.sh` — pack + media integrity gate: compiles the real
-  production model with `xcrun swiftc`, decodes all five packs, and verifies
-  every declared media asset (existence, type, SHA-256); the 21 intentional
-  device-speech assets are allowlisted in `tools/device-speech-media.txt`. Exits
-  non-zero on any problem.
-- `bash tools/audit_editorial.sh` — editorial backlog report (missing authored
-  error feedback, generic-only hints, ungraded activities, mission/story
-  final-response gaps). Report-only: exits 0 whenever the packs load; the counts
-  are a backlog, not a gate. `--strict` additionally exits 1 on
-  objectively-enforceable violations (open-ended prompts falsely auto-graded) —
-  that is what the CI workflow runs.
-- `bash tools/preflight.sh` — the **pre-share gate**: runs `check_packs.sh`,
-  the editorial audit, a byte-identical regeneration check of
-  `LessonCatalog.generated.swift`, and the unit tests above (plus the UI smoke
-  with `--with-ui`). Stops on the first failure and exits non-zero on any
-  required failure. Run it before sharing a build — see
-  `docs/release-checklist.md` for the full manual checklist:
-
-  ```sh
-  bash tools/preflight.sh            # required steps
-  bash tools/preflight.sh --with-ui  # + UI smoke — REQUIRED before any external share
-  ```
-
-  The UI smoke is what the 2026-09-25 baseline caught failing (a stale Home
-  string broke `FirstRunUITests`); the Phase 1 and Phase 2 runs after the fix
-  both end in `PREFLIGHT PASSED` (logs below).
-
-The check-packs tool is the real content safety net; the unit tests cover the pure
-scoring/engine math that needs no fixtures. `preflight.sh` is the single entry
-point before any share.
-
-### Verification evidence
-
-All gate runs are logged under `docs/verification/`, named by date and phase, so
-a claim like "preflight green" is traceable to a recorded exit code:
-
-- `2026-09-25-baseline.md` (+ `2026-09-25-baseline-preflight-with-ui.log`) —
-  pre-fix state: steps 1–4 green, UI smoke FAIL, preflight exit 1.
-- `2026-09-25-phase1-preflight-with-ui.log` — post-fix: all five steps PASS
-  (unit suite 123 tests / 0 failures; UI 1/1), `PREFLIGHT PASSED`, exit 0.
-- `2026-09-25-phase2-preflight-with-ui.log` — rerun: all five steps PASS
-  (unit suite 127 tests / 0 failures; UI 1/1), `PREFLIGHT PASSED`, exit 0.
-
-The **editorial review log** lives at `docs/reviews/review-log.jsonl` — one
-disposition row per lesson (255 rows; all currently `unreviewed`, with the
-in-progress batch-1 dispositions in per-pack files under
-`docs/reviews/review-log/`). Review to date is AI-assisted/developer-led only.
-
-**Continuous integration:** `.github/workflows/ci.yml` runs the same four checks
-— pack/media integrity, the editorial audit with `--strict`, the generated
-catalog drift check, and the `CondiscoTests` unit tests — on every push and pull
-request. It uses no secrets and does not run the UI tests (simulator flakiness;
-local `preflight.sh --with-ui` covers them).
-
-### Honest limitations
-
-What has **not** been verified yet — do not claim otherwise in releases,
-screenshots, or store copy:
-
-- **Native-speaker review is pending.** All content edits so far are
-  AI-assisted/developer-reviewed only; nothing has been certified by a native
-  speaker, and no pack claims complete A1/A2 coverage or full proficiency.
-- **Listening audio is synthesized course voice.** The 21 device-speech
-  fallback steps ship without bundled audio (allowlisted in
-  `tools/device-speech-media.txt`) and all 5 bundled Listen tracks are TTS with
-  `reviewPending`; human listening review remains open
-  (see `docs/audio-provenance/`).
-- **No physical-device, performance, or battery evidence is recorded yet.** The
-  gates above are simulator/automation evidence only; on-device audio,
-  battery, and performance are unmeasured (see `docs/performance-budget.md`).
-- **Learner-outcome measures are unverified.** No usability sessions or
-  outcome study has been run.
-
-## Where to start
-
-- `Condisco/ContentView.swift` — the tab scaffold and the single routing point for
-  deep links, Spotlight, and the onboarding-triggered lesson.
-- `Condisco/Store/LearningStore.swift` — the event log, `record(_:)`, and
-  `project(pack:)`; the heart of the architecture.
-- `Condisco/Lesson/LessonPlayerView.swift` — the player; start at `boot()` (session
-  resume/checkpoint logic) and `handleSubmit` (the evaluate-then-record path).
-- `Condisco/Engine/LessonSession.swift` — the pure session reducer that everything
-  above drives.
-
-Then run `./tools/check_packs.sh` after any pack edit, and keep the web repo's
-engine sources in view when changing behavior here.
+The app stays usable without these future steps. Release claims should distinguish automated checks, simulator checks, physical-device checks, AI-assisted editorial review, and observations from actual learners.

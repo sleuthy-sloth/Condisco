@@ -3363,7 +3363,6 @@
         "fr-first-words-word-6"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "The server looks up from the counter. How do you greet them?",
@@ -3462,7 +3461,6 @@
         "fr-first-words-word-6"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "The cup reaches the counter. What do you say?",
@@ -3628,8 +3626,7 @@
         "fr-first-words-word-6"
       ],
       "skills": [
-        "writing",
-        "speaking"
+        "writing"
       ],
       "prompt": "Write the café exchange in order: Hello. / A coffee, please. / Thank you.",
       "hints": [
@@ -7614,7 +7611,8 @@
       "stimulusId": "fr-days-foundation-read-passage",
       "answer": {
         "answers": [
-          "le trois mai"
+          "le trois mai",
+          "le 3 mai"
         ],
         "allowTypo": true,
         "errors": [
@@ -13938,7 +13936,8 @@
         "answers": [
           "À dix heures",
           "à dix heures",
-          "At ten."
+          "At ten.",
+          "dix heures"
         ],
         "allowTypo": true,
         "errors": [
@@ -13951,11 +13950,6 @@
             "answer": "At nine.",
             "category": "incorrect answer",
             "explanation": "Nine is the boss's arrival. The meeting starts at ten: À dix heures."
-          },
-          {
-            "answer": "Dix heures",
-            "category": "missing word",
-            "explanation": "Answer with the full phrase from the passage: À dix heures — the à marks “at”."
           }
         ]
       },
@@ -14878,7 +14872,9 @@
         "answers": [
           "Deux nuits",
           "deux nuits",
-          "Two nights."
+          "Two nights.",
+          "Deux.",
+          "Two."
         ],
         "allowTypo": true,
         "errors": [
@@ -14891,11 +14887,6 @@
             "answer": "Une chambre",
             "category": "incorrect answer",
             "explanation": "That's the room, not the answer to “how many nights?” The passage states deux nuits."
-          },
-          {
-            "answer": "Two.",
-            "category": "missing word",
-            "explanation": "Give the number and the unit from the passage: Deux nuits (“Two nights”)."
           }
         ]
       },
@@ -17307,7 +17298,6 @@
         "fr-a2-hotel-mission-word-5"
       ],
       "skills": [
-        "speaking",
         "vocabulary"
       ],
       "prompt": "The receptionist looks up. What leaves your mouth first ?",

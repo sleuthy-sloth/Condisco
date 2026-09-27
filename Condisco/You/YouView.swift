@@ -1,12 +1,16 @@
 import AuthenticationServices
 import SwiftUI
+import UniformTypeIdentifiers
 
 // MARK: - You tab
 //
-// The learner's profile: what they can say, where they are, comfort
+// The learner's profile: what they've practised, where they are, comfort
 // settings, and the account section. Practice never requires an account;
-// signing in with Apple marks this device's progress as theirs so sync can
-// carry it to their other devices.
+// when the CloudKit/Sign in with Apple entitlements are present, signing in
+// marks this device's progress as theirs so sync can carry it to their
+// other devices. This build has those entitlements commented out, so the
+// account copy tells the truth: progress is saved on this device and sync
+// is not available.
 
 /// Identifiable wrapper so a placement retake can drive fullScreenCover(item:).
 private struct RetakeTarget: Identifiable {
@@ -20,6 +24,9 @@ struct YouView: View {
     @EnvironmentObject private var sync: CloudKitSync
     @State private var signInErrorMessage: String?
     @State private var exportURL: URL?
+    @State private var showingImporter = false
+    @State private var pendingImport: ImportPreview?
+    @State private var importAlertMessage: String?
     @StateObject private var support = SupportStore()
     @State private var showingSupport = false
     @StateObject private var reminders = ReviewReminders()
@@ -50,11 +57,33 @@ struct YouView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .task {
-            await model.load()
+            await model.load(focusSlug: focusSlug)
             await support.load()
             packs = (try? PackLoader.loadPacks()) ?? []
             await reminders.refresh()
             await runSync()
+        }
+        .fileImporter(
+            isPresented: $showingImporter,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false,
+            onCompletion: handleImportResult
+        )
+        .sheet(item: $pendingImport) { preview in
+            ImportPreviewView(preview: preview) {
+                Task { await confirmImport(preview) }
+            }
+        }
+        .alert(
+            "Import not applied",
+            isPresented: Binding(
+                get: { importAlertMessage != nil },
+                set: { if !$0 { importAlertMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(importAlertMessage ?? "")
         }
     }
 
@@ -65,7 +94,8 @@ struct YouView: View {
             VStack(alignment: .leading, spacing: 26) {
                 header
                 statsSection
-                sayableSection
+                phraseSection
+                skillSection
                 coursesSection
                 profileGroup("Preferences", icon: "slider.horizontal.3") {
                     comfortSection
@@ -105,40 +135,40 @@ struct YouView: View {
             Text("Your learning")
                 .font(DesignTokens.display(34))
                 .foregroundStyle(DesignTokens.inkDeep)
-            Text(auth.isSignedIn
-                 ? "Your progress is saved to your account."
-                 : "Your progress is saved on this device.")
+            Text(headerSubtitle)
                 .font(DesignTokens.text(14))
                 .foregroundStyle(DesignTokens.muted)
         }
     }
 
-    private var sayableSection: some View {
+    /// The header's one-line truth about where progress lives. With the
+    /// CloudKit/Sign in with Apple entitlements present, signing in marks
+    /// progress as the learner's so sync can carry it to their other
+    /// devices; this build has those entitlements commented out, so
+    /// progress is saved on this device and never leaves it.
+    private var headerSubtitle: String {
+        guard CloudKitSync.isCloudKitConfigured else {
+            return "Your progress is saved on this device."
+        }
+        return auth.isSignedIn
+            ? "Your progress is saved to your account."
+            : "Your progress is saved on this device."
+    }
+
+    private var phraseSection: some View {
         QuietSurface {
             VStack(alignment: .leading, spacing: 10) {
-                Text("What you can say")
+                Text("Phrases you practised")
                     .font(DesignTokens.text(18, weight: .semibold))
                     .foregroundStyle(DesignTokens.inkDeep)
-                if model.phrases.isEmpty {
-                    Text("Nothing yet. Finish a lesson and the pattern you learn shows up here.")
+                if model.groups.isEmpty {
+                    Text("Nothing yet. Finish a lesson and the phrases you practise show up here.")
                         .font(DesignTokens.text(15))
                         .foregroundStyle(DesignTokens.muted)
                 } else {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(Array(model.phrases.prefix(3))) { phrase in
-                            phraseRow(phrase)
-                        }
-                        if model.phrases.count > 3 {
-                            DisclosureGroup("Show all \(model.phrases.count) phrases") {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    ForEach(Array(model.phrases.dropFirst(3))) { phrase in
-                                        phraseRow(phrase)
-                                    }
-                                }
-                                .padding(.top, 12)
-                            }
-                            .font(DesignTokens.text(14, weight: .medium))
-                            .tint(DesignTokens.primary)
+                    VStack(alignment: .leading, spacing: 14) {
+                        ForEach(model.groups) { group in
+                            phraseGroupView(group)
                         }
                     }
                 }
@@ -147,7 +177,102 @@ struct YouView: View {
         }
     }
 
-    private func phraseRow(_ phrase: YouModel.SayablePhrase) -> some View {
+    // MARK: - Practice by skill (5.2A)
+
+    /// The focus language's per-skill practice rows, next to the phrase
+    /// evidence groups. Counts are "times practised", never ability, and
+    /// there is deliberately no overall score: a learner further along in
+    /// reading than listening sees that divergence row by row. British
+    /// spelling throughout ("practised").
+    private var skillSection: some View {
+        QuietSurface {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Practice by skill")
+                    .font(DesignTokens.text(18, weight: .semibold))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                if model.skillPractice.allSatisfy({
+                    $0.practisedTimes == 0 && $0.dueCount == 0
+                }) {
+                    Text("Nothing yet. Finish a lesson and your practice shows up here, one row per skill.")
+                        .font(DesignTokens.text(15))
+                        .foregroundStyle(DesignTokens.muted)
+                } else {
+                    VStack(spacing: 12) {
+                        ForEach(model.skillPractice) { row in
+                            skillRow(row)
+                        }
+                    }
+                    if let next = model.suggestedNextTask {
+                        Label(next, systemImage: "arrow.right.circle.fill")
+                            .font(DesignTokens.text(14, weight: .medium))
+                            .foregroundStyle(DesignTokens.primary)
+                            .padding(.top, 2)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    /// One skill row: label, last practised relative date, and the due
+    /// review count for that skill. "Not practised yet" stands in for a
+    /// missing date — an honest divergence from the other skills.
+    private func skillRow(_ row: YouModel.SkillPractice) -> some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(row.label)
+                    .font(DesignTokens.text(16, weight: .medium))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                if let last = row.lastPractisedAt {
+                    Text("Last practised \(Self.relativeFormatter.localizedString(for: last, relativeTo: Date()))")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                } else {
+                    Text("Not practised yet")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+            }
+            Spacer()
+            Text(row.dueCount > 0
+                 ? "\(row.dueCount) due"
+                 : "No reviews due")
+                .font(DesignTokens.text(13, weight: .medium))
+                .foregroundStyle(row.dueCount > 0
+                                 ? DesignTokens.primaryStrong
+                                 : DesignTokens.muted)
+        }
+    }
+
+    /// One evidence group: its label plus the phrase rows, three visible
+    /// with a disclosure for the rest — never "can say" language, because
+    /// the model's groups are driven by what the events actually prove.
+    private func phraseGroupView(_ group: YouModel.PhraseGroup) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(group.label)
+                .font(DesignTokens.text(13, weight: .semibold))
+                .foregroundStyle(DesignTokens.muted)
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(Array(group.phrases.prefix(3))) { phrase in
+                    phraseRow(phrase)
+                }
+                if group.phrases.count > 3 {
+                    DisclosureGroup("Show all \(group.phrases.count) phrases") {
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach(Array(group.phrases.dropFirst(3))) { phrase in
+                                phraseRow(phrase)
+                            }
+                        }
+                        .padding(.top, 12)
+                    }
+                    .font(DesignTokens.text(14, weight: .medium))
+                    .tint(DesignTokens.primary)
+                }
+            }
+        }
+    }
+
+    private func phraseRow(_ phrase: YouModel.EvidencePhrase) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(phrase.text)
                 .font(DesignTokens.text(16, weight: .medium))
@@ -388,8 +513,14 @@ struct YouView: View {
                 Text("Your data")
                     .font(DesignTokens.display(20))
                     .foregroundStyle(DesignTokens.inkDeep)
-                Text("Your learning events, lesson checkpoints, and listen history as JSON. Your data, to keep.")
+                Text("A JSON file with your learning data: every lesson and review event (your progress and what's due), checkpoints including any you cleared, saved phrases including any you removed, listen positions, and placement suggestions. Identifiers and timestamps are kept exactly as stored.")
                     .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                Text("Not included: comfort and voice settings, your focus language, reminders, sign-in state, and device-only sync bookkeeping.")
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                Text("Built on this device, offline — it only leaves when you share it.")
+                    .font(DesignTokens.text(12))
                     .foregroundStyle(DesignTokens.muted)
                 if let exportURL {
                     ShareLink(item: exportURL) {
@@ -405,6 +536,13 @@ struct YouView: View {
                             .font(DesignTokens.text(15, weight: .semibold))
                             .foregroundStyle(DesignTokens.primary)
                     }
+                }
+                Button {
+                    showingImporter = true
+                } label: {
+                    Label("Restore from export", systemImage: "square.and.arrow.down.on.square")
+                        .font(DesignTokens.text(15, weight: .semibold))
+                        .foregroundStyle(DesignTokens.primary)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -467,25 +605,34 @@ struct YouView: View {
 
     private var signedOutView: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("What you practise here stays on this device. Sign in to keep it on your account, so it follows you to another device.")
-                .font(DesignTokens.text(14))
-                .foregroundStyle(DesignTokens.muted)
-            SignInWithAppleButton(
-                onCredential: { credential in
-                    Task { await handleCredential(credential) }
-                },
-                onError: { error in
-                    if (error as? ASAuthorizationError)?.code == .canceled {
-                        signInErrorMessage = nil
-                    } else {
-                        signInErrorMessage = "Sign in with Apple isn't available in this build — it needs Apple's paid Developer Program. Your progress stays safe on this device."
-                    }
-                })
-                .frame(height: 48)
-            if let signInErrorMessage {
-                Text(signInErrorMessage)
-                    .font(DesignTokens.text(13))
-                    .foregroundStyle(DesignTokens.attentionInk)
+            if CloudKitSync.isCloudKitConfigured {
+                Text("What you practise here stays on this device. Sign in to keep it on your account, so it follows you to another device.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+                SignInWithAppleButton(
+                    onCredential: { credential in
+                        Task { await handleCredential(credential) }
+                    },
+                    onError: { error in
+                        if (error as? ASAuthorizationError)?.code == .canceled {
+                            signInErrorMessage = nil
+                        } else {
+                            signInErrorMessage = "Sign in with Apple isn't available in this build — it needs Apple's paid Developer Program. Your progress stays safe on this device."
+                        }
+                    })
+                    .frame(height: 48)
+                if let signInErrorMessage {
+                    Text(signInErrorMessage)
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.attentionInk)
+                }
+            } else {
+                // No iCloud/CloudKit or Sign in with Apple entitlements in
+                // this build: there is nothing to sign in to, so offer no
+                // button and say plainly that sync is unavailable.
+                Text("Your progress is saved on this device. Sync isn't available in this build, so nothing leaves this device.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
             }
         }
     }
@@ -497,16 +644,25 @@ struct YouView: View {
                     .font(DesignTokens.text(15, weight: .medium))
                     .foregroundStyle(DesignTokens.inkDeep)
             }
-            Text("Your progress is saved to your account and follows you across devices.")
-                .font(DesignTokens.text(14))
-                .foregroundStyle(DesignTokens.muted)
-            syncStatusRow
-            Button("Sync now") {
-                Task { await runSync() }
+            if CloudKitSync.isCloudKitConfigured {
+                Text("Your progress is saved to your account and follows you across devices.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+                syncStatusRow
+                Button("Sync now") {
+                    Task { await runSync() }
+                }
+                .font(DesignTokens.text(15, weight: .semibold))
+                .foregroundStyle(DesignTokens.primary)
+                .disabled(sync.isSyncing)
+            } else {
+                // CloudKit is unavailable in this build, so even a stale
+                // signed-in state cannot sync — say so instead of showing a
+                // sync row that could never succeed.
+                Text("Your progress is saved on this device. Sync isn't available in this build, so nothing leaves this device.")
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
             }
-            .font(DesignTokens.text(15, weight: .semibold))
-            .foregroundStyle(DesignTokens.primary)
-            .disabled(sync.isSyncing)
             Button("Sign out") {
                 auth.signOut()
             }
@@ -540,7 +696,7 @@ struct YouView: View {
                 .font(DesignTokens.text(15))
                 .foregroundStyle(DesignTokens.muted)
             Button("Try again") {
-                Task { await model.refresh() }
+                Task { await model.refresh(focusSlug: focusSlug) }
             }
             .font(DesignTokens.text(15, weight: .semibold))
             .foregroundStyle(DesignTokens.stock)
@@ -572,6 +728,133 @@ struct YouView: View {
         } catch {
             // The store failing to open is a profile-load problem, not a
             // sync problem; model.load() already surfaces it.
+        }
+    }
+
+    // MARK: - Restore from export
+    //
+    // Decode and validate first, show a preview with counts, and only
+    // write after explicit confirmation. Validation lives in
+    // `ImportValidator` (pure, side-effect-free); `YouModel.restore`
+    // applies the merge transactionally.
+
+    private func handleImportResult(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            guard let url = urls.first else { return }
+            importSelectedFile(url)
+        case .failure:
+            importAlertMessage = "The file could not be opened. Nothing was changed."
+        }
+    }
+
+    private func importSelectedFile(_ url: URL) {
+        // Files picked from the Files app are security-scoped.
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer {
+            if accessing { url.stopAccessingSecurityScopedResource() }
+        }
+        guard let data = try? Data(contentsOf: url) else {
+            importAlertMessage = "The file could not be read. Nothing was changed."
+            return
+        }
+        switch ImportValidator.validate(data) {
+        case .success(let preview):
+            pendingImport = preview
+        case .failure(let error):
+            importAlertMessage = error.description
+        }
+    }
+
+    @MainActor
+    private func confirmImport(_ preview: ImportPreview) async {
+        do {
+            try model.restore(preview)
+            await model.refresh(focusSlug: focusSlug)
+            // The store's existing progress-changed mechanism: Home and
+            // Courses observe it and reload their projections.
+            NotificationCenter.default.post(
+                name: .condiscoProgressChanged, object: nil)
+            // The widget snapshot recomputes from the store directly.
+            WidgetSnapshotWriter.refresh(packs: packs, focusSlug: focusSlug)
+            // The daily nudge reschedules from the new due queue.
+            ReviewReminders.refreshShared()
+        } catch {
+            importAlertMessage =
+                "The export could not be applied. Nothing was changed. \(error.localizedDescription)"
+        }
+    }
+}
+
+// MARK: - Restore preview
+
+/// The preview shown before a restore writes anything: what the file
+/// contains, when it was exported, and a plain statement that restoring
+/// merges rather than replaces. Wording is intentionally simple — the
+/// developer reviews it before shipping.
+private struct ImportPreviewView: View {
+    @Environment(\.dismiss) private var dismiss
+    let preview: ImportPreview
+    /// The confirmed write; the sheet dismisses first.
+    let onConfirm: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    if preview.isLegacy {
+                        Text("This file was made by an older version of Condisco.")
+                            .font(DesignTokens.text(14, weight: .medium))
+                            .foregroundStyle(DesignTokens.ink)
+                    } else if let exportedAt = preview.exportedAt {
+                        Text("From an export made \(exportedAt.formatted(date: .abbreviated, time: .shortened)).")
+                            .font(DesignTokens.text(14, weight: .medium))
+                            .foregroundStyle(DesignTokens.ink)
+                    }
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("\(preview.events.count) learning events")
+                        Text("\(preview.checkpoints.count) checkpoints")
+                        Text("\(preview.savedPhrases.count) saved phrases")
+                        Text("\(preview.listenState.count) listen positions")
+                        Text("\(preview.placement.count) placement entries")
+                    }
+                    .font(DesignTokens.text(15))
+                    .foregroundStyle(DesignTokens.ink)
+
+                    Text("Restoring merges this export into what is already on this device rather than replacing it. Learning events are added; where the same checkpoint, saved phrase, or listen position appears in both, the newer one wins, and entries you removed stay removed. Your learning path may change.")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(20)
+            }
+            .navigationTitle("Restore an export?")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                        .font(DesignTokens.text(15, weight: .medium))
+                        .foregroundStyle(DesignTokens.primary)
+                }
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Button {
+                    dismiss()
+                    onConfirm()
+                } label: {
+                    Text("Merge into my data")
+                        .font(DesignTokens.text(15, weight: .semibold))
+                        .foregroundStyle(DesignTokens.stock)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(DesignTokens.primary)
+                        .cornerRadius(12)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                .padding(.bottom, 16)
+            }
         }
     }
 }

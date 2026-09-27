@@ -527,6 +527,264 @@ final class LessonSessionTests: XCTestCase {
     }
 }
 
+// MARK: - Dialogue sessions (Phase 6.3)
+
+/// The branching-exchange engine over the real Spanish hosted exchanges:
+/// start → answer (choice or open) → partner's next line, position as
+/// checkpointable state, force-quit resume preserving branch position and
+/// recorded turn order, and replay-as-new-attempt semantics.
+final class DialogueSessionTests: XCTestCase {
+
+    private func spanishPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .spanish })
+    }
+
+    /// The café exchange: order coffee, the waiter mishears it as tea, the
+    /// learner repairs the misunderstanding, then answers the open turn.
+    private func cafeExchange(in pack: CoursePack)
+        throws -> (lesson: Lesson, dialogue: Dialogue) {
+        let lesson = try XCTUnwrap(pack.lesson(id: "es-cafe-requests-foundation"))
+        let dialogue = try XCTUnwrap(pack.dialogue(id: "es-cafe-turno"))
+        return (lesson, dialogue)
+    }
+
+    func testStartDialogueRequiresHostedExchange() throws {
+        let pack = try spanishPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "es-cafe-requests-foundation"))
+        // The plans exchange belongs to a different host lesson.
+        let plans = try XCTUnwrap(pack.dialogue(id: "es-a2-planes-sabado"))
+        XCTAssertThrowsError(try startDialogue(pack: pack, lesson: lesson, dialogue: plans)) { error in
+            guard case DialogueSessionError.unhosted = error else {
+                return XCTFail("expected unhosted, got \(error)")
+            }
+        }
+    }
+
+    /// The full main path: greet → mishear → repair → open turn → end.
+    /// The partner's reply CHANGES per choice (the misread), the learner
+    /// recovers, and the open turn is never auto-graded.
+    func testDialogueMainPathRunsToCompletion() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        XCTAssertEqual(session.status, .active)
+        XCTAssertEqual(session.currentNodeId, "greet")
+        XCTAssertEqual(session.visitedNodeIds, ["greet"])
+        XCTAssertTrue(session.turns.isEmpty)
+
+        // Turn 1: the learner orders a coffee (choice).
+        session = try submitDialogueChoice(
+            pack: pack, session: session, choiceId: "order-coffee")
+        XCTAssertEqual(session.currentNodeId, "mishear")
+        XCTAssertEqual(session.turns.count, 1)
+        XCTAssertEqual(session.turns[0].nodeId, "greet")
+        XCTAssertEqual(session.turns[0].choiceId, "order-coffee")
+
+        // Turn 2: the waiter misread the order — the learner repairs it.
+        session = try submitDialogueChoice(
+            pack: pack, session: session, choiceId: "correct-coffee")
+        XCTAssertEqual(session.currentNodeId, "recover")
+        XCTAssertEqual(session.turns.map(\.choiceId), ["order-coffee", "correct-coffee"])
+
+        // Turn 3: accept the apology.
+        session = try submitDialogueChoice(
+            pack: pack, session: session, choiceId: "thanks")
+        XCTAssertEqual(session.currentNodeId, "algo-mas")
+        XCTAssertTrue(pack.dialogue(id: "es-cafe-turno")?.node(id: "algo-mas")?.prompt != nil)
+
+        // Turn 4: the open turn — composed reply + self-assessment.
+        XCTAssertThrowsError(try submitDialogueOpenTurn(
+            pack: pack, session: session, draft: "   ", criteriaMet: [],
+            rating: nil, modelRevealed: false)) { error in
+            guard case DialogueSessionError.emptyDraft = error else {
+                return XCTFail("expected emptyDraft, got \(error)")
+            }
+        }
+        session = try submitDialogueOpenTurn(
+            pack: pack, session: session,
+            draft: "No, nada más, gracias.",
+            criteriaMet: ["meaning", "useful-language"],
+            rating: .good,
+            modelRevealed: false)
+        XCTAssertEqual(session.status, .complete)
+        XCTAssertEqual(session.currentNodeId, "done")
+        XCTAssertEqual(session.turns.count, 4)
+        let open = session.turns[3]
+        XCTAssertEqual(open.nodeId, "algo-mas")
+        XCTAssertEqual(open.draft, "No, nada más, gracias.")
+        XCTAssertEqual(open.criteriaMet, ["meaning", "useful-language"])
+        XCTAssertEqual(open.rating, .good)
+        XCTAssertFalse(open.modelRevealed)
+
+        // A complete exchange rejects further turns.
+        XCTAssertThrowsError(try submitDialogueChoice(
+            pack: pack, session: session, choiceId: "order-coffee")) { error in
+            guard case DialogueSessionError.dialogueComplete = error else {
+                return XCTFail("expected dialogueComplete, got \(error)")
+            }
+        }
+    }
+
+    /// The clarification branch: asking for a repeat routes through the
+    /// authored clarification node and back onto the same misunderstanding
+    /// repair thread.
+    func testClarificationRouteRejoinsMainThread() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "ask-repeat")
+        XCTAssertEqual(session.currentNodeId, "clarify-greet")
+        XCTAssertEqual(
+            pack.dialogue(id: "es-cafe-turno")?.node(id: "clarify-greet")?.kind,
+            .clarification)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee-again")
+        XCTAssertEqual(session.currentNodeId, "mishear",
+                       "after the clarification the thread rejoins the misunderstanding")
+        XCTAssertEqual(session.turns.map(\.nodeId), ["greet", "clarify-greet"])
+    }
+
+    /// Force-quit resume: mid-exchange state (position + answered turns)
+    /// round-trips through the checkpoint slice, and continuing appends
+    /// the next turn in order without reordering or duplicating earlier
+    /// turns.
+    func testForceQuitResumeKeepsPositionAndTurnOrder() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "correct-coffee")
+
+        // Force quit: persist the checkpoint slice.
+        let saved = session.checkpointState()
+
+        // Rebuild from the slice and continue.
+        let resumed = try XCTUnwrap(
+            resumeDialogueSession(pack: pack, state: saved))
+        XCTAssertEqual(resumed.currentNodeId, "recover")
+        XCTAssertEqual(resumed.visitedNodeIds, session.visitedNodeIds)
+        XCTAssertEqual(resumed.turns, session.turns,
+                       "resume must restore exactly the turns recorded before the quit")
+
+        // Continue from the restored position: the remaining turns append in
+        // authored order — nothing prior is reordered or duplicated.
+        var next = resumed
+        next = try submitDialogueChoice(pack: pack, session: next, choiceId: "thanks")
+        XCTAssertEqual(next.currentNodeId, "algo-mas")
+        next = try submitDialogueOpenTurn(
+            pack: pack, session: next, draft: "No, nada más, gracias.",
+            criteriaMet: [], rating: nil, modelRevealed: false)
+        XCTAssertEqual(next.status, .complete)
+        XCTAssertEqual(next.turns.map(\.nodeId),
+                       ["greet", "mishear", "recover", "algo-mas"],
+                       "resumed turns keep the authored order, none duplicated")
+        XCTAssertEqual(next.turns.count, 4)
+        XCTAssertEqual(
+            Array(next.turns.prefix(resumed.turns.count)), resumed.turns,
+            "the turns recorded before the quit appear first, unchanged")
+    }
+
+    /// A checkpoint thread that no longer replays along real edges resumes
+    /// as nil — the player then presents the exchange fresh rather than
+    /// dead-ending the learner.
+    func testResumeReturnsNilForBrokenThread() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        var corrupt = session.checkpointState()
+        corrupt.visitedNodeIds = ["greet", "nowhere", "also-nowhere"]
+        corrupt.currentNodeId = "also-nowhere"
+        XCTAssertNil(resumeDialogueSession(pack: pack, state: corrupt))
+    }
+
+    /// The learner's replies are exactly what they supplied — a picked
+    /// choice text and their own draft. No model text, no un-chosen
+    /// options leak into the session (the recap renders this verbatim).
+    func testRecapDataContainsOnlyLearnerSuppliedResponses() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "correct-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "thanks")
+        let draft = "No, solo esto, gracias."
+        session = try submitDialogueOpenTurn(
+            pack: pack, session: session, draft: draft,
+            criteriaMet: ["meaning"], rating: nil, modelRevealed: false)
+
+        // Resolve the learner's replies from the pack (choice id → text).
+        var replies: [String] = []
+        for turn in session.turns {
+            if let choiceId = turn.choiceId {
+                let node = try XCTUnwrap(dialogue.node(id: turn.nodeId))
+                let choice = try XCTUnwrap(node.choices.first { $0.id == choiceId })
+                replies.append(choice.text)
+            } else {
+                replies.append(try XCTUnwrap(turn.draft))
+            }
+        }
+        XCTAssertEqual(replies, [
+            "Hola. Quisiera un café, por favor.",
+            "No, perdón — un café, por favor.",
+            "No pasa nada. Gracias.",
+            draft,
+        ])
+        // The open turn's model response is authored, NOT a learner reply.
+        let openNode = try XCTUnwrap(dialogue.node(id: "algo-mas"))
+        XCTAssertFalse(replies.contains(openNode.modelResponse ?? ""))
+        // Turn records carry no invented content beyond choice id + draft.
+        for turn in session.turns {
+            XCTAssertTrue(turn.choiceId != nil || turn.draft != nil)
+        }
+    }
+
+    /// Replay semantics: starting the exchange again is a fresh attempt —
+    /// clean slate position and turns (events for the new attempt get fresh
+    /// ids; the store tests pin the recording side).
+    func testPractiseAgainStartsFreshAttempt() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        XCTAssertEqual(session.turns.count, 1)
+
+        let fresh = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        XCTAssertEqual(fresh.status, .active)
+        XCTAssertEqual(fresh.currentNodeId, "greet")
+        XCTAssertTrue(fresh.turns.isEmpty,
+                      "a replay must re-present the exchange cleanly, not re-answer prior turns")
+    }
+
+    /// The plans exchange: misunderstanding about the DAY, repair, and a
+    /// open turn composed with `voy a`.
+    func testPlansExchangeMisunderstandingAboutDay() throws {
+        let pack = try spanishPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "es-a2-planes-intenciones"))
+        let dialogue = try XCTUnwrap(pack.dialogue(id: "es-a2-planes-sabado"))
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "suggest-cine")
+        XCTAssertEqual(session.currentNodeId, "mishear-day")
+        XCTAssertEqual(
+            pack.dialogue(id: "es-a2-planes-sabado")?.node(id: "mishear-day")?.kind,
+            .misunderstanding)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "fix-saturday")
+        XCTAssertEqual(session.currentNodeId, "recover-day")
+        XCTAssertEqual(
+            pack.dialogue(id: "es-a2-planes-sabado")?.node(id: "recover-day")?.kind,
+            .recovery)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "lets-go")
+        XCTAssertEqual(session.currentNodeId, "plan-open")
+        session = try submitDialogueOpenTurn(
+            pack: pack, session: session,
+            draft: "Voy a ir al cine contigo.",
+            criteriaMet: ["meaning"], rating: .good, modelRevealed: true)
+        XCTAssertEqual(session.status, .complete)
+        XCTAssertTrue(session.turns[3].modelRevealed,
+                      "a revealed model marks the open turn non-independent")
+    }
+}
+
 // MARK: - Next lesson: the shared path helper and its consumer surfaces
 
 /// "What comes next on the learner's path" has one source of truth —
@@ -535,7 +793,7 @@ final class LessonSessionTests: XCTestCase {
 /// next-lesson), with three consumer surfaces: the Home continue card,
 /// `condisco://continue`, and the widget snapshot. Every surface must
 /// feed the helper the same completed set
-/// (`PackProgress.participationCompleted`) so all three agree on the next
+/// (`PackProgress.finishedLessons`) so all three agree on the next
 /// lesson. These tests pin the helper's ordering and orphan handling,
 /// then prove Home, the widget, and the deep-link resolution agree on the
 /// same completed set through the shared function.
@@ -698,39 +956,76 @@ final class NextLessonTests: XCTestCase {
         XCTAssertEqual(next.unit.id, first.unitId)
     }
 
-    // MARK: Surfaces pass only participationCompleted
+    func testItalianPastUnitComesBeforeFutureOnThePath() throws {
+        let pack = try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .italian })
+        let unitIDs = pack.units.map(\.id)
+        let pastIndex = try XCTUnwrap(unitIDs.firstIndex(of: "it-unit-9"))
+        let futureIndex = try XCTUnwrap(unitIDs.firstIndex(of: "it-unit-10"))
+        XCTAssertEqual(futureIndex, pastIndex + 1)
 
-    /// The documented contract: every surface passes
-    /// `PackProgress.participationCompleted`, NOT the wider
-    /// `finishedLessons` view (walked + legacy credits + manual "I know
-    /// this"). A lesson that is only legacy-known is finished for
-    /// display but is not a walked path step, so it must still be
-    /// offered as next. This pins the contract so a future switch to
-    /// `finishedLessons` becomes a visible, deliberate change.
-    func testHelperAndHomeOnlyCountParticipationCompleted() throws {
+        let lastFoundation = try XCTUnwrap(
+            pack.lessons.last(where: { $0.unitId == "it-unit-8" }))
+        let firstPast = try XCTUnwrap(
+            pack.lessons.first(where: { $0.unitId == "it-unit-9" }))
+        let firstFuture = try XCTUnwrap(
+            pack.lessons.first(where: { $0.unitId == "it-unit-10" }))
+        let foundationEnd = try XCTUnwrap(
+            pack.lessons.firstIndex(where: { $0.id == lastFoundation.id }))
+        let next = pack.firstUncompletedLesson(
+            completed: Set(pack.lessons.prefix(through: foundationEnd).map(\.id)))
+        XCTAssertEqual(next?.lesson.id, firstPast.id)
+        XCTAssertLessThan(
+            try XCTUnwrap(pack.lessons.firstIndex(where: { $0.id == firstPast.id })),
+            try XCTUnwrap(pack.lessons.firstIndex(where: { $0.id == firstFuture.id })))
+    }
+
+    // MARK: Skipped lessons advance the path
+
+    /// A manual "I know this" mark and a legacy credit both remove a
+    /// lesson from the next-lesson path without creating practice evidence.
+    func testKnownAndLegacyCreditsAdvanceHomePath() throws {
         let pack = try fixturePack(lessons: [
             (id: "l1", unitId: u1),
             (id: "l2", unitId: u1),
         ])
-        // l1 is "finished" by the display view (manual know + legacy
-        // credit) yet has NO participation completion.
+        // l1 is marked known and legacy-credited but has no participation.
         var progress = PackProgress()
         progress.knownLessons = ["l1"]
         progress.legacyCredits = ["l1"]
         XCTAssertTrue(progress.finishedLessons.contains("l1"))
         XCTAssertTrue(progress.participationCompleted.isEmpty)
 
-        // The helper sees only participationCompleted: l1 is still next.
+        // The helper receives the full finished set: l2 is next.
         XCTAssertEqual(
-            pack.firstUncompletedLesson(completed: progress.participationCompleted)?.lesson.id,
-            "l1")
+            pack.firstUncompletedLesson(completed: progress.finishedLessons)?.lesson.id,
+            "l2")
 
         // Home delegates identically, so the continue card agrees.
         let home = HomeModel()
         home.progress = [pack.id: progress]
         XCTAssertEqual(
-            home.nextLesson(in: pack)?.lesson.id, "l1",
-            "a known/legacy lesson must still be offered as next")
+            home.nextLesson(in: pack)?.lesson.id, "l2",
+            "a known/legacy lesson must be skipped on the path")
+        home.packs = [pack]
+        XCTAssertEqual(home.continuationLesson(focusSlug: "french")?.lesson.id, "l2")
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(
+            packs: [pack], focusSlug: "french", progress: [pack.id: progress],
+            dueCount: 0, weekFlags: [], practiceDays: 0)
+        XCTAssertEqual(snapshot.nextLessonId, "l2")
+        XCTAssertEqual(
+            pack.nextUncompletedLesson(after: "l1", completed: progress.finishedLessons)?.id,
+            "l2")
+        let recapPack = try fixturePack(lessons: [
+            (id: "l1", unitId: u1),
+            (id: "l2", unitId: u1),
+            (id: "l3", unitId: u2),
+        ])
+        XCTAssertEqual(
+            recapPack.nextUncompletedLesson(
+                after: "l1", completed: ["l1", "l2"])?.id,
+            "l3",
+            "the recap must skip a lesson marked known")
     }
 
     // MARK: Cross-surface agreement — Home vs the shared helper
@@ -860,7 +1155,7 @@ final class NextLessonTests: XCTestCase {
 
     /// The deep-link surface runs through the extracted pure resolver:
     /// `continueLessonResolution` selects the focus pack and the next
-    /// uncompleted lesson from `participationCompleted` — the exact
+    /// uncompleted lesson from `finishedLessons` — the exact
     /// function `DeepLinkRouter.resolve` calls after projecting the
     /// Documents store. Partial progress: each step of the path resolves
     /// in order, and a fresh pack (nothing completed) starts at the first
@@ -942,7 +1237,7 @@ final class NextLessonTests: XCTestCase {
     }
 
     /// Home, the widget, and the deep-link resolution must agree on the
-    /// same completed set (`participationCompleted`) across every path
+    /// same finished set across every path
     /// shape: fresh, partial, fully complete, and orphaned completed ids.
     /// The deep link's choice is the shared function itself — this pins
     /// that Home and the widget derive from exactly the same call, so no
@@ -1357,6 +1652,22 @@ final class ScenarioLoopTests: XCTestCase {
         XCTAssertEqual(ListenPlayerModel.slowRate, 0.75)
         XCTAssertEqual(
             scenarioStepRate(for: .model), ListenPlayerModel.slowRate)
+    }
+
+    /// Provenance invariant: the main Listen player's voice descriptor — shown
+    /// on the player card and the lock screen — must keep the "(synthesized)"
+    /// wording that every other voice surface uses (Shadow, Practice, lesson
+    /// record-compare). A future rename that drops the label would silently
+    /// break the "any synthesized audio is labelled (synthesized)" rule.
+    @MainActor
+    func testListenVoiceDescriptorIsLabeledSynthesized() {
+        XCTAssertEqual(
+            ListenPlayerModel.voiceDescriptor, "Course voice (synthesized)",
+            "The Listen player must label its synthesized voice exactly like "
+            + "the rest of the app")
+        XCTAssertTrue(
+            ListenPlayerModel.voiceDescriptor.lowercased().contains("synthesized"),
+            "The descriptor must keep the (synthesized) wording")
     }
 }
 
@@ -1831,5 +2142,311 @@ final class ReviewCatalogProjectionTests: XCTestCase {
         let due = try ReviewCatalog.loadDue(packs: [pack], store: store)
         XCTAssertTrue(due.due.isEmpty)
         XCTAssertNotNil(due.nextDueAt, "the fresh schedule is the next due date")
+    }
+}
+
+// MARK: - You tab phrase evidence (slice 2.1)
+
+/// The profile's phrase lists must never claim things the events do not
+/// prove: recognition stays recognition, hints stay hinted, a manual
+/// "I know this" mark never implies mastery, independent typing is the
+/// only thing that earns "built or typed", and self-comparing is
+/// self-assessed practice — never speech evidence. These pin the pure
+/// grouping function `YouModel.evidenceGroups` against real bundled
+/// activities, so the derivation is exercised exactly as it runs in the
+/// app (same lesson/step/activity wiring, same evidence keys).
+@MainActor
+final class YouPhraseEvidenceTests: XCTestCase {
+
+    private func frenchPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .french })
+    }
+
+    private func italianPack() throws -> CoursePack {
+        try XCTUnwrap(
+            PackLoader.loadPacks().first { $0.language == .italian })
+    }
+
+    /// A stored-shape attempt on a real step of a real lesson, carrying
+    /// the activity's own evidence key and revisions so it passes the
+    /// same validation `LearningStore.project` applies.
+    private func attempt(
+        id: String, pack: CoursePack, lessonId: String, stepId: String,
+        response: AttemptResponse,
+        outcome: AttemptEvaluation.Outcome,
+        independent: Bool,
+        assistance: [AssistanceKind] = [],
+        at: Date = Date(timeIntervalSince1970: 1_700_000_000)
+    ) throws -> ActivityAttempt {
+        let lesson = try XCTUnwrap(pack.lesson(id: lessonId))
+        let step = try XCTUnwrap(lesson.steps.first { $0.id == stepId })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        return ActivityAttempt(
+            id: id, packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            stepId: step.id, activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: response, assistance: assistance,
+            evaluation: AttemptEvaluation(
+                outcome: outcome, independent: independent, feedback: "f"),
+            at: at)
+    }
+
+    /// The attempt wrapped as a learning event, for the grouping function.
+    private func attemptEvent(
+        _ id: String, pack: CoursePack, lessonId: String, stepId: String,
+        response: AttemptResponse,
+        outcome: AttemptEvaluation.Outcome,
+        independent: Bool,
+        assistance: [AssistanceKind] = []
+    ) throws -> LearningEvent {
+        .attempt(try attempt(
+            id: id, pack: pack, lessonId: lessonId, stepId: stepId,
+            response: response, outcome: outcome,
+            independent: independent, assistance: assistance))
+    }
+
+    private func phrases(
+        _ groups: [YouModel.PhraseEvidence: [YouModel.EvidencePhrase]],
+        _ kind: YouModel.PhraseEvidence
+    ) -> [YouModel.EvidencePhrase] {
+        groups[kind] ?? []
+    }
+
+    // MARK: Recognition
+
+    /// A recognition success (selection on the real rb2 step) must be
+    /// grouped as recognition — never as typed/built production.
+    func testRecognitionSuccessLandsInRecognizedNotBuilt() throws {
+        let pack = try frenchPack()
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "sel-1", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb2",
+                    response: .selection(ids: ["o1"]),
+                    outcome: .correct, independent: true),
+            ])
+        XCTAssertTrue(phrases(groups, .built).isEmpty,
+                      "recognition must never read as production")
+        XCTAssertTrue(phrases(groups, .practicedWithHints).isEmpty)
+        XCTAssertEqual(phrases(groups, .recognized).count, 1)
+        XCTAssertTrue(phrases(groups, .speakingPractice).isEmpty)
+    }
+
+    // MARK: Assisted production
+
+    /// A typed answer that is correct only because of a hint must be
+    /// identified as assisted — never presented as independent production.
+    func testAssistedOnlyTypedWorkIsWithHintsNotBuilt() throws {
+        let pack = try frenchPack()
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "text-1", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb8",
+                    response: .text("Le chat est sur le livre."),
+                    outcome: .correct, independent: false,
+                    assistance: [.hint]),
+            ])
+        XCTAssertTrue(phrases(groups, .built).isEmpty,
+                      "a hint-only success must never read as independent production")
+        XCTAssertEqual(phrases(groups, .practicedWithHints).count, 1)
+    }
+
+    /// Hints used on one try do not erase a later clean solve: the phrase
+    /// earns "built or typed" honestly and is not double-listed.
+    func testHintsOnOtherTriesStillAllowIndependentProduction() throws {
+        let pack = try frenchPack()
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "text-1", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb8",
+                    response: .text("Le chat est sur le livre."),
+                    outcome: .correct, independent: false,
+                    assistance: [.hint]),
+                try attemptEvent(
+                    "text-2", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb8",
+                    response: .text("Le chat est sur le livre."),
+                    outcome: .correct, independent: true),
+            ])
+        XCTAssertEqual(phrases(groups, .built).count, 1)
+        XCTAssertTrue(phrases(groups, .practicedWithHints).isEmpty,
+                      "one clean solve is enough; the hints row is not duplicated")
+    }
+
+    // MARK: Manual "I know this" marks
+
+    /// A manual "I know this" mark is a lesson-known event, never attempt
+    /// evidence: it must not add anything to any phrase group.
+    func testKnownMarkAloneBuildsNoGroups() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let known = LessonKnownEvent(
+            id: "known-1", packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            known: true, at: Date(timeIntervalSince1970: 1_700_000_000))
+        let groups = YouModel.evidenceGroups(
+            pack: pack, events: [.lessonKnown(known)])
+        XCTAssertTrue(groups.isEmpty,
+                      "a manual mark must never imply mastery in the phrase lists")
+    }
+
+    /// Even alongside real attempts, the mark adds no rows: the only
+    /// phrases shown are the ones the attempts actually earned.
+    func testKnownMarkAddsNothingAlongsideRealAttempts() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let known = LessonKnownEvent(
+            id: "known-1", packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision,
+            known: true, at: Date(timeIntervalSince1970: 1_700_000_000))
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "text-1", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb8",
+                    response: .text("Le chat est sur le livre."),
+                    outcome: .correct, independent: true),
+                .lessonKnown(known),
+            ])
+        XCTAssertEqual(phrases(groups, .built).count, 1)
+        XCTAssertTrue(phrases(groups, .recognized).isEmpty)
+        XCTAssertEqual(
+            groups.values.map(\.count).reduce(0, +), 1,
+            "the known mark must not add rows anywhere")
+    }
+
+    // MARK: Independent production (positive control)
+
+    /// Positive control: an independent typed success is the one thing
+    /// that earns "built or typed".
+    func testIndependentTypedSuccessLandsInBuilt() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "text-1", pack: pack, lessonId: lesson.id,
+                    stepId: "fr-home-foundation-step-rb8",
+                    response: .text("Le chat est sur le livre."),
+                    outcome: .correct, independent: true),
+            ])
+        let built = phrases(groups, .built)
+        XCTAssertEqual(built.count, 1)
+        let row = try XCTUnwrap(built.first)
+        // phraseText quotes every accepted answer for the activity, joined
+        // with " · " — pre-existing sayableText behavior the slice kept
+        // unchanged — so derive the expectation from the pack rather than
+        // hardcoding one answer.
+        let step = try XCTUnwrap(
+            lesson.steps.first { $0.id == "fr-home-foundation-step-rb8" })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        guard case .text(let spec) = activity else {
+            return XCTFail("rb8 must be a text activity")
+        }
+        XCTAssertEqual(
+            row.text, spec.answer.answers.joined(separator: " · "))
+        XCTAssertEqual(row.context, lesson.title)
+    }
+
+    /// Cloze fills count as production too: a clean cloze success lands
+    /// in "built or typed", never in recognition.
+    func testIndependentClozeSuccessLandsInBuilt() throws {
+        let pack = try frenchPack()
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "cloze-1", pack: pack, lessonId: "fr-home-foundation",
+                    stepId: "fr-home-foundation-step-rb7",
+                    response: .cloze(values: ["b1": "Le"]),
+                    outcome: .correct, independent: true),
+            ])
+        XCTAssertEqual(phrases(groups, .built).count, 1)
+        XCTAssertTrue(phrases(groups, .recognized).isEmpty)
+    }
+
+    // MARK: Speaking practice
+
+    /// Self-compare/self-rating activity is self-assessed practice: it
+    /// lands only in the speaking-practice group (quoting the model line
+    /// as practice material), never in any production group.
+    func testSelfCompareLandsOnlyInSpeakingPractice() throws {
+        let pack = try italianPack()
+        let groups = YouModel.evidenceGroups(
+            pack: pack,
+            events: [
+                try attemptEvent(
+                    "say-1", pack: pack, lessonId: "it-people-foundation",
+                    stepId: "it-people-foundation-step-say",
+                    response: .selfRating(.comfortable),
+                    outcome: .selfAssessed, independent: false),
+            ])
+        XCTAssertTrue(phrases(groups, .built).isEmpty)
+        XCTAssertTrue(phrases(groups, .practicedWithHints).isEmpty)
+        XCTAssertTrue(phrases(groups, .recognized).isEmpty)
+        let speaking = phrases(groups, .speakingPractice)
+        XCTAssertEqual(speaking.count, 1)
+        let row = try XCTUnwrap(speaking.first)
+        XCTAssertEqual(
+            row.text, "Tu sei Marco.",
+            "the model line is quoted as practice material, never as own output")
+    }
+
+    // MARK: Validation
+
+    /// A stale-revision attempt (content changed since it was recorded)
+    /// must not feed the groups — the same quarantine rule
+    /// `LearningStore.project` applies to SRS state.
+    func testStaleRevisionAttemptDoesNotFeedGroups() throws {
+        let pack = try frenchPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-home-foundation"))
+        let step = try XCTUnwrap(
+            lesson.steps.first { $0.id == "fr-home-foundation-step-rb8" })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        let stale = ActivityAttempt(
+            id: "stale-1", packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision + 1,
+            stepId: step.id, activityId: activity.id,
+            activityRevision: activity.revision,
+            evidenceKey: activity.evidenceKey,
+            response: .text("Le chat est sur le livre."),
+            assistance: [],
+            evaluation: AttemptEvaluation(
+                outcome: .correct, independent: true, feedback: "f"),
+            at: Date(timeIntervalSince1970: 1_700_000_000))
+        let groups = YouModel.evidenceGroups(
+            pack: pack, events: [.attempt(stale)])
+        XCTAssertTrue(groups.isEmpty,
+                      "stale attempts must be quarantined, not quoted")
+    }
+
+    // MARK: Labels
+
+    /// The labels are data-driven (the enum is the single source) and
+    /// plain: nothing claims the learner "can say" anything.
+    func testLabelsArePlainAndNeverClaimSpeech() {
+        XCTAssertEqual(
+            YouModel.PhraseEvidence.built.label, "Phrases you built or typed")
+        XCTAssertEqual(
+            YouModel.PhraseEvidence.practicedWithHints.label,
+            "Phrases you practised (with hints)")
+        XCTAssertEqual(
+            YouModel.PhraseEvidence.recognized.label, "Phrases you recognised")
+        XCTAssertEqual(
+            YouModel.PhraseEvidence.speakingPractice.label,
+            "Speaking practice (self-assessed)")
+        XCTAssertEqual(
+            YouModel.PhraseEvidence.practiced.label, "Phrases you practised")
     }
 }

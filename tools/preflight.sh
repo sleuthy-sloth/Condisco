@@ -17,10 +17,10 @@
 #   1. Pack + media integrity  — tools/check_packs.sh            [required]
 #        Compiles the real production pack model with `xcrun swiftc`,
 #        decodes all five packs, and verifies every declared media asset
-#        (file exists, extension matches kind, SHA-256 matches). The 21
-#        intentionally missing device-speech assets are allowlisted in
-#        tools/device-speech-media.txt. Any other missing/mismatched asset
-#        fails the gate: content is not shippable.
+#        (file exists, extension matches kind, SHA-256 matches). The 23
+#        intentionally missing device-speech assets (fr 5 + it 16 + es 2)
+#        are allowlisted in tools/device-speech-media.txt. Any other
+#        missing/mismatched asset fails the gate: content is not shippable.
 #
 #   2. Editorial backlog       — tools/audit_editorial.sh        [report only]
 #        Standalone report of editorial gaps (missing authored error
@@ -31,20 +31,29 @@
 #        printed for the record so the backlog and gate status are visible in
 #        the preflight log.
 #
-#   3. Generated catalog drift — tools/gen_lesson_catalog.py     [required]
+#   3. Modality-claims audit   — tools/audit_outcomes.py         [required]
+#        Structural audit (Phase 5.4): compares the modality skills
+#        DECLARED on each lesson's activities against the activity types
+#        that actually exercise them (listening needs an audio-backed step,
+#        speaking a self-compare, writing a text/cloze step, reading a
+#        text-bearing step). Exit 0 = every declared claim is backed; any
+#        unbacked claim (or a schema/usage error, exit 2) FAILS the gate —
+#        a unit may not claim a modality no task trains.
+#
+#   4. Generated catalog drift — tools/gen_lesson_catalog.py     [required]
 #        Regenerates Condisco/DeepLink/LessonCatalog.generated.swift into a
 #        temp file and diffs it byte-for-byte against the committed one.
 #        Fails the gate on ANY drift (and prints the exact command to
 #        regenerate), because the committed catalog must be a faithful
 #        snapshot of the five bundled packs for Siri/Shortcuts processes.
 #
-#   4. Unit tests              — xcodebuild … -only-testing:CondiscoTests
+#   5. Unit tests              — xcodebuild … -only-testing:CondiscoTests
 #                                                                [required]
 #        Runs CondiscoTests against the Condisco scheme on the iPhone 18 Pro
 #        simulator. Fails the gate on any test failure. Uses a fresh derived
 #        data path under the system temp dir so the tree is not polluted.
 #
-#   5. UI smoke                — xcodebuild … -only-testing:CondiscoUITests
+#   6. UI smoke                — xcodebuild … -only-testing:CondiscoUITests
 #        [optional; only with --with-ui]  Boots/reuses the simulator and
 #        runs the CondiscoUITests end-to-end flow. Slower (simulator boot +
 #        full UI run), so it is opt-in; if requested and failing, it fails
@@ -79,9 +88,10 @@ usage: bash tools/preflight.sh [--with-ui]
 Steps (run in order, stops on first required failure):
   1  pack + media integrity        tools/check_packs.sh        (required)
   2  editorial backlog report      tools/audit_editorial.sh    (report only)
-  3  generated catalog drift       tools/gen_lesson_catalog.py (required)
-  4  unit tests                    xcodebuild -only-testing:CondiscoTests (required)
-  5  UI smoke                      xcodebuild -only-testing:CondiscoUITests (--with-ui)
+  3  modality-claims audit         tools/audit_outcomes.py     (required)
+  4  generated catalog drift       tools/gen_lesson_catalog.py (required)
+  5  unit tests                    xcodebuild -only-testing:CondiscoTests (required)
+  6  UI smoke                      xcodebuild -only-testing:CondiscoUITests (--with-ui)
 EOF
             exit 0
             ;;
@@ -105,7 +115,7 @@ skip() { printf 'SKIP %s\n' "$*"; }
 say()  { printf '\n== %s ==\n' "$*"; }
 
 # ----------------------------------------------------------------------------
-say "Step 1/5  Pack + media integrity  (tools/check_packs.sh)"
+say "Step 1/6  Pack + media integrity  (tools/check_packs.sh)"
 if bash "$project_root/tools/check_packs.sh"; then
     pass "pack + media integrity (check_packs.sh)"
 else
@@ -115,7 +125,7 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-say "Step 2/5  Editorial backlog report  (tools/audit_editorial.sh — report only, not a gate)"
+say "Step 2/6  Editorial backlog report  (tools/audit_editorial.sh — report only, not a gate)"
 audit_log="$preflight_tmp/editorial-audit.log"
 bash "$project_root/tools/audit_editorial.sh" >"$audit_log" 2>&1
 audit_status=$?
@@ -132,7 +142,24 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-say "Step 3/5  Generated lesson catalog is a faithful snapshot  (tools/gen_lesson_catalog.py)"
+say "Step 3/6  Modality-claims audit  (tools/audit_outcomes.py)"
+outcomes_log="$preflight_tmp/outcomes-audit.log"
+if python3 "$project_root/tools/audit_outcomes.py" >"$outcomes_log" 2>&1; then
+    # Compact record for the log: the header, the per-pack table, and the
+    # verdict line. Full findings print only when the audit fails.
+    grep -E '^(OUTCOMES|Pack|---|fr-foundations|it-foundations|de-foundations|pt-foundations|es-foundations|FINDINGS)' \
+        "$outcomes_log" || true
+    pass "modality-claims audit (audit_outcomes.py) — every declared claim is backed"
+else
+    outcomes_status=$?
+    fail "modality-claims audit (audit_outcomes.py) — unbacked modality claims (exit $outcomes_status)"
+    cat "$outcomes_log" 2>/dev/null || true
+    echo "PREFLIGHT ABORTED after step 3 (stopping on first failure)"
+    exit 1
+fi
+
+# ----------------------------------------------------------------------------
+say "Step 4/6  Generated lesson catalog is a faithful snapshot  (tools/gen_lesson_catalog.py)"
 catalog_gen="$preflight_tmp/LessonCatalog.generated.swift"
 catalog_committed="$project_root/Condisco/DeepLink/LessonCatalog.generated.swift"
 catalog_log="$preflight_tmp/gen-catalog.log"
@@ -142,7 +169,7 @@ if ! python3 "$project_root/tools/gen_lesson_catalog.py" \
     "$project_root/Condisco/Content/packs" "$catalog_gen" >"$catalog_log" 2>&1; then
     fail "catalog generator failed to run (output below)"
     cat "$catalog_log" 2>/dev/null || true
-    echo "PREFLIGHT ABORTED after step 3 (stopping on first failure)"
+    echo "PREFLIGHT ABORTED after step 4 (stopping on first failure)"
     exit 1
 fi
 
@@ -156,12 +183,12 @@ else
     echo "Fix it by regenerating:"
     echo "    python3 tools/gen_lesson_catalog.py Condisco/Content/packs \\"
     echo "        Condisco/DeepLink/LessonCatalog.generated.swift"
-    echo "PREFLIGHT ABORTED after step 3 (stopping on first failure)"
+    echo "PREFLIGHT ABORTED after step 4 (stopping on first failure)"
     exit 1
 fi
 
 # ----------------------------------------------------------------------------
-say "Step 4/5  Unit tests  (CondiscoTests)"
+say "Step 5/6  Unit tests  (CondiscoTests)"
 if xcodebuild test -project Condisco.xcodeproj -scheme Condisco \
     -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
     -only-testing:CondiscoTests \
@@ -170,13 +197,13 @@ if xcodebuild test -project Condisco.xcodeproj -scheme Condisco \
     pass "unit tests (CondiscoTests)"
 else
     fail "unit tests (CondiscoTests) — failing tests block a share"
-    echo "PREFLIGHT ABORTED after step 4 (stopping on first failure)"
+    echo "PREFLIGHT ABORTED after step 5 (stopping on first failure)"
     exit 1
 fi
 
 # ----------------------------------------------------------------------------
 if [ "$run_ui" -eq 1 ]; then
-    say "Step 5/5  UI smoke  (CondiscoUITests — --with-ui requested)"
+    say "Step 6/6  UI smoke  (CondiscoUITests — --with-ui requested)"
     if xcodebuild test -project Condisco.xcodeproj -scheme Condisco \
         -destination 'platform=iOS Simulator,name=iPhone 18 Pro' \
         -only-testing:CondiscoUITests \
@@ -185,11 +212,11 @@ if [ "$run_ui" -eq 1 ]; then
         pass "UI smoke (CondiscoUITests)"
     else
         fail "UI smoke (CondiscoUITests) — failing UI tests block a share"
-        echo "PREFLIGHT ABORTED after step 5 (stopping on first failure)"
+        echo "PREFLIGHT ABORTED after step 6 (stopping on first failure)"
         exit 1
     fi
 else
-    say "Step 5/5  UI smoke skipped (pass --with-ui to run it)"
+    say "Step 6/6  UI smoke skipped (pass --with-ui to run it)"
     skip "UI smoke (CondiscoUITests) — optional per gate policy"
 fi
 

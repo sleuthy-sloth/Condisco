@@ -132,6 +132,127 @@ final class PackSpanishTests: XCTestCase {
         XCTAssertNoThrow(try PackValidator.validate(pack), pack.id)
     }
 
+    // MARK: - Checkpoint task bank (5.3A)
+
+    /// The authored checkpoint tasks decode with stable, unique ids and the
+    /// expected stage coverage: one stage-end task per shipped stage
+    /// (Foundation, Developing, and Independent), each sampling reading,
+    /// writing, and speaking (listening is omitted by design — see
+    /// `CheckpointModality`).
+    func testCheckpointTasksDecodeWithStableUniqueIds() throws {
+        let pack = try spanishPack()
+        let checkpoints = pack.checkpoints
+        XCTAssertEqual(checkpoints.map(\.id),
+                       ["es-cp-foundation", "es-cp-developing", "es-cp-independent"],
+                       "checkpoint task ids must be stable (unseen bank ids)")
+        XCTAssertEqual(Set(checkpoints.map(\.id)).count, checkpoints.count,
+                       "checkpoint task ids must be unique")
+        XCTAssertEqual(Set(checkpoints.map(\.stage)),
+                       [.foundation, .developing, .independent],
+                       "one checkpoint task ships per stage (Foundation, Developing, Independent)")
+        for checkpoint in checkpoints {
+            XCTAssertEqual(Set(checkpoint.items.map(\.modality)),
+                           [.reading, .writing, .speaking],
+                           "\(checkpoint.id) samples reading, writing, speaking")
+            XCTAssertEqual(Set(checkpoint.items.map(\.id)).count,
+                           checkpoint.items.count,
+                           "\(checkpoint.id) item ids must be unique")
+        }
+    }
+
+    /// The declared modality coverage must cover every modality the items
+    /// actually exercise (requirement 5, "declares ≥ the slots it contains").
+    func testCheckpointTasksDeclareTheirModalityCoverage() throws {
+        let pack = try spanishPack()
+        for checkpoint in pack.checkpoints {
+            let declared = Set(checkpoint.modalities)
+            let exercised = Set(checkpoint.items.map(\.modality))
+            XCTAssertTrue(exercised.isSubset(of: declared),
+                          "\(checkpoint.id) must declare every exercised modality")
+            XCTAssertFalse(declared.isEmpty, "\(checkpoint.id) must declare coverage")
+            XCTAssertTrue(declared.isSubset(of: [.reading, .listening, .writing, .speaking]),
+                          "\(checkpoint.id) declares unknown modality")
+        }
+    }
+
+    /// Leak check (requirement 5): no lesson step references a checkpoint
+    /// item as a path or support activity — the bank stays unseen material.
+    func testNoLessonStepReferencesCheckpointItem() throws {
+        let pack = try spanishPack()
+        let itemIds = Set(pack.checkpoints.flatMap { $0.items.map(\.id) })
+        XCTAssertFalse(itemIds.isEmpty, "checkpoint bank must not be empty")
+        let stepActivityIds = Set(pack.lessons.flatMap { lesson in
+            lesson.steps.flatMap { step -> [String] in
+                var ids = [step.activityId]
+                if let supportId = step.supportActivityId { ids.append(supportId) }
+                return ids
+            }
+        })
+        XCTAssertTrue(stepActivityIds.isDisjoint(with: itemIds),
+                      "lesson steps must never reference checkpoint items")
+    }
+
+    /// Reading items are well-formed recognition (unique options, accepted
+    /// ids are options); speaking items carry a 2-4 point rubric.
+    func testCheckpointItemsAreWellFormed() throws {
+        let pack = try spanishPack()
+        for checkpoint in pack.checkpoints {
+            for item in checkpoint.items {
+                switch item {
+                case .reading(let reading):
+                    XCTAssertFalse(reading.questions.isEmpty,
+                                   "\(reading.id) must ship comprehension questions")
+                    for question in reading.questions {
+                        let optionIds = question.options.map(\.id)
+                        XCTAssertEqual(Set(optionIds).count, optionIds.count,
+                                       "\(question.id) option ids must be unique")
+                        XCTAssertFalse(question.acceptedIds.isEmpty,
+                                       "\(question.id) must accept an option")
+                        XCTAssertTrue(question.acceptedIds.allSatisfy(optionIds.contains),
+                                      "\(question.id) acceptedIds must name options")
+                    }
+                case .writing:
+                    // Free production: completes on submission, never auto-graded.
+                    break
+                case .speaking(let speaking):
+                    XCTAssertTrue((2...4).contains(speaking.rubric.count),
+                                  "\(speaking.id) needs a 2-4 point rubric")
+                    let criterionIds = speaking.rubric.map(\.id)
+                    XCTAssertEqual(Set(criterionIds).count, criterionIds.count,
+                                   "\(speaking.id) rubric ids must be unique")
+                }
+            }
+        }
+    }
+
+    /// Fallback (requirement 1): a pack without the `checkpoints` key — the
+    /// old five-pack JSON shape — still decodes with an empty bank and
+    /// unchanged content. Strips the live Spanish pack's key and reloads.
+    func testPackWithoutCheckpointsFieldStillLoadsUnchanged() throws {
+        let content = try XCTUnwrap(
+            Bundle.main.url(forResource: "Content", withExtension: nil),
+            "test host must bundle the Content folder")
+        let url = content.appendingPathComponent("packs/spanish.json")
+        let raw = try Data(contentsOf: url)
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: raw) as? [String: Any],
+            "spanish.json must be a JSON object")
+        var stripped = object
+        stripped.removeValue(forKey: "checkpoints")
+
+        let pack = try JSONDecoder().decode(
+            CoursePack.self,
+            from: JSONSerialization.data(withJSONObject: stripped))
+        XCTAssertTrue(pack.checkpoints.isEmpty,
+                      "packs without the key decode to an empty checkpoint bank")
+        XCTAssertEqual(pack.version, "0.7.9")
+        XCTAssertEqual(pack.lessons.count, 70)
+        XCTAssertEqual(pack.activities.count, 591)
+        XCTAssertEqual(pack.units.count, 20)
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "an old five-pack JSON must still validate")
+    }
+
     // MARK: - Hints (rubric H4)
 
     /// Every graded step in batch-1 lessons has a real authored hint, not the
@@ -1553,5 +1674,1599 @@ final class PackSpanishTests: XCTestCase {
         // Short café request: the full polite form is correct Spanish too.
         result = try gradeText("es-cafe-requests-foundation-recall", in: pack, "Quisiera un café, por favor.")
         XCTAssertTrue(result.accepted, "full polite request must be accepted")
+    }
+
+    // MARK: - Café listen pilot (Phase 3.1)
+
+    /// The Phase 3.1 listening pilot in es-cafe-mission: new steps decode and
+    /// chain, the audio stimulus/media resolve, and the selection answers are
+    /// honestly gradeable (exactly one accepted option; the meaning-changing
+    /// near miss — Para llevar, which the audio actually contains — is
+    /// rejected).
+    func testCafeListenPilotStepsResolveAndGrade() throws {
+        let pack = try spanishPack()
+        let lesson = try XCTUnwrap(pack.lesson(id: "es-cafe-mission"), "missing es-cafe-mission")
+        let steps = lesson.steps
+        let byID = Dictionary(uniqueKeysWithValues: steps.map { ($0.id, $0) })
+
+        // Media + stimulus exist and are bound.
+        guard case .audio(let stimMediaId)? = pack.stimulus(id: "es-cafe-listen-stim") else {
+            return XCTFail("es-cafe-listen-stim must be an audio stimulus")
+        }
+        XCTAssertEqual(stimMediaId.mediaId, "es-cafe-listen-audio")
+        guard case .audio? = pack.media(id: "es-cafe-listen-audio") else {
+            return XCTFail("es-cafe-listen-audio must be an audio media item")
+        }
+        guard case .audio? = pack.media(id: "es-cafe-listen-model") else {
+            return XCTFail("es-cafe-listen-model must be an audio media item")
+        }
+
+        // New steps exist and chain: step-8 (matching) -> step-10 ... step-14
+        // -> step-9 (existing terminal text step, unchanged).
+        let expected: [(String, String, String)] = [
+            ("es-cafe-mission-step-10", "notice", "es-cafe-listen-act-1"),
+            ("es-cafe-mission-step-11", "practice", "es-cafe-listen-gist"),
+            ("es-cafe-mission-step-12", "practice", "es-cafe-listen-drink"),
+            ("es-cafe-mission-step-13", "practice", "es-cafe-listen-here"),
+            ("es-cafe-mission-step-14", "practice", "es-cafe-listen-say"),
+        ]
+        for (stepID, purpose, activityID) in expected {
+            let step = try XCTUnwrap(byID[stepID], "missing \(stepID)")
+            XCTAssertEqual(step.purpose.rawValue, purpose, "\(stepID) purpose")
+            XCTAssertEqual(step.activityId, activityID, "\(stepID) activity")
+            XCTAssertTrue(step.required, "\(stepID) must be required")
+        }
+        XCTAssertEqual(byID["es-cafe-mission-step-8"]?.nextStepId,
+                       "es-cafe-mission-step-10", "step-8 must route into the pilot")
+        XCTAssertEqual(byID["es-cafe-mission-step-14"]?.nextStepId,
+                       "es-cafe-mission-step-9", "pilot must route back to the final response")
+        XCTAssertNil(byID["es-cafe-mission-step-9"]?.nextStepId,
+                     "step-9 stays the terminal step (text final response, M5)")
+
+        // The information step presents the audio stimulus.
+        let notice = try XCTUnwrap(pack.activity(id: "es-cafe-listen-act-1"))
+        XCTAssertEqual(notice.stimulusId, "es-cafe-listen-stim", "notice step shows the audio")
+
+        // Selection comprehension steps: bound to the stimulus, listening
+        // skill, single-select with exactly one accepted option, and the
+        // meaning-changing near miss is NOT accepted.
+        let selections: [(String, String, [String], String?)] = [
+            // (activity id, accepted option id, near-miss option ids, near-miss text kept out of acceptedIds)
+            ("es-cafe-listen-gist", "cafe", ["pan", "super"], nil),
+            ("es-cafe-listen-drink", "cafe", ["te", "zumo"], nil),
+            ("es-cafe-listen-here", "aqui", ["llevar"], "Para llevar"),
+        ]
+        for (activityID, acceptedID, rejectedIDs, _) in selections {
+            let act = try activity(activityID, in: pack)
+            guard case .selection(let spec) = act else {
+                return XCTFail("\(activityID) must be a selection activity")
+            }
+            XCTAssertEqual(spec.base.stimulusId, "es-cafe-listen-stim",
+                           "\(activityID) must bind the audio stimulus")
+            XCTAssertTrue(spec.base.skills.contains(.listening),
+                          "\(activityID) must train listening")
+            XCTAssertEqual(Set(spec.base.assistanceAffectsEvidence), [.transcript, .model],
+                           "\(activityID) model reveal must affect evidence")
+            XCTAssertEqual(spec.options.map(\.id).count, Set(spec.options.map(\.id)).count,
+                           "\(activityID) option ids must be unique")
+            XCTAssertFalse(spec.multiple, "\(activityID) must be single-select")
+            XCTAssertEqual(spec.acceptedIds, [acceptedID],
+                           "\(activityID) must accept exactly \(acceptedID)")
+            XCTAssertTrue(spec.acceptedIds.allSatisfy { $0 == acceptedID },
+                          "\(activityID) must not accept any near miss")
+            for rejected in rejectedIDs {
+                XCTAssertFalse(spec.acceptedIds.contains(rejected),
+                               "\(activityID) must reject option \(rejected)")
+            }
+        }
+        // Explicitly: the audio says "para llevar" (the server's question) but
+        // the customer answers "para tomar aquí" — accepting Para llevar would
+        // grade the meaning-changing near miss as correct.
+        let hereAct = try activity("es-cafe-listen-here", in: pack)
+        guard case .selection(let hereSpec) = hereAct else {
+            return XCTFail("es-cafe-listen-here must be a selection activity")
+        }
+        XCTAssertTrue(hereSpec.options.contains { $0.id == "llevar" && $0.text == "Para llevar" })
+        XCTAssertFalse(hereSpec.acceptedIds.contains("llevar"))
+
+        // Respond step: self-compare with an authored Spanish model and audio.
+        let sayAct = try activity("es-cafe-listen-say", in: pack)
+        guard case .selfCompare(let saySpec) = sayAct else {
+            return XCTFail("es-cafe-listen-say must be a self-compare activity")
+        }
+        XCTAssertEqual(saySpec.modelText, "Un café, por favor.")
+        XCTAssertEqual(saySpec.modelAudioId, "es-cafe-listen-model")
+        XCTAssertTrue(saySpec.skills.contains(.speaking))
+    }
+
+    // MARK: - Sustained reading & listening (Phase 6.1A)
+
+    /// Fallback (item 4): a pack without the `sustainedTexts` /
+    /// `sustainedListenings` keys — the old five-pack JSON shape — still
+    /// decodes with empty arrays and unchanged content. Mirrors the
+    /// `checkpoints` fallback test. 6.1A only *added* sustained material
+    /// (and 6.2 only *added* open tasks), so the honest pre-6.1A pack is
+    /// this one minus every trace of both: no top-level arrays, no
+    /// `*-launch` activities, no open-task activities or
+    /// steps, the original `nextStepId` chains restored
+    /// (rb7→rb8 / rb8→rb9, cafe recall→nil, planes read→nil), and version
+    /// 0.7.2.
+    func testPackWithoutSustainedFieldsStillLoadsUnchanged() throws {
+        let content = try XCTUnwrap(
+            Bundle.main.url(forResource: "Content", withExtension: nil),
+            "test host must bundle the Content folder")
+        let url = content.appendingPathComponent("packs/spanish.json")
+        let raw = try Data(contentsOf: url)
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: raw) as? [String: Any],
+            "spanish.json must be a JSON object")
+
+        var old = object
+        old.removeValue(forKey: "sustainedTexts")
+        old.removeValue(forKey: "sustainedListenings")
+        old["version"] = "0.7.2"
+
+        // Remove the launch activities that backed the removed steps (the
+        // four 6.1A pilots, Unit 18's sustained text and listening launches,
+        // Unit 19's, and Unit 20's — they would otherwise orphan after their
+        // steps strip).
+        let launchActivities: Set<String> = [
+            "es-sustained-text-mensajes-launch",
+            "es-sustained-text-articulo-launch",
+            "es-sustained-text-narracion-launch",
+            "es-sustained-listen-llamada-launch",
+            "es-b1-text-vuelo-cancelado-launch",
+            "es-b1-listen-aeropuerto-launch",
+            "es-b1-text-entrevista-launch",
+            "es-b1-listen-oferta-launch",
+            "es-b1-text-aniversario-launch",
+            "es-b1-listen-fiesta-launch",
+        ]
+        // Phase 6.2 open tasks are even newer than the sustained material:
+        // the honest pre-6.1A pack strips their steps too and restores the
+        // original chains, proving the additive decode boundary both ways.
+        let openTaskActivities: Set<String> = [
+            "es-a2-fin-de-semana-open-task",
+            "es-cafe-requests-foundation-open-task",
+            "es-a2-planes-intenciones-open-task",
+            "es-b1-viaje-escrito-open-task",
+            "es-b1-plan-escrito-open-task",
+            "es-b1-decision-escrito-open-task",
+        ]
+        let removedActivities = launchActivities.union(openTaskActivities)
+        let activities = try XCTUnwrap(old["activities"] as? [[String: Any]])
+        old["activities"] = activities.filter {
+            guard let id = $0["id"] as? String else { return true }
+            return !removedActivities.contains(id)
+        }
+
+        // Drop the sustained binding steps and the open-task steps, and
+        // rewire each predecessor to the step the removed step used to
+        // point at, so the original chains (rb7→rb8, rb8→rb9, cafe
+        // recall→nil, planes read→nil) are restored exactly.
+        let openTaskStepIds: Set<String> = [
+            "es-a2-fin-de-semana-step-open-task",
+            "es-cafe-requests-foundation-step-open-task",
+            "es-a2-planes-intenciones-step-open-task",
+            "es-b1-viaje-escrito-step-open-task",
+            "es-b1-plan-escrito-step-open-task",
+            "es-b1-decision-escrito-step-open-task",
+        ]
+        let lessons = try XCTUnwrap(old["lessons"] as? [[String: Any]])
+        old["lessons"] = lessons.map { lesson -> [String: Any] in
+            var lesson = lesson
+            guard let rawSteps = lesson["steps"] as? [[String: Any]] else { return lesson }
+            // A removed step's successor may itself be removed (sustained →
+            // open-task → terminal), so the predecessor reroutes to the
+            // surviving next step, restoring the original chain.
+            var removedNext = [String: String?]()
+            var kept: [[String: Any]] = []
+            for step in rawSteps {
+                if step["sustainedTextId"] != nil || step["sustainedListeningId"] != nil
+                    || (step["id"] as? String).map(openTaskStepIds.contains) == true {
+                    if let id = step["id"] as? String {
+                        removedNext[id] = step["nextStepId"] as? String
+                    }
+                } else {
+                    kept.append(step)
+                }
+            }
+            // Collapse chains: a removed step whose next is itself removed
+            // (sustained → open-task → terminal) follows the removed step's
+            // own replacement, so rb7 lands on the surviving rb8.
+            for id in removedNext.keys {
+                var cursor = removedNext[id] ?? nil
+                while let target = cursor, removedNext[target] != nil {
+                    cursor = removedNext[target] ?? nil
+                }
+                removedNext[id] = cursor
+            }
+            lesson["steps"] = kept.map { step -> [String: Any] in
+                var step = step
+                if let id = step["id"] as? String,
+                   let next = step["nextStepId"] as? String,
+                   let replacement = removedNext[next] {
+                    step["nextStepId"] = replacement
+                }
+                return step
+            }
+            return lesson
+        }
+
+        let pack = try JSONDecoder().decode(
+            CoursePack.self,
+            from: JSONSerialization.data(withJSONObject: old))
+        XCTAssertTrue(pack.sustainedTexts.isEmpty,
+                      "packs without the keys decode to an empty sustained-text array")
+        XCTAssertTrue(pack.sustainedListenings.isEmpty,
+                      "packs without the keys decode to an empty sustained-listening array")
+        XCTAssertEqual(pack.version, "0.7.2")
+        XCTAssertEqual(pack.lessons.count, 70)
+        XCTAssertEqual(pack.activities.count, 575)
+        XCTAssertEqual(pack.units.count, 20)
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "an old five-pack JSON must still validate")
+    }
+
+    /// The three pilot genres decode with all required metadata:
+    /// multi-paragraph sections with markers and per-section accessibility
+    /// labels, a section-list accessible summary, a 4-8 entry glossary with
+    /// unique terms, and a dated provenance statement.
+    func testSustainedTextsDecodeWithRequiredMetadata() throws {
+        let pack = try spanishPack()
+        let texts = pack.sustainedTexts
+        XCTAssertEqual(Set(texts.map(\.genre)),
+                       Set(SustainedGenre.allCases),
+                       "the pilot path must author one text of each genre")
+        for text in texts {
+            XCTAssertFalse(text.title.isEmpty, "\(text.id) must have a title")
+            XCTAssertGreaterThanOrEqual(text.sections.count, 3,
+                                        "\(text.id) must be multi-paragraph")
+            let markers = text.sections.map(\.marker)
+            XCTAssertEqual(Set(markers).count, markers.count,
+                           "\(text.id) section markers must be unique")
+            for section in text.sections {
+                XCTAssertFalse(
+                    section.body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                    "\(text.id) section \(section.marker) must have a body")
+                XCTAssertFalse(section.heading.isEmpty,
+                               "\(text.id) section \(section.marker) must have a heading")
+                XCTAssertFalse(section.accessibilityLabel.isEmpty,
+                               "\(text.id) section \(section.marker) must carry an accessibility label")
+            }
+            XCTAssertFalse(text.accessibleSummary.isEmpty,
+                           "\(text.id) must carry a section-list accessible summary")
+            XCTAssertTrue((4...8).contains(text.glossary.count),
+                          "\(text.id) must ship a 4-8 entry glossary")
+            XCTAssertEqual(Set(text.glossary.map(\.term)).count, text.glossary.count,
+                           "\(text.id) glossary terms must be unique")
+            XCTAssertFalse(text.provenance.statement.isEmpty,
+                           "\(text.id) must state its provenance")
+            XCTAssertFalse(text.provenance.date.isEmpty,
+                           "\(text.id) must date its provenance")
+        }
+    }
+
+    /// Each sustained text embeds exactly one question per kind and every
+    /// question is deterministically answerable: exactly one accepted option
+    /// that exists, gradeable by the same set-equality rule the checkpoint
+    /// reading items use (never open auto-grading).
+    func testSustainedTextQuestionsCoverKindsAndResolve() throws {
+        let pack = try spanishPack()
+        for text in pack.sustainedTexts {
+            XCTAssertEqual(Set(text.questions.map(\.kind)),
+                           Set(SustainedQuestionKind.allCases),
+                           "\(text.id) must ask one main-idea, one key-detail and one speaker-intent question")
+            for question in text.questions {
+                let optionIds = question.options.map(\.id)
+                XCTAssertEqual(Set(optionIds).count, optionIds.count,
+                               "\(question.id) option ids must be unique")
+                XCTAssertEqual(question.acceptedIds.count, 1,
+                               "\(question.id) must accept exactly one option")
+                XCTAssertTrue(question.acceptedIds.allSatisfy(optionIds.contains),
+                              "\(question.id) acceptedIds must name options")
+                // Deterministic set-equality grading (the checkpoint rule):
+                // selecting exactly the accepted option is correct, any other
+                // option is wrong — no open auto-grading anywhere.
+                for option in question.options {
+                    let correct = Set([option.id]) == Set(question.acceptedIds)
+                    XCTAssertEqual(correct, option.id == question.acceptedIds.first,
+                                   "\(question.id) option \(option.id) gradeability")
+                }
+            }
+        }
+    }
+
+    /// The sustained listening passages decode with ordered sections, two
+    /// distinct voice ids that carry their language tags, per-section
+    /// synthesised voice labels, and a transcript that equals the section
+    /// texts (whitespace-insensitive).
+    func testSustainedListeningDecodesWithOrderedSectionsAndVoiceLabels() throws {
+        let pack = try spanishPack()
+        let passages = pack.sustainedListenings
+        XCTAssertEqual(passages.count, 4, "the pack ships the sustained listening passages")
+        for passage in passages {
+            XCTAssertGreaterThanOrEqual(passage.sections.count, 4,
+                                        "\(passage.id) must be multi-section (multi-minute)")
+            let markers = passage.sections.map(\.marker)
+            XCTAssertEqual(Set(markers).count, markers.count,
+                           "\(passage.id) section markers must be unique")
+            let voices = Set(passage.sections.map(\.voiceId))
+            XCTAssertGreaterThanOrEqual(voices.count, 2,
+                                        "\(passage.id) must use at least two distinct voices")
+            for section in passage.sections {
+                XCTAssertTrue(
+                    section.voiceId.lowercased().contains(section.languageCode.lowercased()),
+                    "\(passage.id) section \(section.marker) voice id must carry its language tag")
+                XCTAssertTrue(section.languageCode.lowercased().hasPrefix("es-"),
+                              "\(passage.id) section \(section.marker) must be an es language tag")
+                XCTAssertTrue(section.accessibilityLabel.lowercased().contains("synth"),
+                              "\(passage.id) section \(section.marker) must label its voice as synthesised")
+                XCTAssertFalse(section.text.isEmpty,
+                               "\(passage.id) section \(section.marker) must have text to synthesise")
+            }
+            XCTAssertFalse(passage.transcript.isEmpty, "\(passage.id) must carry a transcript")
+            let joined = passage.sections.map(\.text).joined(separator: "\n\n")
+            XCTAssertEqual(Self.collapsed(passage.transcript), Self.collapsed(joined),
+                           "\(passage.id) transcript must equal the section texts in order")
+        }
+    }
+
+    /// The four materials bind to host lesson steps; each binding step is
+    /// required, routes back into the original lesson, and the lesson's
+    /// terminal step stays untouched.
+    func testSustainedMaterialsBoundToHostLessons() throws {
+        let pack = try spanishPack()
+        let expectations: [(lesson: String, step: String, text: String?, listening: String?)] = [
+            ("es-plans-foundation", "es-plans-foundation-step-sustained", "es-sustained-text-mensajes", nil),
+            ("es-market-foundation", "es-market-foundation-step-sustained", "es-sustained-text-articulo", nil),
+            ("es-a2-fin-de-semana", "es-a2-fin-de-semana-step-sustained", "es-sustained-text-narracion", nil),
+            ("es-a2-imperfecto", "es-a2-imperfecto-step-listen", nil, "es-sustained-listen-llamada"),
+        ]
+        for expected in expectations {
+            let lesson = try XCTUnwrap(pack.lesson(id: expected.lesson), "missing \(expected.lesson)")
+            let step = try XCTUnwrap(lesson.steps.first { $0.id == expected.step },
+                                     "missing \(expected.step)")
+            XCTAssertEqual(step.sustainedTextId, expected.text, "\(expected.step) text binding")
+            XCTAssertEqual(step.sustainedListeningId, expected.listening,
+                           "\(expected.step) listening binding")
+            XCTAssertTrue(step.required, "\(expected.step) must be required")
+            XCTAssertNotNil(step.nextStepId, "\(expected.step) must route back into the lesson")
+            let terminals = lesson.steps.filter { $0.nextStepId == nil && $0.branches.isEmpty }
+            XCTAssertEqual(terminals.count, 1, "\(expected.lesson) must keep its single terminal step")
+            XCTAssertTrue(terminals.first?.id.hasSuffix("-rb8") == true
+                          || terminals.first?.id == "es-a2-imperfecto-step-rb9",
+                          "\(expected.lesson) terminal step must be unchanged")
+        }
+        // Every authored material is referenced by exactly one lesson step.
+        let bindings = pack.lessons.flatMap { lesson in
+            lesson.steps.compactMap { $0.sustainedTextId ?? $0.sustainedListeningId }
+        }
+        XCTAssertEqual(Set(bindings).count, bindings.count,
+                       "materials must bind to exactly one step each")
+        XCTAssertEqual(Set(bindings),
+                       Set(pack.sustainedTexts.map(\.id) + pack.sustainedListenings.map(\.id)),
+                       "every authored material must be bound to a lesson step")
+    }
+
+    // MARK: - Sustained fixtures (negative validator probes)
+
+    private static func collapsed(_ text: String) -> String {
+        text.split(whereSeparator: { $0.isWhitespace }).joined(separator: " ")
+    }
+
+    private func fixtureQuestion(_ id: String, _ kind: String, _ text: String) -> [String: Any] {
+        ["id": id, "kind": kind, "question": text,
+         "options": [
+            ["id": "a", "text": "First option"],
+            ["id": "b", "text": "Second option"],
+            ["id": "c", "text": "Third option"],
+         ],
+         "acceptedIds": ["a"]]
+    }
+
+    private func fixtureText(_ id: String, genre: String, marker: String) -> [String: Any] {
+        ["id": id, "title": "Fixture \(id)", "genre": genre,
+         "sections": (1...4).map { n in
+            ["marker": "\(marker)-\(n)", "heading": "Heading \(n)",
+             "body": "Paragraph number \(n) of the fixture text \(id).",
+             "accessibilityLabel": "Section \(n) of the fixture text."]
+         },
+         "accessibleSummary": "A fixture text for validator probes.",
+         "glossary": (1...4).map { n in
+            ["term": "term\(n)-\(id)", "definition": "Definition \(n)."]
+         },
+         "provenance": ["statement": "Original fixture text.", "date": "2026-09-26"],
+         "questions": [
+            fixtureQuestion("\(id)-q1", "main-idea", "What is the main idea of the fixture?"),
+            fixtureQuestion("\(id)-q2", "key-detail", "What key detail does the fixture mention?"),
+            fixtureQuestion("\(id)-q3", "speaker-intent", "Why does the fixture speak?"),
+         ]]
+    }
+
+    private func fixtureListening() -> [String: Any] {
+        let texts = [
+            "First section of the listening fixture.",
+            "Second section of the listening fixture.",
+            "Third section of the listening fixture.",
+            "Fourth section of the listening fixture.",
+            "Fifth section of the listening fixture.",
+        ]
+        let voices: [(id: String, lang: String)] = [
+            ("com.apple.voice.compact.es-ES.Fixture", "es-ES"),
+            ("com.apple.voice.compact.es-MX.Fixture", "es-MX"),
+        ]
+        return ["id": "listen1", "title": "Fixture listening",
+         "sections": texts.enumerated().map { (index, text) in
+            let voice = voices[index % 2]
+            return ["marker": "\(index + 1)", "heading": "Heading \(index + 1)",
+                    "text": text,
+                    "voiceId": voice.id, "languageCode": voice.lang,
+                    "accessibilityLabel": "Spoken by a synthesised voice."]
+         },
+         "transcript": texts.joined(separator: "\n\n"),
+         "accessibleSummary": "A fixture listening passage.",
+         "glossary": (1...4).map { n in
+            ["term": "lterm\(n)", "definition": "Definition \(n)."]
+         },
+         "provenance": ["statement": "Original fixture text.", "date": "2026-09-26"],
+         "questions": [
+            fixtureQuestion("listen1-q1", "main-idea", "What is the call about?"),
+            fixtureQuestion("listen1-q2", "key-detail", "What detail is mentioned?"),
+            fixtureQuestion("listen1-q3", "speaker-intent", "Why does the speaker call?"),
+         ]]
+    }
+
+    private func minimalSustainedPackJSON(
+        texts: [[String: Any]]? = nil,
+        listenings: [[String: Any]]? = nil,
+        bindText: String? = "t1",
+        bindListening: String? = "listen1",
+        unboundTextID: String? = nil
+    ) -> [String: Any] {
+        let texts = texts ?? [
+            fixtureText("t1", genre: "message-thread", marker: "1"),
+            fixtureText("t2", genre: "short-article", marker: "2"),
+            fixtureText("t3", genre: "personal-narrative", marker: "3"),
+        ]
+        let listenings = listenings ?? [fixtureListening()]
+
+        // Every authored passage must be reachable from a lesson step
+        // (orphan discipline), so give each text and each listening its
+        // own notice step, chained into a single selection step that
+        // terminates the lesson. The first text and first listening bind
+        // the caller-controlled ids (`bindText`/`bindListening`, so a
+        // fixture can point a step at an unknown id); `unboundTextID`
+        // leaves one passage unreferenced so the orphan discipline itself
+        // can be probed.
+        var bindings: [(stepID: String, activityID: String,
+                        textID: String?, listeningID: String?)] = []
+        for (index, text) in texts.enumerated() {
+            let id = text["id"] as? String ?? "t\(index + 1)"
+            var bound: String?
+            if index == 0 {
+                bound = bindText ?? id
+            } else if id != unboundTextID {
+                bound = id
+            }
+            bindings.append(("s\(index + 1)", "a\(index + 1)", bound, nil))
+        }
+        let textCount = texts.count
+        for (index, passage) in listenings.enumerated() {
+            let id = passage["id"] as? String ?? "listen\(index + 1)"
+            let bound = index == 0 ? (bindListening ?? id) : id
+            bindings.append(("s\(textCount + index + 1)",
+                             "a\(textCount + index + 1)", nil, bound))
+        }
+        let terminalStepID = "s\(bindings.count + 1)"
+        let terminalActivityID = "a\(bindings.count + 1)"
+
+        var steps: [[String: Any]] = []
+        for (index, binding) in bindings.enumerated() {
+            var step: [String: Any] = [
+                "id": binding.stepID, "purpose": "notice",
+                "activityId": binding.activityID, "required": true,
+            ]
+            if let textID = binding.textID { step["sustainedTextId"] = textID }
+            if let listeningID = binding.listeningID { step["sustainedListeningId"] = listeningID }
+            step["nextStepId"] = index + 1 < bindings.count
+                ? bindings[index + 1].stepID : terminalStepID
+            steps.append(step)
+        }
+        steps.append(["id": terminalStepID, "purpose": "practice",
+                      "activityId": terminalActivityID, "required": true])
+
+        var activities: [[String: Any]] = bindings.map { binding in
+            ["kind": "information", "id": binding.activityID, "revision": 1,
+             "body": "Read the fixture."]
+        }
+        activities.append([
+            "kind": "selection", "id": terminalActivityID, "revision": 1,
+            "conceptIds": [], "vocabulary": [], "skills": ["reading"],
+            "prompt": "Which option?", "hints": [],
+            "feedback": "That is correct.", "evidenceKey": terminalActivityID,
+            "assistanceAffectsEvidence": ["model"],
+            "options": [["id": "o1", "text": "One"], ["id": "o2", "text": "Two"]],
+            "acceptedIds": ["o1"], "multiple": false,
+        ])
+
+        return [
+            "schemaVersion": 2, "id": "probe", "version": "0", "language": "es",
+            "status": "active", "title": "probe", "sourceLanguage": "en",
+            "description": "probe", "attribution": "probe",
+            "units": [["id": "u1", "title": "U", "objective": "O"]],
+            "concepts": [["id": "c1", "title": "C", "explanation": "E",
+                          "examples": [["target": "T", "meaning": "M"]],
+                          "commonError": "CE"]],
+            "vocabulary": [], "media": [], "stimuli": [],
+            "activities": activities,
+            "lessons": [[
+                "id": "l1", "unitId": "u1", "title": "L", "objective": "O",
+                "family": "recall", "revision": 1, "estimatedMinutes": 5,
+                "entryStepId": "s1", "steps": steps,
+                "completionPolicy": ["kind": "participation"],
+                "conceptIds": [], "vocabulary": [], "prerequisites": [],
+            ]],
+            "checkpoints": [], "dialogues": [],
+            "sustainedTexts": texts,
+            "sustainedListenings": listenings,
+        ]
+    }
+
+    private func decodeProbe(_ json: [String: Any]) throws -> CoursePack {
+        try JSONDecoder().decode(CoursePack.self,
+                                 from: JSONSerialization.data(withJSONObject: json))
+    }
+
+    /// A minimally valid pack carrying the three fixture texts and one
+    /// listening passage validates cleanly — the baseline the broken
+    /// fixtures are measured against.
+    func testSustainedMinimalPackValidates() throws {
+        let pack = try decodeProbe(minimalSustainedPackJSON())
+        XCTAssertEqual(pack.sustainedTexts.count, 3)
+        XCTAssertEqual(pack.sustainedListenings.count, 1)
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "baseline probe pack must validate")
+    }
+
+    /// The validator catches deliberately broken sustained fixtures —
+    /// duplicated section markers, unresolvable question answers, a missing
+    /// question kind, a single-voice listening passage, a transcript that
+    /// does not match the sections, an unknown step binding, and an orphaned
+    /// passage each throw a PackValidationError naming the problem.
+    func testSustainedValidatorCatchesBrokenFixtures() throws {
+        func threeTexts(_ first: [String: Any]) -> [[String: Any]] {
+            [first,
+             fixtureText("t2", genre: "short-article", marker: "2"),
+             fixtureText("t3", genre: "personal-narrative", marker: "3")]
+        }
+        func assertRejects(_ json: [String: Any], _ fragment: String,
+                           file: StaticString = #filePath, line: UInt = #line) {
+            do {
+                let pack = try JSONDecoder().decode(
+                    CoursePack.self,
+                    from: JSONSerialization.data(withJSONObject: json))
+                do {
+                    try PackValidator.validate(pack)
+                    XCTFail("expected validation failure containing \(fragment)",
+                            file: file, line: line)
+                } catch let error as PackValidationError {
+                    XCTAssertTrue(error.description.contains(fragment),
+                                  "expected \(fragment) in \(error.description)",
+                                  file: file, line: line)
+                } catch {
+                    XCTFail("unexpected error type: \(error)", file: file, line: line)
+                }
+            } catch {
+                XCTFail("fixture should decode: \(error)", file: file, line: line)
+            }
+        }
+
+        // A: duplicated section markers.
+        var text = fixtureText("t1", genre: "message-thread", marker: "1")
+        var sections = text["sections"] as! [[String: Any]]
+        sections[1]["marker"] = sections[0]["marker"]
+        text["sections"] = sections
+        assertRejects(minimalSustainedPackJSON(texts: threeTexts(text)),
+                      "duplicate section marker")
+
+        // B: a question accepts an option that is not in its options list.
+        text = fixtureText("t1", genre: "message-thread", marker: "1")
+        var questions = text["questions"] as! [[String: Any]]
+        questions[0]["acceptedIds"] = ["zzz"]
+        text["questions"] = questions
+        assertRejects(minimalSustainedPackJSON(texts: threeTexts(text)),
+                      "accepts unknown option")
+
+        // C: a missing question kind (only two of the three).
+        text = fixtureText("t1", genre: "message-thread", marker: "1")
+        questions = text["questions"] as! [[String: Any]]
+        questions.removeLast()
+        text["questions"] = questions
+        assertRejects(minimalSustainedPackJSON(texts: threeTexts(text)),
+                      "one question of each kind")
+
+        // D: a listening passage with a single voice across all sections.
+        var listening = fixtureListening()
+        var listenSections = listening["sections"] as! [[String: Any]]
+        for index in listenSections.indices {
+            listenSections[index]["voiceId"] = "com.apple.voice.compact.es-ES.Fixture"
+            listenSections[index]["languageCode"] = "es-ES"
+        }
+        listening["sections"] = listenSections
+        assertRejects(minimalSustainedPackJSON(listenings: [listening]),
+                      "at least two distinct voices")
+
+        // E: a transcript that does not equal the section texts.
+        listening = fixtureListening()
+        listening["transcript"] = "This transcript is not what the sections say."
+        assertRejects(minimalSustainedPackJSON(listenings: [listening]),
+                      "transcript must equal")
+
+        // F: a step binding an unknown sustained text id.
+        assertRejects(minimalSustainedPackJSON(bindText: "nope"),
+                      "references unknown sustained text")
+
+        // G: an orphaned passage (bound by no lesson step).
+        assertRejects(minimalSustainedPackJSON(
+            texts: threeTexts(fixtureText("t1", genre: "message-thread", marker: "1"))
+                + [fixtureText("t4", genre: "message-thread", marker: "4")],
+            unboundTextID: "t4"),
+            "orphaned sustained text")
+    }
+}
+
+// MARK: - Sustained experience behaviour (Phase 6.1B)
+
+/// Behaviour tests for the sustained reading/listening experience lane:
+/// question grading + reveal gating, glossary save-to-review through the real
+/// phrasebook API, offline voice-fallback resolution, the transcript
+/// visibility state machine, and the host-step shape. All headless — no TTS,
+/// no device audio.
+@MainActor
+final class SustainedExperienceTests: XCTestCase {
+
+    private var tempDir: URL!
+
+    override func setUpWithError() throws {
+        tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("condisco-sustained-tests-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        if let tempDir { try? FileManager.default.removeItem(at: tempDir) }
+        tempDir = nil
+    }
+
+    private func makeStore() throws -> LearningStore {
+        try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
+    }
+
+    private func spanishPack() throws -> CoursePack {
+        try XCTUnwrap(PackLoader.loadPacks().first { $0.language.slug == "spanish" })
+    }
+
+    /// Resolve an authored activity by id inside `pack` (mirrors the
+    /// same-named helper in `PackSpanishTests`).
+    private func activity(_ id: String, in pack: CoursePack) throws -> Activity {
+        try XCTUnwrap(pack.activity(id: id), "missing activity \(id)")
+    }
+
+    // MARK: Question grading + reveal gating
+
+    /// The deterministic set-equality grading: the authored accepted option
+    /// passes, every other option fails, and an unanswered submission fails.
+    func testSustainedQuestionGradingAcceptsOnlyTheAcceptedOption() throws {
+        let pack = try spanishPack()
+        let passage = try XCTUnwrap(pack.sustainedText(id: "es-sustained-text-mensajes"))
+        for question in passage.questions {
+            let accepted = try XCTUnwrap(question.acceptedIds.first,
+                                         "\(question.id) must accept exactly one option")
+            XCTAssertTrue(sustainedQuestionCorrect(question, selectedIds: [accepted]),
+                          "\(question.id) must accept its authored option")
+            for option in question.options where option.id != accepted {
+                XCTAssertFalse(sustainedQuestionCorrect(question, selectedIds: [option.id]),
+                               "\(question.id) must reject a wrong option")
+            }
+            XCTAssertFalse(sustainedQuestionCorrect(question, selectedIds: []),
+                           "\(question.id) must reject an unanswered submission")
+        }
+    }
+
+    /// Results exist only after the reveal gate flips: the submit stays
+    /// disabled until every question has an answer, and the chosen answers
+    /// lock once submitted.
+    func testSustainedQuestionResultsExistOnlyAfterSubmission() throws {
+        let pack = try spanishPack()
+        let passage = try XCTUnwrap(pack.sustainedListening(id: "es-sustained-listen-llamada"))
+        var state = SustainedAnswersState()
+        XCTAssertFalse(state.answersSubmitted)
+        XCTAssertFalse(state.isComplete(passage.questions),
+                       "all three questions must be answered before checking")
+
+        state.select("a", for: passage.questions[0].id)
+        XCTAssertFalse(state.isComplete(passage.questions),
+                       "two unanswered questions keep the check gated")
+        state.select("b", for: passage.questions[1].id)
+        state.select("a", for: passage.questions[1].id)
+        state.select("c", for: passage.questions[2].id)
+        XCTAssertTrue(state.isComplete(passage.questions),
+                      "one answer per question opens the check")
+
+        // The reveal is gated on submission: the result set is produced only
+        // from the submitted selections, never pre-answer.
+        let results = sustainedQuestionResults(
+            questions: passage.questions, selections: state.selections)
+        XCTAssertEqual(results.count, 3)
+        XCTAssertEqual(results[0].correct, true, "main idea accepted option a")
+        XCTAssertEqual(results[1].correct, true, "key detail accepted option a")
+        XCTAssertEqual(results[2].correct, false, "speaker intent chose c, accepted a")
+        XCTAssertEqual(results[2].selectedOptionId, "c")
+
+        // Submission locks the answers in place.
+        state.submit()
+        XCTAssertTrue(state.answersSubmitted)
+        XCTAssertTrue(state.isComplete(passage.questions))
+        state.select("a", for: passage.questions[2].id)
+        XCTAssertEqual(state.selections[passage.questions[2].id], "c",
+                       "submitted answers must not change")
+    }
+
+    /// Results preserve the authored question order (kind order is authored
+    /// order — main idea, key detail, speaker intent).
+    func testSustainedQuestionResultsKeepAuthoredOrder() throws {
+        let pack = try spanishPack()
+        let passage = try XCTUnwrap(pack.sustainedText(id: "es-sustained-text-articulo"))
+        let selections = Dictionary(uniqueKeysWithValues: passage.questions.map {
+            ($0.id, $0.acceptedIds.first ?? "")
+        })
+        let results = sustainedQuestionResults(
+            questions: passage.questions, selections: selections)
+        XCTAssertEqual(results.map(\.question.id), passage.questions.map(\.id))
+        XCTAssertEqual(results.map(\.question.kind), passage.questions.map(\.kind))
+        XCTAssertTrue(results.allSatisfy { $0.correct })
+    }
+
+    // MARK: Glossary save-to-review
+
+    /// The glossary popover's save path — `LearningStore.savePhrase` on the
+    /// real phrasebook API — against a throwaway store: save once, no-op on
+    /// re-save (deterministic id), and unsave records the removal.
+    func testGlossarySaveToReviewWritesThroughThePhrasebookAPI() throws {
+        let store = try makeStore()
+        let pack = try spanishPack()
+        let passage = try XCTUnwrap(pack.sustainedText(id: "es-sustained-text-mensajes"))
+        let entry = try XCTUnwrap(passage.glossary.first)
+
+        let phraseId = LearningStore.savedPhraseId(
+            languageSlug: pack.language.slug, target: entry.term, meaning: entry.definition)
+
+        try store.savePhrase(SavedPhrase(
+            id: phraseId,
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: entry.term,
+            meaning: entry.definition,
+            source: "Planes para el sábado",
+            sourcePackId: pack.id,
+            sourceLessonId: "es-plans-foundation",
+            savedAt: Date()))
+
+        var all = try store.savedPhrases()
+        XCTAssertEqual(all.count, 1)
+        XCTAssertEqual(all[0].id, phraseId)
+        XCTAssertEqual(all[0].target, entry.term)
+        XCTAssertEqual(all[0].meaning, entry.definition)
+        XCTAssertTrue(try store.isPhraseSaved(id: phraseId))
+
+        // Deterministic id: re-saving the same glossary term is a no-op.
+        try store.savePhrase(SavedPhrase(
+            id: phraseId,
+            languageSlug: pack.language.slug,
+            languageName: pack.language.displayName,
+            target: entry.term,
+            meaning: entry.definition,
+            source: "Planes para el sábado",
+            sourcePackId: pack.id,
+            sourceLessonId: "es-plans-foundation",
+            savedAt: Date()))
+        all = try store.savedPhrases()
+        XCTAssertEqual(all.count, 1, "a repeat save must not duplicate the phrase")
+
+        try store.unsavePhrase(id: phraseId)
+        XCTAssertFalse(try store.isPhraseSaved(id: phraseId),
+                       "unsave must remove the phrase")
+    }
+
+    // MARK: Voice fallback resolution
+
+    func testVoiceResolutionPrefersTheDeclaredVoice() {
+        let installed = [
+            InstalledVoice(identifier: "com.apple.voice.compact.es-ES.Monica",
+                           language: "es-ES"),
+            InstalledVoice(identifier: "com.apple.voice.compact.es-MX.Paulina",
+                           language: "es-MX"),
+        ]
+        XCTAssertEqual(
+            SustainedVoiceResolver.resolve(
+                declaredVoiceId: "com.apple.voice.compact.es-ES.Monica",
+                languageCode: "es-ES",
+                installed: installed),
+            "com.apple.voice.compact.es-ES.Monica",
+            "the declared voice is used when it is installed")
+    }
+
+    func testVoiceResolutionFallsBackToAnyInstalledLanguageVoice() {
+        // Monica (es-ES) is declared but the device carries only an es-MX
+        // voice — the schema's offline fallback: ANY installed voice whose
+        // language matches the section's language root reads the section.
+        let installed = [
+            InstalledVoice(identifier: "com.apple.voice.premium.es-MX.Luciana",
+                           language: "es-MX"),
+        ]
+        XCTAssertEqual(
+            SustainedVoiceResolver.resolve(
+                declaredVoiceId: "com.apple.voice.compact.es-ES.Monica",
+                languageCode: "es-ES",
+                installed: installed),
+            "com.apple.voice.premium.es-MX.Luciana")
+    }
+
+    func testVoiceResolutionWithNoInstalledLanguageVoiceResolvesNil() {
+        let installed = [
+            InstalledVoice(identifier: "com.apple.voice.compact.fr-FR.Amelie",
+                           language: "fr-FR"),
+        ]
+        XCTAssertNil(SustainedVoiceResolver.resolve(
+            declaredVoiceId: "com.apple.voice.compact.es-ES.Monica",
+            languageCode: "es-ES",
+            installed: installed),
+            "no installed Spanish voice → nil; the renderer falls back to the "
+            + "language's system voice and the section still plays")
+    }
+
+    func testMissingVoiceRecordingReportsAbsentDeclaredVoicesOnce() {
+        let installed = [
+            InstalledVoice(identifier: "com.apple.voice.compact.es-MX.Paulina",
+                           language: "es-MX"),
+        ]
+        let missing = SustainedVoiceResolver.missingVoices(
+            declaredVoiceIds: [
+                "com.apple.voice.compact.es-ES.Monica",
+                "com.apple.voice.compact.es-MX.Paulina",
+                "com.apple.voice.compact.es-ES.Monica",
+            ],
+            installed: installed)
+        XCTAssertEqual(missing, ["com.apple.voice.compact.es-ES.Monica"],
+                       "missing voices are recorded once, in declared order")
+    }
+
+    // MARK: Transcript visibility state machine
+
+    func testTranscriptStaysHiddenThroughTheFirstPass() {
+        var state = SustainedTranscriptState(sectionCount: 5)
+        XCTAssertFalse(state.isRevealed, "the transcript is hidden before the first pass")
+        state.markPlayed(0)
+        state.markPlayed(2)
+        XCTAssertFalse(state.isRevealed,
+                       "a part-heard passage keeps the transcript hidden")
+        for index in [1, 3, 4] { state.markPlayed(index) }
+        XCTAssertTrue(state.firstPassComplete)
+        XCTAssertTrue(state.isRevealed,
+                      "the transcript appears after the full first pass")
+    }
+
+    func testTranscriptExplicitRevealIsDeliberateAndImmediate() {
+        var state = SustainedTranscriptState(sectionCount: 3)
+        state.reveal()
+        XCTAssertTrue(state.isRevealed,
+                      "a deliberate reveal beats the first-pass gate")
+        XCTAssertFalse(state.firstPassComplete,
+                       "revealing the transcript is not a full pass")
+    }
+
+    func testTranscriptStateIgnoresOutOfRangeSections() {
+        var state = SustainedTranscriptState(sectionCount: 2)
+        state.markPlayed(5)
+        state.markPlayed(-1)
+        XCTAssertFalse(state.firstPassComplete, "out-of-range sections are ignored")
+        state.markPlayed(0)
+        state.markPlayed(1)
+        XCTAssertTrue(state.firstPassComplete)
+        var zero = SustainedTranscriptState(sectionCount: 0)
+        zero.markPlayed(0)
+        XCTAssertFalse(zero.firstPassComplete, "an empty passage never completes a pass")
+    }
+
+    // MARK: Host-step shape
+
+    /// Every 6.1B launch step is a required information step whose activity
+    /// resolves and whose material resolves — the shape the experience lanes
+    /// (and the lesson player's Continue button) depend on.
+    func testSustainedLaunchStepsAreInformationStepsWithResolvableMaterial() throws {
+        let pack = try spanishPack()
+        var sustainedSteps = 0
+        for lesson in pack.lessons {
+            for step in lesson.steps {
+                guard step.sustainedTextId != nil || step.sustainedListeningId != nil else {
+                    continue
+                }
+                sustainedSteps += 1
+                XCTAssertTrue(step.required, "launch step \(step.id) must be required")
+                guard let activity = pack.activity(id: step.activityId) else {
+                    XCTFail("launch step \(step.id) has no activity")
+                    continue
+                }
+                guard case .information = activity else {
+                    XCTFail("launch step \(step.id) must be an information step")
+                    continue
+                }
+                if let textId = step.sustainedTextId {
+                    XCTAssertNotNil(pack.sustainedText(id: textId),
+                                    "step \(step.id) must resolve text \(textId)")
+                }
+                if let listeningId = step.sustainedListeningId {
+                    XCTAssertNotNil(pack.sustainedListening(id: listeningId),
+                                    "step \(step.id) must resolve listening \(listeningId)")
+                }
+            }
+        }
+        XCTAssertEqual(sustainedSteps, 10, "the pack ships ten sustained launch steps")
+    }
+
+    // MARK: Copy discipline
+
+    /// The lane's learner-facing copy never claims a level, CEFR band, or
+    /// proficiency — and every synthesised-audio string says so somewhere.
+    func testSustainedCopyHasNoLevelOrProficiencyClaims() {
+        let banned = ["level", "cefr", "a1", "a2", "b1", "b2",
+                      "proficien", "mastery", "fluent", "native"]
+        for string in SustainedCopy.allStrings {
+            let folded = string.folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: Locale(identifier: "en"))
+            for word in banned where folded.localizedCaseInsensitiveContains(word) {
+                XCTFail("copy must not claim a level or proficiency: "
+                        + "\"\(string)\" mentions \"\(word)\"")
+            }
+        }
+        XCTAssertTrue(SustainedCopy.synthesisedNote("Spanish")
+                        .localizedCaseInsensitiveContains("synth"),
+                      "the synthesised-audio label must use the app's synth wording")
+        XCTAssertTrue(SustainedCopy.synthesisedHint
+                        .localizedCaseInsensitiveContains("synth"),
+                      "the voice hints must label the audio as synthesised")
+    }
+
+    // MARK: - Open tasks (Phase 6.2)
+
+    /// The authored Spanish open tasks, verbatim — the developer
+    /// approves the goal / required points / model / rubric copy here in
+    /// one place (plan 6.2), and these pins keep it stable.
+    func testOpenTasksAreAuthoredAsApproved() throws {
+        let pack = try spanishPack()
+        func openTask(_ id: String) throws -> OpenTaskActivity {
+            let act = try activity(id, in: pack)
+            guard case .openTask(let spec) = act else {
+                throw NSError(
+                    domain: "PackSpanishTests", code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "\(id) must be an open task"])
+            }
+            return spec
+        }
+
+        // 1. Written narrative retell — hosted by «Contar el fin de semana».
+        let fin = try openTask("es-a2-fin-de-semana-open-task")
+        XCTAssertEqual(fin.mode, .written)
+        XCTAssertTrue(fin.skills.contains(.writing))
+        XCTAssertEqual(
+            fin.goal,
+            "Write about your last weekend in a few connected sentences, the way the narrative did.")
+        XCTAssertEqual(fin.requiredPoints, [
+            "Say where you were or what you did — use past verbs (fui, hablé, comí…).",
+            "Add at least one time word (el sábado, ayer, por la mañana…).",
+            "Close with how it went: La comida fue buena / La película fue divertida…",
+        ])
+        XCTAssertEqual(
+            fin.modelResponse,
+            "El sábado fui al mercado con mi hermana. Compramos fruta y hablamos con el señor de las naranjas. Por la tarde comí en casa de mi abuela — la comida fue muy buena.")
+        XCTAssertEqual(fin.rubric.map(\.id),
+                       ["meaning", "organization", "useful-language", "repair"])
+        XCTAssertEqual(fin.rubric.map(\.text), [
+            "My sentences say something real about my weekend.",
+            "It hangs together: what, when, and how it ended.",
+            "I used past verbs and a time word I have practised.",
+            "I noticed a mistake and fixed it while writing.",
+        ])
+        XCTAssertEqual(fin.lengthGuidance,
+                       "A few connected sentences (three or four is plenty).")
+
+        // 2. Spoken café order — hosted by «At the café».
+        let cafe = try openTask("es-cafe-requests-foundation-open-task")
+        XCTAssertEqual(cafe.mode, .spoken)
+        XCTAssertTrue(cafe.skills.contains(.speaking))
+        XCTAssertEqual(
+            cafe.goal,
+            "At the café counter, make your order out loud: greet, ask politely with quisiera, and close politely.")
+        XCTAssertEqual(cafe.requiredPoints, [
+            "Use the polite request: Quisiera…, por favor.",
+            "Name the drink with its article (un café / un té) and keep the accents.",
+            "Add the exchange you might hear back: ¿Algo más? → No, gracias.",
+        ])
+        XCTAssertEqual(
+            cafe.modelResponse,
+            "Hola. Quisiera un café, por favor. — Claro. ¿Algo más? — No, gracias.")
+        XCTAssertEqual(cafe.rubric.map(\.text), [
+            "My request would be understood at a café counter.",
+            "I greet, order, and close in a natural order.",
+            "I used quisiera + the drink + por favor, with the accents right.",
+            "I heard myself and fixed a slip by re-recording.",
+        ])
+        XCTAssertEqual(cafe.lengthGuidance,
+                       "About a minute of speaking (60–90 seconds is a soft target).")
+
+        // 3. Spoken weekend plans — hosted by «Plans and intentions».
+        let plans = try openTask("es-a2-planes-intenciones-open-task")
+        XCTAssertEqual(plans.mode, .spoken)
+        XCTAssertTrue(plans.skills.contains(.speaking))
+        XCTAssertEqual(
+            plans.goal,
+            "Tell a friend your plans for this weekend out loud, using ir a for the decided plans.")
+        XCTAssertEqual(plans.requiredPoints, [
+            "Open with one decided plan: Voy a… / Vamos a…",
+            "Add a second plan with the same frame.",
+            "Say what you are looking forward to with Quiero… — the wish behind the plan.",
+        ])
+        XCTAssertEqual(
+            plans.modelResponse,
+            "Este fin de semana voy a visitar a mi familia en Sevilla. El sábado vamos a comer en casa de mi tía. Quiero ver a mis primos — hace tiempo que no los veo.")
+        XCTAssertEqual(plans.rubric.map(\.text), [
+            "My plans would be clear to a friend.",
+            "One plan, then another, then the wish behind them.",
+            "I used ir a (voy a / vamos a) and quiero, and the second verb stayed unchanged.",
+            "I heard a slip (like vas a instead of voy a) and re-recorded to fix it.",
+        ])
+
+        // Every task ships one authored hint and the four-dimension rubric.
+        for task in [fin, cafe, plans] {
+            XCTAssertEqual(task.hints.count, 1, "\(task.id) ships one hint")
+            XCTAssertFalse(task.hints[0].isEmpty)
+            XCTAssertEqual(task.rubric.count, 4, "\(task.id) uses the four-dimension rubric")
+            XCTAssertEqual(Set(task.rubric.map(\.id)).count, 4,
+                           "\(task.id) rubric ids are unique")
+        }
+    }
+
+    /// Binding discipline: each open task is hosted by a required step on
+    /// its lesson's trail — the fin-de-semana task sits between the
+    /// sustained narrative and the recall step, while the café and plans
+    /// tasks sit before their lessons' text final-response close (M5) —
+    /// and the whole pack still validates.
+    func testOpenTasksAreHostedOnTheLessonTrail() throws {
+        let pack = try spanishPack()
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "the pack with open tasks must validate")
+
+        let fin = try XCTUnwrap(pack.lesson(id: "es-a2-fin-de-semana"))
+        let finStep = try XCTUnwrap(
+            fin.steps.first { $0.id == "es-a2-fin-de-semana-step-open-task" })
+        XCTAssertEqual(finStep.activityId, "es-a2-fin-de-semana-open-task")
+        XCTAssertTrue(finStep.required)
+        XCTAssertEqual(finStep.purpose, .transfer)
+        let sustained = try XCTUnwrap(
+            fin.steps.first { $0.id == "es-a2-fin-de-semana-step-sustained" })
+        XCTAssertEqual(sustained.nextStepId, finStep.id,
+                       "the task follows the sustained narrative")
+        XCTAssertEqual(finStep.nextStepId, "es-a2-fin-de-semana-step-rb8",
+                       "the task precedes the recall close")
+
+        let cafeStep = try XCTUnwrap(
+            pack.steps(hosting: "es-cafe-requests-foundation-open-task"))
+        XCTAssertEqual(cafeStep.nextStepId,
+                       "es-cafe-requests-foundation-step-es-cafe-requests-foundation-recall",
+                       "the café task precedes the recall final response")
+        XCTAssertTrue(cafeStep.required)
+
+        let plansStep = try XCTUnwrap(
+            pack.steps(hosting: "es-a2-planes-intenciones-open-task"))
+        XCTAssertEqual(plansStep.nextStepId,
+                       "es-a2-planes-intenciones-step-es-a2-planes-intenciones-read",
+                       "the plans task precedes the read final response")
+        XCTAssertTrue(plansStep.required)
+    }
+
+    /// Fallback (plan 6.2, item 4): a pack without any open tasks — the
+    /// six-month-old five-pack shape plus sustained material — still
+    /// decodes with zero open tasks and unchanged content. 6.2 only
+    /// *added* open tasks: no authored id, prompt, answer, or revision
+    /// changed, only `nextStepId` chains restored.
+    func testPackWithoutOpenTasksStillLoadsUnchanged() throws {
+        let content = try XCTUnwrap(
+            Bundle.main.url(forResource: "Content", withExtension: nil),
+            "test host must bundle the Content folder")
+        let url = content.appendingPathComponent("packs/spanish.json")
+        let raw = try Data(contentsOf: url)
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: raw) as? [String: Any],
+            "spanish.json must be a JSON object")
+
+        let openTaskActivities: Set<String> = [
+            "es-a2-fin-de-semana-open-task",
+            "es-cafe-requests-foundation-open-task",
+            "es-a2-planes-intenciones-open-task",
+            "es-b1-viaje-escrito-open-task",
+            "es-b1-plan-escrito-open-task",
+            "es-b1-decision-escrito-open-task",
+        ]
+        let openTaskSteps: Set<String> = [
+            "es-a2-fin-de-semana-step-open-task",
+            "es-cafe-requests-foundation-step-open-task",
+            "es-a2-planes-intenciones-step-open-task",
+            "es-b1-viaje-escrito-step-open-task",
+            "es-b1-plan-escrito-step-open-task",
+            "es-b1-decision-escrito-step-open-task",
+        ]
+        var old = object
+        let activities = try XCTUnwrap(old["activities"] as? [[String: Any]])
+        old["activities"] = activities.filter {
+            guard let id = $0["id"] as? String else { return true }
+            return !openTaskActivities.contains(id)
+        }
+        let lessons = try XCTUnwrap(old["lessons"] as? [[String: Any]])
+        old["lessons"] = lessons.map { lesson -> [String: Any] in
+            var lesson = lesson
+            guard let rawSteps = lesson["steps"] as? [[String: Any]] else { return lesson }
+            // A removed step's successor may itself be removed (sustained →
+            // open-task in the fin-de-semana lesson), so each predecessor
+            // reroutes onto the surviving next step and the original
+            // chains (rb7→rb8, café build→recall, plans write→read) are
+            // restored with no dangling pointers.
+            var removedNext = [String: String?]()
+            var kept: [[String: Any]] = []
+            for step in rawSteps {
+                if (step["id"] as? String).map(openTaskSteps.contains) == true {
+                    if let id = step["id"] as? String {
+                        removedNext[id] = step["nextStepId"] as? String
+                    }
+                } else {
+                    kept.append(step)
+                }
+            }
+            lesson["steps"] = kept.map { step -> [String: Any] in
+                var step = step
+                if let id = step["id"] as? String,
+                   let next = step["nextStepId"] as? String,
+                   let replacement = removedNext[next] {
+                    step["nextStepId"] = replacement
+                }
+                return step
+            }
+            return lesson
+        }
+
+        let pack = try JSONDecoder().decode(
+            CoursePack.self,
+            from: JSONSerialization.data(withJSONObject: old))
+        let taskCount = pack.activities.reduce(into: 0) { count, activity in
+            if case .openTask = activity { count += 1 }
+        }
+        XCTAssertEqual(taskCount, 0,
+                       "packs without open tasks carry none")
+        XCTAssertEqual(pack.activities.count, 585,
+                       "the pre-6.2 activity count (591 − 6 open tasks) is unchanged")
+        XCTAssertEqual(pack.lessons.count, 70)
+        XCTAssertEqual(pack.version, "0.7.9",
+                       "only the version string may differ between 6.3 and its pre-6.3 shape")
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "a pack without open tasks must still validate")
+    }
+
+    // MARK: - Phase 6.3 branching exchanges
+
+    /// The hosted Spanish exchanges, pinned verbatim — the developer
+    /// approves the clarification + misunderstanding-recovery copy here in
+    /// one place (plan 6.3), and these pins keep it stable. Choice turns
+    /// are deterministic (authored option -> partner's next line); open
+    /// turns are self-assessed against a 6.2-style rubric, never graded.
+    func testDialogueExchangesAreAuthoredAsApproved() throws {
+        let pack = try spanishPack()
+        func dialogue(_ id: String) throws -> Dialogue {
+            try XCTUnwrap(pack.dialogue(id: id), "missing dialogue \(id)")
+        }
+        func node(_ id: String, in d: Dialogue) throws -> DialogueNode {
+            try XCTUnwrap(d.node(id: id), "missing node \(id) in \(d.id)")
+        }
+
+        // 1. Café — hosted by «At the café» (Foundation).
+        let cafe = try dialogue("es-cafe-turno")
+        XCTAssertEqual(cafe.hostLessonId, "es-cafe-requests-foundation")
+        XCTAssertEqual(cafe.prerequisite, "es-cafe-requests-foundation")
+        XCTAssertEqual(cafe.partner, "Waiter")
+        XCTAssertEqual(cafe.goal,
+                       "Order a coffee and sort out a misunderstanding with the waiter.")
+        XCTAssertEqual(cafe.start, "greet")
+
+        // The misunderstanding: the waiter mishears the coffee order as tea.
+        // REQUIRED TURN — every path passes through it.
+        let mishear = try node("mishear", in: cafe)
+        XCTAssertEqual(mishear.kind, .misunderstanding)
+        XCTAssertEqual(mishear.line, "¿Un té? Muy bien. Enseguida se lo traigo.")
+        XCTAssertEqual(mishear.meaning, "A tea? Very good. I'll bring it right away.")
+        // The authored recovery route: the corrective choice lands on a
+        // recovery node, never a dead end.
+        let repairChoice = try XCTUnwrap(
+            mishear.choices.first { $0.id == "correct-coffee" })
+        XCTAssertEqual(repairChoice.text, "No, perdón — un café, por favor.")
+        XCTAssertEqual(repairChoice.next, "recover")
+        let recover = try node("recover", in: cafe)
+        XCTAssertEqual(recover.kind, .recovery)
+        XCTAssertEqual(recover.line, "Ah, un café. Perdón, no le he oído bien.")
+        XCTAssertEqual(recover.meaning, "Ah, a coffee. Sorry, I didn't hear you well.")
+
+        // The ask-for-clarification move: the learner asks the waiter to
+        // repeat, the waiter clarifies, the thread rejoins the misread.
+        let clarifyGreet = try node("clarify-greet", in: cafe)
+        XCTAssertEqual(clarifyGreet.kind, .clarification)
+        XCTAssertEqual(clarifyGreet.line, "Claro. Le preguntaba qué quiere tomar.")
+        XCTAssertEqual(clarifyGreet.meaning,
+                       "Of course. I was asking what you would like to drink.")
+        let clarifyMisread = try node("clarify-misread", in: cafe)
+        XCTAssertEqual(clarifyMisread.kind, .clarification)
+        XCTAssertEqual(clarifyMisread.line,
+                       "He dicho que le traigo un té. ¿Es eso lo que quiere?")
+        XCTAssertEqual(clarifyMisread.meaning,
+                       "I said I'd bring you a tea. Is that what you want?")
+
+        // The open turn: compose the reply, self-assess (never graded).
+        let openTurn = try node("algo-mas", in: cafe)
+        XCTAssertNil(openTurn.kind)
+        XCTAssertTrue(openTurn.choices.isEmpty)
+        XCTAssertEqual(openTurn.line, "¿Algo más?")
+        XCTAssertEqual(
+            openTurn.prompt,
+            "The waiter asks if you want anything else. Compose your answer in Spanish: no, nothing else — thank you.")
+        XCTAssertEqual(openTurn.modelResponse, "No, nada más, gracias.")
+        XCTAssertEqual(openTurn.next, "done")
+        XCTAssertEqual(openTurn.rubric?.map(\.id),
+                       ["meaning", "organization", "useful-language", "repair"])
+        XCTAssertEqual(openTurn.rubric?.map(\.text), [
+            "My reply would be understood at a café.",
+            "It fits the exchange: a polite no, and thanks.",
+            "I used words from this lesson (nada más, gracias…).",
+            "I caught a slip while writing and fixed it.",
+        ])
+        // Explicit end states.
+        XCTAssertTrue(try node("done", in: cafe).complete)
+        XCTAssertEqual(try node("done", in: cafe).line, "Perfecto. Aquí tiene. ¡Que lo disfrute!")
+        XCTAssertTrue(try node("tea-done", in: cafe).complete)
+        XCTAssertEqual(try node("tea-done", in: cafe).line, "Un té con leche. Enseguida se lo traigo.")
+
+        // 2. Saturday plans — hosted by «Plans and intentions» (Developing).
+        let plans = try dialogue("es-a2-planes-sabado")
+        XCTAssertEqual(plans.hostLessonId, "es-a2-planes-intenciones")
+        XCTAssertEqual(plans.prerequisite, "es-a2-planes-intenciones")
+        XCTAssertEqual(plans.partner, "Friend")
+        XCTAssertEqual(plans.goal,
+                       "Agree on Saturday plans and repair a misunderstanding about the day.")
+        XCTAssertEqual(plans.start, "invite")
+
+        let mishearDay = try node("mishear-day", in: plans)
+        XCTAssertEqual(mishearDay.kind, .misunderstanding)
+        XCTAssertEqual(mishearDay.line, "¿El domingo? El domingo no puedo, lo siento.")
+        XCTAssertEqual(mishearDay.meaning, "Sunday? I can't on Sunday, sorry.")
+        let dayRepair = try XCTUnwrap(
+            mishearDay.choices.first { $0.id == "fix-saturday" })
+        XCTAssertEqual(dayRepair.text, "No, digo el sábado, no el domingo.")
+        XCTAssertEqual(dayRepair.next, "recover-day")
+        XCTAssertEqual(try node("recover-day", in: plans).kind, .recovery)
+        XCTAssertEqual(try node("recover-day", in: plans).line, "¡Ah, el sábado! Sí, perfecto.")
+        XCTAssertEqual(try node("clarify-invite", in: plans).kind, .clarification)
+        XCTAssertEqual(try node("clarify-day", in: plans).kind, .clarification)
+
+        let plansOpen = try node("plan-open", in: plans)
+        XCTAssertTrue(plansOpen.choices.isEmpty)
+        XCTAssertEqual(plansOpen.line, "Me encanta. ¿Y tú qué planes tienes el sábado?")
+        XCTAssertEqual(
+            plansOpen.prompt,
+            "Your friend asks about your plans. Compose your answer in Spanish: your plan for Saturday in one or two sentences using voy a.")
+        XCTAssertEqual(plansOpen.modelResponse,
+                       "El sábado voy a ir al cine contigo y después voy a cenar con mis amigos.")
+        XCTAssertEqual(plansOpen.next, "done")
+        XCTAssertEqual(plansOpen.rubric?.map(\.id),
+                       ["meaning", "organization", "useful-language", "repair"])
+        XCTAssertTrue(try node("done", in: plans).complete)
+        XCTAssertEqual(try node("done", in: plans).line, "¡Y yo voy contigo! Quedamos a las seis.")
+
+        // Every open turn: 3-6 unique rubric criteria with text, one
+        // model response, and a resolvable `next`. Open turns never carry
+        // choices (the learner composes, never picks from authored options).
+        for d in [cafe, plans] {
+            for n in d.nodes where n.prompt != nil {
+                XCTAssertTrue(n.choices.isEmpty,
+                              "\(d.id) \(n.id): an open turn must not also offer choices")
+                guard let rubric = n.rubric else {
+                    return XCTFail("\(d.id) \(n.id): open turn needs a rubric")
+                }
+                XCTAssertTrue((3...6).contains(rubric.count),
+                              "\(d.id) \(n.id): rubric out of 3-6 range")
+                XCTAssertEqual(Set(rubric.map(\.id)).count, rubric.count,
+                               "\(d.id) \(n.id): rubric ids unique")
+                XCTAssertNotNil(d.node(id: n.next ?? ""),
+                                "\(d.id) \(n.id): open turn next must resolve")
+            }
+        }
+    }
+
+    /// Graph hygiene for every authored exchange (validator-level, re-run
+    /// headless in the test): every node reachable from the start, no
+    /// dead ends (each non-end node continues), an explicit end state
+    /// exists, and every end state is reachable along a real path.
+    func testDialogueGraphReachabilityAndNoDeadEnds() throws {
+        let pack = try spanishPack()
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "the pack with hosted exchanges must validate")
+
+        let exchanges = pack.dialogues.filter { $0.hostLessonId != nil }
+        XCTAssertFalse(exchanges.isEmpty)
+        for dialogue in exchanges {
+            let nodesById = Dictionary(uniqueKeysWithValues: dialogue.nodes.map { ($0.id, $0) })
+            // Reachability from start.
+            var visited = Set<String>()
+            func visit(_ nodeId: String) {
+                guard !visited.contains(nodeId), let node = nodesById[nodeId] else { return }
+                visited.insert(nodeId)
+                for choice in node.choices { visit(choice.next) }
+                if let next = node.next { visit(next) }
+            }
+            visit(dialogue.start)
+            XCTAssertEqual(visited, Set(dialogue.nodes.map(\.id)),
+                           "\(dialogue.id): every node must be reachable from the start")
+
+            // Explicit end states, reachable, and no dead ends.
+            let ends = dialogue.nodes.filter(\.complete)
+            XCTAssertFalse(ends.isEmpty, "\(dialogue.id): needs an explicit end state")
+            for end in ends {
+                XCTAssertTrue(visited.contains(end.id),
+                              "\(dialogue.id): end state \(end.id) must be reachable")
+            }
+            for node in dialogue.nodes where !node.complete {
+                let continues = !node.choices.isEmpty || node.next != nil
+                XCTAssertTrue(continues, "\(dialogue.id) \(node.id): non-end node is a dead end")
+                for choice in node.choices {
+                    XCTAssertNotNil(nodesById[choice.next],
+                                    "\(dialogue.id) \(node.id): choice target \(choice.next) must resolve")
+                }
+            }
+        }
+    }
+
+    /// Required turns not skippable: breaking every path down, each path
+    /// passes at least three learner turns (the partner's reply changes
+    /// with the learner's own response) and lands on an explicit end state
+    /// with no repeated node.
+    func testEveryDialoguePathHasThreeOrMoreTurnsAndAnExplicitEnd() throws {
+        let pack = try spanishPack()
+        for dialogue in pack.dialogues where dialogue.hostLessonId != nil {
+            let nodesById = Dictionary(uniqueKeysWithValues: dialogue.nodes.map { ($0.id, $0) })
+            var paths: [[String]] = []
+            func walk(_ nodeId: String, _ trail: [String]) {
+                let path = trail + [nodeId]
+                if nodesById[nodeId]!.complete {
+                    paths.append(path)
+                    return
+                }
+                var successors = nodesById[nodeId]!.choices.map(\.next)
+                if let next = nodesById[nodeId]!.next { successors.append(next) }
+                for successor in successors {
+                    XCTAssertFalse(path.contains(successor),
+                                   "\(dialogue.id): cycle at \(successor)")
+                    walk(successor, path)
+                }
+            }
+            walk(dialogue.start, [])
+            XCTAssertFalse(paths.isEmpty, "\(dialogue.id): must have a path")
+
+            for path in paths {
+                let turns = path.filter { !nodesById[$0]!.complete }
+                XCTAssertGreaterThanOrEqual(
+                    turns.count, 3,
+                    "\(dialogue.id) path \(path.joined(separator: " → ")): fewer than three learner turns")
+                XCTAssertEqual(Set(path).count, path.count,
+                               "\(dialogue.id): no node repeats on a path (nothing skippable, nothing doubled)")
+                XCTAssertTrue(nodesById[path.last!]!.complete,
+                              "\(dialogue.id): every path ends on an explicit end state")
+                // Consecutive nodes follow real edges: choice next or open next.
+                for index in 0..<(path.count - 1) {
+                    let node = nodesById[path[index]]!
+                    let follows = node.choices.contains { $0.next == path[index + 1] }
+                        || node.next == path[index + 1]
+                    XCTAssertTrue(follows,
+                                  "\(dialogue.id): \(path[index]) does not route to \(path[index + 1])")
+                }
+            }
+        }
+    }
+
+    /// Clarification and misunderstanding-repair routes: every hosted
+    /// exchange ships both moves, every misunderstanding carries an
+    /// authored recovery route, and both routes end in an explicit end
+    /// state (no dead ends, no skipped required turns).
+    func testDialogueClarificationAndRecoveryRoutesEndExplicitly() throws {
+        let pack = try spanishPack()
+        for dialogue in pack.dialogues where dialogue.hostLessonId != nil {
+            let explanations = dialogue.nodes.compactMap(\.kind)
+            XCTAssertTrue(explanations.contains(.clarification),
+                          "\(dialogue.id): must include an ask-for-clarification move")
+            XCTAssertTrue(explanations.contains(.misunderstanding),
+                          "\(dialogue.id): must include a misunderstanding to repair")
+            XCTAssertTrue(explanations.contains(.recovery),
+                          "\(dialogue.id): must include an authored recovery node")
+
+            let nodesById = Dictionary(uniqueKeysWithValues: dialogue.nodes.map { ($0.id, $0) })
+            for node in dialogue.nodes where node.kind == .misunderstanding {
+                let recoveryTargets = node.choices.compactMap { choice in
+                    nodesById[choice.next]?.kind == .recovery ? choice.next : nil
+                }
+                XCTAssertFalse(recoveryTargets.isEmpty,
+                               "\(dialogue.id) \(node.id): misunderstanding has no recovery route")
+
+                // Every route from the misunderstanding lands on an explicit
+                // end state (each recovery node is a turn with a route on).
+                for recoveryId in recoveryTargets {
+                    var reachedEnd = false
+                    func walk(_ nodeId: String, _ trail: [String]) {
+                        let path = trail + [nodeId]
+                        if nodesById[nodeId]!.complete { reachedEnd = true; return }
+                        for choice in nodesById[nodeId]!.choices {
+                            guard !path.contains(choice.next) else { continue }
+                            walk(choice.next, path)
+                        }
+                        if let next = nodesById[nodeId]!.next, !path.contains(next) {
+                            walk(next, path)
+                        }
+                    }
+                    walk(recoveryId, [])
+                    XCTAssertTrue(reachedEnd,
+                                   "\(dialogue.id): recovery route \(recoveryId) must reach an explicit end state")
+                }
+            }
+        }
+    }
+
+    /// Host binding: each exchange is hosted by exactly one lesson, the
+    /// host resolve, and the pack lookup mirrors the binding.
+    func testHostedDialoguesBindToOneLessonEach() throws {
+        let pack = try spanishPack()
+        let hosted = pack.dialogues.filter { $0.hostLessonId != nil }
+        XCTAssertEqual(hosted.count, 5)
+        var hosts = Set<String>()
+        for dialogue in hosted {
+            let host = try XCTUnwrap(dialogue.hostLessonId)
+            XCTAssertTrue(hosts.insert(host).inserted,
+                          "a lesson hosts one dialogue each: \(host) duplicated")
+            XCTAssertNotNil(pack.lesson(id: host),
+                            "\(dialogue.id) host \(host) must be a lesson")
+            XCTAssertEqual(pack.dialogue(hostedBy: host)?.id, dialogue.id,
+                           "\(dialogue.id): pack.dialogue(hostedBy:) must resolve the binding")
+        }
+        XCTAssertEqual(hosts, Set(["es-cafe-requests-foundation",
+                                   "es-a2-planes-intenciones",
+                                   "es-b1-reprogramar-dialogo",
+                                   "es-b1-decision-dialogo",
+                                   "es-b1-plan-dialogo"]),
+                       "the Foundation café exchange, the Developing plans exchange, the B1 rebooking dialogue, the B1 job-offer dialogue, and the B1 birthday-plan dialogue")
+        // No orphaned host bindings — every host lesson exists (checked
+        // above) and unhosted dialogues stay validated-only.
+        for dialogue in pack.dialogues where dialogue.hostLessonId == nil {
+            XCTAssertFalse(
+                dialogue.nodes.contains { $0.prompt != nil || $0.kind != nil },
+                "\(dialogue.id): unhosted dialogues must stay in the base (pre-6.3) shape")
+        }
+    }
+
+    /// Fallback (plan 6.3, item 4): a pack without the dialogues — the
+    /// pre-6.3 Spanish shape plus every other addition — still decodes
+    /// with zero exchanges and unchanged content. 6.3 only *added*
+    /// dialogues: no authored id, prompt, answer, or revision changed.
+    func testPackWithoutDialogueFieldsStillLoadsUnchanged() throws {
+        let content = try XCTUnwrap(
+            Bundle.main.url(forResource: "Content", withExtension: nil),
+            "test host must bundle the Content folder")
+        let url = content.appendingPathComponent("packs/spanish.json")
+        let raw = try Data(contentsOf: url)
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: raw) as? [String: Any],
+            "spanish.json must be a JSON object")
+        var old = object
+        old.removeValue(forKey: "dialogues")
+
+        let pack = try JSONDecoder().decode(
+            CoursePack.self,
+            from: JSONSerialization.data(withJSONObject: old))
+        XCTAssertTrue(pack.dialogues.isEmpty,
+                      "packs without the key decode to an empty exchange array")
+        XCTAssertEqual(pack.activities.count, 591)
+        XCTAssertEqual(pack.lessons.count, 70)
+        XCTAssertEqual(pack.version, "0.7.9",
+                       "only the version string may differ between 6.3 and its pre-6.3 shape")
+        XCTAssertNoThrow(try PackValidator.validate(pack),
+                         "a pack without dialogues must still validate")
+    }
+
+    /// Unseen-wording discipline (plan 6.3): every learner-facing dialogue
+    /// string — line, meaning, choice text/feedback, open prompt, model,
+    /// rubric — uses wording unseen in the lesson activities (including
+    /// open-task goal/model), checkpoint items, and sustained questions.
+    /// Mirrors `verifyDialogueWording` in tools/check_packs.swift so the
+    /// suite is headless.
+    func testDialogueWordingIsUnseenAcrossThePack() throws {
+        let pack = try spanishPack()
+        func comparable(_ text: String) -> String {
+            text.folding(options: .caseInsensitive, locale: nil)
+                .unicodeScalars.filter { CharacterSet.letters.contains($0)
+                    || CharacterSet.decimalDigits.contains($0) }
+                .map(String.init).joined()
+        }
+        var activityTexts = Set<String>()
+        for activity in pack.activities {
+            let text: String
+            switch activity {
+            case .information(let info): text = info.body
+            case .selfCompare(let sc): text = sc.prompt
+            case .openTask(let ot): text = "\(ot.goal) \(ot.modelResponse)"
+            default: text = activity.base?.prompt ?? ""
+            }
+            if !text.isEmpty { activityTexts.insert(comparable(text)) }
+        }
+        var checkpointTexts = Set<String>()
+        for checkpoint in pack.checkpoints {
+            for item in checkpoint.items {
+                switch item {
+                case .reading(let r): checkpointTexts.formUnion(
+                    r.questions.map { comparable($0.question) })
+                case .writing(let w): checkpointTexts.insert(comparable(w.prompt))
+                case .speaking(let s): checkpointTexts.insert(comparable(s.prompt))
+                }
+            }
+        }
+        var sustainedTexts = Set<String>()
+        for text in pack.sustainedTexts {
+            sustainedTexts.formUnion(text.questions.map { comparable($0.question) })
+        }
+        for passage in pack.sustainedListenings {
+            sustainedTexts.formUnion(passage.questions.map { comparable($0.question) })
+        }
+
+        var checked = 0
+        for dialogue in pack.dialogues {
+            for node in dialogue.nodes {
+                func assertUnseen(_ string: String, _ context: String) {
+                    checked += 1
+                    let norm = comparable(string)
+                    XCTAssertFalse(activityTexts.contains(norm),
+                                   "\(dialogue.id) \(node.id) \(context) duplicates a lesson activity text")
+                    XCTAssertFalse(checkpointTexts.contains(norm),
+                                   "\(dialogue.id) \(node.id) \(context) duplicates a checkpoint text")
+                    XCTAssertFalse(sustainedTexts.contains(norm),
+                                   "\(dialogue.id) \(node.id) \(context) duplicates a sustained question")
+                }
+                assertUnseen(node.line, "line")
+                assertUnseen(node.meaning, "meaning")
+                if let prompt = node.prompt {
+                    assertUnseen(prompt, "prompt")
+                    assertUnseen(node.modelResponse ?? "", "model")
+                    for criterion in node.rubric ?? [] {
+                        assertUnseen(criterion.text, "rubric")
+                    }
+                }
+                for choice in node.choices {
+                    assertUnseen(choice.text, "choice text")
+                    assertUnseen(choice.feedback, "choice feedback")
+                }
+            }
+        }
+        XCTAssertGreaterThan(checked, 50,
+                             "the pin must cover both exchanges' learner-facing strings")
     }
 }

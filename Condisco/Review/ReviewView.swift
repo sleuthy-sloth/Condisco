@@ -2,15 +2,18 @@ import SwiftUI
 
 // MARK: - Review tab
 //
-// Spaced repetition over lesson evidence: due items across all five
-// courses, oldest first. Each card asks for recall, reveals the answer,
-// and takes an honest self-rating — heard, not judged. No timers, no
-// streaks, no scores.
+// Spaced repetition over lesson evidence: due items from every course —
+// or just the focus course, when narrowed — oldest first. Each card
+// asks for recall, reveals the answer, and takes an honest self-rating
+// — heard, not judged. No timers, no streaks, no scores.
 
 @MainActor
 final class ReviewModel: ObservableObject {
     @Published var isLoading = true
     @Published var loadError: String?
+    /// Which courses the queue reviews: every course, or just the focus
+    /// course. Session state only — the tab opens on All courses.
+    @Published var scope: ReviewScope = .all
     @Published var due: [ReviewItem] = []
     @Published var nextDueAt: Date?
     /// Evidence keys whose latest rating was "not yet" — the tricky list.
@@ -19,21 +22,40 @@ final class ReviewModel: ObservableObject {
     @Published var dueTomorrowCount = 0
 
     private var store: LearningStore?
+    /// Pack order as loaded, so the All-courses queue keeps catalog order.
+    private var packs: [CoursePack] = []
     private var packsById: [String: CoursePack] = [:]
+    /// The focus course's pack id, resolved from `condisco.focusLanguage`.
+    private var focusPackId: String?
+
+    init() {}
+
+    /// Test seam: a fully wired model over a caller-supplied store and
+    /// packs, so the review-scope tests drive switching without the
+    /// documents store. Populates exactly what `load()` does.
+    init(store: LearningStore, packs: [CoursePack], focusSlug: String,
+         scope: ReviewScope = .all) throws {
+        self.store = store
+        self.packs = packs
+        self.packsById = Dictionary(
+            uniqueKeysWithValues: packs.map { ($0.id, $0) })
+        self.focusPackId = packs.first { $0.language.slug == focusSlug }?.id
+        self.scope = scope
+        try reloadScoped()
+    }
 
     func load() async {
         do {
             let store = try LearningStore.inDocuments()
             self.store = store
             let packs = try PackLoader.loadPacks()
+            self.packs = packs
             self.packsById = Dictionary(
                 uniqueKeysWithValues: packs.map { ($0.id, $0) })
-            let (due, nextDueAt) = try ReviewCatalog.loadDue(packs: packs, store: store)
-            self.due = due
-            self.nextDueAt = nextDueAt
-            self.tricky = try ReviewCatalog.loadTricky(packs: packs, store: store)
-            self.dueTomorrowCount = try ReviewCatalog.countDueWithin(
-                packs: packs, store: store, days: 1)
+            let focusSlug = UserDefaults.standard.string(
+                forKey: "condisco.focusLanguage") ?? "french"
+            self.focusPackId = packs.first { $0.language.slug == focusSlug }?.id
+            try reloadScoped()
         } catch {
             loadError = error.localizedDescription
         }
@@ -44,6 +66,68 @@ final class ReviewModel: ObservableObject {
         isLoading = true
         loadError = nil
         await load()
+    }
+
+    /// Re-runs the stock due/tricky/forecast loads over the scope's packs —
+    /// the same `ReviewCatalog` paths Home and the widget use, with the pack
+    /// list narrowed. No scheduling logic here: FSRS and the event pipeline
+    /// are untouched, and a verdict still only reschedules the one evidence
+    /// key it records.
+    private func reloadScoped() throws {
+        guard let store else { return }
+        let packs = scopedPacks()
+        let (due, nextDueAt) = try ReviewCatalog.loadDue(packs: packs, store: store)
+        tricky = try ReviewCatalog.loadTricky(packs: packs, store: store)
+        dueTomorrowCount = try ReviewCatalog.countDueWithin(
+            packs: packs, store: store, days: 1)
+        self.due = due
+        self.nextDueAt = nextDueAt
+    }
+
+    /// Re-applies the selected scope immediately: switching Focus course /
+    /// All courses mid-visit reveals or hides the right cards without a
+    /// spinner, because the reload is synchronous.
+    func applyScope() {
+        guard let store, !packs.isEmpty else { return }
+        do {
+            try reloadScoped()
+            loadError = nil
+        } catch {
+            loadError = error.localizedDescription
+        }
+    }
+
+    /// Home's Today invitation opens the queue on All courses so the
+    /// all-courses due count it displayed and the queue it opens stay in
+    /// agreement, even when the learner had narrowed the tab to the focus
+    /// course earlier. Session state only: the narrowing is reset by this
+    /// entry path and nothing is persisted; deliberate narrowing on the
+    /// tab itself is otherwise untouched.
+    func resetScopeForHomeInvitation() {
+        scope = .all
+        applyScope()
+    }
+
+    /// The packs the current scope reviews: every course, or just the
+    /// focus course. Empty when the focus slug resolves to no bundled
+    /// pack, which shows an honest empty queue rather than a wrong one.
+    private func scopedPacks() -> [CoursePack] {
+        switch scope {
+        case .all: return packs
+        case .focus:
+            guard let focusPackId, let pack = packsById[focusPackId] else {
+                return []
+            }
+            return [pack]
+        }
+    }
+
+    /// The focus course's title, for the scope-aware empty-state copy.
+    var focusCourseTitle: String? {
+        guard let focusPackId, let pack = packsById[focusPackId] else {
+            return packs.first?.title
+        }
+        return pack.title
     }
 
     /// Records a review verdict through the lesson event pipeline so the
@@ -118,10 +202,26 @@ struct ReviewView: View {
             }
             .navigationTitle("Review")
             .safeAreaInset(edge: .top, spacing: 0) {
-                ReviewSectionPicker(selection: $section)
+                VStack(spacing: 0) {
+                    ReviewSectionPicker(selection: $section)
+                    ReviewScopePicker(selection: $model.scope)
+                }
             }
         }
         .task { await model.load() }
+        .onReceive(
+            NotificationCenter.default.publisher(for: .condiscoReviewHomeEntry)
+        ) { _ in
+            // Home's Today invitation promises "Up to 5 reviews"; open
+            // the queue on All courses so the count Home displayed and
+            // the queue it opens stay in agreement.
+            model.resetScopeForHomeInvitation()
+        }
+        .onChange(of: model.scope) { _, _ in
+            // Focus course / All courses: reveal or hide the right cards
+            // immediately.
+            model.applyScope()
+        }
         .fullScreenCover(item: $session) { route in
             ReviewSessionView(items: route.items, mode: route.mode, model: model) {
                 session = nil
@@ -271,6 +371,11 @@ struct ReviewView: View {
                 art: .rested,
                 title: "All caught up",
                 message: "The next review is \(relativeDue(next)). Learning rests between sessions — that's when it sticks.")
+        } else if model.scope == .focus, let course = model.focusCourseTitle {
+            EmptyStateView(
+                art: .rested,
+                title: "All caught up",
+                message: "Nothing scheduled in \(course) yet. Finish a lesson and its words will return here right on time.")
         } else {
             EmptyStateView(
                 art: .rested,
@@ -283,6 +388,29 @@ struct ReviewView: View {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
         return formatter.localizedString(for: date, relativeTo: Date())
+    }
+}
+
+// MARK: - Review scope picker
+//
+// Focus course / All courses, the same segmented style as the section
+// picker above. Session state only — no preference is stored, so the
+// tab always opens on All courses and Home's due count keeps agreeing
+// with the queue it opens.
+
+struct ReviewScopePicker: View {
+    @Binding var selection: ReviewScope
+
+    var body: some View {
+        Picker("Review scope", selection: $selection) {
+            ForEach(ReviewScope.allCases, id: \.self) { scope in
+                Text(scope.rawValue).tag(scope)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 8)
+        .background(DesignTokens.canvas)
     }
 }
 
@@ -349,6 +477,15 @@ func resolveReviewSessionLength(
     case .tab: return current
     case .deepLink: return .all
     }
+}
+
+/// Posted when the learner enters Review via Home's Today invitation,
+/// so the Review tab opens its queue on All courses — matching the
+/// all-courses count Home displayed — even if the tab had been
+/// narrowed to the focus course. Observed by `ReviewView`, which calls
+/// `ReviewModel.resetScopeForHomeInvitation`.
+extension Notification.Name {
+    static let condiscoReviewHomeEntry = Notification.Name("condisco.reviewHomeEntry")
 }
 
 // Identifiable wrapper so the session can drive fullScreenCover(item:).

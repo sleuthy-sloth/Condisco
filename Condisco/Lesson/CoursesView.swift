@@ -70,6 +70,39 @@ private struct SelectedLesson: Identifiable {
     let id: String
 }
 
+// MARK: - Content paths (Foundation → Developing → Independent)
+//
+// The course browser organises content into three paths derived from
+// metadata already authored in the packs — never from a learner's results:
+//
+//   · lesson.cefr: "A2" → Developing; "A1" or absent → Foundation;
+//     anything else → Independent (none today, shown honestly as empty).
+//   · a path's task outcomes are the unit objectives of the units that
+//     map to it (authored copy, not claims invented by the UI).
+//   · a path's prerequisite line reflects the real prerequisite edges
+//     between lessons: each Developing path opens with a lesson whose
+//     prerequisites include a Foundation lesson.
+//
+// The labels describe content alignment, not ability: no level shown here
+// is a test result or a score.
+
+/// The three content paths, in progression order. Foundation and
+/// Developing both have content today; Independent is an honest empty
+/// state until lessons exist at that level.
+private enum CoursePath: String, CaseIterable, Identifiable {
+    case foundation, developing, independent
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .foundation: return "Foundation"
+        case .developing: return "Developing"
+        case .independent: return "Independent"
+        }
+    }
+}
+
 struct CoursesView: View {
     @StateObject private var model = CoursesModel()
 
@@ -109,9 +142,9 @@ struct CoursesView: View {
         }
         .task { await model.load() }
         .onReceive(
-            NotificationCenter.default.publisher(for: .condiscoLessonCompleted)
+            NotificationCenter.default.publisher(for: .condiscoProgressChanged)
         ) { _ in
-            // A deep-linked lesson closed over the tabs; re-project progress.
+            // A deep-linked lesson closed or a known mark changed.
             model.refreshProgress()
         }
     }
@@ -119,6 +152,7 @@ struct CoursesView: View {
     private var courseList: some View {
         ScrollView {
             VStack(spacing: 14) {
+                pathSection
                 ForEach(model.packs, id: \.id) { pack in
                     NavigationLink(value: CourseRoute.lessons(packId: pack.id)) {
                         courseRow(pack)
@@ -189,6 +223,122 @@ struct CoursesView: View {
         .frame(width: 110, height: 6)
     }
 
+    // MARK: - Content paths (Foundation → Developing → Independent)
+
+    /// The three path cards, in progression order, above the course list.
+    /// Each card shows what the path actually contains — lesson counts,
+    /// unit objectives as task outcomes, and the path's prerequisite
+    /// relationship — with the level labelled as content, never ability.
+    private var pathSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Course levels")
+                    .font(DesignTokens.text(18, weight: .semibold))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                    .padding(.horizontal, 4)
+                    .accessibilityAddTraits(.isHeader)
+                Text("Content structure, not a test result.")
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                    .padding(.horizontal, 4)
+            }
+            ForEach(CoursePath.allCases, id: \.self) { path in
+                pathCard(path)
+            }
+        }
+    }
+
+    private func pathCard(_ path: CoursePath) -> some View {
+        let stats = pathStats(path)
+        return PaperCard {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(path.title)
+                    .font(DesignTokens.display(20))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                if stats.lessons > 0 {
+                    Text("\(stats.lessons) lessons across \(stats.courses) courses")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                    if let outcome = pathOutcomeLine(path) {
+                        Text(outcome)
+                            .font(DesignTokens.text(13))
+                            .foregroundStyle(DesignTokens.muted)
+                            .lineLimit(2)
+                    }
+                } else {
+                    Text("No lessons at this level yet.")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                Text(pathPrerequisiteLine(path))
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+            }
+        }
+    }
+
+    /// Lesson counts per path, plus how many courses carry that path.
+    private func pathStats(_ path: CoursePath) -> (lessons: Int, courses: Int) {
+        var lessons = 0
+        var courses = 0
+        for pack in model.packs {
+            let count = pack.lessons.filter { coursePath(of: $0) == path }.count
+            if count > 0 { courses += 1 }
+            lessons += count
+        }
+        return (lessons, courses)
+    }
+
+    /// A lesson's path from its authored level tag: A2 → Developing,
+    /// A1 or absent → Foundation, anything else → Independent.
+    private func coursePath(of lesson: Lesson) -> CoursePath {
+        switch lesson.cefr {
+        case "A2": return .developing
+        case "A1", nil: return .foundation
+        default: return .independent
+        }
+    }
+
+    /// A unit's path is the path of its first lesson; every unit today is
+    /// uniform within one path.
+    private func coursePath(of unit: CourseUnit, in pack: CoursePack) -> CoursePath {
+        guard let first = pack.lessons.first(where: { $0.unitId == unit.id }) else {
+            return .foundation
+        }
+        return coursePath(of: first)
+    }
+
+    /// The task-outcome line for a path: up to three distinct unit
+    /// objectives from the units on that path, focus course first, exactly
+    /// as authored — the UI adds no claims of its own.
+    private func pathOutcomeLine(_ path: CoursePath) -> String? {
+        var seen = Set<String>()
+        var lines: [String] = []
+        for pack in model.packs {
+            for unit in pack.units where coursePath(of: unit, in: pack) == path {
+                let objective = unit.objective
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !objective.isEmpty, seen.insert(objective).inserted else { continue }
+                lines.append(objective)
+                if lines.count == 3 { return lines.joined(separator: " · ") }
+            }
+        }
+        return lines.isEmpty ? nil : lines.joined(separator: " · ")
+    }
+
+    /// The path's prerequisite line, grounded in the real prerequisite
+    /// edges authored on lessons rather than a claim about the learner.
+    private func pathPrerequisiteLine(_ path: CoursePath) -> String {
+        switch path {
+        case .foundation:
+            return "No earlier path — the starting point for every course."
+        case .developing:
+            return "Builds on Foundation — its opening lesson requires a Foundation lesson."
+        case .independent:
+            return "Would follow Developing."
+        }
+    }
+
     private func loadErrorView(_ message: String) -> some View {
         VStack(spacing: 12) {
             Text("Couldn't load courses")
@@ -236,6 +386,25 @@ struct LessonListView: View {
         pack.lessons.filter { $0.unitId == unit.id }
     }
 
+    /// A unit's checkpoint stage is its first lesson's stage (every unit
+    /// today is uniform within one path, the same rule CoursesView's path
+    /// cards use).
+    private func stageOf(_ unit: CourseUnit) -> CheckpointStage {
+        guard let first = lessons(in: unit).first else { return .foundation }
+        return checkpointStage(of: first)
+    }
+
+    /// The stage-end task card belongs only at the very end of a stage:
+    /// after its last unit, and only when the pack actually ships a task
+    /// for that stage (an honest absent state otherwise).
+    private func checkpointAfterLastUnitOfStage(_ unit: CourseUnit,
+                                                index: Int) -> CheckpointTask? {
+        let stage = stageOf(unit)
+        let laterSameStage = unitsInOrder.dropFirst(index + 1).contains { stageOf($0) == stage }
+        guard !laterSameStage else { return nil }
+        return pack.checkpoints.first { $0.stage == stage }
+    }
+
     /// "You'll be able to …" line for a unit, grounded in authored copy:
     /// the unit objective when present, otherwise the first lesson
     /// objective in the unit. Only the leading letter is adjusted to fit
@@ -265,8 +434,18 @@ struct LessonListView: View {
                         searchResults
                     } else {
                         vocabularyRow
-                        ForEach(unitsInOrder, id: \.id) { unit in
+                        ForEach(Array(unitsInOrder.enumerated()), id: \.element.id) { index, unit in
                             unitSection(unit)
+                            if let checkpoint = checkpointAfterLastUnitOfStage(unit, index: index) {
+                                CheckpointEntryCard(
+                                    pack: pack,
+                                    store: store,
+                                    checkpoint: checkpoint,
+                                    attempts: progress.checkpointAttempts.filter {
+                                        $0.checkpointId == checkpoint.id
+                                    },
+                                    onProgressRefresh: onProgressRefresh)
+                            }
                         }
                     }
                 }
@@ -482,8 +661,13 @@ struct LessonListView: View {
     /// Records or removes an "I know this" mark, then refreshes progress.
     private func setKnown(_ lesson: Lesson, known: Bool) {
         Task { @MainActor in
-            try? store.setLessonKnown(pack: pack, lessonId: lesson.id, known: known)
-            onProgressRefresh()
+            do {
+                try store.setLessonKnown(pack: pack, lessonId: lesson.id, known: known)
+                onProgressRefresh()
+                NotificationCenter.default.post(name: .condiscoProgressChanged, object: nil)
+            } catch {
+                // Keep the displayed path unchanged if the mark could not be saved.
+            }
         }
     }
 }
@@ -523,6 +707,9 @@ private enum CourseSkillMapper {
             guard let activity = activitiesById[step.activityId] else { continue }
             switch activity {
             case .selfCompare: found.insert(.speaking)
+            case .openTask(let spec):
+                // Connected production practises the task's own modality.
+                found.insert(spec.mode == .spoken ? .speaking : .writing)
             case .text, .cloze: found.insert(.writing)
             case .selection, .matching, .ordering, .information,
                  .dialogueChoice, .sceneSelection: found.insert(.reading)
@@ -541,4 +728,3 @@ private enum CourseSkillMapper {
         return false
     }
 }
-

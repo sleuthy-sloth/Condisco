@@ -4,7 +4,7 @@
 // Regenerate with: python3 tools/gen_lesson_catalog.py <packs-dir> \
 //     Condisco/DeepLink/LessonCatalog.generated.swift
 //
-// Source: the five bundled course packs (255 lessons).
+// Source: the five bundled course packs (273 lessons).
 // This snapshot backs the Siri/Shortcuts lesson picker in processes
 // where the app bundle's Content folder is not reachable; the intent
 // query prefers the live packs via PackLoader when they are available.
@@ -589,6 +589,34 @@ enum GeneratedLessonCatalog {
         ),
         LessonCatalogEntry(
             packId: "it-foundations",
+            lessonId: "it-a2-passato-prossimo",
+            title: "Il passato prossimo con avere",
+            languageName: "Italian",
+            unitTitle: "Il passato"
+        ),
+        LessonCatalogEntry(
+            packId: "it-foundations",
+            lessonId: "it-a2-essere-participi",
+            title: "Il passato prossimo con essere",
+            languageName: "Italian",
+            unitTitle: "Il passato"
+        ),
+        LessonCatalogEntry(
+            packId: "it-foundations",
+            lessonId: "it-a2-imperfetto",
+            title: "L’imperfetto",
+            languageName: "Italian",
+            unitTitle: "Il passato"
+        ),
+        LessonCatalogEntry(
+            packId: "it-foundations",
+            lessonId: "it-a2-passato-imperfetto",
+            title: "Passato prossimo o imperfetto?",
+            languageName: "Italian",
+            unitTitle: "Il passato"
+        ),
+        LessonCatalogEntry(
+            packId: "it-foundations",
             lessonId: "it-a2-futuro-semplice",
             title: "Il futuro semplice",
             languageName: "Italian",
@@ -677,34 +705,6 @@ enum GeneratedLessonCatalog {
             title: "Missione: una notte in albergo",
             languageName: "Italian",
             unitTitle: "Lavoro e tecnologia"
-        ),
-        LessonCatalogEntry(
-            packId: "it-foundations",
-            lessonId: "it-a2-passato-prossimo",
-            title: "Il passato prossimo con avere",
-            languageName: "Italian",
-            unitTitle: "Il passato"
-        ),
-        LessonCatalogEntry(
-            packId: "it-foundations",
-            lessonId: "it-a2-essere-participi",
-            title: "Il passato prossimo con essere",
-            languageName: "Italian",
-            unitTitle: "Il passato"
-        ),
-        LessonCatalogEntry(
-            packId: "it-foundations",
-            lessonId: "it-a2-imperfetto",
-            title: "L’imperfetto",
-            languageName: "Italian",
-            unitTitle: "Il passato"
-        ),
-        LessonCatalogEntry(
-            packId: "it-foundations",
-            lessonId: "it-a2-passato-imperfetto",
-            title: "Passato prossimo o imperfetto?",
-            languageName: "Italian",
-            unitTitle: "Il passato"
         ),
         LessonCatalogEntry(
             packId: "de-foundations",
@@ -1797,6 +1797,132 @@ enum GeneratedLessonCatalog {
             title: "Tecnología",
             languageName: "Spanish",
             unitTitle: "Trabajo y tecnología"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-retraso-narracion",
+            title: "El tren de las siete",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-aviso-lectura",
+            title: "El vuelo cancelado",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-aeropuerto-listen",
+            title: "En el aeropuerto",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-reprogramar-dialogo",
+            title: "Reprogramar el viaje",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-viaje-escrito",
+            title: "Cuenta tu viaje",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-reclamacion-mission",
+            title: "La reclamación",
+            languageName: "Spanish",
+            unitTitle: "Viaje interrumpido"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-trabajo-futuro",
+            title: "El año que viene",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-trabajo-listen",
+            title: "La llamada de la oferta",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-entrevista-lectura",
+            title: "Una entrevista",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-decision-dialogo",
+            title: "¿Cuál elijo?",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-plan-escrito",
+            title: "Tu plan de estudios",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-entrevista-mission",
+            title: "La entrevista",
+            languageName: "Spanish",
+            unitTitle: "El trabajo y los estudios"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-preferencia-razones",
+            title: "Me gusta porque…",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-fiesta-listen",
+            title: "La llamada del cumpleaños",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-celebracion-lectura",
+            title: "El aniversario",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-plan-dialogo",
+            title: "¿Quedamos?",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-decision-escrito",
+            title: "Tu decisión",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
+        ),
+        LessonCatalogEntry(
+            packId: "es-foundations",
+            lessonId: "es-b1-regalo-mission",
+            title: "El regalo del grupo",
+            languageName: "Spanish",
+            unitTitle: "Una decisión social"
         ),
     ]
 }

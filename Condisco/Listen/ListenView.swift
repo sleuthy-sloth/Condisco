@@ -38,6 +38,11 @@ final class ListenPlayerModel: ObservableObject {
     static let rates: [Float] = [1, 0.75, 1.25, 1.5]
     /// Speed used by the explicit "Slow" replay; also reachable by cycling rates.
     static let slowRate: Float = 0.75
+    /// Provenance caption shared by the player card and the lock screen: the
+    /// track's voice is synthesized TTS (never a claimed human recording). This
+    /// keeps the "(synthesized)" wording used by every other voice surface in
+    /// the app (Shadow, Practice, lesson pairs) on the main listening surface.
+    static let voiceDescriptor = "Course voice (synthesized)"
 
     let track: ListenTrack
     let courseTitle: String
@@ -361,7 +366,7 @@ final class ListenPlayerModel: ObservableObject {
     private func updateNowPlaying() {
         guard !failed else { return }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyTitle: "\(track.lessonTitle) · audio lesson",
+            MPMediaItemPropertyTitle: "\(track.lessonTitle) · \(Self.voiceDescriptor)",
             MPMediaItemPropertyArtist: "Condisco",
             MPMediaItemPropertyAlbumTitle: courseTitle,
             MPMediaItemPropertyPlaybackDuration: duration,
@@ -611,6 +616,9 @@ struct ListenPlayerView: View {
                     .font(DesignTokens.text(13, weight: .semibold))
                     .foregroundStyle(DesignTokens.primary)
                     .textCase(.uppercase)
+                Text(ListenPlayerModel.voiceDescriptor)
+                    .font(DesignTokens.text(12))
+                    .foregroundStyle(DesignTokens.muted)
                 HStack {
                     Text(formatListenPosition(isScrubbing ? scrub : model.current))
                     Spacer()

@@ -1,4 +1,9 @@
-# Engineering findings log
+# Engineering findings log (historical)
+
+This log records findings from the initial quality pass. For current gate
+results and remaining device work, use
+`docs/verification/2026-09-26-final-gate-report.md`. Later work has closed
+several items below, so the original severity and audit counts are historical.
 
 Findings discovered while working the quality/growth plan. Keep this list short and
 checkable; every entry names a reproducer and a status. Content backlogs live in

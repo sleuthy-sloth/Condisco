@@ -359,3 +359,250 @@ private func stepCompletions(packId: String, lesson: Lesson,
         return completion.stepId
     }
 }
+
+// MARK: - Dialogue sessions (Phase 6.3)
+//
+// Branching exchange practice, driven by the same discipline as lesson
+// sessions: deterministic pure reducers, the caller persists state between
+// turns (lesson checkpoint + one `DialogueTurnEvent` per answered turn).
+// The learner interprets the partner's latest line, then either picks an
+// authored choice or composes against a 6.2-style self-check rubric. Every
+// branch is authored and finite; position + answered turns live in
+// `LessonCheckpoint.dialogue`, so force-quit resumes exactly and recorded
+// events are never reordered or duplicated (a branch change mid-attempt
+// only appends later turns in authored order).
+
+enum DialogueSessionStatus: String, Equatable {
+    case active, complete
+}
+
+/// In-memory state of one exchange attempt. Value-typed like
+/// `LessonSession`; the caller persists `checkpointState()` between turns
+/// and rebuilds with `init(checkpointState:)` on resume.
+struct DialogueSession: Equatable {
+    var dialogueId: String
+    var hostLessonId: String
+    var currentNodeId: String
+    var visitedNodeIds: [String]
+    /// Answered turns in authored order — the learner's own replies, used
+    /// verbatim by the recap.
+    var turns: [DialogueTurnRecord]
+    /// In-progress draft on the current open turn (resume support).
+    var openDraft: String?
+    var status: DialogueSessionStatus
+
+    func checkpointState() -> DialogueCheckpointState {
+        DialogueCheckpointState(
+            dialogueId: dialogueId,
+            currentNodeId: currentNodeId,
+            visitedNodeIds: visitedNodeIds,
+            turns: turns,
+            openDraft: openDraft,
+            complete: status == .complete)
+    }
+
+    init(checkpointState: DialogueCheckpointState) {
+        dialogueId = checkpointState.dialogueId
+        hostLessonId = ""
+        currentNodeId = checkpointState.currentNodeId
+        visitedNodeIds = checkpointState.visitedNodeIds
+        turns = checkpointState.turns
+        openDraft = checkpointState.openDraft
+        status = checkpointState.complete ? .complete : .active
+    }
+
+    init(dialogueId: String, hostLessonId: String, currentNodeId: String,
+         visitedNodeIds: [String], turns: [DialogueTurnRecord],
+         openDraft: String?, status: DialogueSessionStatus) {
+        self.dialogueId = dialogueId
+        self.hostLessonId = hostLessonId
+        self.currentNodeId = currentNodeId
+        self.visitedNodeIds = visitedNodeIds
+        self.turns = turns
+        self.openDraft = openDraft
+        self.status = status
+    }
+}
+
+enum DialogueSessionError: Error, CustomStringConvertible {
+    case unknownDialogue(String)
+    case unhosted(dialogue: String, lesson: String)
+    case unknownNode(dialogue: String, node: String)
+    case dialogueComplete(String)
+    case unknownChoice(choice: String, node: String)
+    case notAChoiceTurn(String)
+    case notAnOpenTurn(String)
+    case emptyDraft(String)
+
+    var description: String {
+        switch self {
+        case .unknownDialogue(let id): return "Unknown dialogue \(id)"
+        case .unhosted(let dialogue, let lesson):
+            return "Dialogue \(dialogue) is not hosted by lesson \(lesson)"
+        case .unknownNode(let dialogue, let node):
+            return "Dialogue \(dialogue) has no node \(node)"
+        case .dialogueComplete(let id): return "Dialogue \(id) is complete"
+        case .unknownChoice(let choice, let node):
+            return "Node \(node) has no choice \(choice)"
+        case .notAChoiceTurn(let node): return "Node \(node) is not a choice turn"
+        case .notAnOpenTurn(let node): return "Node \(node) is not an open turn"
+        case .emptyDraft(let node): return "Node \(node) needs a composed reply"
+        }
+    }
+}
+
+/// A session's current node, resolved for the reducers below.
+private func currentDialogueNode(pack: CoursePack,
+                                 session: DialogueSession) throws -> DialogueNode {
+    guard let dialogue = pack.dialogue(id: session.dialogueId) else {
+        throw DialogueSessionError.unknownDialogue(session.dialogueId)
+    }
+    guard let node = dialogue.node(id: session.currentNodeId) else {
+        throw DialogueSessionError.unknownNode(dialogue: dialogue.id, node: session.currentNodeId)
+    }
+    return node
+}
+
+/// Open a hosted exchange fresh: branch position at `dialogue.start`,
+/// no turns recorded yet. The learner may replay a completed exchange by
+/// calling this again — a new attempt with fresh turn events.
+func startDialogue(pack: CoursePack, lesson: Lesson,
+                   dialogue: Dialogue) throws -> DialogueSession {
+    guard dialogue.hostLessonId == lesson.id else {
+        throw DialogueSessionError.unhosted(dialogue: dialogue.id, lesson: lesson.id)
+    }
+    guard dialogue.node(id: dialogue.start) != nil else {
+        throw DialogueSessionError.unknownNode(dialogue: dialogue.id, node: dialogue.start)
+    }
+    return DialogueSession(
+        dialogueId: dialogue.id,
+        hostLessonId: lesson.id,
+        currentNodeId: dialogue.start,
+        visitedNodeIds: [dialogue.start],
+        turns: [],
+        openDraft: nil,
+        status: .active)
+}
+
+/// Answer the current choice turn by picking an authored option. The
+/// partner's next line is the picked choice's `next` node; answering the
+/// last turn lands on the end state and completes the exchange.
+func submitDialogueChoice(pack: CoursePack,
+                          session: DialogueSession,
+                          choiceId: String) throws -> DialogueSession {
+    guard session.status == .active else {
+        throw DialogueSessionError.dialogueComplete(session.dialogueId)
+    }
+    let node = try currentDialogueNode(pack: pack, session: session)
+    guard !node.complete else {
+        throw DialogueSessionError.dialogueComplete(session.dialogueId)
+    }
+    guard !node.choices.isEmpty else {
+        throw DialogueSessionError.notAChoiceTurn(node.id)
+    }
+    guard let choice = node.choices.first(where: { $0.id == choiceId }) else {
+        throw DialogueSessionError.unknownChoice(choice: choiceId, node: node.id)
+    }
+    var next = session
+    next.turns.append(DialogueTurnRecord(nodeId: node.id, choiceId: choice.id))
+    let following = choice.next
+    next.currentNodeId = following
+    next.visitedNodeIds = session.visitedNodeIds + [following]
+    if let followingNode = pack.dialogue(id: session.dialogueId)?.node(id: following),
+       followingNode.complete {
+        next.status = .complete
+    }
+    return next
+}
+
+/// Answer the current open turn: the learner's own composed reply plus their
+/// self-assessment (rubric ticks, optional rating, model-reveal marker).
+/// The partner replies with the node's `next`; nothing here grades the
+/// draft — the rubric is the learner's own judgement.
+func submitDialogueOpenTurn(pack: CoursePack,
+                            session: DialogueSession,
+                            draft: String,
+                            criteriaMet: [String],
+                            rating: AttemptResponse.SelfRating?,
+                            modelRevealed: Bool) throws -> DialogueSession {
+    guard session.status == .active else {
+        throw DialogueSessionError.dialogueComplete(session.dialogueId)
+    }
+    let node = try currentDialogueNode(pack: pack, session: session)
+    guard !node.complete else {
+        throw DialogueSessionError.dialogueComplete(session.dialogueId)
+    }
+    guard node.prompt != nil, node.choices.isEmpty else {
+        throw DialogueSessionError.notAnOpenTurn(node.id)
+    }
+    let trimmed = draft.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty, let nextId = node.next else {
+        throw DialogueSessionError.emptyDraft(node.id)
+    }
+    var next = session
+    next.turns.append(DialogueTurnRecord(
+        nodeId: node.id, draft: trimmed, criteriaMet: criteriaMet,
+        rating: rating, modelRevealed: modelRevealed))
+    next.currentNodeId = nextId
+    next.visitedNodeIds = session.visitedNodeIds + [nextId]
+    next.openDraft = nil
+    if let dialogue = pack.dialogue(id: session.dialogueId),
+       let following = dialogue.node(id: nextId),
+       following.complete {
+        next.status = .complete
+    }
+    return next
+}
+
+/// Rebuild an exchange from its checkpoint slice. Replays the stored turns
+/// against the authored graph to prove the recorded branch position is
+/// consistent; returns nil when the exchange (or its position) no longer
+/// resolves or the thread does not replay along real edges — the player
+/// then presents the exchange fresh. Mirrors how `resumeSession` restarts
+/// a lesson whose path changed.
+func resumeDialogueSession(pack: CoursePack,
+                           state: DialogueCheckpointState) -> DialogueSession? {
+    guard let dialogue = pack.dialogue(id: state.dialogueId),
+          dialogue.node(id: state.currentNodeId) != nil else {
+        return nil
+    }
+    // Replay the recorded turns: each answered node must route along real
+    // edges to the next visited node, in order.
+    var current = dialogue.start
+    var consistent = state.visitedNodeIds.first == current
+    if consistent {
+        for (index, turn) in state.turns.enumerated() {
+            guard let node = dialogue.node(id: turn.nodeId),
+                  node.id == current,
+                  !node.complete,
+                  index + 1 < state.visitedNodeIds.count else {
+                consistent = false
+                break
+            }
+            let following: String?
+            if !node.choices.isEmpty {
+                following = node.choices.first { $0.id == turn.choiceId }?.next
+            } else {
+                following = node.next
+            }
+            guard let following,
+                  following == state.visitedNodeIds[index + 1] else {
+                consistent = false
+                break
+            }
+            current = following
+        }
+        if consistent, state.visitedNodeIds.last != state.currentNodeId {
+            consistent = false
+        }
+    }
+    guard consistent else { return nil }
+    return DialogueSession(
+        dialogueId: dialogue.id,
+        hostLessonId: dialogue.hostLessonId ?? "",
+        currentNodeId: state.currentNodeId,
+        visitedNodeIds: state.visitedNodeIds,
+        turns: state.turns,
+        openDraft: state.openDraft,
+        status: state.complete ? .complete : .active)
+}

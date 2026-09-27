@@ -130,6 +130,11 @@ struct ContentView: View {
                 reviewSessionLength = resolveReviewSessionLength(
                     for: .homeInvitation, current: reviewSessionLength)
                 selection = .review
+                // Home's invitation count is all-courses; open the Review
+                // queue on All courses too, even if the learner had
+                // narrowed the tab to the focus course earlier.
+                NotificationCenter.default.post(
+                    name: .condiscoReviewHomeEntry, object: nil)
             })
                 .tabItem { Label("Home", systemImage: "house") }
                 .tag(AppTab.home)

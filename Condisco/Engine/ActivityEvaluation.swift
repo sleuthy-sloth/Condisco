@@ -54,6 +54,18 @@ enum ActivityEvaluation {
             }
             return mismatch(activity.id)
 
+        case .openTask:
+            // Phase 6.2 (plan §6.3, hard invariant): open connected
+            // production is never auto-graded. The fixed-answer matcher
+            // stays off; the learner self-assesses against the authored
+            // rubric and model, and the step completes on the submission
+            // exactly like a self-compare. Every response shape completes
+            // as self-assessed — rated, unrated, or a writing draft —
+            // because arbitrary open writing must never come back graded
+            // correct or incorrect on any path.
+            return AttemptEvaluation(outcome: .selfAssessed, independent: false,
+                                     feedback: "")
+
         case .text(let spec):
             guard case .text(let text) = response else { return mismatch(activity.id) }
             let judged = AnswerEngine.evaluate(response: text, spec: spec.answer)

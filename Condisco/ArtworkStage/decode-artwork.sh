@@ -6,15 +6,10 @@ set -eu
 ROOT="${SRCROOT:?SRCROOT not set}"
 STAGE="$ROOT/Condisco/ArtworkStage"
 ICONSET="$ROOT/Condisco/Assets.xcassets/AppIcon.appiconset"
-MASTER_B64="$STAGE/Icon-1024.png.b64"
 MASTER_PNG="$STAGE/Icon-1024.png"
 
 mkdir -p "$STAGE"
 mkdir -p "$ICONSET"
-
-if [ -f "$MASTER_B64" ]; then
-  base64 -D -i "$MASTER_B64" -o "$MASTER_PNG"
-fi
 
 if [ ! -f "$MASTER_PNG" ]; then
   echo "error: missing $MASTER_PNG" >&2

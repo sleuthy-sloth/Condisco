@@ -141,17 +141,17 @@ final class HomeModel: ObservableObject {
     /// links change progress.
     func nextLesson(in pack: CoursePack) -> (lesson: Lesson, unit: CourseUnit)? {
         pack.firstUncompletedLesson(
-            completed: progress[pack.id]?.participationCompleted ?? [])
+            completed: progress[pack.id]?.finishedLessons ?? [])
     }
 
     /// The focus language's continuation lesson through `continueLessonResolution`
     /// — the same pure path Home's Today card, the widget snapshot, and the
-    /// deep-link router all share, fed the same `participationCompleted` set.
+    /// deep-link router all share, fed the same `finishedLessons` set.
     func continuationLesson(focusSlug: String) -> (pack: CoursePack, lesson: Lesson, unit: CourseUnit)? {
         continueLessonResolution(
             packs: packs,
             focusSlug: focusSlug,
-            completedByPack: progress.mapValues { $0.participationCompleted })
+            completedByPack: progress.mapValues { $0.finishedLessons })
     }
 
     /// The most recently written checkpoint across every pack, resolved
@@ -326,11 +326,12 @@ struct HomeView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .task { await model.load() }
+        .onAppear { model.refresh() }
         .onReceive(
-            NotificationCenter.default.publisher(for: .condiscoLessonCompleted)
+            NotificationCenter.default.publisher(for: .condiscoProgressChanged)
         ) { _ in
-            // A deep-linked lesson closed over the tabs; re-project progress
-            // (and with it the widget snapshot).
+            // A deep-linked lesson closed or a known mark changed; re-project
+            // progress and the widget snapshot.
             model.refresh()
         }
         .fullScreenCover(item: $playerRequest) { request in

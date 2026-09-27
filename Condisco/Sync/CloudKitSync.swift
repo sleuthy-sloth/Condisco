@@ -60,6 +60,38 @@ final class CloudKitSync: ObservableObject {
     private static let lastSyncedKey = "verbalibera.sync.lastSyncedAt"
     private static let changeTokenKey = "condisco.sync.eventChangeToken"
 
+    /// True when this build actually carries the iCloud/CloudKit
+    /// entitlements (`Condisco/Condisco.entitlements`). Without a container
+    /// identifier every CloudKit call fails, so the app must not imply sync
+    /// exists — the You screen says plainly that progress is saved on this
+    /// device. The entitlements are commented out in the personal-team
+    /// build and are re-added only when enrolled in the paid Apple
+    /// Developer Program.
+    nonisolated static var isCloudKitConfigured: Bool {
+        #if CLOUDKIT_ENABLED
+            // Belt-and-suspenders for configured builds: even with the flag
+            // on, verify a container actually exists at runtime before
+            // implying sync exists.
+            CKContainer.default().containerIdentifier != nil
+        #else
+            // CLOUDKIT_ENABLED is off — this build carries no iCloud/CloudKit
+            // entitlements, and calling `CKContainer.default()` would trap
+            // inside CloudKit (it is a programmer error, not a nil return).
+            // Answer the safe local-only truth.
+            false
+        #endif
+    }
+
+    /// Shown when this build has no iCloud/CloudKit entitlements: progress
+    /// stays local and there is nothing to sign in to sync with.
+    private static let syncUnavailableMessage: String = {
+        #if CLOUDKIT_ENABLED
+            "Sync isn't available in this build — your progress is saved on this device."
+        #else
+            "Sync isn't available in this build — your progress is saved on this device."
+        #endif
+    }()
+
     @MainActor @Published private(set) var isSyncing = false
     @MainActor @Published private(set) var lastErrorMessage: String?
     @MainActor @Published private(set) var lastSyncedAt: Date? = {
@@ -76,8 +108,18 @@ final class CloudKitSync: ObservableObject {
         // the store is the single source of truth either way.
         ListenHistory.migrateFromUserDefaultsIfNeeded(store: store)
         guard !isSyncing else { return }
+        #if CLOUDKIT_ENABLED
         guard signedIn else {
-            lastErrorMessage = SyncIssue.notSignedIn.errorDescription
+            lastErrorMessage = Self.isCloudKitConfigured
+                ? SyncIssue.notSignedIn.errorDescription
+                : Self.syncUnavailableMessage
+            return
+        }
+        guard Self.isCloudKitConfigured else {
+            // Entitlements absent (personal-team build): CloudKit has no
+            // container to reach, so a transport step would surface only a
+            // confusing account error. State the truth instead.
+            lastErrorMessage = Self.syncUnavailableMessage
             return
         }
         isSyncing = true
@@ -132,6 +174,13 @@ final class CloudKitSync: ObservableObject {
             }
             lastErrorMessage = issue.errorDescription
         }
+        #else
+        // CLOUDKIT_ENABLED is off: no iCloud/CloudKit entitlements in this
+        // build, so any CloudKit API call would trap. The one-time listen
+        // migration above has already run; state the local-only truth and
+        // return without touching CloudKit.
+        lastErrorMessage = Self.syncUnavailableMessage
+        #endif
     }
 
     @MainActor

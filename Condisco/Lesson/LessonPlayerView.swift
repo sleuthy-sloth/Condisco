@@ -51,6 +51,11 @@ struct LessonPlayerView: View {
     /// Comfort settings observed so the explicit animation modifiers below
     /// honor the in-app toggle and the system reduce-motion setting live.
     @ObservedObject private var a11y = A11ySettings.shared
+    /// Phase 6.3 hosted-exchange practice: the in-flight exchange session
+    /// (nil = never started, or reset when the lesson restarts). Survives
+    /// force quit through the lesson checkpoint's `dialogue` slice.
+    @State private var dialogueSession: DialogueSession?
+    @State private var showDialogue = false
     /// Brand-new lessons open with the briefing; resumes go straight in.
     @State private var showBriefing = false
     /// Warm-up recall phase: due cards from earlier lessons, shown before
@@ -143,13 +148,11 @@ struct LessonPlayerView: View {
         return (done, required.count)
     }
 
-    /// The lesson after this one in the course, for the recap's way onward.
+    /// The next unfinished lesson after this one, for the recap's way onward.
     private var nextLessonInPack: Lesson? {
         guard let lesson else { return nil }
-        guard let idx = pack.lessons.firstIndex(where: { $0.id == lesson.id }) else { return nil }
-        let next = idx + 1
-        guard next < pack.lessons.count else { return nil }
-        return pack.lessons[next]
+        let finished = (try? store.project(pack: pack).finishedLessons) ?? []
+        return pack.nextUncompletedLesson(after: lesson.id, completed: finished)
     }
 
     /// The single correction worth remembering from this run: the newest
@@ -164,6 +167,18 @@ struct LessonPlayerView: View {
             }
         }
         return nil
+    }
+
+    /// The exchange this lesson hosts for conversation practice (6.3).
+    private var hostedDialogue: Dialogue? {
+        guard let lesson else { return nil }
+        return pack.dialogue(hostedBy: lesson.id)
+    }
+
+    /// The conversation practice entry shows only once the lesson trail is
+    /// complete — the exchange is the follow-on practice, replayable.
+    private var showsDialogueEntry: Bool {
+        resumedComplete && !retrying && hostedDialogue != nil && !saveError
     }
 
     // MARK: Body
@@ -224,11 +239,41 @@ struct LessonPlayerView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Lessons") { handleBack() }
                 }
+                if showsDialogueEntry {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button(DialoguePracticeCopy.hero) { openDialogue() }
+                    }
+                }
             }
         }
         .onAppear { if !bootstrapped { bootstrapped = true; boot() } }
         .onChange(of: session) { _, _ in saveCheckpointNow() }
         .onChange(of: draft) { _, _ in saveCheckpointNow() }
+        .onChange(of: dialogueSession) { _, _ in saveCheckpointNow() }
+        .sheet(isPresented: $showDialogue, onDismiss: { saveCheckpointNow() }) {
+            if let lesson, let dialogue = hostedDialogue, dialogueSession != nil {
+                DialogueExchangeView(
+                    pack: pack, store: store, lesson: lesson, dialogue: dialogue,
+                    session: $dialogueSession,
+                    onClose: { showDialogue = false })
+            }
+        }
+    }
+
+    /// Opens the hosted exchange: a fresh attempt the first time, the
+    /// checkpointed position (branch + answered turns) on later visits.
+    private func openDialogue() {
+        guard let lesson, let dialogue = hostedDialogue, dialogueSession == nil else {
+            showDialogue = true
+            return
+        }
+        do {
+            dialogueSession = try startDialogue(
+                pack: pack, lesson: lesson, dialogue: dialogue)
+            showDialogue = true
+        } catch {
+            // The exchange did not start; keep the entry hidden.
+        }
     }
 
     // MARK: Content
@@ -359,6 +404,46 @@ struct LessonPlayerView: View {
     /// compact disclosure. Mirrors the web family layouts.
     @ViewBuilder
     private func stepBody(step: LessonStep, activity: Activity) -> some View {
+        // Phase 6.1B: a step that binds a sustained passage renders the
+        // material itself — the reading/listening lane replaces the standard
+        // step slide. The step's own (launch) activity stays behind the
+        // pinned Continue button, so the lesson graph, completion discipline,
+        // and checkpoint resume are untouched.
+        if let textId = step.sustainedTextId,
+           let passage = pack.sustainedText(id: textId) {
+            SustainedReadingExperienceView(
+                passage: passage,
+                pack: pack,
+                launchInstructions: sustainedLaunchInstructions(for: step),
+                lessonTitle: lesson?.title ?? "",
+                sourcePackId: pack.id,
+                sourceLessonId: lesson?.id ?? "")
+        } else if let listeningId = step.sustainedListeningId,
+                  let passage = pack.sustainedListening(id: listeningId) {
+            SustainedListeningExperienceView(
+                passage: passage,
+                pack: pack,
+                launchInstructions: sustainedLaunchInstructions(for: step),
+                lessonTitle: lesson?.title ?? "",
+                sourcePackId: pack.id,
+                sourceLessonId: lesson?.id ?? "")
+        } else {
+            regularStepBody(step: step, activity: activity)
+        }
+    }
+
+    /// The launch step's information body, surfaced as the brief above the
+    /// material when the binding step is a launch (information) step.
+    private func sustainedLaunchInstructions(for step: LessonStep) -> String {
+        guard let activity = pack.activity(id: step.activityId),
+              case .information(let info) = activity else { return "" }
+        return info.body
+    }
+
+    /// The step body for every non-sustained step — the pre-6.1B layout,
+    /// exactly as it always composed.
+    @ViewBuilder
+    private func regularStepBody(step: LessonStep, activity: Activity) -> some View {
         let family = lesson?.family ?? .discovery
         let isEntry = step.id == lesson?.entryStepId
         // Only the step that introduces the context shows it in the open
@@ -498,7 +583,10 @@ struct LessonPlayerView: View {
             ActivityView(activity: activity, stimulus: contextStimulus,
                          pack: pack, audioPlayer: audioPlayer,
                          draft: $draft, disabled: stepCompleted || saveError,
-                         onAssist: recordAssistance)
+                         onAssist: recordAssistance,
+                         onOpenTaskSubmit: { submission in
+                             handleOpenTaskSubmit(submission: submission)
+                         })
             .id(activity.id)
         }
     }
@@ -527,6 +615,7 @@ struct LessonPlayerView: View {
         switch activity {
         case .information: return "Read — not graded"
         case .selfCompare(let spec): return spec.prompt
+        case .openTask(let spec): return spec.goal
         default: return activity.base?.prompt
         }
     }
@@ -540,6 +629,14 @@ struct LessonPlayerView: View {
         } else if !stepCompleted {
             if case .information = activity {
                 StudioPrimaryButton(label: "Continue", disabled: false) { handleSubmit() }
+            } else if case .openTask = activity {
+                // Open tasks host their own submit (self-assessment) inside
+                // the step slide; the bar only shows the guidance note.
+                Text(OpenTaskCopy.barNote)
+                    .font(DesignTokens.text(13))
+                    .foregroundStyle(DesignTokens.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 4)
             } else {
                 StudioPrimaryButton(label: "Check",
                                     disabled: !validDraft(draft) || saveError || audioBlocked) {
@@ -669,6 +766,13 @@ struct LessonPlayerView: View {
                     restorePostSubmitState(into: &next, lesson: lesson, events: events)
                 }
                 session = next
+                // Phase 6.3: restore the hosted exchange's branch position
+                // and answered turns from the checkpoint slice. A stale or
+                // un-replayable slice restarts the exchange the next time it
+                // is opened (nothing is invented here).
+                if let dialogueState = checkpoint?.dialogue {
+                    dialogueSession = resumeDialogueSession(pack: pack, state: dialogueState)
+                }
                 let trail = walkTrail(lesson: lesson, selectedBranches: next.selectedBranches)
                 resumedComplete = trail.allSatisfy { next.completedStepIds.contains($0) }
                 showBriefing = unstartedEntry
@@ -677,6 +781,8 @@ struct LessonPlayerView: View {
                 session = fresh
                 draft = nil
                 assistanceUsed = []
+                dialogueSession = nil
+                showDialogue = false
                 if !explanation.isEmpty {
                     restartNotice = explanation
                 }
@@ -839,6 +945,87 @@ struct LessonPlayerView: View {
         self.session = next
     }
 
+    /// Submits an open task's self-assessment: the authored task's step
+    /// completes on the submission exactly like a self-compare, recording
+    /// ONLY the completion, the assistance, and the learner's own
+    /// self-assessment (rubric ticks + optional rating). The response text
+    /// or recording never enters the learning log — the written draft stays
+    /// in the lesson checkpoint for resume, and the recording is a
+    /// disposable temp file.
+    private func handleOpenTaskSubmit(submission: OpenTaskSubmission) {
+        guard let session, let lesson, let step else { return }
+        guard pendingEvents.isEmpty else { return }
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                        to: nil, from: nil, for: nil)
+        engineError = nil
+        guard let activity = pack.activity(id: step.activityId),
+              case .openTask(let spec) = activity else {
+            engineError = "That step could not be checked."
+            return
+        }
+        // The engine only needs a completion-bearing response; the rating
+        // (when present) is the honest one. Nothing about the learner's
+        // written text or recording is evaluated or stored here.
+        let response: AttemptResponse =
+            submission.rating.map { .selfRating($0) } ?? .continue
+        var next: LessonSession
+        do {
+            next = try submitResponse(pack: pack, session: session,
+                                      response: response,
+                                      assistance: assistanceUsed)
+        } catch {
+            engineError = "Could not save that step: \(String(describing: error))"
+            return
+        }
+        guard let evaluation = next.currentEvaluation else {
+            engineError = "That step could not be checked."
+            return
+        }
+        // Self-assessed open work is practice with help in the recap split,
+        // exactly like self-compare steps: never an independent count.
+        recapSplit.record(stepId: step.id, evaluation: evaluation)
+        let now = Date()
+        let attempt = OpenTaskAttemptEvent(
+            id: UUID().uuidString,
+            packId: pack.id,
+            packVersion: pack.version,
+            lessonId: lesson.id,
+            lessonRevision: lesson.revision,
+            stepId: step.id,
+            activityId: activity.id,
+            activityRevision: spec.revision,
+            mode: spec.mode,
+            assistance: next.accumulatedAssistance,
+            selfRating: OpenTaskSelfRating(
+                criteriaMet: submission.criteriaMet.sorted(),
+                rating: submission.rating),
+            modelRevealed: submission.modelRevealed,
+            at: now)
+        var events: [LearningEvent] = [.openTaskAttempt(attempt)]
+        let freshCompletion = next.completedStepIds.contains(step.id)
+            && !session.completedStepIds.contains(step.id)
+        if freshCompletion {
+            // Open-task steps complete with a bare completion: the attempt
+            // row is the open-task-attempt event, not an ActivityAttempt,
+            // so no attemptId rides along.
+            events.append(.stepCompleted(StepCompletion(
+                id: UUID().uuidString, packId: pack.id, packVersion: pack.version,
+                lessonId: lesson.id, lessonRevision: lesson.revision,
+                stepId: step.id, selectedBranchId: nil,
+                attemptId: nil, at: now)))
+        }
+        pendingEvents = events
+        do {
+            for event in events { try store.record(event) }
+            pendingEvents = []
+        } catch {
+            pendingSession = next
+            saveError = true
+            return
+        }
+        self.session = next
+    }
+
     private func handleUseModelAnswer(activity: Activity) {
         guard let model = modelResponse(for: activity) else { return }
         handleSubmit(responseOverride: model, extraAssistance: [.model], advanceAfter: true)
@@ -864,7 +1051,7 @@ struct LessonPlayerView: View {
             return .matching(pairs: spec.acceptedPairs.map {
                 ResponsePair(leftId: $0.leftId, rightId: $0.rightId)
             })
-        case .information, .selfCompare: return nil
+        case .information, .selfCompare, .openTask: return nil
         }
     }
 
@@ -901,7 +1088,7 @@ struct LessonPlayerView: View {
             else { return nil }
             return regions.filter { spec.acceptedRegionIds.contains($0.id) }
                 .map(\.label).joined(separator: " · ")
-        case .information, .selfCompare: return nil
+        case .information, .selfCompare, .openTask: return nil
         }
     }
 
@@ -1140,6 +1327,8 @@ struct LessonPlayerView: View {
         retryQueue = []
         retrying = false
         showBriefing = false
+        dialogueSession = nil
+        showDialogue = false
         // Transient warm-up state resets per lesson; `warmUpOffered` does
         // NOT — the recap's next lesson is the same visit.
         warmUpItems = []
@@ -1161,7 +1350,8 @@ struct LessonPlayerView: View {
             stepId: session.activeStepId,
             selectedBranches: session.selectedBranches,
             assistance: orderedUnion(session.accumulatedAssistance, assistanceUsed),
-            draft: draft, at: Date())
+            draft: draft, at: Date(),
+            dialogue: dialogueSession.map { $0.checkpointState() })
         do {
             try store.saveCheckpoint(checkpoint)
         } catch {

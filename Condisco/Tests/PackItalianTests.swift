@@ -1734,4 +1734,85 @@ final class PackItalianTests: XCTestCase {
         XCTAssertFalse(e.accepted)
         XCTAssertEqual(e.category, "wrong auxiliary")
     }
+
+    // MARK: - Slice 2.2 comprehension fixes (2026-09-26 worklist)
+
+    /// Complete English answers accepted for the name/nationality/brother
+    /// reads, matching the French twins; wrong-person and wrong-nationality
+    /// near misses stay authored errors.
+    func testIdentityPeopleFamilyReadsAcceptFullAnswers() throws {
+        let pack = try italianPack()
+
+        var spec = try textSpec(pack, "it-identity-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Her name is Anna.", spec: spec).accepted,
+                      "full-sentence name answer must be accepted")
+        let nationality = AnswerEngine.evaluate(response: "She is Italian.", spec: spec)
+        XCTAssertFalse(nationality.accepted, "nationality is not the name")
+        XCTAssertEqual(nationality.category, "incorrect answer")
+
+        spec = try textSpec(pack, "it-people-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Anna is Italian.", spec: spec).accepted,
+                      "full-sentence subject answer must be accepted")
+        let marco = AnswerEngine.evaluate(response: "Marco", spec: spec)
+        XCTAssertFalse(marco.accepted, "Marco is the person addressed, not the Italian one")
+        XCTAssertEqual(marco.category, "incorrect answer")
+
+        spec = try textSpec(pack, "it-family-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "His name is Marco.", spec: spec).accepted,
+                      "full-sentence brother answer must be accepted")
+        let anna = AnswerEngine.evaluate(response: "Anna", spec: spec)
+        XCTAssertFalse(anna.accepted, "Anna is the speaker, not the brother")
+        XCTAssertEqual(anna.category, "incorrect answer")
+    }
+
+    /// it-negation-foundation-read: the passage states no gender and a
+    /// first-person speaker (Non lavoro in casa), so the she- and I-forms are
+    /// as valid as the he-forms; the positive answer still fails.
+    func testNegationReadAcceptsGenderNeutralForms() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-negation-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "No, she doesn't.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "She doesn't work at home.", spec: spec).accepted)
+        XCTAssertTrue(AnswerEngine.evaluate(response: "No, I don't.", spec: spec).accepted)
+        let positive = AnswerEngine.evaluate(response: "He works at home.", spec: spec)
+        XCTAssertFalse(positive.accepted, "the positive claim contradicts the passage")
+        XCTAssertEqual(positive.category, "incorrect answer")
+    }
+
+    /// it-possession-foundation-read: the question asks about the passage's
+    /// own noun phrase — Il mio libro è piccolo — so il mio libro is the
+    /// exact dictated item, and the wrong-thing near miss stays an error.
+    func testPossessionReadAcceptsPassagePhrase() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-possession-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "il mio libro", spec: spec).accepted,
+                      "the passage's exact noun phrase must be accepted")
+        let house = AnswerEngine.evaluate(response: "la casa", spec: spec)
+        XCTAssertFalse(house.accepted, "the house is not what is small")
+        XCTAssertEqual(house.category, "incorrect answer")
+    }
+
+    /// it-a2-comparativi-read: the open why-question accepts the passage's
+    /// own reason; the first-computer decoys stay authored errors.
+    func testComparativiReadAcceptsPassageWording() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-a2-comparativi-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "Perché è migliore per il mio lavoro.", spec: spec).accepted,
+                      "the passage's own wording must be accepted")
+        let faster = AnswerEngine.evaluate(response: "Perché è più veloce.", spec: spec)
+        XCTAssertFalse(faster.accepted, "the first computer is the faster one")
+        XCTAssertEqual(faster.category, "incorrect answer")
+    }
+
+    /// it-days-foundation-read: the standard written digit date is accepted
+    /// alongside the word form; a different day still fails.
+    func testDaysReadAcceptsDigitDate() throws {
+        let pack = try italianPack()
+        let spec = try textSpec(pack, "it-days-foundation-read")
+        XCTAssertTrue(AnswerEngine.evaluate(response: "il 3 maggio", spec: spec).accepted,
+                      "digit date must be accepted")
+        let today = AnswerEngine.evaluate(response: "lunedì", spec: spec)
+        XCTAssertFalse(today.accepted, "today is not the birthday")
+        XCTAssertEqual(today.category, "incorrect answer")
+    }
 }

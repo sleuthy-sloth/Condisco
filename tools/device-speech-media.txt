@@ -14,6 +14,11 @@
 #
 # The 21 entries below are the pre-review Kokoro "model"/"answer" audio
 # (16 italian + 5 french) with no reviewed recording in the repo yet.
+#
+# 2026-09-26: +2 Spanish entries (es-cafe-listen-audio, es-cafe-listen-model)
+# for the Phase 3.1 café listen pilot — authored transcripts rendered by the
+# on-device course voice, no file shipped (see
+# docs/audio-provenance/spanish-cafe-listen-pilot.json).
 
 # --- Italian (16) ---
 it-polite-coffee-audio         # /audio/italian/it-ordering-politely-answer.wav
@@ -39,3 +44,7 @@ fr-identity-foundation-model   # /audio/french-foundations/fr-identity-foundatio
 fr-people-foundation-model     # /audio/french-foundations/fr-people-foundation-model.wav
 fr-family-foundation-model     # /audio/french-foundations/fr-family-foundation-model.wav
 fr-numbers-foundation-model    # /audio/french-foundations/fr-numbers-foundation-model.wav
+
+# --- Spanish (2, Phase 3.1 café listen pilot) ---
+es-cafe-listen-audio           # /audio/spanish-foundations/es-cafe-listen-exchange.wav
+es-cafe-listen-model           # /audio/spanish-foundations/es-cafe-listen-model.wav

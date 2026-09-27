@@ -1,0 +1,54 @@
+{
+  "assetIds": [
+    "es-b1-listen-aeropuerto"
+  ],
+  "assets": {
+    "es-b1-listen-aeropuerto": {
+      "role": "Phase 7.1a B1-pilot Unit A sustained listening passage — a two-voice airport exchange rendered entirely by on-device speech synthesis at lesson time (no audio file is shipped)",
+      "declaredUrl": "n/a — no recording; the passage lives as four section texts in Condisco/Content/packs/spanish.json under sustainedListenings (id es-b1-listen-aeropuerto)",
+      "transcript": "The full four-section text (passenger ↔ staff member) as authored in the pack's transcript field; section texts are the same words the synthesizer speaks.",
+      "sha256": "",
+      "declaredVoices": [
+        {
+          "voiceId": "com.apple.voice.compact.es-ES.Monica",
+          "languageCode": "es-ES",
+          "sections": ["1", "3"],
+          "label": "synthesised Spanish (Spain) voice"
+        },
+        {
+          "voiceId": "com.apple.voice.compact.es-MX.Paulina",
+          "languageCode": "es-MX",
+          "sections": ["2", "4"],
+          "label": "synthesised Spanish (Mexico) voice"
+        }
+      ],
+      "note": "Declared voice ids are preferences, not requirements: when a declared identifier is not installed on the learner's device, the section is spoken by any installed voice whose language matches the section's languageCode (documented on SustainedListeningSection.voiceId in Condisco/Models/CoursePack.swift). A missing voice can never make a section unspeakable. Voice availability varies by device and iOS version, so no static audio hash exists."
+    }
+  },
+  "packId": "spanish",
+  "lessonId": "es-b1-aeropuerto-listen",
+  "sequence": "es-b1-listen-aeropuerto — presented by the new step es-b1-aeropuerto-listen-step-listen (purpose notice, sustainedListeningId es-b1-listen-aeropuerto, launch activity es-b1-listen-aeropuerto-launch) between step-write and the read step; the lesson terminal is the recall step. The view lane hides the transcript on the first pass, offers per-section replay at normal/slow speed, reveals the transcript on demand, and grades the three embedded questions (main idea / key detail / speaker intent) with fixed-answer selection logic, the same 6.1 pattern as es-sustained-listen-llamada.",
+  "delivery": "device-speech — intentionally NOT shipped as a recording. AudioStimulus-style on-device AVSpeechSynthesizer rendering from the authored section texts; the passage is a data-level construct (sections + voice ids + transcript), so no entry is needed in tools/device-speech-media.txt (that allowlist covers MediaItem assets; this passage declares no media items).",
+  "generator": {
+    "class": "on-device speech synthesis (AVSpeechSynthesizer)",
+    "voice": "per-section declared voice id when installed; otherwise any installed voice of the section's language (es-ES / es-MX), falling back to the system Spanish voice",
+    "note": "Not a fixed file voice: output varies by device and voice availability, so no static audio hash exists."
+  },
+  "method": "authored transcript rendered by device TTS at runtime",
+  "generatedDate": "n/a — rendered on demand on the learner's device",
+  "verificationStatus": "naturalness unverified (two-voice alternation, prosody, and the es-MX/es-ES pair sound unevaluated on-device)",
+  "reviewPending": true,
+  "estimatedDurationAtNormalRate": "approximately 45 to 60 seconds at iOS Spanish TTS normal rate (about 150 words across the four sections)",
+  "source": "authored content — original exchange written for the es-b1-aeropuerto-listen sustained listening step; no external recording, no template, no copied audio",
+  "sources": [
+    "Condisco/Content/packs/spanish.json — sustainedListenings entry \"es-b1-listen-aeropuerto\": four sections with text/voiceId/languageCode/accessibilityLabel, full transcript, glossary, provenance, and three questions",
+    "Condisco/Content/packs/spanish.json — lesson \"es-b1-aeropuerto-listen\": new step \"es-b1-aeropuerto-listen-step-listen\" (sustainedListeningId binding) between step-write and step-read; launch activity \"es-b1-listen-aeropuerto-launch\"",
+    "Condisco/Models/CoursePack.swift — SustainedListeningSection.voiceId documents the offline fallback rule (declared voice preferred; any installed same-language voice otherwise)",
+    "Condisco/Listen/ShadowMode.swift — ShadowVoice.languageCode(for: \"spanish\") = \"es-ES\"; ShadowSpeaker renders utterances with AVSpeechSynthesizer and falls back to any installed voice of the language"
+  ],
+  "unknownFacts": [
+    "naturalness/prosody of the two declared voices for these transcripts: unverified — reviewPending: true until a human listens on-device",
+    "final on-device voices: depend on each learner's device and installed voices; there is no single recorded rendering to attest",
+    "exact duration: depends on device voice and rate; the estimate above assumes iOS normal rate on the declared voices"
+  ]
+}

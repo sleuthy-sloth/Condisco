@@ -741,19 +741,25 @@ struct DialogueCheckpointState: Codable, Equatable {
     var visitedNodeIds: [String]
     var turns: [DialogueTurnRecord]
     var openDraft: String?
+    /// Once shown on this open turn, the model must remain marked as used
+    /// through draft edits and force-quit resume.
+    var openModelRevealed: Bool
     var complete: Bool
 
     private enum CodingKeys: String, CodingKey {
-        case dialogueId, currentNodeId, visitedNodeIds, turns, openDraft, complete
+        case dialogueId, currentNodeId, visitedNodeIds, turns, openDraft
+        case openModelRevealed, complete
     }
 
     init(dialogueId: String, currentNodeId: String, visitedNodeIds: [String],
-         turns: [DialogueTurnRecord], openDraft: String?, complete: Bool) {
+         turns: [DialogueTurnRecord], openDraft: String?,
+         openModelRevealed: Bool = false, complete: Bool) {
         self.dialogueId = dialogueId
         self.currentNodeId = currentNodeId
         self.visitedNodeIds = visitedNodeIds
         self.turns = turns
         self.openDraft = openDraft
+        self.openModelRevealed = openModelRevealed
         self.complete = complete
     }
 
@@ -764,6 +770,8 @@ struct DialogueCheckpointState: Codable, Equatable {
         visitedNodeIds = try container.decode([String].self, forKey: .visitedNodeIds)
         turns = try container.decode([DialogueTurnRecord].self, forKey: .turns)
         openDraft = try container.decodeIfPresent(String.self, forKey: .openDraft)
+        openModelRevealed = try container.decodeIfPresent(
+            Bool.self, forKey: .openModelRevealed) ?? false
         complete = try container.decodeIfPresent(Bool.self, forKey: .complete) ?? false
     }
 
@@ -774,6 +782,7 @@ struct DialogueCheckpointState: Codable, Equatable {
         try container.encode(visitedNodeIds, forKey: .visitedNodeIds)
         try container.encode(turns, forKey: .turns)
         try container.encodeIfPresent(openDraft, forKey: .openDraft)
+        try container.encode(openModelRevealed, forKey: .openModelRevealed)
         try container.encode(complete, forKey: .complete)
     }
 }

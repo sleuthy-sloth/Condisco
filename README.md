@@ -52,7 +52,7 @@ Bundled pack → Lesson session → Evaluation → SQLite learning event
 
 Condisco/Engine contains the deterministic lesson and answer evaluators. Condisco/Store owns SQLite, event replay, FSRS scheduling, checkpoints, import validation, library documents, and pack loading. Condisco/Lesson, Home, Review, Listen, Onboarding, and You contain learner flows. Condisco/Models/CoursePack.swift holds the five-course metadata registry used by loading, voice selection, and display helpers. Condisco/Sync contains the optional CloudKit mirror. CondiscoWidget is the extension; Condisco/Store/WidgetSnapshot.swift is shared between the app and extension and must remain Foundation-only.
 
-Open writing and speaking tasks use a model response and a learner-facing self-check rubric. They are **not automatically marked correct or incorrect** by the fixed-answer engine. Recordings are temporary and disposable. Checkpoint and conversation events record practice evidence without turning lesson completion into a proficiency claim.
+Open writing and speaking tasks use a model response and a learner-facing self-check rubric. They are **not automatically marked correct or incorrect** by the fixed-answer engine. Recordings are temporary and disposable. Checkpoint and conversation events record practice evidence without turning lesson completion into a proficiency claim. A revealed model in a conversation stays marked through draft edits and checkpoint resume, so that turn cannot later be treated as independent practice.
 
 ## Course content and audio
 
@@ -81,7 +81,7 @@ git diff --check
 
 check_packs.sh validates pack structure, references, lesson reachability, media, provenance links, and authored task shapes. The strict editorial audit rejects falsely auto-graded open responses; its other counts are an editorial report. audit_outcomes.py checks that declared reading, listening, speaking, and writing claims have matching activities. preflight.sh also checks generated catalog drift and runs unit tests; --with-ui adds the simulator UI smoke. Run the full preflight on the **exact candidate tree** before sharing a build. GitHub Actions was removed by developer decision, so local preflight is the automated gate.
 
-The latest recorded full gate for the 309-lesson tree passed on 2026-09-27: **563 unit tests and 6 simulator UI tests**, with no failures. See docs/verification/2026-09-27-9.1-course-registry-verification.md and its raw preflight log. This is automated and simulator evidence; it does not establish physical-device behavior, language naturalness, or learner outcomes. docs/release-checklist.md lists remaining manual checks and docs/performance-budget.md separates simulator probes from unmeasured device performance.
+The latest recorded full gate for the 309-lesson tree passed on 2026-09-27: **565 unit tests and 6 simulator UI tests**, with no failures. See docs/verification/2026-09-27-dialogue-reveal-verification.md and its raw preflight log. This is automated and simulator evidence; the UI smoke does not directly navigate a dialogue reveal, and the result does not establish physical-device behavior, language naturalness, or learner outcomes. docs/release-checklist.md lists remaining manual checks and docs/performance-budget.md separates simulator probes from unmeasured device performance.
 
 ## Known limits and next work
 
@@ -89,7 +89,6 @@ The latest recorded full gate for the 309-lesson tree passed on 2026-09-27: **56
 - Run the owned-iPhone walkthrough: fresh and update installs, force-quit resume, offline use, audio and microphone behavior, VoiceOver, large text, and export to fresh-install restore. Physical-device results are still unverified.
 - Walk the practice library from import through phrase review, document deletion, and fresh-install restore on an iPhone. The developer's usefulness verdict for the B2 pilot is also open.
 - Measure launch, navigation, memory, audio start, and Listen battery on an iPhone before setting performance budgets. No learner outcome study or native-speaker review has been completed.
-- Resolve the conversation open-turn reveal-state issue before relying on its independent-practice label: editing a draft can reset the in-memory model-reveal marker.
 - Complete the dated Phase 7.2 self-study and delayed retest before deciding which lesson patterns to replicate. The B1-oriented path and B2-oriented pilot are curriculum slices, not full-level coverage. A sixth language remains a developer decision; none is bundled.
 
 The app stays usable without these future steps. Release claims should distinguish automated checks, simulator checks, physical-device checks, AI-assisted editorial review, and observations from actual learners.

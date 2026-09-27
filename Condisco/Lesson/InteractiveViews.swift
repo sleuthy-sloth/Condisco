@@ -44,6 +44,32 @@ enum DialoguePracticeCopy {
     ]
 }
 
+/// Transient editor fields for the presented turn. A draft edit also updates
+/// the bound DialogueSession for checkpointing; that change must not clear
+/// the learner's rubric choices. Only a different presented turn resets it.
+struct DialogueOpenTurnForm {
+    var draftText = ""
+    var criteriaMet: Set<String> = []
+    var rating: AttemptResponse.SelfRating?
+
+    mutating func reset(for session: DialogueSession?) {
+        draftText = session?.openDraft ?? ""
+        criteriaMet = []
+        rating = nil
+    }
+
+    mutating func sessionChanged(from previous: DialogueSession?,
+                                 to current: DialogueSession?) {
+        guard previous?.dialogueId != current?.dialogueId
+                || previous?.hostLessonId != current?.hostLessonId
+                || previous?.currentNodeId != current?.currentNodeId
+                || previous?.visitedNodeIds != current?.visitedNodeIds
+                || previous?.turns != current?.turns
+                || previous?.status != current?.status else { return }
+        reset(for: current)
+    }
+}
+
 struct DialogueExchangeView: View {
     let pack: CoursePack
     let store: LearningStore
@@ -52,10 +78,7 @@ struct DialogueExchangeView: View {
     @Binding var session: DialogueSession?
     let onClose: () -> Void
 
-    @State private var openDraftText = ""
-    @State private var criteriaMet: Set<String> = []
-    @State private var rating: AttemptResponse.SelfRating?
-    @State private var modelRevealed = false
+    @State private var openForm = DialogueOpenTurnForm()
     @State private var saveError = false
     @State private var pendingEvent: DialogueTurnEvent?
     @State private var pendingSession: DialogueSession?
@@ -88,13 +111,7 @@ struct DialogueExchangeView: View {
     }
 
     private func resetOpenState() {
-        openDraftText = ""
-        criteriaMet = []
-        rating = nil
-        modelRevealed = false
-        if let session, session.openDraft != nil {
-            openDraftText = session.openDraft ?? ""
-        }
+        openForm.reset(for: session)
     }
 
     var body: some View {
@@ -129,12 +146,12 @@ struct DialogueExchangeView: View {
             }
         }
         .onAppear { resetOpenState() }
-        .onChange(of: session) { _, _ in
+        .onChange(of: session) { previous, current in
             if pendingEvent == nil, pendingSession == nil {
-                resetOpenState()
+                openForm.sessionChanged(from: previous, to: current)
             }
         }
-        .onChange(of: openDraftText) { _, newValue in
+        .onChange(of: openForm.draftText) { _, newValue in
             guard let current, current.prompt != nil,
                   session?.currentNodeId == current.id else { return }
             if session?.openDraft != newValue {
@@ -279,7 +296,7 @@ struct DialogueExchangeView: View {
             Text(DialoguePracticeCopy.writeYourReply)
                 .font(DesignTokens.text(14, weight: .medium))
                 .foregroundStyle(DesignTokens.muted)
-            TextEditor(text: $openDraftText)
+            TextEditor(text: $openForm.draftText)
                 .font(DesignTokens.text(17))
                 .foregroundStyle(DesignTokens.ink)
                 .frame(minHeight: 110)
@@ -298,7 +315,7 @@ struct DialogueExchangeView: View {
 
             rubricCard(node: node)
 
-            if modelRevealed {
+            if session?.openModelRevealed == true {
                 Text(node.modelResponse ?? "")
                     .font(DesignTokens.display(19))
                     .foregroundStyle(DesignTokens.inkDeep)
@@ -315,7 +332,7 @@ struct DialogueExchangeView: View {
                     .foregroundStyle(DesignTokens.muted)
             } else {
                 StudioSecondaryButton(OpenTaskCopy.revealModel, disabled: disabled) {
-                    modelRevealed = true
+                    session?.openModelRevealed = true
                 }
             }
 
@@ -346,10 +363,10 @@ struct DialogueExchangeView: View {
 
     private var openSubmission: OpenTaskSubmission {
         OpenTaskSubmission(
-            text: openDraftText,
-            criteriaMet: criteriaMet.sorted(),
-            rating: rating,
-            modelRevealed: modelRevealed)
+            text: openForm.draftText,
+            criteriaMet: openForm.criteriaMet.sorted(),
+            rating: openForm.rating,
+            modelRevealed: session?.openModelRevealed == true)
     }
 
     private func rubricCard(node: DialogueNode) -> some View {
@@ -366,14 +383,14 @@ struct DialogueExchangeView: View {
             ForEach(node.rubric ?? [], id: \.id) { criterion in
                 OptionRow(
                     text: criterion.text,
-                    selected: criteriaMet.contains(criterion.id),
+                    selected: openForm.criteriaMet.contains(criterion.id),
                     multi: true,
                     disabled: disabled
                 ) {
-                    if criteriaMet.contains(criterion.id) {
-                        criteriaMet.remove(criterion.id)
+                    if openForm.criteriaMet.contains(criterion.id) {
+                        openForm.criteriaMet.remove(criterion.id)
                     } else {
-                        criteriaMet.insert(criterion.id)
+                        openForm.criteriaMet.insert(criterion.id)
                     }
                 }
             }
@@ -383,9 +400,9 @@ struct DialogueExchangeView: View {
             HStack(spacing: 8) {
                 ForEach([AttemptResponse.SelfRating.again,
                          .hard, .good, .easy], id: \.self) { option in
-                    let selected = rating == option
+                    let selected = openForm.rating == option
                     Button {
-                        rating = rating == option ? nil : option
+                        openForm.rating = openForm.rating == option ? nil : option
                     } label: {
                         Text(checkpointRatingLabel(option))
                             .font(DesignTokens.text(14, weight: .medium))

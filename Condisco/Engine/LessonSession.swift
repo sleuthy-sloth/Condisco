@@ -389,6 +389,9 @@ struct DialogueSession: Equatable {
     var turns: [DialogueTurnRecord]
     /// In-progress draft on the current open turn (resume support).
     var openDraft: String?
+    /// An explicit model reveal stays attached to this turn through edits
+    /// and checkpoint resume, so it cannot later count as independent.
+    var openModelRevealed: Bool
     var status: DialogueSessionStatus
 
     func checkpointState() -> DialogueCheckpointState {
@@ -398,6 +401,7 @@ struct DialogueSession: Equatable {
             visitedNodeIds: visitedNodeIds,
             turns: turns,
             openDraft: openDraft,
+            openModelRevealed: openModelRevealed,
             complete: status == .complete)
     }
 
@@ -408,18 +412,21 @@ struct DialogueSession: Equatable {
         visitedNodeIds = checkpointState.visitedNodeIds
         turns = checkpointState.turns
         openDraft = checkpointState.openDraft
+        openModelRevealed = checkpointState.openModelRevealed
         status = checkpointState.complete ? .complete : .active
     }
 
     init(dialogueId: String, hostLessonId: String, currentNodeId: String,
          visitedNodeIds: [String], turns: [DialogueTurnRecord],
-         openDraft: String?, status: DialogueSessionStatus) {
+         openDraft: String?, openModelRevealed: Bool = false,
+         status: DialogueSessionStatus) {
         self.dialogueId = dialogueId
         self.hostLessonId = hostLessonId
         self.currentNodeId = currentNodeId
         self.visitedNodeIds = visitedNodeIds
         self.turns = turns
         self.openDraft = openDraft
+        self.openModelRevealed = openModelRevealed
         self.status = status
     }
 }
@@ -508,6 +515,7 @@ func submitDialogueChoice(pack: CoursePack,
     let following = choice.next
     next.currentNodeId = following
     next.visitedNodeIds = session.visitedNodeIds + [following]
+    next.openModelRevealed = false
     if let followingNode = pack.dialogue(id: session.dialogueId)?.node(id: following),
        followingNode.complete {
         next.status = .complete
@@ -546,6 +554,7 @@ func submitDialogueOpenTurn(pack: CoursePack,
     next.currentNodeId = nextId
     next.visitedNodeIds = session.visitedNodeIds + [nextId]
     next.openDraft = nil
+    next.openModelRevealed = false
     if let dialogue = pack.dialogue(id: session.dialogueId),
        let following = dialogue.node(id: nextId),
        following.complete {
@@ -604,5 +613,6 @@ func resumeDialogueSession(pack: CoursePack,
         visitedNodeIds: state.visitedNodeIds,
         turns: state.turns,
         openDraft: state.openDraft,
+        openModelRevealed: state.openModelRevealed,
         status: state.complete ? .complete : .active)
 }

@@ -783,6 +783,68 @@ final class DialogueSessionTests: XCTestCase {
         XCTAssertTrue(session.turns[3].modelRevealed,
                       "a revealed model marks the open turn non-independent")
     }
+
+    func testEditingOpenDraftKeepsRubricUntilTurnAdvances() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "correct-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "thanks")
+
+        var form = DialogueOpenTurnForm()
+        form.reset(for: session)
+        form.draftText = "No, gracias."
+        form.criteriaMet = ["meaning"]
+        form.rating = .good
+        session.openModelRevealed = true
+
+        var edited = session
+        form.draftText = "No, nada más, gracias."
+        edited.openDraft = form.draftText
+        form.sessionChanged(from: session, to: edited)
+        XCTAssertEqual(form.draftText, "No, nada más, gracias.")
+        XCTAssertEqual(form.criteriaMet, ["meaning"])
+        XCTAssertEqual(form.rating, .good)
+        XCTAssertTrue(edited.openModelRevealed)
+
+        let advanced = try submitDialogueOpenTurn(
+            pack: pack, session: edited, draft: edited.openDraft!,
+            criteriaMet: ["meaning"], rating: .good,
+            modelRevealed: edited.openModelRevealed)
+        XCTAssertTrue(advanced.turns.last?.modelRevealed == true)
+        XCTAssertFalse(advanced.openModelRevealed)
+        form.sessionChanged(from: edited, to: advanced)
+        XCTAssertEqual(form.draftText, "")
+        XCTAssertTrue(form.criteriaMet.isEmpty)
+        XCTAssertNil(form.rating)
+    }
+
+    func testRevealedOpenTurnSurvivesCheckpointResume() throws {
+        let pack = try spanishPack()
+        let (lesson, dialogue) = try cafeExchange(in: pack)
+        var session = try startDialogue(pack: pack, lesson: lesson, dialogue: dialogue)
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "order-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "correct-coffee")
+        session = try submitDialogueChoice(pack: pack, session: session, choiceId: "thanks")
+        session.openDraft = "No, gracias."
+        session.openModelRevealed = true
+
+        let checkpoint = session.checkpointState()
+        let data = try JSONEncoder().encode(checkpoint)
+        let decoded = try JSONDecoder().decode(DialogueCheckpointState.self, from: data)
+        let resumed = try XCTUnwrap(resumeDialogueSession(pack: pack, state: decoded))
+        XCTAssertEqual(resumed.openDraft, "No, gracias.")
+        XCTAssertTrue(resumed.openModelRevealed)
+
+        var oldObject = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: data) as? [String: Any])
+        oldObject.removeValue(forKey: "openModelRevealed")
+        let oldData = try JSONSerialization.data(withJSONObject: oldObject)
+        let oldCheckpoint = try JSONDecoder().decode(DialogueCheckpointState.self, from: oldData)
+        XCTAssertFalse(oldCheckpoint.openModelRevealed,
+                       "older checkpoints without the marker remain readable")
+    }
 }
 
 // MARK: - Next lesson: the shared path helper and its consumer surfaces

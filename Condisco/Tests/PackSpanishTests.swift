@@ -245,7 +245,7 @@ final class PackSpanishTests: XCTestCase {
             from: JSONSerialization.data(withJSONObject: stripped))
         XCTAssertTrue(pack.checkpoints.isEmpty,
                       "packs without the key decode to an empty checkpoint bank")
-        XCTAssertEqual(pack.version, "0.7.15")
+        XCTAssertEqual(pack.version, "0.7.16")
         XCTAssertEqual(pack.lessons.count, 106)
         XCTAssertEqual(pack.activities.count, 899)
         XCTAssertEqual(pack.units.count, 26)
@@ -2889,7 +2889,7 @@ final class SustainedExperienceTests: XCTestCase {
         XCTAssertEqual(pack.activities.count, 887,
                        "the pre-6.2 activity count (899 − 11 open tasks − 1 unit-26 open task) is unchanged")
         XCTAssertEqual(pack.lessons.count, 106)
-        XCTAssertEqual(pack.version, "0.7.15",
+        XCTAssertEqual(pack.version, "0.7.16",
                        "only the version string may differ between 6.3 and its pre-6.3 shape")
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "a pack without open tasks must still validate")
@@ -3227,7 +3227,7 @@ final class SustainedExperienceTests: XCTestCase {
                       "packs without the key decode to an empty exchange array")
         XCTAssertEqual(pack.activities.count, 899)
         XCTAssertEqual(pack.lessons.count, 106)
-        XCTAssertEqual(pack.version, "0.7.15",
+        XCTAssertEqual(pack.version, "0.7.16",
                        "only the version string may differ between 6.3 and its pre-6.3 shape")
         XCTAssertNoThrow(try PackValidator.validate(pack),
                          "a pack without dialogues must still validate")

@@ -48,3 +48,12 @@ fr-numbers-foundation-model    # /audio/french-foundations/fr-numbers-foundation
 # --- Spanish (2, Phase 3.1 café listen pilot) ---
 es-cafe-listen-audio           # /audio/spanish-foundations/es-cafe-listen-exchange.wav
 es-cafe-listen-model           # /audio/spanish-foundations/es-cafe-listen-model.wav
+# --- Opening café mission follow-ups (device speech, no recording) ---
+fr-cafe-listen-audio # /audio/french-foundations/fr-cafe-listen-exchange.wav
+fr-cafe-listen-model # /audio/french-foundations/fr-cafe-listen-model.wav
+de-cafe-listen-audio # /audio/german-foundations/de-cafe-listen-exchange.wav
+de-cafe-listen-model # /audio/german-foundations/de-cafe-listen-model.wav
+it-cafe-listen-audio # /audio/italian-foundations/it-cafe-listen-exchange.wav
+it-cafe-listen-model # /audio/italian-foundations/it-cafe-listen-model.wav
+pt-cafe-listen-audio # /audio/portuguese-foundations/pt-cafe-listen-exchange.wav
+pt-cafe-listen-model # /audio/portuguese-foundations/pt-cafe-listen-model.wav

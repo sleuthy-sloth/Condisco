@@ -1,0 +1,30 @@
+{
+  "assetIds": [
+    "pt-cafe-listen-audio",
+    "pt-cafe-listen-model"
+  ],
+  "packId": "portuguese",
+  "lessonId": "pt-cafe-mission",
+  "method": "authored transcript rendered by on-device speech synthesis at runtime",
+  "verificationStatus": "naturalness unverified",
+  "reviewPending": true,
+  "source": "Original lesson text; no external recording or copied audio.",
+  "assets": {
+    "pt-cafe-listen-audio": {
+      "declaredUrl": "/audio/portuguese-foundations/pt-cafe-listen-exchange.wav",
+      "transcript": "Olá. Um café, por favor. Quer também um pastel de nata? Sim, um pastel de nata, por favor.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    },
+    "pt-cafe-listen-model": {
+      "declaredUrl": "/audio/portuguese-foundations/pt-cafe-listen-model.wav",
+      "transcript": "Sim, um pastel de nata, por favor.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    }
+  },
+  "delivery": "device-speech via AudioStimulusView and ShadowSpeaker; ids in tools/device-speech-media.txt; language portuguese",
+  "unknownFacts": [
+    "Naturalness and prosody of the on-device voice require human listening review."
+  ]
+}

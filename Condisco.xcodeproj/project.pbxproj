@@ -21,6 +21,9 @@
 		4E1A0001C0FFEE000000000A /* PackSpanishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1A0001C0FFEE0000000009 /* PackSpanishTests.swift */; };
 		04D71F96AA2644B68B21C001 /* FirstRunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */; };
 		04D71F96AA2644B68B21C00D /* AccessibilitySweepUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D71F96AA2644B68B21C00E /* AccessibilitySweepUITests.swift */; };
+		A1B2C3D4E5F60718293A4A01 /* CoursePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4A02 /* CoursePathTests.swift */; };
+		B1C2D3E4F5061728394A5B01 /* OpeningMissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5061728394A5B02 /* OpeningMissionTests.swift */; };
+		A1B2C3D4E5F60718293A4A03 /* CourseLevelsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4A04 /* CourseLevelsUITests.swift */; };
 		0AA0BD4F2E709F3CC064DF9E /* ListenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EF1F9F89E359168478CE4C /* ListenModels.swift */; };
 		0EC7D04E5BB5C953B7F852F4 /* YouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942F12D85DE53046007FEB06 /* YouView.swift */; };
 		191772D6C24C646A16C7758F /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70821206263E6D0C6A379956 /* DesignTokens.swift */; };
@@ -135,6 +138,9 @@
 		04D71F96AA2644B68B21B004 /* CondiscoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CondiscoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRunUITests.swift; sourceTree = "<group>"; };
 		04D71F96AA2644B68B21C00E /* AccessibilitySweepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySweepUITests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4A02 /* CoursePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePathTests.swift; sourceTree = "<group>"; };
+		B1C2D3E4F5061728394A5B02 /* OpeningMissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningMissionTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4A04 /* CourseLevelsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseLevelsUITests.swift; sourceTree = "<group>"; };
 		04D71F96AA2644B68B21C004 /* CondiscoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CondiscoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC3AE88C3875ED9A8D7ECD3 /* LessonCoachMarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCoachMarks.swift; sourceTree = "<group>"; };
 		11A4EE3E69C30D247A2F185C /* AnswerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerEngine.swift; sourceTree = "<group>"; };
@@ -253,6 +259,8 @@
 				4E1A0001C0FFEE0000000007 /* PackPortugueseTests.swift */,
 				4E1A0001C0FFEE0000000009 /* PackSpanishTests.swift */,
 				9C1A2B3C4D5E6F708192A334 /* CourseRegistryTests.swift */,
+				A1B2C3D4E5F60718293A4A02 /* CoursePathTests.swift */,
+				B1C2D3E4F5061728394A5B02 /* OpeningMissionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -262,6 +270,7 @@
 			children = (
 				04D71F96AA2644B68B21C002 /* FirstRunUITests.swift */,
 				04D71F96AA2644B68B21C00E /* AccessibilitySweepUITests.swift */,
+				A1B2C3D4E5F60718293A4A04 /* CourseLevelsUITests.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -609,6 +618,8 @@
 				4E1A0001C0FFEE0000000008 /* PackPortugueseTests.swift in Sources */,
 				4E1A0001C0FFEE000000000A /* PackSpanishTests.swift in Sources */,
 				9C1A2B3C4D5E6F708192A335 /* CourseRegistryTests.swift in Sources */,
+				A1B2C3D4E5F60718293A4A01 /* CoursePathTests.swift in Sources */,
+				B1C2D3E4F5061728394A5B01 /* OpeningMissionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +629,7 @@
 			files = (
 				04D71F96AA2644B68B21C001 /* FirstRunUITests.swift in Sources */,
 				04D71F96AA2644B68B21C00D /* AccessibilitySweepUITests.swift in Sources */,
+				A1B2C3D4E5F60718293A4A03 /* CourseLevelsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "pt-foundations",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "language": "pt",
   "status": "active",
   "title": "Portuguese foundations",
@@ -2569,7 +2569,24 @@
       "example": "A receção fica à direita."
     }
   ],
-  "media": [],
+  "media": [
+    {
+      "id": "pt-cafe-listen-audio",
+      "url": "/audio/portuguese-foundations/pt-cafe-listen-exchange.wav",
+      "sha256": "",
+      "transcript": "Olá. Um café, por favor. Quer também um pastel de nata? Sim, um pastel de nata, por favor.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/portuguese-cafe-listen.json. Naturalness of the on-device Portuguese voice unverified (reviewPending: true).",
+      "kind": "audio"
+    },
+    {
+      "id": "pt-cafe-listen-model",
+      "url": "/audio/portuguese-foundations/pt-cafe-listen-model.wav",
+      "sha256": "",
+      "transcript": "Sim, um pastel de nata, por favor.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/portuguese-cafe-listen.json. Naturalness of the on-device Portuguese voice unverified (reviewPending: true).",
+      "kind": "audio"
+    }
+  ],
   "stimuli": [
     {
       "kind": "examples",
@@ -3749,6 +3766,11 @@
           "meaning": "For how many nights?"
         }
       ]
+    },
+    {
+      "kind": "audio",
+      "id": "pt-cafe-listen-stim",
+      "mediaId": "pt-cafe-listen-audio"
     }
   ],
   "activities": [
@@ -22330,6 +22352,178 @@
       "id": "pt-a2-pronomes-preposicoes-act-rb2",
       "revision": 1,
       "body": "The invitations go out one by one: «Quero falar contigo,» to her brother; «Posso falar consigo um minuto?» to the neighbour she barely knows; «Este presente é para ti,» on the card for her mother. By midnight the list is done — and every para, com and de is holding its pronoun like a dance partner."
+    },
+    {
+      "kind": "information",
+      "id": "pt-cafe-listen-act-1",
+      "revision": 1,
+      "body": "At the pastry counter, the server offers something to eat with your coffee. Listen for what they suggest and how the customer answers. You can replay the exchange.",
+      "stimulusId": "pt-cafe-listen-stim"
+    },
+    {
+      "kind": "selection",
+      "id": "pt-cafe-listen-gist",
+      "revision": 1,
+      "conceptIds": [
+        "pt-first-words-concept",
+        "pt-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "pt-first-words-word-1",
+        "pt-first-words-word-2",
+        "pt-first-words-word-6",
+        "pt-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "pt-cafe-listen-stim",
+      "prompt": "What does the server offer with the coffee?",
+      "hints": [
+        "After the coffee order, listen for Quer também…?"
+      ],
+      "feedback": "The server offers a pastel de nata, a custard tart.",
+      "evidenceKey": "pt-cafe-listen-gist",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "pastry",
+          "text": "A pastel de nata"
+        },
+        {
+          "id": "water",
+          "text": "A glass of water"
+        },
+        {
+          "id": "tea",
+          "text": "A cup of tea"
+        }
+      ],
+      "acceptedIds": [
+        "pastry"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "pt-cafe-listen-detail",
+      "revision": 1,
+      "conceptIds": [
+        "pt-first-words-concept",
+        "pt-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "pt-first-words-word-1",
+        "pt-first-words-word-2",
+        "pt-first-words-word-6",
+        "pt-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "pt-cafe-listen-stim",
+      "prompt": "Does the customer accept the offer?",
+      "hints": [
+        "The answer begins with sim."
+      ],
+      "feedback": "Sim starts the reply, so the customer accepts.",
+      "evidenceKey": "pt-cafe-listen-detail",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "yes",
+          "text": "Yes"
+        },
+        {
+          "id": "no",
+          "text": "No"
+        },
+        {
+          "id": "later",
+          "text": "They ask for it later"
+        }
+      ],
+      "acceptedIds": [
+        "yes"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "pt-cafe-listen-choice",
+      "revision": 1,
+      "conceptIds": [
+        "pt-first-words-concept",
+        "pt-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "pt-first-words-word-1",
+        "pt-first-words-word-2",
+        "pt-first-words-word-6",
+        "pt-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "pt-cafe-listen-stim",
+      "prompt": "Which reply adds the pastry politely?",
+      "hints": [
+        "Use sim, then repeat the pastry’s name."
+      ],
+      "feedback": "Sim, um pastel de nata accepts the offer; por favor finishes the request politely.",
+      "evidenceKey": "pt-cafe-listen-choice",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "pastry",
+          "text": "Sim, um pastel de nata"
+        },
+        {
+          "id": "coffee",
+          "text": "Um café"
+        },
+        {
+          "id": "no",
+          "text": "Não, obrigado"
+        }
+      ],
+      "acceptedIds": [
+        "pastry"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "self-compare",
+      "id": "pt-cafe-listen-say",
+      "revision": 1,
+      "conceptIds": [
+        "pt-first-words-concept",
+        "pt-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "pt-first-words-word-1",
+        "pt-first-words-word-2",
+        "pt-first-words-word-6",
+        "pt-cafe-requests-word-4"
+      ],
+      "skills": [
+        "speaking"
+      ],
+      "prompt": "You want the pastry too. Say “Yes, a pastel de nata, please” in Portuguese.",
+      "modelText": "Sim, um pastel de nata, por favor.",
+      "modelAudioId": "pt-cafe-listen-model"
     }
   ],
   "lessons": [
@@ -22339,7 +22533,7 @@
       "title": "Missão: um café em Lisboa",
       "objective": "Walk into a Lisbon pastelaria and order a coffee — your first real conversation in Portuguese.",
       "family": "mission",
-      "revision": 3,
+      "revision": 4,
       "estimatedMinutes": 6,
       "entryStepId": "pt-cafe-mission-step-1",
       "steps": [
@@ -22382,6 +22576,41 @@
           "id": "pt-cafe-mission-step-8",
           "purpose": "practice",
           "activityId": "pt-cafe-mission-act-8",
+          "required": true,
+          "nextStepId": "pt-cafe-mission-step-10"
+        },
+        {
+          "id": "pt-cafe-mission-step-10",
+          "purpose": "notice",
+          "activityId": "pt-cafe-listen-act-1",
+          "required": true,
+          "nextStepId": "pt-cafe-mission-step-11"
+        },
+        {
+          "id": "pt-cafe-mission-step-11",
+          "purpose": "practice",
+          "activityId": "pt-cafe-listen-gist",
+          "required": true,
+          "nextStepId": "pt-cafe-mission-step-12"
+        },
+        {
+          "id": "pt-cafe-mission-step-12",
+          "purpose": "practice",
+          "activityId": "pt-cafe-listen-detail",
+          "required": true,
+          "nextStepId": "pt-cafe-mission-step-13"
+        },
+        {
+          "id": "pt-cafe-mission-step-13",
+          "purpose": "practice",
+          "activityId": "pt-cafe-listen-choice",
+          "required": true,
+          "nextStepId": "pt-cafe-mission-step-14"
+        },
+        {
+          "id": "pt-cafe-mission-step-14",
+          "purpose": "practice",
+          "activityId": "pt-cafe-listen-say",
           "required": true,
           "nextStepId": "pt-cafe-mission-step-9"
         },

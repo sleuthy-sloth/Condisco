@@ -1036,7 +1036,9 @@ struct Lesson: Decodable {
     let unitId: String
     let title: String
     let objective: String
-    /// Authored CEFR tag carried over from v1. Always "A1" when present.
+    /// Authored CEFR tag carried over from v1: "A1"/"A2" on the core
+    /// courses and Spanish's earlier units, "B1"/"B2" on Spanish's later
+    /// units; absent on the untagged foundation lessons.
     let cefr: String?
     let culturalNote: String?
     let family: LessonFamily
@@ -1225,8 +1227,8 @@ struct Dialogue: Decodable {
 
 /// Which pathway stage a checkpoint gates. `foundation` rounds off the
 /// Foundation path (A1/untagged lessons), `developing` the Developing path
-/// (A2 lessons); `independent` is declared for future content and has no
-/// shipped tasks today.
+/// (A2 lessons); `independent` rounds off the Independent path (B1/B2
+/// lessons) — Spanish ships one independent task today.
 enum CheckpointStage: String, Codable, Equatable {
     case foundation, developing, independent
 }

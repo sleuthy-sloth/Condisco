@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "fr-foundations",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "language": "fr",
   "status": "active",
   "title": "French foundations",
@@ -2297,6 +2297,22 @@
       "transcript": "J’ai trente ans.",
       "attribution": "Original lesson text; Kokoro 0.9.4 / hexgrad/Kokoro-82M, ff_siwis; generated locally 2026-09-05. Native-speaker prosody review pending.",
       "kind": "audio"
+    },
+    {
+      "id": "fr-cafe-listen-audio",
+      "url": "/audio/french-foundations/fr-cafe-listen-exchange.wav",
+      "sha256": "",
+      "transcript": "Bonjour. Un café, s’il vous plaît. Avec ou sans sucre ? Sans sucre, merci.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/french-cafe-listen.json. Naturalness of the on-device French voice unverified (reviewPending: true).",
+      "kind": "audio"
+    },
+    {
+      "id": "fr-cafe-listen-model",
+      "url": "/audio/french-foundations/fr-cafe-listen-model.wav",
+      "sha256": "",
+      "transcript": "Sans sucre, merci.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/french-cafe-listen.json. Naturalness of the on-device French voice unverified (reviewPending: true).",
+      "kind": "audio"
     }
   ],
   "stimuli": [
@@ -3330,6 +3346,11 @@
       "kind": "text",
       "id": "fr-a2-si-imparfait-intro-stim-rb5",
       "body": "Je ferme la carte et j'écris deux projets : un rêve et une tâche. Le rêve commence par « Si j'avais le temps… » ; la tâche, par mon ordinateur."
+    },
+    {
+      "kind": "audio",
+      "id": "fr-cafe-listen-stim",
+      "mediaId": "fr-cafe-listen-audio"
     }
   ],
   "activities": [
@@ -3660,8 +3681,8 @@
     {
       "kind": "information",
       "id": "fr-identity-foundation-intro",
-      "revision": 1,
-      "body": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+      "revision": 2,
+      "body": "Look at how Anna and Marc introduce themselves. Je suis means ‘I am’; the word after it tells you who they are. Notice the extra -e in française when a woman describes herself. You will work out the pattern in the next steps.",
       "stimulusId": "fr-identity-foundation-examples"
     },
     {
@@ -3844,7 +3865,7 @@
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "fr-identity-concept"
       ],
@@ -3861,7 +3882,7 @@
       "hints": [
         "The sentence starts with the subject Je, then the verb suis, then the feminine adjective with its final -e."
       ],
-      "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+      "feedback": "Je suis française means ‘I am French’ when the speaker is a woman. Put Je before suis, then use française with its final -e.",
       "evidenceKey": "fr-identity-foundation-order",
       "assistanceAffectsEvidence": [
         "hint",
@@ -3931,7 +3952,7 @@
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "fr-identity-concept"
       ],
@@ -3948,7 +3969,7 @@
       "hints": [
         "The sentence is 'Je suis' + the adjective for a French woman."
       ],
-      "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+      "feedback": "Je suis française means ‘I am French’ when the speaker is a woman.",
       "evidenceKey": "fr-identity-foundation-meaning",
       "assistanceAffectsEvidence": [
         "translation",
@@ -3973,7 +3994,7 @@
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "fr-identity-concept"
       ],
@@ -3989,7 +4010,7 @@
       "hints": [
         "The blank holds the verb — the je-form of être, the word you derived that means 'am'."
       ],
-      "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+      "feedback": "Je suis Anna means ‘I am Anna’; suis is the form of être used with je.",
       "evidenceKey": "fr-identity-foundation-cloze",
       "assistanceAffectsEvidence": [
         "hint",
@@ -4034,7 +4055,7 @@
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "fr-identity-concept"
       ],
@@ -4052,7 +4073,7 @@
       "hints": [
         "The passage opens 'Bonjour ! Je suis Anna' — the name right after suis is the answer."
       ],
-      "feedback": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+      "feedback": "Anna says Je suis Anna at the start of the passage, so her name is Anna.",
       "evidenceKey": "fr-identity-foundation-read",
       "assistanceAffectsEvidence": [
         "translation",
@@ -22851,6 +22872,174 @@
           }
         ]
       }
+    },
+    {
+      "kind": "information",
+      "id": "fr-cafe-listen-act-1",
+      "revision": 1,
+      "body": "The server has one more question before making your coffee. Listen for the two choices. You can replay the exchange and read the transcript below.",
+      "stimulusId": "fr-cafe-listen-stim"
+    },
+    {
+      "kind": "selection",
+      "id": "fr-cafe-listen-gist",
+      "revision": 1,
+      "conceptIds": [
+        "fr-first-words-concept",
+        "fr-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "fr-first-words-word-1",
+        "fr-first-words-word-2",
+        "fr-first-words-word-6"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "fr-cafe-listen-stim",
+      "prompt": "What does the server ask about?",
+      "hints": [
+        "Listen after the coffee order: avec ou sans sucre? gives two options."
+      ],
+      "feedback": "Avec ou sans sucre? asks whether you want sugar in the coffee.",
+      "evidenceKey": "fr-cafe-listen-gist",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "sugar",
+          "text": "Sugar"
+        },
+        {
+          "id": "size",
+          "text": "The size of the cup"
+        },
+        {
+          "id": "price",
+          "text": "The price"
+        }
+      ],
+      "acceptedIds": [
+        "sugar"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "fr-cafe-listen-detail",
+      "revision": 1,
+      "conceptIds": [
+        "fr-first-words-concept",
+        "fr-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "fr-first-words-word-1",
+        "fr-first-words-word-2",
+        "fr-first-words-word-6"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "fr-cafe-listen-stim",
+      "prompt": "Which option does the customer choose?",
+      "hints": [
+        "The reply begins sans, which means without."
+      ],
+      "feedback": "Sans sucre means without sugar.",
+      "evidenceKey": "fr-cafe-listen-detail",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "none",
+          "text": "No sugar"
+        },
+        {
+          "id": "some",
+          "text": "Sugar"
+        },
+        {
+          "id": "milk",
+          "text": "Milk"
+        }
+      ],
+      "acceptedIds": [
+        "none"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "fr-cafe-listen-choice",
+      "revision": 1,
+      "conceptIds": [
+        "fr-first-words-concept",
+        "fr-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "fr-first-words-word-1",
+        "fr-first-words-word-2",
+        "fr-first-words-word-6"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "fr-cafe-listen-stim",
+      "prompt": "How can you answer the server without sugar?",
+      "hints": [
+        "Choose the words the customer says before merci."
+      ],
+      "feedback": "Sans sucre is the short answer; merci makes it polite.",
+      "evidenceKey": "fr-cafe-listen-choice",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "yes",
+          "text": "Sans sucre"
+        },
+        {
+          "id": "with",
+          "text": "Avec sucre"
+        },
+        {
+          "id": "coffee",
+          "text": "Un café"
+        }
+      ],
+      "acceptedIds": [
+        "yes"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "self-compare",
+      "id": "fr-cafe-listen-say",
+      "revision": 1,
+      "conceptIds": [
+        "fr-first-words-concept",
+        "fr-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "fr-first-words-word-1",
+        "fr-first-words-word-2",
+        "fr-first-words-word-6"
+      ],
+      "skills": [
+        "speaking"
+      ],
+      "prompt": "The server asks if you want sugar. Say “Without sugar, thank you” in French.",
+      "modelText": "Sans sucre, merci.",
+      "modelAudioId": "fr-cafe-listen-model"
     }
   ],
   "lessons": [
@@ -22860,7 +23049,7 @@
       "title": "Mission : un café à Paris",
       "objective": "Walk into a Paris café and order a coffee — your first real conversation in French.",
       "family": "mission",
-      "revision": 3,
+      "revision": 4,
       "estimatedMinutes": 8,
       "entryStepId": "fr-cafe-mission-step-1",
       "steps": [
@@ -22904,6 +23093,41 @@
           "purpose": "practice",
           "activityId": "fr-cafe-mission-act-8",
           "required": true,
+          "nextStepId": "fr-cafe-mission-step-10"
+        },
+        {
+          "id": "fr-cafe-mission-step-10",
+          "purpose": "notice",
+          "activityId": "fr-cafe-listen-act-1",
+          "required": true,
+          "nextStepId": "fr-cafe-mission-step-11"
+        },
+        {
+          "id": "fr-cafe-mission-step-11",
+          "purpose": "practice",
+          "activityId": "fr-cafe-listen-gist",
+          "required": true,
+          "nextStepId": "fr-cafe-mission-step-12"
+        },
+        {
+          "id": "fr-cafe-mission-step-12",
+          "purpose": "practice",
+          "activityId": "fr-cafe-listen-detail",
+          "required": true,
+          "nextStepId": "fr-cafe-mission-step-13"
+        },
+        {
+          "id": "fr-cafe-mission-step-13",
+          "purpose": "practice",
+          "activityId": "fr-cafe-listen-choice",
+          "required": true,
+          "nextStepId": "fr-cafe-mission-step-14"
+        },
+        {
+          "id": "fr-cafe-mission-step-14",
+          "purpose": "practice",
+          "activityId": "fr-cafe-listen-say",
+          "required": true,
           "nextStepId": "fr-cafe-mission-step-9"
         },
         {
@@ -22933,7 +23157,7 @@
       "title": "Names and introductions",
       "objective": "Derive how French introductions work — I-am, masculine/feminine — by thinking, not memorizing.",
       "family": "discovery",
-      "revision": 1,
+      "revision": 2,
       "estimatedMinutes": 10,
       "entryStepId": "fr-identity-foundation-step-intro",
       "steps": [
@@ -23142,7 +23366,7 @@
           "id": "fr-identity-foundation-order",
           "conceptId": "fr-identity-concept",
           "prompt": "Build it with the blocks: I am French (a woman).",
-          "explanation": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+          "explanation": "Je suis française means ‘I am French’ when the speaker is a woman. Put Je before suis, then use française with its final -e.",
           "vocabulary": [
             "fr-identity-word-1",
             "fr-identity-word-2",
@@ -23187,7 +23411,7 @@
           "id": "fr-identity-foundation-meaning",
           "conceptId": "fr-identity-concept",
           "prompt": "Give the English meaning: Je suis française.",
-          "explanation": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+          "explanation": "Je suis française means ‘I am French’ when the speaker is a woman.",
           "vocabulary": [
             "fr-identity-word-1",
             "fr-identity-word-2",
@@ -23206,7 +23430,7 @@
           "id": "fr-identity-foundation-cloze",
           "conceptId": "fr-identity-concept",
           "prompt": "Complete: Je ___ Anna.",
-          "explanation": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+          "explanation": "Je suis Anna means ‘I am Anna’; suis is the form of être used with je.",
           "vocabulary": [
             "fr-identity-word-1",
             "fr-identity-word-2"
@@ -23224,7 +23448,7 @@
           "id": "fr-identity-foundation-read",
           "conceptId": "fr-identity-concept",
           "prompt": "What is her name? (Reading 1)",
-          "explanation": "The rule you just discovered: Je means I. Suis is the I-form of être (to be), so Je suis is 'I am'. French normally keeps the subject pronoun. Française describes a French woman; français describes a French man — the feminine form adds an -e you can hear as a soft 'z' before it.",
+          "explanation": "Anna says Je suis Anna at the start of the passage, so her name is Anna.",
           "vocabulary": [
             "fr-identity-word-1",
             "fr-identity-word-2",

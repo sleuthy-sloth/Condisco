@@ -1,0 +1,30 @@
+{
+  "assetIds": [
+    "de-cafe-listen-audio",
+    "de-cafe-listen-model"
+  ],
+  "packId": "german",
+  "lessonId": "de-cafe-mission",
+  "method": "authored transcript rendered by on-device speech synthesis at runtime",
+  "verificationStatus": "naturalness unverified",
+  "reviewPending": true,
+  "source": "Original lesson text; no external recording or copied audio.",
+  "assets": {
+    "de-cafe-listen-audio": {
+      "declaredUrl": "/audio/german-foundations/de-cafe-listen-exchange.wav",
+      "transcript": "Guten Morgen. Einen Kaffee, bitte. Hier oder zum Mitnehmen? Zum Mitnehmen, bitte. Meine Straßenbahn kommt gleich.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    },
+    "de-cafe-listen-model": {
+      "declaredUrl": "/audio/german-foundations/de-cafe-listen-model.wav",
+      "transcript": "Zum Mitnehmen, bitte.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    }
+  },
+  "delivery": "device-speech via AudioStimulusView and ShadowSpeaker; ids in tools/device-speech-media.txt; language german",
+  "unknownFacts": [
+    "Naturalness and prosody of the on-device voice require human listening review."
+  ]
+}

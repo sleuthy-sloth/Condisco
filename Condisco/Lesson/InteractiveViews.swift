@@ -601,6 +601,7 @@ struct OrderingActivityView: View {
     let activity: OrderingActivity
     @Binding var draft: AttemptResponse?
     let disabled: Bool
+    @ObservedObject private var a11y = A11ySettings.shared
 
     private var placedIds: [String] {
         if case .ordering(let ids) = draft { return ids }
@@ -622,7 +623,13 @@ struct OrderingActivityView: View {
     }
 
     private func setIds(_ ids: [String]) {
-        draft = .ordering(ids: ids)
+        if a11y.effectiveReduceMotion {
+            draft = .ordering(ids: ids)
+        } else {
+            withAnimation(.easeOut(duration: 0.18)) {
+                draft = .ordering(ids: ids)
+            }
+        }
     }
 
     var body: some View {
@@ -672,6 +679,7 @@ struct OrderingActivityView: View {
                         )
                         .accessibilityElement(children: .contain)
                         .accessibilityLabel("Placed: \(item.text)\(duplicateSuffix(for: id))")
+                        .transition(.opacity.combined(with: .scale(scale: 0.96)))
                     }
                 }
                 if placedIds.isEmpty {
@@ -701,6 +709,7 @@ struct OrderingActivityView: View {
                     .shadow(color: DesignTokens.ink, radius: 0, x: 2, y: 2)
                     .disabled(disabled)
                     .accessibilityLabel("Add \(item.text)\(duplicateSuffix(for: item.id))")
+                    .transition(.opacity)
                 }
             }
         }

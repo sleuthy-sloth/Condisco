@@ -271,6 +271,8 @@ struct LessonRecapView: View {
     /// Local "I tried it" reflection marker for mission lessons. Loaded from
     /// the kv table on appear; see `missionTakeOutsideCard` for the tradeoff.
     @State private var triedIt = false
+    @State private var beeArrived = false
+    @ObservedObject private var a11y = A11ySettings.shared
 
     /// The kv key backing the "I tried it" marker: pack- and lesson-scoped.
     private var triedItKey: String {
@@ -424,6 +426,8 @@ struct LessonRecapView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 88, height: 88)
+                        .opacity(beeArrived || a11y.effectiveReduceMotion ? 1 : 0)
+                        .offset(y: beeArrived || a11y.effectiveReduceMotion ? 0 : 12)
                         .accessibilityHidden(true)
                 }
 
@@ -531,6 +535,15 @@ struct LessonRecapView: View {
             // the marker was never set.
             let value = (try? LearningStore.inDocuments().kvGet(triedItKey)) ?? nil
             triedIt = value == "1"
+        }
+        .onAppear {
+            if a11y.effectiveReduceMotion {
+                beeArrived = true
+            } else if !beeArrived {
+                withAnimation(.easeOut(duration: 0.35)) {
+                    beeArrived = true
+                }
+            }
         }
     }
 

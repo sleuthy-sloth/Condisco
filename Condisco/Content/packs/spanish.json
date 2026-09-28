@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "es-foundations",
-  "version": "0.7.15",
+  "version": "0.7.16",
   "language": "es",
   "status": "active",
   "title": "Spanish foundations",
@@ -8961,8 +8961,8 @@
     {
       "kind": "information",
       "id": "es-introductions-foundation-intro",
-      "revision": 1,
-      "body": "Spanish does not say 'my name is'. It says Me llamo Ana, literally 'I call myself Ana' — the small me is part of the verb llamarse and points back at the speaker. Turn the same verb on the person in front of you and that me becomes te: ¿Cómo te llamas? Soy Ana is the other introduction, and that one uses plain 'to be'. The pronoun, not the verb, is what changes.",
+      "revision": 2,
+      "body": "One common way to introduce yourself is Me llamo Ana (‘My name is Ana’); literally, it means ‘I call myself Ana.’ Mi nombre es Ana is possible too. To ask someone else, say ¿Cómo te llamas? Both the small pronoun (me → te) and the verb ending (llamo → llamas) change. You can also introduce yourself with Soy Ana (‘I am Ana’).",
       "stimulusId": "es-introductions-foundation-examples"
     },
     {
@@ -46559,7 +46559,7 @@
       "title": "Introducing yourself",
       "objective": "Introduce yourself with the reflexive verb llamarse and ask a name with the pronoun that travels with it.",
       "family": "discovery",
-      "revision": 1,
+      "revision": 2,
       "estimatedMinutes": 6,
       "entryStepId": "es-introductions-foundation-step-intro",
       "steps": [

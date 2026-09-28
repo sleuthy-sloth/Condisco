@@ -98,6 +98,27 @@ final class FirstRunUITests: XCTestCase {
         app.buttons["Thank you."].tap()
         checkThenAdvance(app)
 
+        // The longer opening mission now uses a short listening exchange.
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "one more question before making your coffee")).firstMatch.waitForExistence(timeout: 10))
+        app.buttons["Continue"].tap()
+
+        XCTAssertTrue(app.staticTexts["What does the server ask about?"].waitForExistence(timeout: 10))
+        app.buttons["Sugar"].tap()
+        checkThenAdvance(app)
+
+        XCTAssertTrue(app.staticTexts["Which option does the customer choose?"].waitForExistence(timeout: 10))
+        app.buttons["No sugar"].tap()
+        checkThenAdvance(app)
+
+        XCTAssertTrue(app.staticTexts["How can you answer the server without sugar?"].waitForExistence(timeout: 10))
+        app.buttons["Sans sucre"].tap()
+        checkThenAdvance(app)
+
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Without sugar, thank you")).firstMatch.waitForExistence(timeout: 10))
+        app.buttons["Reveal comparison model"].tap()
+        app.buttons["Comfortable"].tap()
+        checkThenAdvance(app)
+
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Write the café exchange in order")).firstMatch.waitForExistence(timeout: 10))
         let finalAnswer = app.textViews.firstMatch
         XCTAssertTrue(finalAnswer.waitForExistence(timeout: 10))

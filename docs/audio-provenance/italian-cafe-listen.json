@@ -1,0 +1,30 @@
+{
+  "assetIds": [
+    "it-cafe-listen-audio",
+    "it-cafe-listen-model"
+  ],
+  "packId": "italian",
+  "lessonId": "it-cafe-mission",
+  "method": "authored transcript rendered by on-device speech synthesis at runtime",
+  "verificationStatus": "naturalness unverified",
+  "reviewPending": true,
+  "source": "Original lesson text; no external recording or copied audio.",
+  "assets": {
+    "it-cafe-listen-audio": {
+      "declaredUrl": "/audio/italian-foundations/it-cafe-listen-exchange.wav",
+      "transcript": "Buongiorno. Un caffè, per favore. Al banco o al tavolo? Al banco, grazie. Ho poco tempo.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    },
+    "it-cafe-listen-model": {
+      "declaredUrl": "/audio/italian-foundations/it-cafe-listen-model.wav",
+      "transcript": "Al banco, grazie.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    }
+  },
+  "delivery": "device-speech via AudioStimulusView and ShadowSpeaker; ids in tools/device-speech-media.txt; language italian",
+  "unknownFacts": [
+    "Naturalness and prosody of the on-device voice require human listening review."
+  ]
+}

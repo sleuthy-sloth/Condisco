@@ -62,8 +62,9 @@ final class CoursesModel: ObservableObject {
 }
 
 private enum CourseRoute: Hashable {
-    case lessons(packId: String)
+    case lessons(packId: String, selectedPath: CoursePath? = nil)
     case vocabulary(packId: String)
+    case level(CoursePath)
 }
 
 private struct SelectedLesson: Identifiable {
@@ -76,7 +77,7 @@ private struct SelectedLesson: Identifiable {
 // metadata already authored in the packs — never from a learner's results:
 //
 //   · lesson.cefr: "A2" → Developing; "A1" or absent → Foundation;
-//     anything else → Independent (none today, shown honestly as empty).
+//     anything else → Independent (Spanish B1/B2 today).
 //   · a path's task outcomes are the unit objectives of the units that
 //     map to it (authored copy, not claims invented by the UI).
 //   · a path's prerequisite line reflects the real prerequisite edges
@@ -85,11 +86,16 @@ private struct SelectedLesson: Identifiable {
 //
 // The labels describe content alignment, not ability: no level shown here
 // is a test result or a score.
+//
+// `CoursePath` + `coursePath(of:)` are the single mapping used by the
+// level cards, the level pages, scoped lesson lists, search, and the
+// tests — the displayed counts always equal the lessons those surfaces
+// reach.
 
-/// The three content paths, in progression order. Foundation and
-/// Developing both have content today; Independent is an honest empty
-/// state until lessons exist at that level.
-private enum CoursePath: String, CaseIterable, Identifiable {
+/// The three content paths, in progression order. Foundation carries the
+/// A1/untagged lessons of every course, Developing the A2 lessons, and
+/// Independent the B1/B2 lessons (Spanish today).
+enum CoursePath: String, CaseIterable, Identifiable, Hashable {
     case foundation, developing, independent
 
     var id: String { rawValue }
@@ -100,6 +106,54 @@ private enum CoursePath: String, CaseIterable, Identifiable {
         case .developing: return "Developing"
         case .independent: return "Independent"
         }
+    }
+
+    /// VoiceOver label for the level card: names the level and its reach.
+    var browseLabel: String { "Browse \(title) lessons" }
+
+    /// Stable identifier for UI automation ("courses.level.foundation", …).
+    var cardIdentifier: String { "courses.level.\(rawValue)" }
+
+    /// Lessons in a pack at this path, in pack order.
+    func lessons(in pack: CoursePack) -> [Lesson] {
+        pack.lessons.filter { coursePath(of: $0) == self }
+    }
+
+    /// Completed lessons at this path, from the learner's finished set.
+    func completedCount(in pack: CoursePack, finished: Set<String>) -> Int {
+        lessons(in: pack).filter { finished.contains($0.id) }.count
+    }
+}
+
+/// A lesson's path from its authored level tag: A2 → Developing,
+/// A1 or absent → Foundation, anything else → Independent.
+func coursePath(of lesson: Lesson) -> CoursePath {
+    switch lesson.cefr {
+    case "A2": return .developing
+    case "A1", nil: return .foundation
+    default: return .independent
+    }
+}
+
+/// A unit's path is the path of its first lesson; every unit today is
+/// uniform within one path.
+func coursePath(of unit: CourseUnit, in pack: CoursePack) -> CoursePath {
+    guard let first = pack.lessons.first(where: { $0.unitId == unit.id }) else {
+        return .foundation
+    }
+    return coursePath(of: first)
+}
+
+/// Lessons whose title or objective contains the trimmed, case-insensitive
+/// query, in the given order. The lesson list's search — scoped or whole
+/// course — uses exactly this predicate, so a level-scoped search can
+/// never surface another level's lessons.
+func lessonSearchResults(_ lessons: [Lesson], query: String) -> [Lesson] {
+    let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    guard !trimmed.isEmpty else { return [] }
+    return lessons.filter {
+        $0.title.lowercased().contains(trimmed)
+            || $0.objective.lowercased().contains(trimmed)
     }
 }
 
@@ -122,13 +176,14 @@ struct CoursesView: View {
             .navigationTitle("Courses")
             .navigationDestination(for: CourseRoute.self) { route in
                 switch route {
-                case .lessons(let packId):
+                case .lessons(let packId, let selectedPath):
                     if let pack = model.packs.first(where: { $0.id == packId }),
                        let store = model.makeStore() {
                         LessonListView(
                             pack: pack,
                             progress: model.progress[pack.id] ?? PackProgress(),
                             store: store,
+                            selectedPath: selectedPath,
                             onProgressRefresh: { model.refreshProgress() }
                         )
                     }
@@ -136,6 +191,13 @@ struct CoursesView: View {
                     if let pack = model.packs.first(where: { $0.id == packId }) {
                         VocabularyBrowserView(pack: pack)
                     }
+                case .level(let path):
+                    LevelBrowseView(
+                        path: path,
+                        packs: model.packs,
+                        progress: model.progress,
+                        onProgressRefresh: { model.refreshProgress() }
+                    )
                 }
             }
             .onChange(of: model.focusSlug) { _, _ in model.applyFocusOrder() }
@@ -167,77 +229,35 @@ struct CoursesView: View {
     }
 
     private func courseRow(_ pack: CoursePack) -> some View {
-        let done = model.progress[pack.id]?.finishedLessons.count ?? 0
-        let total = pack.lessons.count
         let finishedSet = model.progress[pack.id]?.finishedLessons ?? []
+        let done = finishedSet.count
+        let total = pack.lessons.count
         let remainingMinutes = pack.lessons
             .filter { !finishedSet.contains($0.id) }
             .reduce(0) { $0 + $1.estimatedMinutes }
-        return PaperCard {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(pack.language.displayName)
-                    .font(DesignTokens.text(13, weight: .semibold))
-                    .foregroundStyle(DesignTokens.primary)
-                    .textCase(.uppercase)
-                Text(pack.title)
-                    .font(DesignTokens.display(20))
-                    .foregroundStyle(DesignTokens.inkDeep)
-                Text(pack.description)
-                    .font(DesignTokens.text(14))
-                    .foregroundStyle(DesignTokens.muted)
-                    .lineLimit(2)
-                if remainingMinutes > 0 {
-                    Text("~\(remainingMinutes) min left")
-                        .font(DesignTokens.text(13))
-                        .foregroundStyle(DesignTokens.muted)
-                }
-                HStack {
-                    Text("\(done) of \(total) lessons complete")
-                        .font(DesignTokens.text(13))
-                        .foregroundStyle(DesignTokens.muted)
-                    Spacer()
-                    lessonProgressBar(done: done, total: total)
-                        .accessibilityHidden(true)
-                }
-                .padding(.top, 4)
-            }
-        }
-    }
-
-    private func lessonProgressBar(done: Int, total: Int) -> some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(DesignTokens.stock3)
-                    .frame(height: 6)
-                if total > 0 {
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(DesignTokens.primary)
-                        .frame(
-                            width: geometry.size.width * CGFloat(done) / CGFloat(total),
-                            height: 6
-                        )
-                }
-            }
-        }
-        .frame(width: 110, height: 6)
+        return CourseCardRow(
+            languageName: pack.language.displayName,
+            courseTitle: pack.title,
+            description: pack.description,
+            done: done,
+            total: total,
+            remainingMinutes: remainingMinutes)
     }
 
     // MARK: - Content paths (Foundation → Developing → Independent)
 
     /// The three path cards, in progression order, above the course list.
-    /// Each card shows what the path actually contains — lesson counts,
-    /// unit objectives as task outcomes, and the path's prerequisite
-    /// relationship — with the level labelled as content, never ability.
+    /// Each populated card is a real control leading to that level's
+    /// courses and lessons; an empty level renders as plain text instead.
     private var pathSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Course levels")
+                Text("Browse by level")
                     .font(DesignTokens.text(18, weight: .semibold))
                     .foregroundStyle(DesignTokens.inkDeep)
                     .padding(.horizontal, 4)
                     .accessibilityAddTraits(.isHeader)
-                Text("Content structure, not a test result.")
+                Text("Choose a level to explore its lessons. Levels describe the content, not your ability.")
                     .font(DesignTokens.text(13))
                     .foregroundStyle(DesignTokens.muted)
                     .padding(.horizontal, 4)
@@ -248,31 +268,60 @@ struct CoursesView: View {
         }
     }
 
+    @ViewBuilder
     private func pathCard(_ path: CoursePath) -> some View {
         let stats = pathStats(path)
-        return PaperCard {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(path.title)
-                    .font(DesignTokens.display(20))
-                    .foregroundStyle(DesignTokens.inkDeep)
-                if stats.lessons > 0 {
-                    Text("\(stats.lessons) lessons across \(stats.courses) courses")
-                        .font(DesignTokens.text(13))
-                        .foregroundStyle(DesignTokens.muted)
-                    if let outcome = pathOutcomeLine(path) {
-                        Text(outcome)
+        if stats.lessons > 0 {
+            NavigationLink(value: CourseRoute.level(path)) {
+                pathCardContent(path, stats: stats, isLink: true)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier(path.cardIdentifier)
+            .accessibilityLabel(
+                "\(path.browseLabel). \(stats.lessons) lessons across \(stats.courses) courses.")
+            .accessibilityHint("Opens the courses with lessons at this level")
+        } else {
+            // Empty level: informational text, deliberately not a link —
+            // nothing tappable should ever promise lessons that do not exist.
+            pathCardContent(path, stats: stats, isLink: false)
+        }
+    }
+
+    private func pathCardContent(
+        _ path: CoursePath, stats: (lessons: Int, courses: Int), isLink: Bool
+    ) -> some View {
+        PaperCard {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(path.title)
+                        .font(DesignTokens.display(20))
+                        .foregroundStyle(DesignTokens.inkDeep)
+                    if stats.lessons > 0 {
+                        Text("\(stats.lessons) lessons across \(stats.courses) courses")
                             .font(DesignTokens.text(13))
                             .foregroundStyle(DesignTokens.muted)
-                            .lineLimit(2)
+                        if let outcome = pathOutcomeLine(path) {
+                            Text(outcome)
+                                .font(DesignTokens.text(13))
+                                .foregroundStyle(DesignTokens.muted)
+                                .lineLimit(2)
+                        }
+                    } else {
+                        Text("No lessons at this level yet.")
+                            .font(DesignTokens.text(13))
+                            .foregroundStyle(DesignTokens.muted)
                     }
-                } else {
-                    Text("No lessons at this level yet.")
+                    Text(pathPrerequisiteLine(path))
                         .font(DesignTokens.text(13))
                         .foregroundStyle(DesignTokens.muted)
                 }
-                Text(pathPrerequisiteLine(path))
-                    .font(DesignTokens.text(13))
-                    .foregroundStyle(DesignTokens.muted)
+                Spacer()
+                if isLink {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(DesignTokens.muted)
+                        .font(.system(size: 16, weight: .semibold))
+                        .accessibilityHidden(true)
+                }
             }
         }
     }
@@ -282,30 +331,11 @@ struct CoursesView: View {
         var lessons = 0
         var courses = 0
         for pack in model.packs {
-            let count = pack.lessons.filter { coursePath(of: $0) == path }.count
+            let count = path.lessons(in: pack).count
             if count > 0 { courses += 1 }
             lessons += count
         }
         return (lessons, courses)
-    }
-
-    /// A lesson's path from its authored level tag: A2 → Developing,
-    /// A1 or absent → Foundation, anything else → Independent.
-    private func coursePath(of lesson: Lesson) -> CoursePath {
-        switch lesson.cefr {
-        case "A2": return .developing
-        case "A1", nil: return .foundation
-        default: return .independent
-        }
-    }
-
-    /// A unit's path is the path of its first lesson; every unit today is
-    /// uniform within one path.
-    private func coursePath(of unit: CourseUnit, in pack: CoursePack) -> CoursePath {
-        guard let first = pack.lessons.first(where: { $0.unitId == unit.id }) else {
-            return .foundation
-        }
-        return coursePath(of: first)
     }
 
     /// The task-outcome line for a path: up to three distinct unit
@@ -335,7 +365,7 @@ struct CoursesView: View {
         case .developing:
             return "Builds on Foundation — its opening lesson requires a Foundation lesson."
         case .independent:
-            return "Would follow Developing."
+            return "More advanced lessons, after Developing."
         }
     }
 
@@ -363,27 +393,174 @@ struct CoursesView: View {
     }
 }
 
+// MARK: - Shared course cards
+
+/// The course-card row shared by the language list and the level pages:
+/// language eyebrow, course title, description, remaining time, and the
+/// completion bar over the card's lesson scope (the whole pack, or one
+/// level's matching lessons).
+private struct CourseCardRow: View {
+    let languageName: String
+    let courseTitle: String
+    let description: String
+    let done: Int
+    let total: Int
+    let remainingMinutes: Int
+
+    var body: some View {
+        PaperCard {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(languageName)
+                    .font(DesignTokens.text(13, weight: .semibold))
+                    .foregroundStyle(DesignTokens.primary)
+                    .textCase(.uppercase)
+                Text(courseTitle)
+                    .font(DesignTokens.display(20))
+                    .foregroundStyle(DesignTokens.inkDeep)
+                Text(description)
+                    .font(DesignTokens.text(14))
+                    .foregroundStyle(DesignTokens.muted)
+                    .lineLimit(2)
+                if remainingMinutes > 0 {
+                    Text("~\(remainingMinutes) min left")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                }
+                HStack {
+                    Text("\(done) of \(total) lessons complete")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                    Spacer()
+                    lessonProgressBar(done: done, total: total)
+                        .accessibilityHidden(true)
+                }
+                .padding(.top, 4)
+            }
+        }
+    }
+}
+
+/// The compact completion bar shared by course cards: filled fraction =
+/// done/total over the card's lesson scope.
+private func lessonProgressBar(done: Int, total: Int) -> some View {
+    GeometryReader { geometry in
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 3)
+                .fill(DesignTokens.stock3)
+                .frame(height: 6)
+            if total > 0 {
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(DesignTokens.primary)
+                    .frame(
+                        width: geometry.size.width * CGFloat(done) / CGFloat(total),
+                        height: 6
+                    )
+            }
+        }
+    }
+    .frame(width: 110, height: 6)
+}
+
+// MARK: - Level page
+
+/// One level's courses: every course with at least one lesson at the
+/// level, in pack order, showing lessons completed within that level.
+/// Tapping a course opens its lesson list scoped to the level.
+private struct LevelBrowseView: View {
+    let path: CoursePath
+    let packs: [CoursePack]
+    let progress: [String: PackProgress]
+    let onProgressRefresh: () -> Void
+
+    private var matchingPacks: [CoursePack] {
+        packs.filter { !path.lessons(in: $0).isEmpty }
+    }
+
+    var body: some View {
+        ZStack {
+            DesignTokens.canvas.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 14) {
+                    if matchingPacks.isEmpty {
+                        // Defensive: a populated level card only links here,
+                        // but keep the screen honest if pack data ever
+                        // leaves a level empty across every course.
+                        Text("No lessons at this level yet.")
+                            .font(DesignTokens.text(13))
+                            .foregroundStyle(DesignTokens.muted)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 48)
+                    } else {
+                        ForEach(matchingPacks, id: \.id) { pack in
+                            NavigationLink(
+                                value: CourseRoute.lessons(
+                                    packId: pack.id, selectedPath: path)
+                            ) {
+                                levelCourseRow(pack)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 24)
+            }
+        }
+        .navigationTitle(path.title)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func levelCourseRow(_ pack: CoursePack) -> some View {
+        let matching = path.lessons(in: pack)
+        let finishedSet = progress[pack.id]?.finishedLessons ?? []
+        let done = matching.filter { finishedSet.contains($0.id) }.count
+        let remainingMinutes = matching
+            .filter { !finishedSet.contains($0.id) }
+            .reduce(0) { $0 + $1.estimatedMinutes }
+        return CourseCardRow(
+            languageName: pack.language.displayName,
+            courseTitle: pack.title,
+            description: pack.description,
+            done: done,
+            total: matching.count,
+            remainingMinutes: remainingMinutes)
+    }
+}
+
 // MARK: - Lesson list
 
 struct LessonListView: View {
     let pack: CoursePack
     let progress: PackProgress
     let store: LearningStore
+    /// When set, the list shows only this level's units and lessons (a
+    /// level-page entry point). nil keeps the ordinary whole-course list.
+    var selectedPath: CoursePath?
     let onProgressRefresh: () -> Void
 
     @State private var selectedLesson: SelectedLesson?
     @State private var searchText = ""
     @Environment(\.dismiss) private var dismiss
 
+    /// Every lesson this list can show: the whole pack by default, or
+    /// only the lessons at the chosen level. One mapping (coursePath(of:))
+    /// drives the level cards, level pages, this list, and search, so the
+    /// counts always equal the reachable lessons.
+    private var visibleLessons: [Lesson] {
+        guard let selectedPath else { return pack.lessons }
+        return pack.lessons.filter { coursePath(of: $0) == selectedPath }
+    }
+
     private var unitsInOrder: [CourseUnit] {
-        let order = pack.lessons.map(\.unitId)
+        let order = visibleLessons.map(\.unitId)
         var seen: [String] = []
         for id in order where !seen.contains(id) { seen.append(id) }
         return seen.compactMap { id in pack.units.first(where: { $0.id == id }) }
     }
 
     private func lessons(in unit: CourseUnit) -> [Lesson] {
-        pack.lessons.filter { $0.unitId == unit.id }
+        visibleLessons.filter { $0.unitId == unit.id }
     }
 
     /// A unit's checkpoint stage is its first lesson's stage (every unit
@@ -433,7 +610,9 @@ struct LessonListView: View {
                     if isSearching {
                         searchResults
                     } else {
-                        vocabularyRow
+                        if selectedPath == nil {
+                            vocabularyRow
+                        }
                         ForEach(Array(unitsInOrder.enumerated()), id: \.element.id) { index, unit in
                             unitSection(unit)
                             if let checkpoint = checkpointAfterLastUnitOfStage(unit, index: index) {
@@ -454,7 +633,7 @@ struct LessonListView: View {
                 .padding(.bottom, 24)
             }
         }
-        .navigationTitle(pack.language.displayName)
+        .navigationTitle(scopedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, prompt: "Search lessons")
         .fullScreenCover(item: $selectedLesson) { selected in
@@ -512,8 +691,17 @@ struct LessonListView: View {
         }
     }
 
+    /// "Spanish" for the ordinary course; "Spanish · Independent" when a
+    /// level scopes the list. The vocabulary browser is not level-scoped,
+    /// so the scoped title names the level outright.
+    private var scopedTitle: String {
+        guard let selectedPath else { return pack.language.displayName }
+        return "\(pack.language.displayName) · \(selectedPath.title)"
+    }
+
     /// Entry point to the course vocabulary browser, shown at the top
-    /// of the lesson list (hidden while searching lessons).
+    /// of the lesson list (hidden while searching lessons, and hidden
+    /// from a level-scoped list because vocabulary is not level-scoped).
     private var vocabularyRow: some View {
         NavigationLink(value: CourseRoute.vocabulary(packId: pack.id)) {
             PaperCard {
@@ -546,14 +734,7 @@ struct LessonListView: View {
     }
 
     private var filteredLessons: [Lesson] {
-        let query = searchText
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
-        guard !query.isEmpty else { return [] }
-        return pack.lessons.filter {
-            $0.title.lowercased().contains(query)
-                || $0.objective.lowercased().contains(query)
-        }
+        lessonSearchResults(visibleLessons, query: searchText)
     }
 
     private var searchResults: some View {

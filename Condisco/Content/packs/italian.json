@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "it-foundations",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "language": "it",
   "status": "active",
   "title": "Italian foundations",
@@ -2509,6 +2509,22 @@
       "sha256": "4b62a0f69ac5c9becf88ee82553003ed9a45a70f514f11ee5168d9ad84166fe5",
       "transcript": "Ascolto lungo: Al mercato.",
       "attribution": "Original VerbaLibera Kokoro 0.9.4 audio; see docs/audio-provenance/italian-market-listen.json. Native-speaker prosody review remains open."
+    },
+    {
+      "id": "it-cafe-listen-audio",
+      "url": "/audio/italian-foundations/it-cafe-listen-exchange.wav",
+      "sha256": "",
+      "transcript": "Buongiorno. Un caffè, per favore. Al banco o al tavolo? Al banco, grazie. Ho poco tempo.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/italian-cafe-listen.json. Naturalness of the on-device Italian voice unverified (reviewPending: true).",
+      "kind": "audio"
+    },
+    {
+      "id": "it-cafe-listen-model",
+      "url": "/audio/italian-foundations/it-cafe-listen-model.wav",
+      "sha256": "",
+      "transcript": "Al banco, grazie.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/italian-cafe-listen.json. Naturalness of the on-device Italian voice unverified (reviewPending: true).",
+      "kind": "audio"
     }
   ],
   "stimuli": [
@@ -3488,6 +3504,11 @@
           "meaning": "For how many nights?"
         }
       ]
+    },
+    {
+      "kind": "audio",
+      "id": "it-cafe-listen-stim",
+      "mediaId": "it-cafe-listen-audio"
     }
   ],
   "activities": [
@@ -23691,6 +23712,178 @@
           "rightId": "r3"
         }
       ]
+    },
+    {
+      "kind": "information",
+      "id": "it-cafe-listen-act-1",
+      "revision": 1,
+      "body": "The barista asks where you want your espresso. In this Roman bar you can stay at the counter or sit at a table. Listen to the short exchange, then make the choice yourself.",
+      "stimulusId": "it-cafe-listen-stim"
+    },
+    {
+      "kind": "selection",
+      "id": "it-cafe-listen-gist",
+      "revision": 1,
+      "conceptIds": [
+        "it-first-words-concept",
+        "it-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "it-first-words-word-1",
+        "it-first-words-word-2",
+        "it-first-words-word-6",
+        "it-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "it-cafe-listen-stim",
+      "prompt": "What does the barista ask?",
+      "hints": [
+        "Listen for banco and tavolo: two places in the bar."
+      ],
+      "feedback": "Al banco o al tavolo? offers the counter or a table.",
+      "evidenceKey": "it-cafe-listen-gist",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "place",
+          "text": "Counter or table"
+        },
+        {
+          "id": "drink",
+          "text": "Coffee or water"
+        },
+        {
+          "id": "pay",
+          "text": "Cash or card"
+        }
+      ],
+      "acceptedIds": [
+        "place"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "it-cafe-listen-detail",
+      "revision": 1,
+      "conceptIds": [
+        "it-first-words-concept",
+        "it-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "it-first-words-word-1",
+        "it-first-words-word-2",
+        "it-first-words-word-6",
+        "it-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "it-cafe-listen-stim",
+      "prompt": "Why does the customer choose the counter?",
+      "hints": [
+        "The last line explains the choice: poco tempo."
+      ],
+      "feedback": "Ho poco tempo means “I have little time.”",
+      "evidenceKey": "it-cafe-listen-detail",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "time",
+          "text": "They have little time"
+        },
+        {
+          "id": "table",
+          "text": "The tables are full"
+        },
+        {
+          "id": "friend",
+          "text": "A friend is there"
+        }
+      ],
+      "acceptedIds": [
+        "time"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "it-cafe-listen-choice",
+      "revision": 1,
+      "conceptIds": [
+        "it-first-words-concept",
+        "it-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "it-first-words-word-1",
+        "it-first-words-word-2",
+        "it-first-words-word-6",
+        "it-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "it-cafe-listen-stim",
+      "prompt": "Where will the customer drink the coffee?",
+      "hints": [
+        "The customer repeats one of the two places after the question."
+      ],
+      "feedback": "Al banco means at the counter; it suits a quick espresso.",
+      "evidenceKey": "it-cafe-listen-choice",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "counter",
+          "text": "Al banco"
+        },
+        {
+          "id": "table",
+          "text": "Al tavolo"
+        },
+        {
+          "id": "outside",
+          "text": "Fuori"
+        }
+      ],
+      "acceptedIds": [
+        "counter"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "self-compare",
+      "id": "it-cafe-listen-say",
+      "revision": 1,
+      "conceptIds": [
+        "it-first-words-concept",
+        "it-cafe-order-concept"
+      ],
+      "vocabulary": [
+        "it-first-words-word-1",
+        "it-first-words-word-2",
+        "it-first-words-word-6",
+        "it-requests-word-4"
+      ],
+      "skills": [
+        "speaking"
+      ],
+      "prompt": "You have little time. Tell the barista “At the counter, thank you” in Italian.",
+      "modelText": "Al banco, grazie.",
+      "modelAudioId": "it-cafe-listen-model"
     }
   ],
   "lessons": [
@@ -23700,7 +23893,7 @@
       "title": "Missione: un caffè al bar",
       "objective": "Walk into a Roman bar and order a caffè — your first real conversation in Italian.",
       "family": "mission",
-      "revision": 3,
+      "revision": 4,
       "estimatedMinutes": 6,
       "entryStepId": "it-cafe-mission-step-1",
       "steps": [
@@ -23743,6 +23936,41 @@
           "id": "it-cafe-mission-step-8",
           "purpose": "practice",
           "activityId": "it-cafe-mission-act-8",
+          "required": true,
+          "nextStepId": "it-cafe-mission-step-10"
+        },
+        {
+          "id": "it-cafe-mission-step-10",
+          "purpose": "notice",
+          "activityId": "it-cafe-listen-act-1",
+          "required": true,
+          "nextStepId": "it-cafe-mission-step-11"
+        },
+        {
+          "id": "it-cafe-mission-step-11",
+          "purpose": "practice",
+          "activityId": "it-cafe-listen-gist",
+          "required": true,
+          "nextStepId": "it-cafe-mission-step-12"
+        },
+        {
+          "id": "it-cafe-mission-step-12",
+          "purpose": "practice",
+          "activityId": "it-cafe-listen-detail",
+          "required": true,
+          "nextStepId": "it-cafe-mission-step-13"
+        },
+        {
+          "id": "it-cafe-mission-step-13",
+          "purpose": "practice",
+          "activityId": "it-cafe-listen-choice",
+          "required": true,
+          "nextStepId": "it-cafe-mission-step-14"
+        },
+        {
+          "id": "it-cafe-mission-step-14",
+          "purpose": "practice",
+          "activityId": "it-cafe-listen-say",
           "required": true,
           "nextStepId": "it-cafe-mission-step-9"
         },

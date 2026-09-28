@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "de-foundations",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "language": "de",
   "status": "active",
   "title": "German foundations",
@@ -2711,7 +2711,24 @@
       "example": "Mein Lebenslauf ist fertig."
     }
   ],
-  "media": [],
+  "media": [
+    {
+      "id": "de-cafe-listen-audio",
+      "url": "/audio/german-foundations/de-cafe-listen-exchange.wav",
+      "sha256": "",
+      "transcript": "Guten Morgen. Einen Kaffee, bitte. Hier oder zum Mitnehmen? Zum Mitnehmen, bitte. Meine Straßenbahn kommt gleich.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/german-cafe-listen.json. Naturalness of the on-device German voice unverified (reviewPending: true).",
+      "kind": "audio"
+    },
+    {
+      "id": "de-cafe-listen-model",
+      "url": "/audio/german-foundations/de-cafe-listen-model.wav",
+      "sha256": "",
+      "transcript": "Zum Mitnehmen, bitte.",
+      "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/german-cafe-listen.json. Naturalness of the on-device German voice unverified (reviewPending: true).",
+      "kind": "audio"
+    }
+  ],
   "stimuli": [
     {
       "kind": "examples",
@@ -3720,6 +3737,11 @@
           "meaning": "Thank you very much for the interview."
         }
       ]
+    },
+    {
+      "kind": "audio",
+      "id": "de-cafe-listen-stim",
+      "mediaId": "de-cafe-listen-audio"
     }
   ],
   "activities": [
@@ -21670,6 +21692,178 @@
           }
         ]
       }
+    },
+    {
+      "kind": "information",
+      "id": "de-cafe-listen-act-1",
+      "revision": 1,
+      "body": "Your tram is due soon. After you order, the server asks where you will drink your coffee. Listen for the choice and the reason; replay the exchange if you need to.",
+      "stimulusId": "de-cafe-listen-stim"
+    },
+    {
+      "kind": "selection",
+      "id": "de-cafe-listen-gist",
+      "revision": 1,
+      "conceptIds": [
+        "de-first-words-concept",
+        "de-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "de-first-words-word-1",
+        "de-first-words-word-2",
+        "de-cafe-requests-word-2",
+        "de-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "de-cafe-listen-stim",
+      "prompt": "Why is the customer in a hurry?",
+      "hints": [
+        "The final sentence mentions a Straßenbahn."
+      ],
+      "feedback": "Meine Straßenbahn kommt gleich means the tram is coming soon.",
+      "evidenceKey": "de-cafe-listen-gist",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "tram",
+          "text": "A tram is coming"
+        },
+        {
+          "id": "work",
+          "text": "The café is closing"
+        },
+        {
+          "id": "friend",
+          "text": "A friend is waiting"
+        }
+      ],
+      "acceptedIds": [
+        "tram"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "de-cafe-listen-detail",
+      "revision": 1,
+      "conceptIds": [
+        "de-first-words-concept",
+        "de-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "de-first-words-word-1",
+        "de-first-words-word-2",
+        "de-cafe-requests-word-2",
+        "de-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "de-cafe-listen-stim",
+      "prompt": "What choice does the server offer?",
+      "hints": [
+        "Listen for hier, then zum Mitnehmen."
+      ],
+      "feedback": "Hier oder zum Mitnehmen? asks whether the coffee is for here or to take away.",
+      "evidenceKey": "de-cafe-listen-detail",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "place",
+          "text": "Here or to take away"
+        },
+        {
+          "id": "drink",
+          "text": "Coffee or tea"
+        },
+        {
+          "id": "size",
+          "text": "Small or large"
+        }
+      ],
+      "acceptedIds": [
+        "place"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "selection",
+      "id": "de-cafe-listen-choice",
+      "revision": 1,
+      "conceptIds": [
+        "de-first-words-concept",
+        "de-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "de-first-words-word-1",
+        "de-first-words-word-2",
+        "de-cafe-requests-word-2",
+        "de-cafe-requests-word-4"
+      ],
+      "skills": [
+        "listening",
+        "vocabulary"
+      ],
+      "stimulusId": "de-cafe-listen-stim",
+      "prompt": "What does the customer choose?",
+      "hints": [
+        "The customer repeats the second option in the server’s question."
+      ],
+      "feedback": "Zum Mitnehmen means to take away, which fits the arriving tram.",
+      "evidenceKey": "de-cafe-listen-choice",
+      "assistanceAffectsEvidence": [
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "away",
+          "text": "Zum Mitnehmen"
+        },
+        {
+          "id": "here",
+          "text": "Hier"
+        },
+        {
+          "id": "later",
+          "text": "Später"
+        }
+      ],
+      "acceptedIds": [
+        "away"
+      ],
+      "multiple": false
+    },
+    {
+      "kind": "self-compare",
+      "id": "de-cafe-listen-say",
+      "revision": 1,
+      "conceptIds": [
+        "de-first-words-concept",
+        "de-cafe-requests-concept"
+      ],
+      "vocabulary": [
+        "de-first-words-word-1",
+        "de-first-words-word-2",
+        "de-cafe-requests-word-2",
+        "de-cafe-requests-word-4"
+      ],
+      "skills": [
+        "speaking"
+      ],
+      "prompt": "Your tram is nearly here. Tell the server “To take away, please” in German.",
+      "modelText": "Zum Mitnehmen, bitte.",
+      "modelAudioId": "de-cafe-listen-model"
     }
   ],
   "lessons": [
@@ -21679,7 +21873,7 @@
       "title": "Mission: ein Kaffee in Berlin",
       "objective": "Walk into a Berlin café and order a coffee — your first real conversation in German.",
       "family": "mission",
-      "revision": 3,
+      "revision": 4,
       "estimatedMinutes": 6,
       "entryStepId": "de-cafe-mission-step-1",
       "steps": [
@@ -21722,6 +21916,41 @@
           "id": "de-cafe-mission-step-8",
           "purpose": "practice",
           "activityId": "de-cafe-mission-act-8",
+          "required": true,
+          "nextStepId": "de-cafe-mission-step-10"
+        },
+        {
+          "id": "de-cafe-mission-step-10",
+          "purpose": "notice",
+          "activityId": "de-cafe-listen-act-1",
+          "required": true,
+          "nextStepId": "de-cafe-mission-step-11"
+        },
+        {
+          "id": "de-cafe-mission-step-11",
+          "purpose": "practice",
+          "activityId": "de-cafe-listen-gist",
+          "required": true,
+          "nextStepId": "de-cafe-mission-step-12"
+        },
+        {
+          "id": "de-cafe-mission-step-12",
+          "purpose": "practice",
+          "activityId": "de-cafe-listen-detail",
+          "required": true,
+          "nextStepId": "de-cafe-mission-step-13"
+        },
+        {
+          "id": "de-cafe-mission-step-13",
+          "purpose": "practice",
+          "activityId": "de-cafe-listen-choice",
+          "required": true,
+          "nextStepId": "de-cafe-mission-step-14"
+        },
+        {
+          "id": "de-cafe-mission-step-14",
+          "purpose": "practice",
+          "activityId": "de-cafe-listen-say",
           "required": true,
           "nextStepId": "de-cafe-mission-step-9"
         },

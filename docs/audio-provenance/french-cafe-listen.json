@@ -1,0 +1,30 @@
+{
+  "assetIds": [
+    "fr-cafe-listen-audio",
+    "fr-cafe-listen-model"
+  ],
+  "packId": "french",
+  "lessonId": "fr-cafe-mission",
+  "method": "authored transcript rendered by on-device speech synthesis at runtime",
+  "verificationStatus": "naturalness unverified",
+  "reviewPending": true,
+  "source": "Original lesson text; no external recording or copied audio.",
+  "assets": {
+    "fr-cafe-listen-audio": {
+      "declaredUrl": "/audio/french-foundations/fr-cafe-listen-exchange.wav",
+      "transcript": "Bonjour. Un café, s’il vous plaît. Avec ou sans sucre ? Sans sucre, merci.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    },
+    "fr-cafe-listen-model": {
+      "declaredUrl": "/audio/french-foundations/fr-cafe-listen-model.wav",
+      "transcript": "Sans sucre, merci.",
+      "sha256": "",
+      "note": "No recording shipped. The app reads this transcript with the on-device course voice."
+    }
+  },
+  "delivery": "device-speech via AudioStimulusView and ShadowSpeaker; ids in tools/device-speech-media.txt; language french",
+  "unknownFacts": [
+    "Naturalness and prosody of the on-device voice require human listening review."
+  ]
+}

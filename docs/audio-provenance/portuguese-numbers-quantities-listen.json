@@ -1,0 +1,23 @@
+{
+  "assetIds": [
+    "pt-numbers-quantities-listen-audio"
+  ],
+  "packId": "pt-foundations",
+  "lessonId": "pt-numbers-quantities-foundation",
+  "method": "on-device synthesized course voice at runtime",
+  "verificationStatus": "automated structure only; language quality and voice naturalness unverified",
+  "reviewPending": true,
+  "source": "Original AI-assisted authored text; no external recording.",
+  "assets": {
+    "pt-numbers-quantities-listen-audio": {
+      "declaredUrl": "/audio/portuguese-foundations/pt-numbers-quantities-listen.wav",
+      "transcript": "Bom dia. Dois pães, por favor. São três euros. Obrigada.",
+      "sha256": "",
+      "note": "No audio file shipped; deliberate device-speech fallback."
+    }
+  },
+  "delivery": "AudioStimulusView; declared in tools/device-speech-media.txt",
+  "unknownFacts": [
+    "Language quality, pronunciation, playback and usefulness need human/device review."
+  ]
+}

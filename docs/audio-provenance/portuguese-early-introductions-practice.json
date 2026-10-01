@@ -1,0 +1,23 @@
+{
+  "assetIds": [
+    "pt-introductions-listen-audio"
+  ],
+  "packId": "pt-foundations",
+  "lessonId": "pt-introductions-foundation",
+  "method": "on-device synthesized course voice at runtime",
+  "verificationStatus": "automated structure only; language quality and voice naturalness unverified",
+  "reviewPending": true,
+  "source": "Original AI-assisted authored text; no external recording.",
+  "assets": {
+    "pt-introductions-listen-audio": {
+      "declaredUrl": "/audio/portuguese-foundations/pt-introductions-listen.wav",
+      "transcript": "Olá! O meu nome é Ana. Sou de Lisboa. Qual é o seu nome?",
+      "sha256": "",
+      "note": "No audio file shipped; deliberate device-speech fallback."
+    }
+  },
+  "delivery": "AudioStimulusView; declared in tools/device-speech-media.txt",
+  "unknownFacts": [
+    "Language quality, pronunciation, playback and usefulness need human/device review."
+  ]
+}

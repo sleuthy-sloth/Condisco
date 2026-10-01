@@ -16,6 +16,12 @@ func currentContextStimulus(pack: CoursePack, lesson: Lesson,
     return nil
 }
 
+/// Recommended practice starts with an empty transient session. Stored events
+/// stay intact; submitting practice appends new evidence through the normal player.
+func freshPracticeSession(pack: CoursePack, lessonId: String) throws -> LessonSession {
+    try startLesson(pack: pack, lessonId: lessonId)
+}
+
 // MARK: - Lesson player
 //
 // Faithful port of the web `LessonPlayer`: deterministic session reducers
@@ -30,6 +36,7 @@ struct LessonPlayerView: View {
 
     /// The lesson currently open in the player. Starts as the launched
     /// lesson; the recap's "Next" button moves it without dismissing.
+    @State private var startFreshPending: Bool
     @State private var activeLessonId: String
     @State private var session: LessonSession?
     @State private var draft: AttemptResponse?
@@ -86,10 +93,11 @@ struct LessonPlayerView: View {
     @AppStorage("condisco.hasSeenLessonGuide") private var hasSeenLessonGuide = false
     @State private var showLessonGuide = false
 
-    init(pack: CoursePack, lessonId: String, store: LearningStore, onExit: @escaping () -> Void) {
+    init(pack: CoursePack, lessonId: String, store: LearningStore, startFresh: Bool = false, onExit: @escaping () -> Void) {
         self.pack = pack
         self.store = store
         self.onExit = onExit
+        _startFreshPending = State(initialValue: startFresh)
         _activeLessonId = State(initialValue: lessonId)
     }
 
@@ -673,6 +681,15 @@ struct LessonPlayerView: View {
             return
         }
         do {
+            if startFreshPending {
+                startFreshPending = false
+                session = try freshPracticeSession(pack: pack, lessonId: lesson.id)
+                draft = nil
+                assistanceUsed = []
+                resumedComplete = false
+                showBriefing = true
+                return
+            }
             let storedCheckpoint = try store.loadCheckpoint(packId: pack.id, lessonId: lesson.id)
             let (events, skippedEventRows) = try store.learningEventsWithQuarantine(packId: pack.id)
             let quarantined = Set(try store.project(pack: pack).quarantined)
@@ -1186,7 +1203,7 @@ struct LessonPlayerView: View {
         let picked: [ReviewItem]
         do {
             picked = RecallWarmUp.select(
-                due: try ReviewCatalog.loadDue(packs: [pack], store: store).due,
+                due: try ReviewCatalog.loadCourseDue(packs: [pack], store: store).due,
                 currentLesson: lesson, pack: pack)
         } catch {
             // No due data (store hiccup) simply means no warm-up; the

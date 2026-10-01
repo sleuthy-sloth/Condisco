@@ -1,0 +1,23 @@
+{
+  "assetIds": [
+    "de-introductions-listen-audio"
+  ],
+  "packId": "de-foundations",
+  "lessonId": "de-introductions-foundation",
+  "method": "on-device synthesized course voice at runtime",
+  "verificationStatus": "automated structure only; language quality and voice naturalness unverified",
+  "reviewPending": true,
+  "source": "Original AI-assisted authored text; no external recording.",
+  "assets": {
+    "de-introductions-listen-audio": {
+      "declaredUrl": "/audio/german-foundations/de-introductions-listen.wav",
+      "transcript": "Hallo! Ich heiße Mia. Ich komme aus Berlin. Wie heißt du?",
+      "sha256": "",
+      "note": "No audio file shipped; deliberate device-speech fallback."
+    }
+  },
+  "delivery": "AudioStimulusView; declared in tools/device-speech-media.txt",
+  "unknownFacts": [
+    "Language quality, pronunciation, playback and usefulness need human/device review."
+  ]
+}

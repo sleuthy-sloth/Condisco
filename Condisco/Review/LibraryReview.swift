@@ -18,6 +18,51 @@ import Foundation
 // queue item, one FSRS chain, by construction.
 
 enum LibraryReview {
+    @MainActor
+    static func refreshSurfaces() {
+        if let packs = try? PackLoader.loadPacks() {
+            WidgetSnapshotWriter.refresh(packs: packs,
+                focusSlug: UserDefaults.standard.string(forKey: "condisco.focusLanguage") ?? "french")
+        }
+        ReviewReminders.refreshShared()
+        NotificationCenter.default.post(name: .condiscoProgressChanged, object: nil)
+    }
+
+    struct Snapshot {
+        let due: [ReviewItem]
+        let nextDueAt: Date?
+        let tricky: [ReviewItem]
+        let dueTomorrowCount: Int
+        let languageSlugs: [String: String]
+    }
+
+    /// Read active library candidates and their existing FSRS history once.
+    @MainActor
+    static func load(store: LearningStore, now: Date = Date()) throws -> Snapshot {
+        let phrases = candidatePhrases(
+            phrases: try store.savedPhrases(), links: try store.phraseLinks())
+        guard !phrases.isEmpty else {
+            return Snapshot(due: [], nextDueAt: nil, tricky: [],
+                            dueTomorrowCount: 0, languageSlugs: [:])
+        }
+        let (events, skipped) = try store.allEventsWithQuarantine()
+        if !skipped.isEmpty { LearningStore.logCorruptRows(skipped) }
+        let attempts = events.compactMap { event -> ActivityAttempt? in
+            guard case .attempt(let attempt) = event,
+                  attempt.packId == packId else { return nil }
+            return attempt
+        }
+        let queue = loadDuePhrases(phrases: phrases, attempts: attempts, now: now)
+        return Snapshot(
+            due: queue.due, nextDueAt: queue.nextDueAt,
+            tricky: loadTrickyPhrases(phrases: phrases, attempts: attempts),
+            dueTomorrowCount: countPhrasesDueWithin(
+                phrases: phrases, attempts: attempts, days: 1, now: now),
+            languageSlugs: Dictionary(uniqueKeysWithValues: phrases.map {
+                (evidenceKey(phraseId: $0.id), $0.languageSlug)
+            }))
+    }
+
     /// `pack_id` carried by phrase-review attempt events. The library is
     /// not a course, so this id exists only in event payloads — no pack
     /// JSON and no kv key collide with it.

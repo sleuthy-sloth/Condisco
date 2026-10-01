@@ -5963,6 +5963,54 @@ final class PackUpdateTests: XCTestCase {
         try LearningStore(path: tempDir.appendingPathComponent("store.sqlite").path)
     }
 
+    func testEarlyListeningAdditionPreservesUnchangedHistoricalEvidence() throws {
+        for slug in ["german", "portuguese"] {
+            let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language.slug == slug })
+            for suffix in ["introductions-foundation", "numbers-quantities-foundation"] {
+                let lesson = try XCTUnwrap(pack.lessons.first { $0.id.hasSuffix(suffix) })
+                let step = try XCTUnwrap(lesson.steps.first { step in
+                    guard let activity = pack.activity(id: step.activityId) else { return false }
+                    return activity.base != nil && activity.revision == 1 && !activity.id.contains("-listen-")
+                })
+                let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+                let base = try XCTUnwrap(activity.base)
+                let store = try LearningStore(path: tempDir.appendingPathComponent("\(lesson.id).sqlite").path)
+                let attempt = ActivityAttempt(id: "old", packId: pack.id, packVersion: "previous",
+                    lessonId: lesson.id, lessonRevision: 1, stepId: step.id,
+                    activityId: activity.id, activityRevision: 1, evidenceKey: base.evidenceKey,
+                    response: try acceptedResponse(for: activity), assistance: [],
+                    evaluation: AttemptEvaluation(outcome: .correct, independent: true, feedback: "correct"),
+                    at: Date(timeIntervalSince1970: 1_700_000_000))
+                try store.record(.attempt(attempt))
+                let progress = try store.project(pack: pack)
+                XCTAssertNotNil(progress.evidence[base.evidenceKey], lesson.id)
+                XCTAssertFalse(progress.quarantined.contains(attempt.id), lesson.id)
+            }
+        }
+    }
+
+    func testRecommendedReplayStartsAtEntryAndPreservesCompletedEvidence() throws {
+        let pack = try spanishPack()
+        let store = try makeStore()
+        let lesson = try XCTUnwrap(pack.lesson(id: "es-plural-foundation"))
+        try completeLesson(lesson.id, in: pack, store: store, prefix: "prior",
+                           at: Date(timeIntervalSince1970: 1_700_000_000))
+        let before = try store.project(pack: pack)
+        XCTAssertTrue(before.finishedLessons.contains(lesson.id))
+        let row = YouModel.SkillPractice(skill: .grammar, practisedTimes: 0, lastPractisedAt: nil, dueCount: 0)
+        let replay = YouModel.recommendedPractice(pack: pack, practice: [row],
+            completedLessons: Set(pack.lessons.map(\.id)))
+        XCTAssertEqual(replay?.startFresh, true)
+        let resume = YouModel.recommendedPractice(pack: pack, practice: [row], completedLessons: [])
+        XCTAssertEqual(resume?.startFresh, false)
+        let fresh = try freshPracticeSession(pack: pack, lessonId: lesson.id)
+        XCTAssertEqual(fresh.activeStepId, lesson.entryStepId)
+        XCTAssertTrue(fresh.completedStepIds.isEmpty)
+        let after = try store.project(pack: pack)
+        XCTAssertEqual(before.finishedLessons, after.finishedLessons)
+        XCTAssertEqual(fuzzInvariantEvidence(before), fuzzInvariantEvidence(after))
+    }
+
     private func spanishPack() throws -> CoursePack {
         try XCTUnwrap(
             PackLoader.loadPacks().first { $0.language.slug == "spanish" },
@@ -7473,6 +7521,39 @@ final class ImportedDocumentTests: XCTestCase {
 /// `ImportValidator`'s discipline.
 final class LibraryImportValidatorTests: XCTestCase {
 
+    func testBoundedFileReadRejectsOversizeAndAcceptsExactLimit() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("passage.txt")
+        try Data(repeating: 65, count: 1_048_576).write(to: url)
+        XCTAssertEqual(try LibraryImportValidator.readFile(url).count, 1_048_576)
+        try Data(repeating: 65, count: 4_194_304).write(to: url)
+        XCTAssertThrowsError(try LibraryImportValidator.readFile(url)) { error in
+            XCTAssertEqual(error as? LibraryImportError,
+                           .tooLarge(actualBytes: 1_048_577, limitBytes: 1_048_576))
+        }
+        try FileManager.default.removeItem(at: url)
+        XCTAssertThrowsError(try LibraryImportValidator.readFile(url))
+    }
+
+    func testBinaryControlPayloadIsRejected() {
+        for bytes: [UInt8] in [[0], [65, 0, 66], [65, 7, 66], [65, 127, 66]] {
+            if case .success = LibraryImportValidator.validate(Data(bytes)) {
+                XCTFail("binary controls must not be accepted as readable text: \(bytes)")
+            }
+        }
+    }
+
+    func testUTF8BOMIsRemovedWithoutChangingReadableWhitespace() {
+        let bytes = Data([0xEF, 0xBB, 0xBF]) + Data("  café\t\nOlá ✨\r\n".utf8)
+        XCTAssertEqual(LibraryImportValidator.validate(bytes),
+                       .success("  café\t\nOlá ✨\r\n"))
+        XCTAssertEqual(LibraryImportValidator.validate(Data([0xEF, 0xBB, 0xBF])),
+                       .failure(.empty))
+    }
+
     func testValidUTF8TextAccepted() throws {
         let text = "Bonjour ! Ceci est un texte UTF-8. ✨"
         let data = try XCTUnwrap(text.data(using: .utf8))
@@ -8492,11 +8573,8 @@ final class ReviewLibraryTests: XCTestCase {
         XCTAssertEqual(model.due.filter { $0.evidenceKey == key }.count, 1)
     }
 
-    /// §4.2: the library merge lives only inside `ReviewModel`. Home, the
-    /// widget, review reminders, and lesson warm-ups call `ReviewCatalog`
-    /// with the bundled packs directly, and their counts must be unchanged
-    /// by the library stream — a graded phrase never leaks into them.
-    func testLibraryDoesNotChangeHomeWidgetOrReminderCounts() throws {
+    /// Shared all-course invitations include due library history.
+    func testLibraryReviewCountsAgreeWithAllCourseInvitation() throws {
         let store = try makeStore()
         let pack = try frenchPack()
         let at = Date(timeIntervalSince1970: 1_700_000_000)
@@ -8513,12 +8591,13 @@ final class ReviewLibraryTests: XCTestCase {
             store: store, packs: [pack], focusSlug: "french")
         let phraseItem = try XCTUnwrap(
             seeded.due.first { $0.packId == LibraryReview.packId })
-        try store.record(.attempt(phraseItem.makeAttempt(verdict: .exact, at: Date())))
+        try store.record(.attempt(phraseItem.makeAttempt(verdict: .exact, at: at)))
 
         let due = try ReviewCatalog.loadDue(packs: [pack], store: store)
-        XCTAssertEqual(due.due.count, 1,
-                       "bundled-pack due count must ignore library phrases")
-        XCTAssertEqual(due.due.first?.packId, pack.id)
+        XCTAssertEqual(due.due.count, 2,
+                       "all-course invitations must include due library phrases")
+        let all = try ReviewModel(store: store, packs: [pack], focusSlug: "french")
+        XCTAssertEqual(due.due.map(\.evidenceKey), all.due.map(\.evidenceKey))
         let tricky = try ReviewCatalog.loadTricky(packs: [pack], store: store)
         XCTAssertTrue(tricky.isEmpty)
         XCTAssertEqual(
@@ -8592,5 +8671,114 @@ final class ReviewLibraryTests: XCTestCase {
         try store.record(.attempt(item.makeAttempt(verdict: .exact, at: Date())))
         model.applyScope()
         XCTAssertTrue(model.tricky.filter { $0.evidenceKey == key }.isEmpty)
+    }
+}
+
+
+@MainActor
+final class PracticeRecommendationTests: XCTestCase {
+    func testSelfCompareSpeakingPracticeUpdatesRecencyWithoutDueEvidence() throws {
+        let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language == .french })
+        let lesson = try XCTUnwrap(pack.lesson(id: "fr-cafe-mission"))
+        let step = try XCTUnwrap(lesson.steps.first { $0.activityId == "fr-cafe-listen-say" })
+        let activity = try XCTUnwrap(pack.activity(id: step.activityId))
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let attempt = ActivityAttempt(id: "self-compare", packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision, stepId: step.id,
+            activityId: activity.id, activityRevision: activity.revision, evidenceKey: nil,
+            response: .selfRating(.good), assistance: [],
+            evaluation: AttemptEvaluation(outcome: .selfAssessed, independent: false, feedback: ""), at: at)
+        let speaking = try XCTUnwrap(YouModel.skillPractice(pack: pack,
+            events: [.attempt(attempt)], dueItems: []).first { $0.skill == .speaking })
+        XCTAssertEqual(speaking.practisedTimes, 1)
+        XCTAssertEqual(speaking.lastPractisedAt, at)
+        XCTAssertEqual(speaking.dueCount, 0)
+    }
+
+    func testOpenSpokenPracticeUpdatesSpeakingRecencyWithoutCreatingDueCards() throws {
+        let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language == .german })
+        let lesson = try XCTUnwrap(pack.lesson(id: "de-introductions-foundation"))
+        let step = try XCTUnwrap(lesson.steps.first { $0.activityId == "de-introductions-listen-reply" })
+        guard case .openTask(let spec)? = pack.activity(id: step.activityId) else {
+            return XCTFail("expected the open spoken task")
+        }
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        let event = OpenTaskAttemptEvent(id: "spoken", packId: pack.id, packVersion: pack.version,
+            lessonId: lesson.id, lessonRevision: lesson.revision, stepId: step.id,
+            activityId: spec.id, activityRevision: spec.revision, mode: .spoken,
+            assistance: [], selfRating: nil, modelRevealed: true, at: at)
+        let rows = YouModel.skillPractice(pack: pack, events: [.openTaskAttempt(event)], dueItems: [])
+        let speaking = try XCTUnwrap(rows.first { $0.skill == .speaking })
+        XCTAssertEqual(speaking.practisedTimes, 1)
+        XCTAssertEqual(speaking.lastPractisedAt, at)
+        XCTAssertEqual(speaking.dueCount, 0)
+        var stale = event
+        stale.activityRevision += 1
+        XCTAssertEqual(YouModel.skillPractice(pack: pack, events: [.openTaskAttempt(stale)],
+            dueItems: []).first { $0.skill == .speaking }?.practisedTimes, 0)
+    }
+
+    func testOpenResponseSummarySeparatesModelAndHelpFromUnassistedWork() {
+        let at = Date(timeIntervalSince1970: 1_700_000_000)
+        func attempt(_ id: String, model: Bool, assistance: [AssistanceKind]) -> OpenTaskAttemptEvent {
+            OpenTaskAttemptEvent(id: id, packId: "es-foundations", packVersion: "1",
+                lessonId: "lesson", lessonRevision: 1, stepId: "step", activityId: "activity",
+                activityRevision: 1, mode: .spoken, assistance: assistance,
+                selfRating: nil, modelRevealed: model, at: at)
+        }
+        var progress = PackProgress()
+        progress.openTaskAttempts = [attempt("a", model: false, assistance: []),
+            attempt("b", model: true, assistance: []), attempt("c", model: false, assistance: [.hint])]
+        let summary = YouModel.openResponseSummary(progress: progress)
+        XCTAssertEqual(summary.withoutModelOrHelp, 1)
+        XCTAssertEqual(summary.withModelOrHelp, 2)
+    }
+    func testNeverPractisedAvailableSkillOpensItsLesson() throws {
+        let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language == .french })
+        let practice: [YouModel.SkillPractice] = [
+            .init(skill: .reading, practisedTimes: 3, lastPractisedAt: Date(), dueCount: 0),
+            .init(skill: .listening, practisedTimes: 0, lastPractisedAt: nil, dueCount: 0)
+        ]
+        let next = try XCTUnwrap(YouModel.recommendedPractice(
+            pack: pack, practice: practice, completedLessons: []))
+        XCTAssertEqual(next.skill, .listening)
+        let lesson = try XCTUnwrap(next.lessonId.flatMap { pack.lesson(id: $0) })
+        XCTAssertTrue(lesson.steps.contains { step in
+            pack.activity(id: step.activityId).map { activitySkills($0).contains(.listening) } ?? false
+        })
+        XCTAssertEqual(next.packId, pack.id)
+    }
+
+    func testDueReviewWinsAndCompletedCourseStillOffersPractice() throws {
+        let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language == .french })
+        var practice: [YouModel.SkillPractice] = [
+            .init(skill: .reading, practisedTimes: 1, lastPractisedAt: Date(), dueCount: 2)
+        ]
+        let review = try XCTUnwrap(YouModel.recommendedPractice(
+            pack: pack, practice: practice, completedLessons: []))
+        XCTAssertNil(review.lessonId)
+        practice[0].dueCount = 0
+        let repeatLesson = try XCTUnwrap(YouModel.recommendedPractice(
+            pack: pack, practice: practice, completedLessons: Set(pack.lessons.map(\.id))))
+        XCTAssertNotNil(repeatLesson.lessonId.flatMap { pack.lesson(id: $0) })
+    }
+
+    func testUnavailableSkillProducesNoBrokenDestination() throws {
+        let pack = try XCTUnwrap(PackLoader.loadPacks().first { $0.language == .french })
+        let practice: [YouModel.SkillPractice] = [
+            .init(skill: .grammar, practisedTimes: 0, lastPractisedAt: nil, dueCount: 0)
+        ]
+        let next = try XCTUnwrap(YouModel.recommendedPractice(
+            pack: pack, practice: practice, completedLessons: []))
+        XCTAssertNotNil(next.lessonId.flatMap { pack.lesson(id: $0) })
+        XCTAssertNil(YouModel.recommendedPractice(pack: pack, practice: [], completedLessons: []))
+        let source = try XCTUnwrap(PackLoader.contentDirectory())
+            .appendingPathComponent("packs/french.json")
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: source)) as? [String: Any])
+        var activities = try XCTUnwrap(json["activities"] as? [[String: Any]])
+        for index in activities.indices { activities[index]["skills"] = [] }
+        json["activities"] = activities
+        let noSkillPack = try JSONDecoder().decode(CoursePack.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertNil(YouModel.recommendedPractice(pack: noSkillPack, practice: practice, completedLessons: []))
     }
 }

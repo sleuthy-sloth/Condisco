@@ -1,3 +1,7 @@
+## September 30 implementation delta
+
+Shared course/library review invitations, bounded cancellable text imports, actionable skill practice, and four early German/Portuguese listening plus self-assessed spoken-response slices are implemented locally. Device speech is explicitly identified; no assessed speaking ability or human usability result is claimed. See [execution and verification status](verification/2026-09-30-improvement-progress.md), including outstanding device and learning observations. Historical test counts below describe their original snapshots.
+
 # Skill map (P1.3)
 
 Scope of this document: **every unit of all five packs** (`Condisco/Content/packs/*.json`, as of the 2026-09-27 working tree — recounted 2026-09-27 after the 8.3 B2-oriented pilot unit (`es-unit-26`) landed in `spanish.json` v0.7.15, up from the batch-2 count of 85 units / 303 lessons (units 24–25, v0.7.14), the batch-1 count of 83 units / 291 lessons and the 2026-09-26 count of 80 units / 273 lessons): French 13 units / 50 lessons, Italian 13 units / 49 lessons, German 17 units / 52 lessons, Portuguese 17 units / 52 lessons, Spanish 26 units / 106 lessons — **86 units, 309 lessons** (49 missions, 38 stories, verified by counting `lessons[]` per pack and per unit). P1.1/P1.3 context: `docs/roadmaps/2026-09-25-condisco-quality-and-growth.md`. Nothing here claims coverage it does not map: level labels describe what the mapped lessons actually do, and gaps are backlog, not promises.

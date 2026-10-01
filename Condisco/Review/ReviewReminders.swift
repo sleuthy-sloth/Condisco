@@ -108,14 +108,10 @@ final class ReviewReminders: ObservableObject {
             let store = try LearningStore.inDocuments()
             let (due, _) = try ReviewCatalog.loadDue(packs: packs, store: store)
             guard !due.isEmpty else { cancelShared(); return }
-            let focusSlug = UserDefaults.standard.string(
-                forKey: "condisco.focusLanguage") ?? "french"
-            let focusName = packs.first(where: { $0.language.slug == focusSlug })?
-                .language.displayName ?? "your course"
             let content = UNMutableNotificationContent()
             content.title = "A calm minute of review"
             content.body = "\(due.count) review\(due.count == 1 ? " is" : "s are")"
-                + " waiting in \(focusName) — whenever you're ready."
+                + " waiting — whenever you're ready."
             content.sound = .default
             var components = DateComponents()
             components.hour = minutes / 60

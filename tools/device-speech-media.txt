@@ -57,3 +57,7 @@ it-cafe-listen-audio # /audio/italian-foundations/it-cafe-listen-exchange.wav
 it-cafe-listen-model # /audio/italian-foundations/it-cafe-listen-model.wav
 pt-cafe-listen-audio # /audio/portuguese-foundations/pt-cafe-listen-exchange.wav
 pt-cafe-listen-model # /audio/portuguese-foundations/pt-cafe-listen-model.wav
+de-introductions-listen-audio # /audio/german-foundations/de-introductions-listen.wav
+de-numbers-quantities-listen-audio # /audio/german-foundations/de-numbers-quantities-listen.wav
+pt-introductions-listen-audio # /audio/portuguese-foundations/pt-introductions-listen.wav
+pt-numbers-quantities-listen-audio # /audio/portuguese-foundations/pt-numbers-quantities-listen.wav

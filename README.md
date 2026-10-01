@@ -4,6 +4,16 @@ Condisco is a free, offline-first iPhone app for practising useful language in c
 
 This repository is the **native iOS app**. The earlier VerbaLibera web app is preserved in the web-legacy branch. The iOS app is the active product; some web-era storage identifiers remain to preserve learner progress.
 
+## September 30 improvements
+
+- Home, the widget, reminders and all-course Review share course and saved-library-phrase due totals. Reminders use neutral wording for the combined queue.
+- Plain-text file imports read off the UI thread, support cancellation, and stop at the 1 MB limit. UTF-8 BOM text is accepted; binary/control-character payloads are rejected before saving.
+- The You tab opens a concrete lesson or Review from its practice recommendation. Unfinished lessons resume saved drafts; completed lessons start fresh practice while retaining historical evidence. Self-assessed spoken and written work contributes practice recency without claiming assessed ability.
+- The first two German and Portuguese units add four short listening, decision and self-assessed spoken-response sequences. Existing unchanged review evidence is preserved across the additions.
+- Dated [phone checks](docs/usability/2026-09-30-owned-iphone-run-sheet.md), [Spanish self-study materials](docs/usability/2026-09-30-spanish-self-study-kit.md), and [language task samples](docs/reviews/2026-09-30-early-task-sample.md) are ready for human observation.
+
+See the [implementation and verification report](docs/verification/2026-09-30-improvement-progress.md). The final app and test sources compile, **588 unit tests pass**, and content checks pass. The latest simulator UI run stalled before reporting a test case; UI verification remains open.
+
 ## Current scope
 
 Five bundled course packs contain **309 lessons**:
@@ -28,7 +38,7 @@ Lessons, review, and the five packs are bundled and work without a network conne
 
 The You tab can export learning data and restore a validated export after showing a preview. The current export format is version 2. Exports include events, checkpoints, saved phrases and their deletion markers, Listen position, placement recommendations, and imported library documents with their phrase links. They exclude temporary recordings, device preferences, sign-in identity, and secrets. Restore merges into the local store in one SQLite transaction; it does not replace the database. Older exports remain readable.
 
-The practice library accepts pasted or imported plain text, capped at 1 MB. Learners can select a passage, save a phrase, and review it through the existing FSRS queue. Documents stay in the local store and are included in a user-initiated export; they do not enter CloudKit, the widget, or Spotlight. Deleting a document removes its local text and links without erasing saved phrases or unrelated learning events. The library has no audio-file import yet.
+The practice library accepts pasted or imported plain text, capped at 1 MB. Learners can select a passage, save a phrase, and review it through the existing FSRS queue. Saved-phrase due counts also feed the Home, widget and reminder invitations; document text itself stays private. Documents stay in the local store and are included in a user-initiated export; they do not enter CloudKit, the widget, or Spotlight. Deleting a document removes its local text and links without erasing saved phrases or unrelated learning events. The library has no audio-file import yet.
 
 CloudKit mirror code exists, but **iCloud and Sign in with Apple capabilities are disabled in this build**. The app tells learners that progress is saved on this device and sync is unavailable. Simulated two-store merge tests exist; real two-device CloudKit sync has not been verified. Local use never depends on CloudKit.
 
@@ -65,9 +75,9 @@ python3 tools/gen_lesson_catalog.py Condisco/Content/packs \
   Condisco/DeepLink/LessonCatalog.generated.swift
 ~~~
 
-The generated catalog must match the packs byte-for-byte. Lesson and activity IDs stay stable across updates; changed content gets a new revision so old attempts are not treated as evidence for the new version. An updated mission may therefore ask a returning learner to complete it again. docs/editorial-rubric.md has the authoring template and review rules; docs/skill-map.md maps all current units and records coverage gaps. The Spanish B1 path and B2 pilot have outlines, source notes, and a review ledger under docs/reviews.
+The generated catalog must match the packs byte-for-byte. Lesson and activity IDs stay stable across updates. Changed answer activities get a new revision so old attempts are not treated as evidence for the new version. Append-only lesson additions retain the lesson revision when the existing activities remain compatible, preserving their review history. An updated mission may therefore ask a returning learner to complete it again. docs/editorial-rubric.md has the authoring template and review rules; docs/skill-map.md maps all current units and records coverage gaps. The Spanish B1 path and B2 pilot have outlines, source notes, and a review ledger under docs/reviews.
 
-Audio provenance matters: **31 declared lesson assets intentionally use labeled on-device synthesized speech** (French 7, Italian 18, German 2, Portuguese 2, Spanish 2), listed in tools/device-speech-media.txt. The four new café exchanges and their response models are among them; their provenance records live under docs/audio-provenance, and naturalness review is pending. One Italian lesson clip and five standalone synthesized Listen tracks are bundled. Spanish sustained passages use per-section on-device speech. Missing media outside the explicit fallback list fails validation. The five Listen tracks have file, hash, duration, and section checks; naturalness, device playback, lock-screen behavior, and recording recovery still need human iPhone checks. Do not describe synthesized audio as native recorded speech.
+Audio provenance matters: **35 declared lesson assets intentionally use labeled on-device synthesized speech** (French 7, Italian 18, German 4, Portuguese 4, Spanish 2), listed in tools/device-speech-media.txt. The café exchanges, their response models, and the four early German/Portuguese practice slices are among them; their provenance records live under docs/audio-provenance, and naturalness review is pending. One Italian lesson clip and five standalone synthesized Listen tracks are bundled. Spanish sustained passages use per-section on-device speech. Missing media outside the explicit fallback list fails validation. The five Listen tracks have file, hash, duration, and section checks; naturalness, device playback, lock-screen behavior, and recording recovery still need human iPhone checks. Do not describe synthesized audio as native recorded speech.
 
 ## Verification
 
@@ -83,7 +93,9 @@ git diff --check
 
 check_packs.sh validates pack structure, references, lesson reachability, media, provenance links, and authored task shapes. The strict editorial audit rejects falsely auto-graded open responses; its other counts are an editorial report. audit_outcomes.py checks that declared reading, listening, speaking, and writing claims have matching activities. preflight.sh also checks generated catalog drift and runs unit tests; --with-ui adds the simulator UI smoke. Run the full preflight on the **exact candidate tree** before sharing a build. GitHub Actions was removed by developer decision, so local preflight is the automated gate.
 
-The latest local full preflight for the 309-lesson tree passed on 2026-09-27: **576 unit tests and 8 simulator UI tests**, with zero failures. One UI case skips its search-field interaction when the simulator does not expose the inline search drawer to automation; the scoped-search rule also has a unit test. This is automated and simulator evidence, not a physical-device, native-speaker, or learner-outcome review. docs/release-checklist.md lists remaining manual checks and docs/performance-budget.md separates simulator probes from unmeasured device performance.
+For the September 30 improvements, the final build-for-testing and **588 unit tests** passed, alongside pack/media integrity, strict editorial checks, outcomes checks and generated-catalog drift checks. The simulator UI runner stalled after launch and was stopped without reporting a test case; the complete current preflight including UI is **not certified**.
+
+The preceding local full preflight for the 309-lesson tree passed on 2026-09-27: **576 unit tests and 8 simulator UI tests**, with zero failures. One UI case skips its search-field interaction when the simulator does not expose the inline search drawer to automation; the scoped-search rule also has a unit test. This is automated and simulator evidence, not a physical-device, native-speaker, or learner-outcome review. docs/release-checklist.md lists remaining manual checks and docs/performance-budget.md separates simulator probes from unmeasured device performance.
 
 ## Known limits and next work
 

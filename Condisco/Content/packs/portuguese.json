@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "pt-foundations",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "language": "pt",
   "status": "active",
   "title": "Portuguese foundations",
@@ -2585,6 +2585,22 @@
       "transcript": "Sim, um pastel de nata, por favor.",
       "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/portuguese-cafe-listen.json. Naturalness of the on-device Portuguese voice unverified (reviewPending: true).",
       "kind": "audio"
+    },
+    {
+      "id": "pt-introductions-listen-audio",
+      "url": "/audio/portuguese-foundations/pt-introductions-listen.wav",
+      "sha256": "",
+      "kind": "audio",
+      "transcript": "Olá! O meu nome é Ana. Sou de Lisboa. Qual é o seu nome?",
+      "attribution": "Original authored lesson text; on-device synthesized course voice, no recording shipped. See docs/audio-provenance/portuguese-early-introductions-practice.json. Language quality and voice naturalness unverified (reviewPending: true)."
+    },
+    {
+      "id": "pt-numbers-quantities-listen-audio",
+      "url": "/audio/portuguese-foundations/pt-numbers-quantities-listen.wav",
+      "sha256": "",
+      "kind": "audio",
+      "transcript": "Bom dia. Dois pães, por favor. São três euros. Obrigada.",
+      "attribution": "Original authored lesson text; on-device synthesized course voice, no recording shipped. See docs/audio-provenance/portuguese-numbers-quantities-listen.json. Language quality and voice naturalness unverified (reviewPending: true)."
     }
   ],
   "stimuli": [
@@ -3771,6 +3787,16 @@
       "kind": "audio",
       "id": "pt-cafe-listen-stim",
       "mediaId": "pt-cafe-listen-audio"
+    },
+    {
+      "id": "pt-introductions-listen-stim",
+      "kind": "audio",
+      "mediaId": "pt-introductions-listen-audio"
+    },
+    {
+      "id": "pt-numbers-quantities-listen-stim",
+      "kind": "audio",
+      "mediaId": "pt-numbers-quantities-listen-audio"
     }
   ],
   "activities": [
@@ -4360,7 +4386,7 @@
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "pt-introductions-concept"
       ],
@@ -4374,7 +4400,7 @@
         "writing",
         "grammar"
       ],
-      "prompt": "You have just been introduced to someone. Give the short Portuguese word meaning 'Nice to meet you'.",
+      "prompt": "Recall the short Portuguese reply practised here for “Nice to meet you”.",
       "hints": [
         "It is the one-word greeting at the end of an introduction — it starts with P."
       ],
@@ -22524,6 +22550,311 @@
       "prompt": "You want the pastry too. Say “Yes, a pastel de nata, please” in Portuguese.",
       "modelText": "Sim, um pastel de nata, por favor.",
       "modelAudioId": "pt-cafe-listen-model"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-introductions-concept"
+      ],
+      "vocabulary": [
+        "pt-introductions-word-1",
+        "pt-introductions-word-2",
+        "pt-introductions-word-3",
+        "pt-introductions-word-4"
+      ],
+      "kind": "information",
+      "id": "pt-introductions-listen-notice",
+      "body": "Listen to the short exchange with the synthesized course voice. First identify the situation, then listen for a detail. You can reveal the transcript for help.",
+      "stimulusId": "pt-introductions-listen-stim"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-introductions-concept"
+      ],
+      "vocabulary": [
+        "pt-introductions-word-1",
+        "pt-introductions-word-2",
+        "pt-introductions-word-3",
+        "pt-introductions-word-4"
+      ],
+      "kind": "selection",
+      "id": "pt-introductions-listen-gist",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "pt-introductions-listen-stim",
+      "prompt": "What is the speaker doing?",
+      "hints": [
+        "O meu nome é introduces a name."
+      ],
+      "feedback": "O meu nome é introduces a name.",
+      "evidenceKey": "pt-introductions-listen-gist",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Introducing herself"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Ordering coffee"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Asking a price"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-introductions-concept"
+      ],
+      "vocabulary": [
+        "pt-introductions-word-1",
+        "pt-introductions-word-2",
+        "pt-introductions-word-3",
+        "pt-introductions-word-4"
+      ],
+      "kind": "selection",
+      "id": "pt-introductions-listen-detail",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "pt-introductions-listen-stim",
+      "prompt": "Where is Ana from?",
+      "hints": [
+        "Listen after Sou de: Ana says Lisboa."
+      ],
+      "feedback": "Listen after Sou de: Ana says Lisboa.",
+      "evidenceKey": "pt-introductions-listen-detail",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Lisboa"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Porto"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Faro"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-introductions-concept"
+      ],
+      "vocabulary": [
+        "pt-introductions-word-1",
+        "pt-introductions-word-2",
+        "pt-introductions-word-3",
+        "pt-introductions-word-4"
+      ],
+      "kind": "open-task",
+      "id": "pt-introductions-listen-reply",
+      "skills": [
+        "speaking"
+      ],
+      "mode": "spoken",
+      "goal": "Reply to Ana in Portuguese: give your name and acknowledge the introduction politely.",
+      "requiredPoints": [
+        "Give your name",
+        "Acknowledge the introduction politely"
+      ],
+      "modelResponse": "O meu nome é Alex. Prazer.",
+      "rubric": [
+        {
+          "id": "meaning",
+          "text": "My reply conveys the requested information."
+        },
+        {
+          "id": "politeness",
+          "text": "My reply fits this polite everyday exchange."
+        },
+        {
+          "id": "clarity",
+          "text": "I can understand my own reply and repeat it clearly."
+        }
+      ],
+      "hints": [
+        "Use the phrases from this lesson. Different wording is allowed; the response is self-assessed."
+      ],
+      "lengthGuidance": "One or two short spoken sentences. Recording is optional."
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "pt-numbers-quantities-word-1",
+        "pt-numbers-quantities-word-2",
+        "pt-numbers-quantities-word-3",
+        "pt-numbers-quantities-word-4"
+      ],
+      "kind": "information",
+      "id": "pt-numbers-quantities-listen-notice",
+      "body": "Listen to the short exchange with the synthesized course voice. First identify the situation, then listen for a detail. You can reveal the transcript for help.",
+      "stimulusId": "pt-numbers-quantities-listen-stim"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "pt-numbers-quantities-word-1",
+        "pt-numbers-quantities-word-2",
+        "pt-numbers-quantities-word-3",
+        "pt-numbers-quantities-word-4"
+      ],
+      "kind": "selection",
+      "id": "pt-numbers-quantities-listen-gist",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "pt-numbers-quantities-listen-stim",
+      "prompt": "What does the customer want?",
+      "hints": [
+        "Dois pães is an order for two pieces of bread."
+      ],
+      "feedback": "Dois pães is an order for two pieces of bread.",
+      "evidenceKey": "pt-numbers-quantities-listen-gist",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Bread"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Coffee"
+        },
+        {
+          "id": "distractor-2",
+          "text": "A train ticket"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "pt-numbers-quantities-word-1",
+        "pt-numbers-quantities-word-2",
+        "pt-numbers-quantities-word-3",
+        "pt-numbers-quantities-word-4"
+      ],
+      "kind": "selection",
+      "id": "pt-numbers-quantities-listen-detail",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "pt-numbers-quantities-listen-stim",
+      "prompt": "How much does the order cost together?",
+      "hints": [
+        "Dois describes the quantity. Três euros is the total price."
+      ],
+      "feedback": "Dois describes the quantity. Três euros is the total price.",
+      "evidenceKey": "pt-numbers-quantities-listen-detail",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Three euros"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Two euros"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Five euros"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "pt-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "pt-numbers-quantities-word-1",
+        "pt-numbers-quantities-word-2",
+        "pt-numbers-quantities-word-3",
+        "pt-numbers-quantities-word-4"
+      ],
+      "kind": "open-task",
+      "id": "pt-numbers-quantities-listen-reply",
+      "skills": [
+        "speaking"
+      ],
+      "mode": "spoken",
+      "goal": "At the counter, ask for two pieces of bread politely. Then check the total price you heard.",
+      "requiredPoints": [
+        "Ask for two pieces of bread",
+        "Use a polite request",
+        "Check the total price"
+      ],
+      "modelResponse": "Dois pães, por favor. São três euros?",
+      "rubric": [
+        {
+          "id": "meaning",
+          "text": "My reply conveys the requested information."
+        },
+        {
+          "id": "politeness",
+          "text": "My reply fits this polite everyday exchange."
+        },
+        {
+          "id": "clarity",
+          "text": "I can understand my own reply and repeat it clearly."
+        }
+      ],
+      "hints": [
+        "Use the phrases from this lesson. Different wording is allowed; the response is self-assessed."
+      ],
+      "lengthGuidance": "One or two short spoken sentences. Recording is optional."
     }
   ],
   "lessons": [
@@ -22643,7 +22974,7 @@
       "objective": "Introduce yourself as Ana and keep the accent that separates é ('is') from e ('and').",
       "family": "discovery",
       "revision": 1,
-      "estimatedMinutes": 6,
+      "estimatedMinutes": 8,
       "entryStepId": "pt-introductions-foundation-step-intro",
       "steps": [
         {
@@ -22693,7 +23024,34 @@
           "purpose": "practice",
           "activityId": "pt-introductions-foundation-reply",
           "required": true,
-          "nextStepId": null
+          "nextStepId": "pt-introductions-listen-step-notice"
+        },
+        {
+          "id": "pt-introductions-listen-step-notice",
+          "purpose": "notice",
+          "activityId": "pt-introductions-listen-notice",
+          "required": true,
+          "nextStepId": "pt-introductions-listen-step-gist"
+        },
+        {
+          "id": "pt-introductions-listen-step-gist",
+          "purpose": "practice",
+          "activityId": "pt-introductions-listen-gist",
+          "required": true,
+          "nextStepId": "pt-introductions-listen-step-detail"
+        },
+        {
+          "id": "pt-introductions-listen-step-detail",
+          "purpose": "practice",
+          "activityId": "pt-introductions-listen-detail",
+          "required": true,
+          "nextStepId": "pt-introductions-listen-step-reply"
+        },
+        {
+          "id": "pt-introductions-listen-step-reply",
+          "purpose": "practice",
+          "activityId": "pt-introductions-listen-reply",
+          "required": true
         }
       ],
       "completionPolicy": {
@@ -23211,7 +23569,7 @@
       "objective": "Count one to five, then choose between dois and duas to match the noun you are counting.",
       "family": "discovery",
       "revision": 1,
-      "estimatedMinutes": 4,
+      "estimatedMinutes": 6,
       "entryStepId": "pt-numbers-quantities-foundation-step-intro",
       "steps": [
         {
@@ -23247,7 +23605,34 @@
           "purpose": "practice",
           "activityId": "pt-numbers-quantities-foundation-order",
           "required": true,
-          "nextStepId": null
+          "nextStepId": "pt-numbers-quantities-listen-step-notice"
+        },
+        {
+          "id": "pt-numbers-quantities-listen-step-notice",
+          "purpose": "notice",
+          "activityId": "pt-numbers-quantities-listen-notice",
+          "required": true,
+          "nextStepId": "pt-numbers-quantities-listen-step-gist"
+        },
+        {
+          "id": "pt-numbers-quantities-listen-step-gist",
+          "purpose": "practice",
+          "activityId": "pt-numbers-quantities-listen-gist",
+          "required": true,
+          "nextStepId": "pt-numbers-quantities-listen-step-detail"
+        },
+        {
+          "id": "pt-numbers-quantities-listen-step-detail",
+          "purpose": "practice",
+          "activityId": "pt-numbers-quantities-listen-detail",
+          "required": true,
+          "nextStepId": "pt-numbers-quantities-listen-step-reply"
+        },
+        {
+          "id": "pt-numbers-quantities-listen-step-reply",
+          "purpose": "practice",
+          "activityId": "pt-numbers-quantities-listen-reply",
+          "required": true
         }
       ],
       "completionPolicy": {

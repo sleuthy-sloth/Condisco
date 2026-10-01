@@ -18,7 +18,17 @@ private struct RetakeTarget: Identifiable {
     let pack: CoursePack
 }
 
+private struct PracticeLessonTarget: Identifiable {
+    let pack: CoursePack
+    let lessonId: String
+    let store: LearningStore
+    let startFresh: Bool
+    var id: String { pack.id + "|" + lessonId }
+}
+
 struct YouView: View {
+    let onOpenReview: () -> Void
+    @State private var practiceTarget: PracticeLessonTarget?
     @StateObject private var model = YouModel()
     @EnvironmentObject private var auth: AuthState
     @EnvironmentObject private var sync: CloudKitSync
@@ -56,12 +66,18 @@ struct YouView: View {
             }
             .toolbar(.hidden, for: .navigationBar)
         }
-        .task {
-            await model.load(focusSlug: focusSlug)
-            await support.load()
+        .task(id: focusSlug) {
             packs = (try? PackLoader.loadPacks()) ?? []
+            await model.refresh(focusSlug: focusSlug)
+            await support.load()
             await reminders.refresh()
             await runSync()
+        }
+        .fullScreenCover(item: $practiceTarget) { target in
+            LessonPlayerView(pack: target.pack, lessonId: target.lessonId, store: target.store, startFresh: target.startFresh) {
+                practiceTarget = nil
+                Task { await model.refresh(focusSlug: focusSlug) }
+            }
         }
         .fileImporter(
             isPresented: $showingImporter,
@@ -202,16 +218,38 @@ struct YouView: View {
                             skillRow(row)
                         }
                     }
-                    if let next = model.suggestedNextTask {
-                        Label(next, systemImage: "arrow.right.circle.fill")
+                }
+                if let recommendation = model.practiceRecommendation {
+                    Button { openPractice(recommendation) } label: {
+                        Label(recommendation.title, systemImage: "arrow.right.circle.fill")
                             .font(DesignTokens.text(14, weight: .medium))
-                            .foregroundStyle(DesignTokens.primary)
-                            .padding(.top, 2)
+                            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                     }
+                    .foregroundStyle(DesignTokens.primary)
+                    .accessibilityIdentifier("you.nextPractice")
+                }
+                if model.openResponses.withoutModelOrHelp + model.openResponses.withModelOrHelp > 0 {
+                    Text("Self-assessed open responses: \(model.openResponses.withoutModelOrHelp) without a model or help; \(model.openResponses.withModelOrHelp) with a model or help.")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
+                    Text("These counts describe practice, not assessed speaking or writing ability.")
+                        .font(DesignTokens.text(13))
+                        .foregroundStyle(DesignTokens.muted)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    private func openPractice(_ recommendation: YouModel.PracticeRecommendation) {
+        guard let lessonId = recommendation.lessonId else { onOpenReview(); return }
+        guard let pack = packs.first(where: { $0.id == recommendation.packId }),
+              pack.lesson(id: lessonId) != nil else { return }
+        do {
+            practiceTarget = PracticeLessonTarget(pack: pack, lessonId: lessonId,
+                                                 store: try LearningStore.inDocuments(),
+                                                 startFresh: recommendation.startFresh)
+        } catch { importAlertMessage = error.localizedDescription }
     }
 
     /// One skill row: label, last practised relative date, and the due

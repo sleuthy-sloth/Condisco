@@ -39,6 +39,21 @@ final class CourseLevelsUITests: XCTestCase {
                       app.debugDescription)
     }
 
+
+    func testNextPracticeActionOpensAConcreteLesson() {
+        let app = XCUIApplication()
+        completeOnboardingToHome(app)
+        app.tabBars.buttons["You"].tap()
+        let next = app.buttons["you.nextPractice"]
+        XCTAssertTrue(next.waitForExistence(timeout: 20), app.debugDescription)
+        scrollToIfNeeded(next, app: app)
+        XCTAssertTrue(next.isHittable, app.debugDescription)
+        XCTAssertTrue(next.label.hasPrefix("Practise "), next.label)
+        next.tap()
+        XCTAssertTrue(app.buttons["Start lesson"].waitForExistence(timeout: 20), app.debugDescription)
+        XCTAssertTrue(app.buttons["Back to lessons"].exists, app.debugDescription)
+    }
+
     private func scrollToIfNeeded(_ element: XCUIElement, app: XCUIApplication) {
         for _ in 0..<4 where !element.isHittable {
             app.swipeUp()

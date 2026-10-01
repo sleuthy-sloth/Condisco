@@ -154,6 +154,7 @@ final class LibraryModel: ObservableObject {
 
     func delete(_ document: ImportedDocument) {
         try? LearningStore.inDocuments().deleteDocument(id: document.id)
+        LibraryReview.refreshSurfaces()
         load()
     }
 }
@@ -167,6 +168,8 @@ struct LibraryView: View {
     @State private var showingImporter = false
     @State private var showingPasteSheet = false
     @State private var importErrorMessage: String?
+    @State private var isReadingFile = false
+    @State private var fileReadTask: Task<Void, Never>?
     /// The document a trash tap asked to delete, pending the destructive
     /// confirm (§8.3).
     @State private var deleteCandidate: ImportedDocument?
@@ -224,6 +227,19 @@ struct LibraryView: View {
             }
         }
         .task { model.load() }
+        .onDisappear { fileReadTask?.cancel() }
+        .overlay(alignment: .bottom) {
+            if isReadingFile {
+                HStack {
+                    ProgressView("Reading text…")
+                    Spacer()
+                    Button("Cancel") { fileReadTask?.cancel() }
+                        .frame(minWidth: 44, minHeight: 44)
+                }
+                .padding()
+                .background(DesignTokens.canvas)
+            }
+        }
         .fileImporter(
             isPresented: $showingImporter,
             allowedContentTypes: [.plainText, .utf8PlainText],
@@ -370,6 +386,7 @@ struct LibraryView: View {
             label()
         }
         .accessibilityLabel(accessibilityLabel)
+        .disabled(isReadingFile)
     }
 
     // MARK: Import flow
@@ -385,19 +402,34 @@ struct LibraryView: View {
     }
 
     private func importSelectedFile(_ url: URL) {
-        // Files picked from the Files app are security-scoped.
-        let accessing = url.startAccessingSecurityScopedResource()
-        defer {
-            if accessing { url.stopAccessingSecurityScopedResource() }
+        guard !isReadingFile else { return }
+        isReadingFile = true
+        fileReadTask = Task { @MainActor in
+            defer { isReadingFile = false; fileReadTask = nil }
+            let reader = Task.detached(priority: .userInitiated) {
+                let accessing = url.startAccessingSecurityScopedResource()
+                defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+                return try LibraryImportValidator.readFile(url)
+            }
+            do {
+                let data = try await withTaskCancellationHandler {
+                    try await reader.value
+                } onCancel: {
+                    reader.cancel()
+                }
+                try Task.checkCancellation()
+                beginImport(data: data, title: LibraryImport.title(fromFileURL: url),
+                            sourceFileName: url.lastPathComponent)
+            } catch is CancellationError {
+                // Cancelled imports never present a draft or write a document.
+            } catch let error as LibraryImportError {
+                if !Task.isCancelled { importErrorMessage = error.description }
+            } catch {
+                if !Task.isCancelled {
+                    importErrorMessage = "The file could not be read. Nothing was changed."
+                }
+            }
         }
-        guard let data = try? Data(contentsOf: url) else {
-            importErrorMessage = "The file could not be read. Nothing was changed."
-            return
-        }
-        beginImport(
-            data: data,
-            title: LibraryImport.title(fromFileURL: url),
-            sourceFileName: url.lastPathComponent)
     }
 
     /// Validates raw bytes through the single import gateway and, on
@@ -876,6 +908,7 @@ private struct LibrarySavePhraseSheet: View {
             try LibrarySavePhrase.commit(
                 store: store, document: document,
                 target: target, meaning: meaning)
+            LibraryReview.refreshSurfaces()
             dismiss()
         } catch {
             commitErrorMessage = error.localizedDescription

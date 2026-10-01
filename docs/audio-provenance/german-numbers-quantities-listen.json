@@ -1,0 +1,23 @@
+{
+  "assetIds": [
+    "de-numbers-quantities-listen-audio"
+  ],
+  "packId": "de-foundations",
+  "lessonId": "de-numbers-quantities-foundation",
+  "method": "on-device synthesized course voice at runtime",
+  "verificationStatus": "automated structure only; language quality and voice naturalness unverified",
+  "reviewPending": true,
+  "source": "Original AI-assisted authored text; no external recording.",
+  "assets": {
+    "de-numbers-quantities-listen-audio": {
+      "declaredUrl": "/audio/german-foundations/de-numbers-quantities-listen.wav",
+      "transcript": "Guten Tag. Ich möchte zwei Brötchen, bitte. Zwei Brötchen kosten drei Euro. Danke.",
+      "sha256": "",
+      "note": "No audio file shipped; deliberate device-speech fallback."
+    }
+  },
+  "delivery": "AudioStimulusView; declared in tools/device-speech-media.txt",
+  "unknownFacts": [
+    "Language quality, pronunciation, playback and usefulness need human/device review."
+  ]
+}

@@ -97,9 +97,9 @@ final class YouModel: ObservableObject {
     /// profile shows that divergence row by row.
     struct SkillPractice: Identifiable {
         let skill: Skill
-        /// Correct attempts on this skill's activities, any independence.
+        /// Valid graded or self-assessed practice, including help.
         var practisedTimes: Int
-        /// Most recent correct attempt on this skill, for the staleness row.
+        /// Most recent valid practice on this skill, for the staleness row.
         var lastPractisedAt: Date?
         /// Due review cards whose activity carries this skill.
         var dueCount: Int
@@ -110,9 +110,75 @@ final class YouModel: ObservableObject {
 
     /// Focus-language per-skill practice rows (5.2A).
     @Published var skillPractice: [SkillPractice] = []
-    /// The suggested next task line, or nil when there is nothing to
-    /// suggest (no practice at all).
-    @Published var suggestedNextTask: String?
+    /// A reachable practice destination with an explicit replay mode.
+    struct PracticeRecommendation: Identifiable {
+        let packId: String
+        let lessonId: String?
+        let skill: Skill
+        let title: String
+        var startFresh: Bool = false
+        var id: String { packId + "|" + (lessonId ?? "review") }
+    }
+    struct OpenResponseSummary {
+        let withoutModelOrHelp: Int
+        let withModelOrHelp: Int
+    }
+    @Published var practiceRecommendation: PracticeRecommendation?
+    @Published var openResponses = OpenResponseSummary(withoutModelOrHelp: 0, withModelOrHelp: 0)
+
+    static func openResponseSummary(progress: PackProgress) -> OpenResponseSummary {
+        let tasks = progress.openTaskAttempts
+        let turns = progress.dialogueTurns.filter(\.isOpen)
+        return OpenResponseSummary(
+            withoutModelOrHelp: tasks.filter(\.independent).count
+                + turns.filter { !$0.modelRevealed }.count,
+            withModelOrHelp: tasks.filter { !$0.independent }.count
+                + turns.filter(\.modelRevealed).count)
+    }
+
+    /// A concrete available task, using existing content and routing.
+    /// Due cards win; otherwise a never-practised available skill comes
+    /// before the stalest practised skill. Completed lessons remain revisitable.
+    static func recommendedPractice(
+        pack: CoursePack, practice: [SkillPractice], completedLessons: Set<String>
+    ) -> PracticeRecommendation? {
+        let order = Dictionary(uniqueKeysWithValues: Skill.profileOrder.enumerated().map { ($1, $0) })
+        if let row = practice.filter({ $0.dueCount > 0 }).sorted(by: {
+            if $0.dueCount != $1.dueCount { return $0.dueCount > $1.dueCount }
+            return (order[$0.skill] ?? 0) < (order[$1.skill] ?? 0)
+        }).first {
+            return PracticeRecommendation(packId: pack.id, lessonId: nil, skill: row.skill,
+                                          title: "Review your due cards")
+        }
+        let rows = practice.sorted {
+            let left = $0.lastPractisedAt ?? .distantPast
+            let right = $1.lastPractisedAt ?? .distantPast
+            if left != right { return left < right }
+            return (order[$0.skill] ?? 0) < (order[$1.skill] ?? 0)
+        }
+        func skills(_ activity: Activity) -> [Skill] {
+            switch activity {
+            case .selfCompare(let spec): return spec.skills
+            case .openTask(let spec): return spec.skills
+            default: return activitySkills(activity)
+            }
+        }
+        let activities = Dictionary(uniqueKeysWithValues: pack.activities.map { ($0.id, $0) })
+        for row in rows {
+            let available = pack.lessons.filter { lesson in
+                lesson.steps.contains { step in
+                    activities[step.activityId].map { skills($0).contains(row.skill) } ?? false
+                }
+            }
+            if let lesson = available.first(where: { !completedLessons.contains($0.id) }) ?? available.first {
+                return PracticeRecommendation(packId: pack.id, lessonId: lesson.id, skill: row.skill,
+                    title: "Practise \(row.skill.rawValue): \(lesson.title)",
+                    startFresh: completedLessons.contains(lesson.id))
+            }
+        }
+        return nil
+    }
+
     @Published var isLoading = true
     @Published var loadError: String?
 
@@ -133,14 +199,14 @@ final class YouModel: ObservableObject {
             let focusPack = packs.first { $0.language.slug == focusSlug }
                 ?? packs.first
             var courses: [CourseStat] = []
-            var due = 0
             // Phrase evidence accumulates per group across packs, in pack
             // order, under the same section-wide cap the flat list used:
             // the first 12 phrases, however they group.
             var budget = 12
             var grouped: [PhraseEvidence: [EvidencePhrase]] = [:]
             self.skillPractice = []
-            self.suggestedNextTask = nil
+            self.practiceRecommendation = nil
+            self.openResponses = OpenResponseSummary(withoutModelOrHelp: 0, withModelOrHelp: 0)
             for pack in packs {
                 let progress = try store.project(pack: pack)
                 courses.append(CourseStat(
@@ -153,18 +219,15 @@ final class YouModel: ObservableObject {
                     // Focus-language profile: one row per skill, built from
                     // the pack's due set so the counts reuse the existing
                     // review scheduler (no new scheduler).
-                    let dueItems = try ReviewCatalog.loadDue(
+                    let dueItems = try ReviewCatalog.loadCourseDue(
                         packs: [pack], store: store).due
-                    due += dueItems.count
                     let events = try store
                         .learningEventsWithQuarantine(packId: pack.id).events
                     self.skillPractice = Self.skillPractice(
                         pack: pack, events: events, dueItems: dueItems)
-                    self.suggestedNextTask = Self.suggestedNextTask(
-                        in: self.skillPractice)
-                } else {
-                    due += try ReviewCatalog.loadDue(
-                        packs: [pack], store: store).due.count
+                    self.practiceRecommendation = Self.recommendedPractice(
+                        pack: pack, practice: self.skillPractice, completedLessons: progress.finishedLessons)
+                    self.openResponses = Self.openResponseSummary(progress: progress)
                 }
                 guard budget > 0 else { continue }
                 let events = try store
@@ -181,7 +244,7 @@ final class YouModel: ObservableObject {
                 }
             }
             self.courses = courses
-            self.dueCount = due
+            self.dueCount = try ReviewCatalog.loadDue(packs: packs, store: store).due.count
             self.groups = PhraseEvidence.allCases.compactMap { kind in
                 guard let phrases = grouped[kind], !phrases.isEmpty else {
                     return nil
@@ -203,16 +266,17 @@ final class YouModel: ObservableObject {
 
     // MARK: - Per-skill practice projection (5.2A)
 
-    /// Groups a pack's recent practice by skill: how many times each
-    /// skill was practised (correct attempts, help included), when it was
+    /// Groups current-revision practice: correct graded attempts and
+    /// self-assessed speaking/writing tasks, help included, when it was
     /// last practised, and how many due review cards carry that skill.
     /// `dueItems` is the pack's due set already resolved through
-    /// `ReviewCatalog.loadDue`, so the due counts reuse the existing
+    /// `ReviewCatalog.loadCourseDue`, so the due counts reuse the existing
     /// review scheduler's logic — no new scheduler here.
     ///
     /// Attempts are validated exactly like `LearningStore.project` (known
     /// lesson/step/activity, matching revisions, the activity's own
-    /// evidence key), so the counts can never disagree with SRS state.
+    /// evidence key). Self-assessed tasks contribute practice only; they
+    /// do not create SRS evidence.
     /// V1 practice rows carry no activity/skill mapping and never count
     /// here — their old progress stays in legacy completion credit.
     static func skillPractice(
@@ -224,21 +288,43 @@ final class YouModel: ObservableObject {
             uniqueKeysWithValues: pack.activities.map { ($0.id, $0) })
         var practised: [Skill: Int] = [:]
         var lastAt: [Skill: Date] = [:]
-        for case .attempt(let attempt) in events {
-            guard attempt.evaluation.outcome == .correct,
-                  let lesson = lessonsById[attempt.lessonId],
-                  let activity = activitiesById[attempt.activityId],
-                  let step = lesson.steps.first(where: { $0.id == attempt.stepId }),
-                  step.activityId == attempt.activityId,
-                  lesson.revision == attempt.lessonRevision,
-                  activity.revision == attempt.activityRevision,
-                  activity.evidenceKey == attempt.evidenceKey
-            else { continue }
-            for skill in activitySkills(activity) {
+        func record(_ skills: [Skill], at: Date) {
+            for skill in Set(skills) {
                 practised[skill, default: 0] += 1
-                if lastAt[skill] == nil || attempt.at > lastAt[skill]! {
-                    lastAt[skill] = attempt.at
+                if lastAt[skill] == nil || at > lastAt[skill]! { lastAt[skill] = at }
+            }
+        }
+        for event in events {
+            switch event {
+            case .attempt(let attempt):
+                guard attempt.packId == pack.id,
+                      let lesson = lessonsById[attempt.lessonId],
+                      let activity = activitiesById[attempt.activityId],
+                      let step = lesson.steps.first(where: { $0.id == attempt.stepId }),
+                      step.activityId == attempt.activityId,
+                      lesson.revision == attempt.lessonRevision,
+                      activity.revision == attempt.activityRevision,
+                      activity.evidenceKey == attempt.evidenceKey else { continue }
+                if case .selfCompare(let spec) = activity {
+                    guard attempt.evaluation.outcome == .selfAssessed else { continue }
+                    record(spec.skills, at: attempt.at)
+                } else {
+                    guard attempt.evaluation.outcome == .correct else { continue }
+                    record(activitySkills(activity), at: attempt.at)
                 }
+            case .openTaskAttempt(let attempt):
+                guard attempt.packId == pack.id,
+                      let lesson = lessonsById[attempt.lessonId],
+                      lesson.revision == attempt.lessonRevision,
+                      lesson.steps.contains(where: {
+                          $0.id == attempt.stepId && $0.activityId == attempt.activityId
+                      }),
+                      let activity = activitiesById[attempt.activityId],
+                      case .openTask(let spec) = activity,
+                      spec.revision == attempt.activityRevision,
+                      spec.mode == attempt.mode else { continue }
+                record(spec.skills, at: attempt.at)
+            default: break
             }
         }
         var dueCounts: [Skill: Int] = [:]

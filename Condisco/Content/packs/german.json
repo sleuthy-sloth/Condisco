@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "de-foundations",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "language": "de",
   "status": "active",
   "title": "German foundations",
@@ -2727,6 +2727,22 @@
       "transcript": "Zum Mitnehmen, bitte.",
       "attribution": "Authored lesson text; no recording shipped — on-device course voice reads the transcript at lesson time; see docs/audio-provenance/german-cafe-listen.json. Naturalness of the on-device German voice unverified (reviewPending: true).",
       "kind": "audio"
+    },
+    {
+      "id": "de-introductions-listen-audio",
+      "url": "/audio/german-foundations/de-introductions-listen.wav",
+      "sha256": "",
+      "kind": "audio",
+      "transcript": "Hallo! Ich heiße Mia. Ich komme aus Berlin. Wie heißt du?",
+      "attribution": "Original authored lesson text; on-device synthesized course voice, no recording shipped. See docs/audio-provenance/german-early-introductions-practice.json. Language quality and voice naturalness unverified (reviewPending: true)."
+    },
+    {
+      "id": "de-numbers-quantities-listen-audio",
+      "url": "/audio/german-foundations/de-numbers-quantities-listen.wav",
+      "sha256": "",
+      "kind": "audio",
+      "transcript": "Guten Tag. Ich möchte zwei Brötchen, bitte. Zwei Brötchen kosten drei Euro. Danke.",
+      "attribution": "Original authored lesson text; on-device synthesized course voice, no recording shipped. See docs/audio-provenance/german-numbers-quantities-listen.json. Language quality and voice naturalness unverified (reviewPending: true)."
     }
   ],
   "stimuli": [
@@ -3742,6 +3758,16 @@
       "kind": "audio",
       "id": "de-cafe-listen-stim",
       "mediaId": "de-cafe-listen-audio"
+    },
+    {
+      "id": "de-introductions-listen-stim",
+      "kind": "audio",
+      "mediaId": "de-introductions-listen-audio"
+    },
+    {
+      "id": "de-numbers-quantities-listen-stim",
+      "kind": "audio",
+      "mediaId": "de-numbers-quantities-listen-audio"
     }
   ],
   "activities": [
@@ -4230,7 +4256,7 @@
       ]
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "de-introductions-concept"
       ],
@@ -4244,7 +4270,7 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Your new colleague has introduced himself. Answer with the short German phrase for 'Nice to meet you'.",
+      "prompt": "Your colleague has introduced himself. Recall the two-word reply practised here for “Nice to meet you”.",
       "hints": [
         "The short reply starts with F and ends with mich — freut ('pleases') + mich ('me'): Freut mich."
       ],
@@ -4265,18 +4291,18 @@
           {
             "answer": "Schön, dich zu treffen.",
             "category": "incorrect answer",
-            "explanation": "That is a word-for-word translation. German answers an introduction with the short fixed phrase Freut mich."
+            "explanation": "This task recalls the two-word expression practised here: Freut mich. Other expressions can be used in conversation."
           },
           {
             "answer": "Ich freue mich.",
             "category": "incorrect answer",
-            "explanation": "Ich freue mich means 'I am pleased', but it is not the reply to an introduction. The fixed short phrase is Freut mich."
+            "explanation": "This task recalls the two-word expression practised here: Freut mich. Other expressions can be used in conversation."
           }
         ]
       }
     },
     {
-      "revision": 1,
+      "revision": 2,
       "conceptIds": [
         "de-introductions-concept"
       ],
@@ -4290,7 +4316,7 @@
         "writing",
         "grammar"
       ],
-      "prompt": "Learn a classmate's name by asking the question in which the verb comes before the person.",
+      "prompt": "Ask a classmate their name with the three-word question practised here, beginning with Wie.",
       "hints": [
         "Start with the question word Wie, then the du-form of heißen (heißt), then du. No extra helping word is needed."
       ],
@@ -21864,6 +21890,311 @@
       "prompt": "Your tram is nearly here. Tell the server “To take away, please” in German.",
       "modelText": "Zum Mitnehmen, bitte.",
       "modelAudioId": "de-cafe-listen-model"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-introductions-concept"
+      ],
+      "vocabulary": [
+        "de-introductions-word-1",
+        "de-introductions-word-2",
+        "de-introductions-word-3",
+        "de-introductions-word-4"
+      ],
+      "kind": "information",
+      "id": "de-introductions-listen-notice",
+      "body": "Listen to the short exchange with the synthesized course voice. First identify the situation, then listen for a detail. You can reveal the transcript for help.",
+      "stimulusId": "de-introductions-listen-stim"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-introductions-concept"
+      ],
+      "vocabulary": [
+        "de-introductions-word-1",
+        "de-introductions-word-2",
+        "de-introductions-word-3",
+        "de-introductions-word-4"
+      ],
+      "kind": "selection",
+      "id": "de-introductions-listen-gist",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "de-introductions-listen-stim",
+      "prompt": "What is the speaker doing?",
+      "hints": [
+        "Listen for Ich heiße: the speaker gives her name."
+      ],
+      "feedback": "Listen for Ich heiße: the speaker gives her name.",
+      "evidenceKey": "de-introductions-listen-gist",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Introducing herself"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Ordering coffee"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Asking a price"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-introductions-concept"
+      ],
+      "vocabulary": [
+        "de-introductions-word-1",
+        "de-introductions-word-2",
+        "de-introductions-word-3",
+        "de-introductions-word-4"
+      ],
+      "kind": "selection",
+      "id": "de-introductions-listen-detail",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "de-introductions-listen-stim",
+      "prompt": "Where does Mia come from?",
+      "hints": [
+        "Listen after Ich komme aus: the place is Berlin."
+      ],
+      "feedback": "Listen after Ich komme aus: the place is Berlin.",
+      "evidenceKey": "de-introductions-listen-detail",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Berlin"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Hamburg"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Wien"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-introductions-concept"
+      ],
+      "vocabulary": [
+        "de-introductions-word-1",
+        "de-introductions-word-2",
+        "de-introductions-word-3",
+        "de-introductions-word-4"
+      ],
+      "kind": "open-task",
+      "id": "de-introductions-listen-reply",
+      "skills": [
+        "speaking"
+      ],
+      "mode": "spoken",
+      "goal": "Reply to Mia in German: give your name and say that you are pleased to meet her.",
+      "requiredPoints": [
+        "Give your name",
+        "Acknowledge the introduction politely"
+      ],
+      "modelResponse": "Ich heiße Alex. Freut mich.",
+      "rubric": [
+        {
+          "id": "meaning",
+          "text": "My reply conveys the requested information."
+        },
+        {
+          "id": "politeness",
+          "text": "My reply fits this polite everyday exchange."
+        },
+        {
+          "id": "clarity",
+          "text": "I can understand my own reply and repeat it clearly."
+        }
+      ],
+      "hints": [
+        "Use the phrases from this lesson. Different wording is allowed; the response is self-assessed."
+      ],
+      "lengthGuidance": "One or two short spoken sentences. Recording is optional."
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "de-numbers-quantities-word-1",
+        "de-numbers-quantities-word-2",
+        "de-numbers-quantities-word-3",
+        "de-numbers-quantities-word-4"
+      ],
+      "kind": "information",
+      "id": "de-numbers-quantities-listen-notice",
+      "body": "Listen to the short exchange with the synthesized course voice. First identify the situation, then listen for a detail. You can reveal the transcript for help.",
+      "stimulusId": "de-numbers-quantities-listen-stim"
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "de-numbers-quantities-word-1",
+        "de-numbers-quantities-word-2",
+        "de-numbers-quantities-word-3",
+        "de-numbers-quantities-word-4"
+      ],
+      "kind": "selection",
+      "id": "de-numbers-quantities-listen-gist",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "de-numbers-quantities-listen-stim",
+      "prompt": "What does the customer want?",
+      "hints": [
+        "Brötchen are bread rolls; the request is for two."
+      ],
+      "feedback": "Brötchen are bread rolls; the request is for two.",
+      "evidenceKey": "de-numbers-quantities-listen-gist",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Bread rolls"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Coffee"
+        },
+        {
+          "id": "distractor-2",
+          "text": "A train ticket"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "de-numbers-quantities-word-1",
+        "de-numbers-quantities-word-2",
+        "de-numbers-quantities-word-3",
+        "de-numbers-quantities-word-4"
+      ],
+      "kind": "selection",
+      "id": "de-numbers-quantities-listen-detail",
+      "skills": [
+        "listening"
+      ],
+      "stimulusId": "de-numbers-quantities-listen-stim",
+      "prompt": "How much do the two rolls cost together?",
+      "hints": [
+        "Zwei is the quantity. Drei Euro is the total price."
+      ],
+      "feedback": "Zwei is the quantity. Drei Euro is the total price.",
+      "evidenceKey": "de-numbers-quantities-listen-detail",
+      "assistanceAffectsEvidence": [
+        "hint",
+        "transcript",
+        "model"
+      ],
+      "options": [
+        {
+          "id": "answer",
+          "text": "Three euros"
+        },
+        {
+          "id": "distractor-1",
+          "text": "Two euros"
+        },
+        {
+          "id": "distractor-2",
+          "text": "Five euros"
+        }
+      ],
+      "acceptedIds": [
+        "answer"
+      ],
+      "multiple": false
+    },
+    {
+      "revision": 1,
+      "conceptIds": [
+        "de-numbers-quantities-concept"
+      ],
+      "vocabulary": [
+        "de-numbers-quantities-word-1",
+        "de-numbers-quantities-word-2",
+        "de-numbers-quantities-word-3",
+        "de-numbers-quantities-word-4"
+      ],
+      "kind": "open-task",
+      "id": "de-numbers-quantities-listen-reply",
+      "skills": [
+        "speaking"
+      ],
+      "mode": "spoken",
+      "goal": "At the counter, ask for two bread rolls politely. Then check the total price you heard.",
+      "requiredPoints": [
+        "Ask for two rolls",
+        "Use a polite request",
+        "Check the total price"
+      ],
+      "modelResponse": "Zwei Brötchen, bitte. Drei Euro?",
+      "rubric": [
+        {
+          "id": "meaning",
+          "text": "My reply conveys the requested information."
+        },
+        {
+          "id": "politeness",
+          "text": "My reply fits this polite everyday exchange."
+        },
+        {
+          "id": "clarity",
+          "text": "I can understand my own reply and repeat it clearly."
+        }
+      ],
+      "hints": [
+        "Use the phrases from this lesson. Different wording is allowed; the response is self-assessed."
+      ],
+      "lengthGuidance": "One or two short spoken sentences. Recording is optional."
     }
   ],
   "lessons": [
@@ -21983,7 +22314,7 @@
       "objective": "Introduce yourself with the verb heißen, and ask a question by moving the verb in front of the person.",
       "family": "discovery",
       "revision": 1,
-      "estimatedMinutes": 6,
+      "estimatedMinutes": 8,
       "entryStepId": "de-introductions-foundation-step-intro",
       "steps": [
         {
@@ -22033,7 +22364,34 @@
           "purpose": "practice",
           "activityId": "de-introductions-foundation-read",
           "required": true,
-          "nextStepId": null
+          "nextStepId": "de-introductions-listen-step-notice"
+        },
+        {
+          "id": "de-introductions-listen-step-notice",
+          "purpose": "notice",
+          "activityId": "de-introductions-listen-notice",
+          "required": true,
+          "nextStepId": "de-introductions-listen-step-gist"
+        },
+        {
+          "id": "de-introductions-listen-step-gist",
+          "purpose": "practice",
+          "activityId": "de-introductions-listen-gist",
+          "required": true,
+          "nextStepId": "de-introductions-listen-step-detail"
+        },
+        {
+          "id": "de-introductions-listen-step-detail",
+          "purpose": "practice",
+          "activityId": "de-introductions-listen-detail",
+          "required": true,
+          "nextStepId": "de-introductions-listen-step-reply"
+        },
+        {
+          "id": "de-introductions-listen-step-reply",
+          "purpose": "practice",
+          "activityId": "de-introductions-listen-reply",
+          "required": true
         }
       ],
       "completionPolicy": {
@@ -22456,7 +22814,7 @@
       "objective": "Count one to ten, then meet the point where German turns its numbers around: twenty-one is one-and-twenty.",
       "family": "discovery",
       "revision": 1,
-      "estimatedMinutes": 4,
+      "estimatedMinutes": 6,
       "entryStepId": "de-numbers-quantities-foundation-step-intro",
       "steps": [
         {
@@ -22492,7 +22850,34 @@
           "purpose": "predict",
           "activityId": "de-numbers-quantities-foundation-think",
           "required": true,
-          "nextStepId": null
+          "nextStepId": "de-numbers-quantities-listen-step-notice"
+        },
+        {
+          "id": "de-numbers-quantities-listen-step-notice",
+          "purpose": "notice",
+          "activityId": "de-numbers-quantities-listen-notice",
+          "required": true,
+          "nextStepId": "de-numbers-quantities-listen-step-gist"
+        },
+        {
+          "id": "de-numbers-quantities-listen-step-gist",
+          "purpose": "practice",
+          "activityId": "de-numbers-quantities-listen-gist",
+          "required": true,
+          "nextStepId": "de-numbers-quantities-listen-step-detail"
+        },
+        {
+          "id": "de-numbers-quantities-listen-step-detail",
+          "purpose": "practice",
+          "activityId": "de-numbers-quantities-listen-detail",
+          "required": true,
+          "nextStepId": "de-numbers-quantities-listen-step-reply"
+        },
+        {
+          "id": "de-numbers-quantities-listen-step-reply",
+          "purpose": "practice",
+          "activityId": "de-numbers-quantities-listen-reply",
+          "required": true
         }
       ],
       "completionPolicy": {

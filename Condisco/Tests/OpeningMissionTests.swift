@@ -89,3 +89,48 @@ final class OpeningMissionTests: XCTestCase {
         }
     }
 }
+
+
+@MainActor
+final class EarlyListeningPracticeTests: XCTestCase {
+    func testFirstTwoUnitsHaveReachableListenDecideAndOpenReplySlices() throws {
+        let packs = try PackLoader.loadPacks()
+        for slug in ["german", "portuguese"] {
+            let pack = try XCTUnwrap(packs.first { $0.language.slug == slug })
+            let prefix = slug == "german" ? "de" : "pt"
+            for topic in ["introductions", "numbers-quantities"] {
+                let lesson = try XCTUnwrap(pack.lesson(id: "\(prefix)-\(topic)-foundation"))
+                let stem = "\(prefix)-\(topic)-listen"
+                let gist = try XCTUnwrap(pack.activity(id: stem + "-gist"))
+                let detail = try XCTUnwrap(pack.activity(id: stem + "-detail"))
+                for activity in [gist, detail] {
+                    guard case .selection(let spec) = activity else {
+                        return XCTFail("listening decisions must be choices")
+                    }
+                    XCTAssertTrue(spec.base.skills.contains(.listening))
+                    XCTAssertEqual(spec.acceptedIds.count, 1)
+                    XCTAssertGreaterThan(spec.options.count, 1)
+                    XCTAssertNotNil(spec.base.stimulusId.flatMap { pack.stimulus(id: $0) })
+                }
+                guard case .openTask(let reply)? = pack.activity(id: stem + "-reply") else {
+                    return XCTFail("spoken reply must remain self-assessed, not fixed-answer graded")
+                }
+                XCTAssertEqual(reply.mode, .spoken)
+                XCTAssertGreaterThanOrEqual(reply.rubric.count, 3)
+                XCTAssertTrue(reply.skills.contains(.speaking))
+                let steps = Dictionary(uniqueKeysWithValues: lesson.steps.map { ($0.id, $0) })
+                var cursor: String? = lesson.entryStepId
+                var visited = Set<String>()
+                var activities = Set<String>()
+                while let id = cursor, visited.insert(id).inserted {
+                    let step = try XCTUnwrap(steps[id])
+                    activities.insert(step.activityId)
+                    cursor = step.nextStepId
+                }
+                XCTAssertTrue(activities.contains(stem + "-gist"))
+                XCTAssertTrue(activities.contains(stem + "-detail"))
+                XCTAssertTrue(activities.contains(stem + "-reply"))
+            }
+        }
+    }
+}

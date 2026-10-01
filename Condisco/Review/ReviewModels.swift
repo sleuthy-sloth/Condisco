@@ -122,6 +122,26 @@ enum ReviewScope: String, CaseIterable {
 // MARK: - Review catalog
 
 enum ReviewCatalog {
+    /// All-course due queue shared by Review, Home, widget and reminders.
+    /// Course-only callers use loadCourseDue so library cards never enter
+    /// a lesson warm-up or a focus-course profile.
+    @MainActor
+    static func loadDue(
+        packs: [CoursePack], store: LearningStore, now: Date = Date()
+    ) throws -> (due: [ReviewItem], nextDueAt: Date?) {
+        let course = try loadCourseDue(packs: packs, store: store, now: now)
+        let library = try LibraryReview.load(store: store, now: now)
+        return (sorted(course.due + library.due),
+                [course.nextDueAt, library.nextDueAt].compactMap { $0 }.min())
+    }
+
+    static func sorted(_ items: [ReviewItem]) -> [ReviewItem] {
+        items.sorted {
+            if $0.dueAt != $1.dueAt { return $0.dueAt < $1.dueAt }
+            return $0.evidenceKey < $1.evidenceKey
+        }
+    }
+
     /// Due items across every pack, oldest first. Also returns the
     /// soonest upcoming due date (for the empty state) when nothing is due.
     /// Main-actor isolated because it reads from LearningStore.
@@ -132,7 +152,7 @@ enum ReviewCatalog {
     /// item's identity, due time, and FSRS scheduling are untouched: only
     /// which authored cue text the card shows changes.
     @MainActor
-    static func loadDue(
+    static func loadCourseDue(
         packs: [CoursePack], store: LearningStore, now: Date = Date()
     ) throws -> (due: [ReviewItem], nextDueAt: Date?) {
         var due: [ReviewItem] = []

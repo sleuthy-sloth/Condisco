@@ -72,80 +72,29 @@ final class ReviewModel: ObservableObject {
         await load()
     }
 
-    /// Re-runs the stock due/tricky/forecast loads over the scope's packs —
-    /// the same `ReviewCatalog` paths Home and the widget use, with the pack
-    /// list narrowed — then merges the library-phrase stream into the due,
-    /// tricky, and forecast lines when the scope is All courses (§4.2). No
-    /// scheduling logic here: FSRS and the event pipeline are untouched, and
-    /// a verdict still only reschedules the one evidence key it records.
+    /// Focus course stays bundled-only; All courses shares its library
+    /// projection with the invitation counts and keeps language-correct TTS.
     private func reloadScoped() throws {
         guard let store else { return }
         let packs = scopedPacks()
-        var (due, nextDueAt) = try ReviewCatalog.loadDue(packs: packs, store: store)
+        let course = try ReviewCatalog.loadCourseDue(packs: packs, store: store)
+        var due = course.due
+        var nextDueAt = course.nextDueAt
         var tricky = try ReviewCatalog.loadTricky(packs: packs, store: store)
-        var dueTomorrowCount = try ReviewCatalog.countDueWithin(
-            packs: packs, store: store, days: 1)
-        // Scope semantics (§4.2): the library is not a course, so only the
-        // All-courses queue merges phrases saved from live documents. The
-        // focus-course scope resolves to a bundled pack id and never shows
-        // learner-only cards; Home, the widget, review reminders, and lesson
-        // warm-ups keep calling `ReviewCatalog` themselves and are untouched.
+        var forecast = try ReviewCatalog.countDueWithin(packs: packs, store: store, days: 1)
+        phraseLanguageSlugs = [:]
         if scope == .all {
-            let library = try libraryPhraseReview(store: store)
-            due.append(contentsOf: library.due)
-            tricky.append(contentsOf: library.tricky)
-            dueTomorrowCount += library.dueTomorrowCount
-            if let phraseNext = library.nextDueAt,
-               nextDueAt == nil || phraseNext < nextDueAt! {
-                nextDueAt = phraseNext
-            }
-            // The merged queue keeps the existing oldest-first contract.
-            due.sort { $0.dueAt < $1.dueAt }
-            tricky.sort { $0.dueAt < $1.dueAt }
+            let library = try LibraryReview.load(store: store)
+            due += library.due
+            tricky += library.tricky
+            forecast += library.dueTomorrowCount
+            nextDueAt = [nextDueAt, library.nextDueAt].compactMap { $0 }.min()
+            phraseLanguageSlugs = library.languageSlugs
         }
-        self.due = due
+        self.due = ReviewCatalog.sorted(due)
         self.nextDueAt = nextDueAt
-        self.tricky = tricky
-        self.dueTomorrowCount = dueTomorrowCount
-    }
-
-    /// The library-phrase stream for the All-courses queue: due items, the
-    /// soonest upcoming due date, the tricky list, and the tomorrow
-    /// forecast, projected from phrases joined to their live documents
-    /// (§4.2). Phrase-review attempts come from the same tolerant global
-    /// event read `ReviewCatalog.loadTricky` uses — an undecodable row
-    /// anywhere in the log is skipped and logged, never fatal to the Review
-    /// tab. Also remembers each phrase card's language for TTS.
-    private func libraryPhraseReview(
-        store: LearningStore
-    ) throws -> (
-        due: [ReviewItem], nextDueAt: Date?, tricky: [ReviewItem],
-        dueTomorrowCount: Int) {
-        let phrases = LibraryReview.candidatePhrases(
-            phrases: try store.savedPhrases(), links: try store.phraseLinks())
-        // Phrase cards speak the phrase's language, resolved by slug.
-        phraseLanguageSlugs = Dictionary(
-            uniqueKeysWithValues: phrases.map {
-                (LibraryReview.evidenceKey(phraseId: $0.id), $0.languageSlug)
-            })
-        let (events, skipped) = try store.allEventsWithQuarantine()
-        if !skipped.isEmpty {
-            LearningStore.logCorruptRows(skipped)
-        }
-        // Only phrase-review attempts feed the projection; the fold ignores
-        // every other pack and event kind anyway.
-        let attempts = events.compactMap { event -> ActivityAttempt? in
-            guard case .attempt(let attempt) = event,
-                  attempt.packId == LibraryReview.packId else { return nil }
-            return attempt
-        }
-        let (due, nextDueAt) = LibraryReview.loadDuePhrases(
-            phrases: phrases, attempts: attempts)
-        let tricky = LibraryReview.loadTrickyPhrases(
-            phrases: phrases, attempts: attempts)
-        let dueTomorrowCount = LibraryReview.countPhrasesDueWithin(
-            phrases: phrases, attempts: attempts, days: 1)
-        return (due, nextDueAt, tricky, dueTomorrowCount)
+        self.tricky = ReviewCatalog.sorted(tricky)
+        self.dueTomorrowCount = forecast
     }
 
     /// Re-applies the selected scope immediately: switching Focus course /
@@ -239,6 +188,21 @@ struct ReviewView: View {
     @Binding var sessionLength: ReviewSessionLength
     @StateObject private var model = ReviewModel()
     @State private var session: ReviewSessionRoute?
+    @Binding var requestedScope: ReviewScope?
+
+    init(section: Binding<ReviewSection>, sessionLength: Binding<ReviewSessionLength>,
+         requestedScope: Binding<ReviewScope?> = .constant(nil)) {
+        self._section = section
+        self._sessionLength = sessionLength
+        self._requestedScope = requestedScope
+    }
+
+    private func applyRequestedScope() {
+        guard !model.isLoading, let scope = requestedScope else { return }
+        model.scope = scope
+        model.applyScope()
+        requestedScope = nil
+    }
 
     /// The session queue: the due list capped to the chosen session size,
     /// oldest first either way.
@@ -279,7 +243,11 @@ struct ReviewView: View {
                 }
             }
         }
-        .task { await model.load() }
+        .task {
+            await model.load()
+            applyRequestedScope()
+        }
+        .onChange(of: requestedScope) { _, _ in applyRequestedScope() }
         .onReceive(
             NotificationCenter.default.publisher(for: .condiscoReviewHomeEntry)
         ) { _ in
